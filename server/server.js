@@ -22,7 +22,7 @@ const port = process.env.PORT
 app.use(bodyParser.json())
 
 app.get('/api',(req, res)=>{
-   res.send({'mensaje': 'hola mundos'})
+   res.send({'mensaje': 'hola Nati'})
 
 })
 
