@@ -8,6 +8,7 @@
     "start": "node server/server.js",
     "clean": "ionic-app-scripts clean",
     "build": "ionic-app-scripts build",
+    "build-prod": "ionic:build --prod",
     "lint": "ionic-app-scripts lint"
   },
   "engines": {
