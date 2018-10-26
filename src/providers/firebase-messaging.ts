@@ -7,12 +7,13 @@ import { Storage } from '@ionic/storage';
 export class FirebaseMessagingProvider {
   private messaging;
   private unsubscribeOnTokenRefresh = () => {};
+  public token: string
 
   constructor(
     private storage: Storage,
     private app: FirebaseApp
   ) {
-    this.messaging = this.app.messaging();
+    this.messaging = app.messaging();
     navigator.serviceWorker.register('service-worker.js').then((registration) => {
     this.messaging.useServiceWorker(registration);
     //this.disableNotifications()
@@ -43,6 +44,7 @@ export class FirebaseMessagingProvider {
       if (currentToken) {
         // we've got the token from Firebase, now let's store it in the database
         console.log(currentToken)
+        this.token = currentToken
         return this.storage.set('fcmToken', currentToken);
       } else {
         console.log('No Instance ID token available. Request permission to generate one.');
