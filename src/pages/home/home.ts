@@ -1,3 +1,4 @@
+import { FirebaseMessagingProvider } from './../../providers/firebase-messaging';
 import { Component } from '@angular/core';
 import { NavController, AlertController, Platform } from 'ionic-angular';
 
@@ -6,8 +7,8 @@ import { NavController, AlertController, Platform } from 'ionic-angular';
   templateUrl: 'home.html'
 })
 export class HomePage {
-
-  constructor(public navCtrl: NavController, private alertCtrk: AlertController, private platform: Platform) {
+  
+  constructor(public navCtrl: NavController, private alertCtrk: AlertController, private platform: Platform, private fmp:FirebaseMessagingProvider) {
 
   }
 
