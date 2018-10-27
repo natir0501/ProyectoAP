@@ -21,10 +21,6 @@ const port = process.env.PORT
 
 app.use(bodyParser.json())
 
-app.get('/api',(req, res)=>{
-   res.send({'mensaje': 'hola Nati'})
-
-})
 
 let ruta = __dirname
 ruta = ruta.substring(0,ruta.length-6) + 'www'
