@@ -4,7 +4,7 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const {mongoose} = require('./db/mongoose')
 const pantallasRuta= require('./routes/pantalla-rutas');
-
+const rolesRuta= require('./routes/rol-rutas');
 
 
 const app = express()
@@ -25,6 +25,7 @@ const port = process.env.PORT
 app.use(bodyParser.json())
 
 app.use('/api', pantallasRuta);
+app.use('/api', rolesRuta);
 
 let ruta = __dirname
 ruta = ruta.substring(0,ruta.length-6) + 'www'

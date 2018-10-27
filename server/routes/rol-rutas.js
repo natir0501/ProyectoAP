@@ -1,37 +1,36 @@
 var express = require('express');
 var api= express.Router();
-const {Pantalla}=require('../models/pantalla')
+const {Rol}=require('../models/rol')
 const _ = require('lodash')
 
- api.get('/pantallas',(req, res)=>{
-    Pantalla.find()
-    .then((pantallas)=>{
-        res.send({pantallas})
+ api.get('/roles',(req, res)=>{
+    Rol.find()
+    .then((rol)=>{
+        res.send({rol})
     }),(e)=>{
         res.status(400).send(e)
     }
-
 })
 
-api.post('/pantallas', async (req,res) =>{
+api.post('/roles', async (req,res) =>{
     
     try{
-        var pantalla = new Pantalla(_.pick(req.body,['nombre','codigo']))
-        await pantalla.save()
+        var rol = new Rol(_.pick(req.body,['nombre','codigo']))
+        await rol.save()
         res.status(200).send({"mensaje":"Agregado ok"});
     }catch(e){
         res.status(400).send({"error": e.errors.codigo.message})
     }
 })
 
-api.get('/pantallas/:codigo',(req,res)=>{
+api.get('/roles/:codigo',(req,res)=>{
     var codigo = req.params.codigo;
     
-    Pantalla.findOne({
+    Rol.findOne({
         codigo: codigo
-    }).then((pantalla)=> {
-        if(pantalla){
-            res.send({pantalla})
+    }).then((rol)=> {
+        if(rol){
+            res.send({rol})
         }else{
             res.status(404).send()
         }
