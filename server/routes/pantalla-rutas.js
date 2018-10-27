@@ -3,6 +3,8 @@ var api= express.Router();
 const {Pantalla}=require('../models/pantalla')
 const _ = require('lodash')
 
+//cambio. 
+
 
  api.get('/pantallas',(req, res)=>{
     Pantalla.find()
