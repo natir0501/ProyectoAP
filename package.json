@@ -6,6 +6,7 @@
   "private": true,
   "scripts": {
     "start": "node server/server.js",
+    "test": "npm run build && npm start",
     "clean": "ionic-app-scripts clean",
     "build": "ionic-app-scripts build",
     "build-prod": "ionic:build --prod",
