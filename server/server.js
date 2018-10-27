@@ -3,10 +3,13 @@ var cors = require('cors')
 const express = require('express')
 const bodyParser = require('body-parser')
 const {mongoose} = require('./db/mongoose')
+const pantallasRuta= require('./routes/pantalla-rutas');
 
 
 
 const app = express()
+
+
 app.use(cors({
     
         "origin": "*",
@@ -21,6 +24,7 @@ const port = process.env.PORT
 
 app.use(bodyParser.json())
 
+app.use('/api', pantallasRuta);
 
 let ruta = __dirname
 ruta = ruta.substring(0,ruta.length-6) + 'www'
