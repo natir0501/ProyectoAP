@@ -13,7 +13,10 @@ var PantallaSchema = mongoose.Schema({
         minlength:5,
         trim: true,
         unique: true
-    }
+    },
+    roles:[{
+        type: mongoose.Schema.Types.ObjectId,
+    }]    
 
 })
 
