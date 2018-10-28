@@ -28,7 +28,7 @@ self.toolbox.precache(
     'manifest.json'
   ]
 );
-
+console.log('cambio7')
 // dynamically cache any other local assets
 self.toolbox.router.any('/*', self.toolbox.fastest);
 
