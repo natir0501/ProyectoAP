@@ -14,13 +14,16 @@ api.get('/usuarios',(req, res)=>{
 
 api.post('/usuarios', async (req,res) =>{
     
-    try{
-        var usuario = new Usuario(_.pick(req.body,['nombre','apellido','email']))
+    try{        
+        var usuario = new Usuario(_.pick(req.body,['nombre','apellido','email','password']))
         await usuario.save()
-        res.status(200).send({"mensaje":"Usuario ok"});
+        const token = await usuario.generateAuthToken()
+        res.header('x-auth',token).status(200).send({"mensaje":"Usuario ok"});
     }catch(e){
         res.status(400).send(e)
     }
 })
+
+
 
 module.exports=api;
