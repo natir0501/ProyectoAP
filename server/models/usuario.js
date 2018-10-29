@@ -56,22 +56,22 @@ var UsuarioSchema = mongoose.Schema({
 UsuarioSchema.plugin(uniqueValidator);
 
 UsuarioSchema.methods.generateAuthToken = function () {
-    var user = this;
+    var usuario = this;
     var access = 'auth'
-    var token = jwt.sign({ _id: user._id.toHexString(), access }, process.env.JWT_SECRET).toString()
+    var token = jwt.sign({ _id: usuario._id.toHexString(), access }, process.env.JWT_SECRET).toString()
 
-    user.tokens = user.tokens.concat([{ access, token }])
+    usuario.tokens = usuario.tokens.concat([{ access, token }])
 
-    return user.save().then(() => {
+    return usuario.save().then(() => {
 
         return token
     })
 }
 
 UsuarioSchema.methods.removeToken = function (token) {
-    var user = this;
+    var usuario = this;
 
-    return user.update({
+    return usuario.update({
         $pull: {
             tokens: {
                 token
@@ -82,7 +82,7 @@ UsuarioSchema.methods.removeToken = function (token) {
 
 UsuarioSchema.statics.findByToken = function (token) {
 
-    var User = this
+    var Usuario = this
     var decoded
     try {
         decoded = jwt.verify(token, process.env.JWT_SECRET)
@@ -90,18 +90,18 @@ UsuarioSchema.statics.findByToken = function (token) {
     } catch (e) {
         return Promise.reject(e)
     }
-    return User.findOne({
+    return Usuario.findOne({
         '_id': decoded._id,
         'tokens.token': token,
         'tokens.access': 'auth'
     })
 }
 UsuarioSchema.pre('save', function (next) {
-    var user = this;
-    if (user.isModified('password')) {
+    var usuario = this;
+    if (usuario.isModified('password')) {
         bcrypt.genSalt(10, (err, salt) => {
-            bcrypt.hash(user.password, salt, (err, hash) => {
-                user.password = hash
+            bcrypt.hash(usuario.password, salt, (err, hash) => {
+                usuario.password = hash
                 next()
             })
         })
@@ -112,17 +112,17 @@ UsuarioSchema.pre('save', function (next) {
 })
 
 UsuarioSchema.statics.findByCredentials = function (email, password) {
-    User = this
-    return User.findOne({ email }).then((user) => {
-        if (!user) {
+    Usuario = this
+    return Usuario.findOne({ email }).then((usuario) => {
+        if (!usuario) {
             return Promise.reject()
         }
         return new Promise((resolve, reject) => {
-            bcrypt.compare(password, user.password, (err, res) => {
+            bcrypt.compare(password, usuario.password, (err, res) => {
                 if (!res) {
                     return reject()
                 }
-                return resolve(user)
+                return resolve(usuario)
             })
         })
 
