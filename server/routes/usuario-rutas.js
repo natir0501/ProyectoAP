@@ -15,7 +15,7 @@ api.get('/usuarios',(req, res)=>{
 api.post('/usuarios', async (req,res) =>{
     
     try{        
-        var usuario = new Usuario(_.pick(req.body,['nombre','apellido','email','password']))
+        var usuario = new Usuario(_.pick(req.body,['nombre','apellido','email','password','roles']))
         await usuario.save()
         const token = await usuario.generateAuthToken()
         res.header('x-auth',token).status(200).send({"mensaje":"Usuario ok"});

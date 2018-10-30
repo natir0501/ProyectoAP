@@ -7,6 +7,7 @@ const pantallasRuta= require('./routes/pantalla-rutas');
 const rolesRuta= require('./routes/rol-rutas');
 const UsuariosRuta= require('./routes/usuario-rutas');
 const CategoriaRuta= require('./routes/categoria-rutas');
+const {cargaRoles}=require('./Utilidades/script-inicial');
 
 
 
@@ -41,5 +42,7 @@ app.listen(port,()=>{
     console.log(`Started up at port ${port}`)
 
 })
+
+cargaRoles();
 
 module.exports={app}

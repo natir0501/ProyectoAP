@@ -36,6 +36,9 @@ var CategoriaSchema = mongoose.Schema({
     }],
     Tesoreros:[{
         type: mongoose.Schema.Types.ObjectId,
+    }],
+    Jugadores:[{
+        type: mongoose.Schema.Types.ObjectId,
     }]
 })
 
