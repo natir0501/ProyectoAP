@@ -35,8 +35,19 @@ api.post('/categorias', async (req,res) =>{
             return res.status(400).send(new ApiResponse({'rol':'Jugador','usuarios': usuariosInvalidos},errorPerfil))
         }
 
-        console.log('iupi')
+        let nombre=req.body.nombre;
+        let valorCuota=req.body.valorCuota;
+        let diaGeneracionCuota=req.body.diaGeneracionCuota;
+        let diaVtoCuota=req.body.diaVtoCuota;
+        let cantCuotasAnuales=req.body.cantCuotasAnuales;
+        let dts=req.body.dts;
+        let tesoreros=req.body.tesoreros;
+        let delegados=req.body.delegados;
+        let jugadores=req.body.jugadores;
       
+        let categoria=new Categoria({nombre,valorCuota,diaGeneracionCuota,diaVtoCuota,cantCuotasAnuales,dts,tesoreros,delegados,jugadores})
+        await categoria.save();
+        res.status(200).send(new ApiResponse({mensaje : 'Categoria ok'},''));
         
     }catch(e){
         res.status(400).send(e)
