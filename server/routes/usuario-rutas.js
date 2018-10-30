@@ -24,6 +24,28 @@ api.post('/usuarios', async (req,res) =>{
     }
 })
 
+api.put('/usuarios/:id', (req, res) => {
+    let _id = req.params._id;
+    var body = _pick(req.body, ['nombre', 'apellido', 'fechaNacimiento','fechaVtoCarneSalud','email','password','roles','tokens']);
+    
+    //var roles =req.body.roles;
+
+    Usuario.findOneAndUpdate({
+        _id: id
+    }, {
+            $set: body
+        }, {
+            new: true
+        }).then((usuario) => {
+            if (usuario) {
+                res.status(200).send(new ApiResponse({mensaje : 'Modificado correctamente'},''));
+            } else {
+                res.status(404).send(new ApiResponse({},"Ocurrió un error al modificar"))
+            }
+        }).catch((e) => {
+            res.status(400).send(new ApiResponse({},"400-Ocurrió un error al modificar"))
+        })
+})
 
 
 module.exports=api;
