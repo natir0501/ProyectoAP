@@ -4,6 +4,7 @@ const { Pantalla } = require('../models/pantalla')
 const _ = require('lodash')
 const { ObjectID } = require('mongodb')
 const { Rol } = require('../models/rol')
+const {validarRol} = require('../Utilidades/utilidades')
 
 api.get('/pantallas', (req, res) => {
     Pantalla.find()
@@ -18,25 +19,13 @@ api.get('/pantallas', (req, res) => {
 api.post('/pantallas', async (req, res) => {
 
     try {
-        var arrayRolesIds = req.body.roles;
-        var roles = []
-
-        if (arrayRolesIds) {
-            for (let id of arrayRolesIds) {
-                if (!ObjectID.isValid(id)) {
-                    return res.status(400).send({ error: "No es un id" })
-                }
-                let rol = await Rol.findById(id)
-                console.log(typeof(rol))
-                if (!rol) {
-                    return res.status(400).send({ error: "No es un rol" })
-                }
-                roles.push(rol)
-            }
-        }
         var nombre = req.body.nombre
         var codigo = req.body.codigo
-        var pantalla = new Pantalla({ nombre, codigo, roles })
+        var rolesAlta=req.body.rolesAlta
+        var rolesModificacion=req.body.rolesModificacion
+        var rolesBaja=req.body.rolesBaja
+        var rolesConsulta=req.body.rolesConsulta
+        var pantalla = new Pantalla({ nombre, codigo, rolesAlta,rolesModificacion,rolesBaja,rolesConsulta})
         await pantalla.save()
         res.status(200).send({ "mensaje": "Agregado ok" });
     } catch (e) {
@@ -62,7 +51,7 @@ api.get('/pantallas/:codigo', (req, res) => {
 
 api.put('/pantallas/:codigo', (req, res) => {
     var codigo = req.params.codigo;
-    var body = _pick(req.body, ['nombre', 'codigo', 'roles']);
+    var body = _pick(req.body, ['nombre', 'codigo', 'rolesAlta','rolesBaja','rolesModificacion','rolesConsulta']);
 
     Pantalla.findOneAndUpdate({
         codigo: codigo

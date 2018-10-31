@@ -14,7 +14,16 @@ var PantallaSchema = mongoose.Schema({
         trim: true,
         unique: true
     },
-    roles:[{
+    rolesAlta:[{
+        type: mongoose.Schema.Types.ObjectId,
+    }],
+    rolesBaja:[{
+        type: mongoose.Schema.Types.ObjectId,
+    }],
+    rolesModificacion:[{
+        type: mongoose.Schema.Types.ObjectId,
+    }],
+    rolesConsulta:[{
         type: mongoose.Schema.Types.ObjectId,
     }]    
 
