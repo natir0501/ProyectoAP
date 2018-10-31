@@ -22,24 +22,18 @@ api.post('/pantallas', async (req, res) => {
         var roles = []
 
         if (arrayRolesIds) {
-            console.log('Antes')
             for (let id of arrayRolesIds) {
-                console.log('Entro al for')
                 if (!ObjectID.isValid(id)) {
-                    console.log('No es un id')
                     return res.status(400).send({ error: "No es un id" })
                 }
                 let rol = await Rol.findById(id)
                 console.log(typeof(rol))
                 if (!rol) {
-                    console.log('No es un rol')
                     return res.status(400).send({ error: "No es un rol" })
                 }
-                console.log('Agrego rol: ', rol)
                 roles.push(rol)
             }
         }
-        console.log(roles)
         var nombre = req.body.nombre
         var codigo = req.body.codigo
         var pantalla = new Pantalla({ nombre, codigo, roles })
