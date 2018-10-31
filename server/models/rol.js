@@ -10,7 +10,7 @@ var RolSchema = mongoose.Schema({
     codigo: {
         type: String,
         required: true,
-        minlength:5,
+        minlength:3,
         trim: true,
         unique: true
     }
