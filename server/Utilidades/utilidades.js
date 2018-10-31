@@ -1,5 +1,6 @@
 const {Usuario} = require('../models/usuario')
 const {Rol} = require('../models/rol')
+const {ObjectID} = require('mongodb')
 
 const validarTipo = async (arrayUsuarios, tipoUsuario) => {
     let usuariosInvalidos = []
@@ -16,6 +17,15 @@ const validarTipo = async (arrayUsuarios, tipoUsuario) => {
 
 }
 
+const validarId = async (arrayId) => {
+    for (id of arrayId){
+        if(!ObjectID.isValid){
+            return false
+        }
+    }
+    return true
+}
 
 
-module.exports={validarTipo};
+
+module.exports={validarTipo,validarId};

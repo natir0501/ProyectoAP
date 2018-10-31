@@ -2,7 +2,7 @@ var express = require('express');
 var api= express.Router();
 const {Categoria}=require('../models/categoria')
 const _ = require('lodash')
-const {validarTipo} = require('../Utilidades/utilidades')
+const {validarId} = require('../Utilidades/utilidades')
 const {ApiResponse} = require('../models/api-response')
 
 api.get('/categorias',(req, res)=>{
@@ -17,38 +17,37 @@ api.get('/categorias',(req, res)=>{
 api.post('/categorias', async (req,res) =>{
     
     try{
-        const errorPerfil = "Algunos usuarios no cumplen con el perfil"   
-        let usuariosInvalidos = await validarTipo(req.body.dts,'DTS')
-        if(usuariosInvalidos.length > 0){
-            return res.status(400).send(new ApiResponse({'rol':'DT','usuarios': usuariosInvalidos},errorPerfil))
-        }
-        usuariosInvalidos = await validarTipo(req.body.tesoreros,'TES')
-        if(usuariosInvalidos.length > 0){
-            return res.status(400).send(new ApiResponse({'rol':'Tesorero','usuarios': usuariosInvalidos},errorPerfil))
-        }
-        usuariosInvalidos = await validarTipo(req.body.delegado,'DEL')
-        if(usuariosInvalidos.length > 0){
-            return res.status(400).send(new ApiResponse({'rol':'Delegado','usuarios': usuariosInvalidos},errorPerfil))
-        }
-        usuariosInvalidos = await validarTipo(req.body.jugadores,'JUG')
-        if(usuariosInvalidos.length > 0){
-            return res.status(400).send(new ApiResponse({'rol':'Jugador','usuarios': usuariosInvalidos},errorPerfil))
-        }
-
+        console.log('entro')
+        let tesoreros=req.body.tesoreros;
+        let delegados=req.body.delegados;
+        let jugadores=req.body.jugadores;
+        let dts=req.body.dts;
         let nombre=req.body.nombre;
         let valorCuota=req.body.valorCuota;
         let diaGeneracionCuota=req.body.diaGeneracionCuota;
         let diaVtoCuota=req.body.diaVtoCuota;
-        let cantCuotasAnuales=req.body.cantCuotasAnuales;
-        let dts=req.body.dts;
-        let tesoreros=req.body.tesoreros;
-        let delegados=req.body.delegados;
-        let jugadores=req.body.jugadores;
-      
-        let categoria=new Categoria({nombre,valorCuota,diaGeneracionCuota,diaVtoCuota,cantCuotasAnuales,dts,tesoreros,delegados,jugadores})
-        await categoria.save();
-        res.status(200).send(new ApiResponse({mensaje : 'Categoria ok'},''));
+        let cantidadCuotasAnuales=req.body.cantidadCuotasAnuales;
+
+        let arrayIds = []
         
+        arrayIds.push(...tesoreros)
+        console.log('hola')
+        arrayIds.push(...delegados)
+        arrayIds.push(...jugadores)
+        arrayIds.push(...dts)
+       
+        console.log('Array',arrayIds)
+        console.log('antes del if')
+        if(validarId(arrayIds)){
+            console.log('en el if')
+            let categoria=new Categoria({nombre,valorCuota,diaGeneracionCuota,
+                diaVtoCuota,cantidadCuotasAnuales,dts,tesoreros,delegados,jugadores})
+            await categoria.save();
+           
+            await categoria.asignarRoles()
+            return res.status(200).send(new ApiResponse(categoria,''));
+        }
+        res.status(400).send(new ApiResponse({},'Algunos de los usuarios no son válidos'))        
     }catch(e){
         res.status(400).send(e)
     }
