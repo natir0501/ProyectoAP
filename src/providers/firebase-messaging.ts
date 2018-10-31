@@ -22,15 +22,20 @@ export class FirebaseMessagingProvider {
   }
 
   public enableNotifications() {
-    console.log('Requesting permission...');
-    return this.messaging.requestPermission().then(() => {
-        console.log('Permission granted');
-        // token might change - we need to listen for changes to it and update it
-        this.setupOnTokenRefresh();
-        return this.updateToken();
-      })
-      .catch((err)=>console.log(err))
-      ;
+    try{
+      console.log('Requesting permission...');
+      return this.messaging.requestPermission().then(() => {
+          console.log('Permission granted');
+          // token might change - we need to listen for changes to it and update it
+          this.setupOnTokenRefresh();
+          return this.updateToken();
+        })
+        .catch((err)=>console.log(err))
+        ;
+
+    }catch(e){
+      console.log('Error en enablenotificacion',e)
+    }
   }
 
   public disableNotifications() {
