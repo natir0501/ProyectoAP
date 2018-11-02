@@ -62,7 +62,7 @@ api.get('/pantallas/:codigo', (req, res) => {
 
 api.put('/pantallas/:codigo', (req, res) => {
     var codigo = req.params.codigo;
-    var body = _pick(req.body, ['nombre', 'codigo', 'roles']);
+    var body = _.pick(req.body, ['nombre', 'codigo', 'roles']);
 
     Pantalla.findOneAndUpdate({
         codigo: codigo
