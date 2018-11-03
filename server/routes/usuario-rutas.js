@@ -31,7 +31,7 @@ api.put('/usuarios/:id', (req, res) => {
     //var roles =req.body.roles;
 
     Usuario.findOneAndUpdate({
-        _id: id
+        _id
     }, {
             $set: body
         }, {
