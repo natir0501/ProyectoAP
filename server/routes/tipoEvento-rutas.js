@@ -62,7 +62,7 @@ api.put('/tipoEventos/:id', (req, res) => {
             new: true
         }).then((tipoEvento) => {
             if (tipoEvento) {
-                res.status(200).send(new ApiResponse({mensaje : 'Agregado ok'},''));
+                res.status(200).send(new ApiResponse({mensaje : 'Modificado ok'},''));
             } else {
                 res.status(404).send(new ApiResponse({},"No se encontró un evento para modificar."))
             }

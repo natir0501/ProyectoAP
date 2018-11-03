@@ -5,7 +5,8 @@ var TipoEventoSchema = mongoose.Schema({
     nombre: {
         type: String,
         required: true,
-        trim: true
+        trim: true,
+        unique: true
     }
 })
 
