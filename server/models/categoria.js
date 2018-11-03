@@ -31,17 +31,20 @@ var CategoriaSchema = mongoose.Schema({
         trim: true
     },
     dts:[{
-        type: mongoose.Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId
     }],
     delegados:[{
-        type: mongoose.Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId
     }],
     tesoreros:[{
-        type: mongoose.Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId
     }],
     jugadores:[{
-        type: mongoose.Schema.Types.ObjectId,
-    }]
+        type: mongoose.Schema.Types.ObjectId
+    }],
+    caja:{
+        type: mongoose.Schema.Types.ObjectId
+    }
 })
 
 CategoriaSchema.plugin(uniqueValidator);
