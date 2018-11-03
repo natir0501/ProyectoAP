@@ -9,6 +9,7 @@ const UsuariosRuta= require('./routes/usuario-rutas');
 const CategoriaRuta= require('./routes/categoria-rutas');
 const ConceptosCaja= require('./routes/conceptosCaja-rutas');
 const {cargaRoles}=require('./Utilidades/script-inicial');
+const tipoEvento= require('./routes/tipoEvento-rutas');
 
 
 
@@ -34,6 +35,7 @@ app.use('/api', rolesRuta);
 app.use('/api', UsuariosRuta);
 app.use('/api', CategoriaRuta);
 app.use('/api', ConceptosCaja)
+app.use('/api', tipoEvento);
 
 let ruta = __dirname
 ruta = ruta.substring(0,ruta.length-6) + 'www'
