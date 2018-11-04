@@ -7,9 +7,9 @@ const {ApiResponse} = require('../models/api-response')
 api.get('/usuarios',(req, res)=>{
     Usuario.find()
     .then((usuarios)=>{
-        res.send({usuarios})
+        res.status(200).send(new ApiResponse({usuarios},'Datos Ok'))
     }),(e)=>{
-        res.status(400).send(e)
+        res.status(400).send(new ApiResponse({},`Mensaje: ${e}`))
     }
 })
 
@@ -40,7 +40,7 @@ api.put('/usuarios/:id', (req, res) => {
             new: true
         }).then((usuario) => {
             if (usuario) {
-                res.status(200).send(new ApiResponse({mensaje : 'Modificado correctamente'},''));
+                res.status(200).send(new ApiResponse({usuario},'Actualizado correctamente'));
             } else {
                 res.status(404).send(new ApiResponse({},"Ocurrió un error al modificar"))
             }

@@ -27,7 +27,7 @@ api.post('/pantallas', async (req, res) => {
         var pantalla = new Pantalla({ nombre, codigo, rolesAlta,rolesModificacion,rolesBaja,rolesConsulta})
         await pantalla.save()
         //res.status(200).send({"mensaje":"agregado ok"})
-        res.status(200).send(new ApiResponse({},"Agregado Ok"));
+        res.status(200).send(new ApiResponse({pantalla},"Agregado Ok."));
     } catch (e) {
         res.status(400).send(new ApiResponse({},`Mensaje: ${e}`))
     }
@@ -62,7 +62,7 @@ api.put('/pantallas/:codigo', (req, res) => {
             new: true
         }).then((pantalla) => {
             if (pantalla) {
-                res.status(200).send(new ApiResponse({},"Actualizado correctamente"));
+                res.status(200).send(new ApiResponse({pantalla},"Actualizado correctamente"));
                 //res.send({ "mensaje": "Actualizado Ok" })
             } else {
                 res.status(404).send(new ApiResponse({},"No hay datos para actualizar"));
