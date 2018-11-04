@@ -7,9 +7,9 @@ const {ApiResponse} = require('../models/api-response')
 api.get('/usuarios',(req, res)=>{
     Usuario.find()
     .then((usuarios)=>{
-        res.send({usuarios})
+        res.status(200).send(new ApiResponse({usuarios},'Datos Ok'))
     }),(e)=>{
-        res.status(400).send(e)
+        res.status(400).send(new ApiResponse({},`Mensaje: ${e}`))
     }
 })
 
