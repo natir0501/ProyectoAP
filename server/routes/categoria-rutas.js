@@ -44,21 +44,36 @@ api.post('/categorias', async (req,res) =>{
             let cajaCategoria = new Caja({movimientos,saldo});
             await cajaCategoria.save();
             let caja= cajaCategoria._id;
-           console.log(caja);
-           
             
             let categoria=new Categoria({nombre,valorCuota,diaGeneracionCuota,
                 diaVtoCuota,cantidadCuotasAnuales,dts,tesoreros,delegados,jugadores,caja})
             await categoria.save();
            
             await categoria.asignarRoles()
-            return res.status(200).send('OK');
-            //return res.status(200).send(new ApiResponse(categoria,''));
+
+            return res.status(200).send(new ApiResponse(categoria,''));
         }
         res.status(400).send(new ApiResponse({},'Algunos de los usuarios no son válidos'))        
     }catch(e){
         res.status(400).send(e)
     }
 })
+
+api.get('/categorias/:_id',(req,res)=>{
+    let id = req.params._id;
+    
+    Categoria.findOne({
+        _id: id
+    }).then((categoria)=> {
+        if(categoria){
+            res.status(200).send(new ApiResponse({categoria},'Obtenido ok'))
+        }else{
+            res.status(404).send(new ApiResponse({},"No hay datos para mostrar"));
+        }
+    }).catch((e)=>{
+        res.status(400).send(new ApiResponse({},`Mensaje: ${e}`))
+    })    
+})
+
 
 module.exports=api;
