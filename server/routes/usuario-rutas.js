@@ -40,7 +40,7 @@ api.put('/usuarios/:id', (req, res) => {
             new: true
         }).then((usuario) => {
             if (usuario) {
-                res.status(200).send(new ApiResponse({mensaje : 'Modificado correctamente'},''));
+                res.status(200).send(new ApiResponse({usuario},'Actualizado correctamente'));
             } else {
                 res.status(404).send(new ApiResponse({},"Ocurrió un error al modificar"))
             }

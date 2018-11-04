@@ -19,7 +19,7 @@ api.post('/roles', async (req,res) =>{
     try{
         var rol = new Rol(_.pick(req.body,['nombre','codigo']))
         await rol.save()
-        res.status(200).send(new ApiResponse({mensaje : 'Agregado ok'},''));
+        res.status(200).send(new ApiResponse({rol},'Agregado Ok.'));
     }catch(e){
         res.status(400).send(new ApiResponse({},"Ya existe código"))
     }

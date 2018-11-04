@@ -41,7 +41,7 @@ api.post('/conceptosCaja', async (req,res) =>{
         var conceptoCaja = new ConceptosCaja(_.pick(req.body,['nombre','tipo']))
         await conceptoCaja.save()
        
-        res.status(200).send(new ApiResponse({mensaje : 'Agregado ok'},''));
+        res.status(200).send(new ApiResponse({conceptoCaja},'Agregado Ok.'));
     }catch(e){
         res.status(400).send(new ApiResponse({},"No se pudo agregar el concepto de caja."))
     }
@@ -59,7 +59,7 @@ api.put('/conceptosCaja/:id', (req, res) => {
             new: true
         }).then((conceptoCaja) => {
             if (conceptoCaja) {
-                res.status(200).send(new ApiResponse({mensaje : 'Modificado OK.'},''));
+                res.status(200).send(new ApiResponse({conceptoCaja},'Modificado Ok.'));
             } else {
                 res.status(404).send(new ApiResponse({},"No se encontró un concepto para modificar."))
             }

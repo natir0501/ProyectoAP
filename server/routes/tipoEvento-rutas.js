@@ -21,7 +21,7 @@ api.post('/tipoEventos', async (req,res) =>{
         var tipoEvento = new TipoEvento(_.pick(req.body,['nombre']))
         await tipoEvento.save()
        
-        res.status(200).send(new ApiResponse({mensaje : 'Agregado ok'},''));
+        res.status(200).send(new ApiResponse({tipoEvento},'Agregado Ok'));
     }catch(e){
         res.status(400).send(new ApiResponse({},"No se pudo agregar el tipo de evento."))
     }
@@ -62,7 +62,7 @@ api.put('/tipoEventos/:id', (req, res) => {
             new: true
         }).then((tipoEvento) => {
             if (tipoEvento) {
-                res.status(200).send(new ApiResponse({mensaje : 'Modificado ok'},''));
+                res.status(200).send(new ApiResponse({tipoEvento},'Actualizado OK.'));
             } else {
                 res.status(404).send(new ApiResponse({},"No se encontró un evento para modificar."))
             }
