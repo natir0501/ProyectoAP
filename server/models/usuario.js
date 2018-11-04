@@ -4,7 +4,7 @@ const validator = require('validator')
 const jwt = require('jsonwebtoken')
 const _ = require('lodash')
 const bcrypt = require('bcryptjs')
-
+var {enviarCorreoAlta} = require('../Utilidades/utilidades')
 
 var UsuarioSchema = mongoose.Schema({
     nombre: {
@@ -110,6 +110,11 @@ UsuarioSchema.pre('save', function (next) {
     }
 
 })
+
+UsuarioSchema.methods.enviarConfirmacionAlta = function (){
+    var usuario = this;
+    enviarCorreoAlta(usuario)
+}
 
 UsuarioSchema.statics.findByCredentials = function (email, password) {
     Usuario = this
