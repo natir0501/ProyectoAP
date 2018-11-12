@@ -5,12 +5,17 @@ const _ = require('lodash')
 const {ApiResponse} = require('../models/api-response')
 
 api.get('/usuarios',(req, res)=>{
-    Usuario.find()
+    /* Usuario.find()
     .then((usuarios)=>{
         res.status(200).send(new ApiResponse({usuarios},'Datos Ok'))
     }),(e)=>{
         res.status(400).send(new ApiResponse({},`Mensaje: ${e}`))
-    }
+    } */
+
+    Usuario.find().populate('categorias')
+        .exec()
+        .then((usuario) => res.send(usuario))
+        .catch((err)=>res.status(400).send(err))
 })
 
 api.post('/usuarios', async (req,res) =>{

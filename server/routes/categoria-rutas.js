@@ -1,7 +1,7 @@
 var express = require('express');
 var api= express.Router();
 const {Categoria}=require('../models/categoria')
-const {Caja}=require('../models/caja')
+const {Cuenta}=require('../models/cuenta')
 const _ = require('lodash')
 const {validarId} = require('../Utilidades/utilidades')
 const {ApiResponse} = require('../models/api-response')
@@ -41,7 +41,7 @@ api.post('/categorias', async (req,res) =>{
        
         if(validarId(arrayIds)){
 
-            let cajaCategoria = new Caja({movimientos,saldo});
+            let cajaCategoria = new Cuenta({movimientos,saldo});
             await cajaCategoria.save();
             let caja= cajaCategoria._id;
             
