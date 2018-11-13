@@ -66,7 +66,7 @@ api.get('/categorias/:_id',(req,res)=>{
         _id: id
     }).then((categoria)=> {
         if(categoria){
-            res.status(200).send(new ApiResponse({categoria},))
+            res.status(200).send(new ApiResponse({categoria}))
         }else{
             res.status(404).send(new ApiResponse({},"No hay datos para mostrar"));
         }

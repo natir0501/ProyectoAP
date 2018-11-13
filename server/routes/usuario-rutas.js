@@ -12,6 +12,22 @@ api.get('/usuarios',(req, res)=>{
         .catch((e)=>res.status(400).send(new ApiResponse({},`Mensaje: ${e}`)))
 })
 
+api.get('/usuarios/:ci',(req, res)=>{
+
+    let ci = req.params.ci;
+
+    Usuario.findOne({
+        ci=ci
+    }).then(usuario=>{
+        if(usuario){
+            res.status(200).send(new ApiResponse({categoria}))
+        }else{
+            res.status(404).send(new ApiResponse({},"No hay datos para mostrar"));
+        }
+    })
+
+})
+
 api.post('/usuarios', async (req,res) =>{
     
     try{        
