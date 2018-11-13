@@ -22,11 +22,12 @@ api.get('/usuarios/:ci',(req, res)=>{
     .populate()
     .then(usuario=>{
         if(usuario){
-            res.status(200).send(new ApiResponse({categoria}))
+            res.status(200).send(new ApiResponse({usuario}))
         }else{
             res.status(404).send(new ApiResponse({},"No hay datos para mostrar"));
         }
     })
+    .catch((e)=>res.status(400).send(new ApiResponse({},`Mensaje: ${e}`)))
 
 })
 
@@ -37,7 +38,7 @@ api.post('/usuarios', async (req,res) =>{
         await usuario.save()
         const token = await usuario.generateAuthToken()
         usuario.enviarConfirmacionAlta();
-        res.header('x-auth',token).status(200).send({"mensaje":"Usuario ok"});
+        res.header('x-auth',token).status(200).send({usuario});
     }catch(e){
         res.status(400).send(new ApiResponse({},`Mensaje: ${e}`))
     }
@@ -71,7 +72,7 @@ api.get('/usuarios/confirmacion/:token',async (req, res)=>{
     try{
         let usuario = await Usuario.findByToken(token)
         if(usuario){
-            res.status(200).send(new ApiResponse({mensaje : `Formulario de alta de ${usuario.nombre}`,usuario},''));
+            res.status(200).send(new ApiResponse({usuario}));
         }
         else{
             res.send(new ApiResponse({},'No existe usuario con ese token.'))
