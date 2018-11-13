@@ -9,9 +9,9 @@ const {ApiResponse} = require('../models/api-response')
 api.get('/categorias',(req, res)=>{
     Categoria.find()
     .then((categorias)=>{
-        res.send({categorias})
+        res.status(200).send(new ApiResponse({categorias}))
     }),(e)=>{
-        res.status(400).send(e)
+        res.status(400).send(new ApiResponse({},`Mensaje: ${e}`))
     }
 })
 
@@ -66,7 +66,7 @@ api.get('/categorias/:_id',(req,res)=>{
         _id: id
     }).then((categoria)=> {
         if(categoria){
-            res.status(200).send(new ApiResponse({categoria},'Obtenido ok'))
+            res.status(200).send(new ApiResponse({categoria},))
         }else{
             res.status(404).send(new ApiResponse({},"No hay datos para mostrar"));
         }

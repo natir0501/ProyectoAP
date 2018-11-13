@@ -43,7 +43,7 @@ var CategoriaSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId
     }],
     caja:{
-        type: mongoose.Schema.Types.ObjectId
+        type: mongoose.Schema.Types.ObjectId, ref: 'Cuenta'
     }
 })
 

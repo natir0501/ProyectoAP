@@ -15,6 +15,10 @@ var UsuarioSchema = mongoose.Schema({
         type: String,
         trim: true
     },
+    ci:{
+        type: String,
+        required=true
+    },
     fechaNacimiento: {
         type: Number
     },
