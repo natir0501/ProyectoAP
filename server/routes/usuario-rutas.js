@@ -5,35 +5,29 @@ const _ = require('lodash')
 const {ApiResponse} = require('../models/api-response')
 
 api.get('/usuarios',(req, res)=>{
-    /* Usuario.find()
-    .then((usuarios)=>{
-        res.status(200).send(new ApiResponse({usuarios},'Datos Ok'))
-    }),(e)=>{
-        res.status(400).send(new ApiResponse({},`Mensaje: ${e}`))
-    } */
 
     Usuario.find().populate('categorias')
         .exec()
-        .then((usuario) => res.send(usuario))
-        .catch((err)=>res.status(400).send(err))
+        .then((usuarios) => res.status(200).send(new ApiResponse({usuarios})))
+        .catch((e)=>res.status(400).send(new ApiResponse({},`Mensaje: ${e}`)))
 })
 
 api.post('/usuarios', async (req,res) =>{
     
     try{        
-        var usuario = new Usuario(_.pick(req.body,['nombre','apellido','email','password','roles']))
+        var usuario = new Usuario(_.pick(req.body,['nombre','apellido','email','password','roles','categorias']))
         await usuario.save()
         const token = await usuario.generateAuthToken()
         usuario.enviarConfirmacionAlta();
         res.header('x-auth',token).status(200).send({"mensaje":"Usuario ok"});
     }catch(e){
-        res.status(400).send(e)
+        res.status(400).send(new ApiResponse({},`Mensaje: ${e}`))
     }
 })
 
 api.put('/usuarios/:id', (req, res) => {
     let _id = req.params._id;
-    var body = _pick(req.body, ['nombre', 'apellido', 'fechaNacimiento','fechaVtoCarneSalud','email','password','roles','tokens']);
+    var body = _pick(req.body, ['nombre', 'apellido', 'fechaNacimiento','fechaVtoCarneSalud','email','password','roles','categorias','tokens']);
     
     //var roles =req.body.roles;
 
@@ -45,7 +39,7 @@ api.put('/usuarios/:id', (req, res) => {
             new: true
         }).then((usuario) => {
             if (usuario) {
-                res.status(200).send(new ApiResponse({usuario},'Actualizado correctamente'));
+                res.status(200).send(new ApiResponse({usuario}));
             } else {
                 res.status(404).send(new ApiResponse({},"Ocurrió un error al modificar"))
             }
