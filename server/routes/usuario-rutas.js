@@ -17,8 +17,10 @@ api.get('/usuarios/:ci',(req, res)=>{
     let ci = req.params.ci;
 
     Usuario.findOne({
-        ci=ci
-    }).then(usuario=>{
+        ci: ci
+    })
+    .populate()
+    .then(usuario=>{
         if(usuario){
             res.status(200).send(new ApiResponse({categoria}))
         }else{
