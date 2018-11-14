@@ -70,7 +70,11 @@ api.get('/categorias/:_id',(req,res)=>{
     Categoria.findOne({
         _id: id
     })
-    .populate()
+    .populate('dts')
+    .populate('delegados')
+    .populate('tesoreros')
+    .populate('jugadores')
+    .populate('caja')
     .then((categoria)=> {
         if(categoria){
             res.status(200).send(new ApiResponse({categoria}))
