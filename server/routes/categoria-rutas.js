@@ -8,6 +8,11 @@ const {ApiResponse} = require('../models/api-response')
 
 api.get('/categorias',(req, res)=>{
     Categoria.find()
+    .populate('dts')
+    .populate('delegados')
+    .populate('jugadores')
+    .populate('tesorero')
+    .populate('caja')
     .then((categorias)=>{
         res.status(200).send(new ApiResponse({categorias}))
     }),(e)=>{
@@ -64,7 +69,9 @@ api.get('/categorias/:_id',(req,res)=>{
     
     Categoria.findOne({
         _id: id
-    }).then((categoria)=> {
+    })
+    .populate()
+    .then((categoria)=> {
         if(categoria){
             res.status(200).send(new ApiResponse({categoria}))
         }else{

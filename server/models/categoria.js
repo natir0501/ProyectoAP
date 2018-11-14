@@ -31,16 +31,16 @@ var CategoriaSchema = mongoose.Schema({
         trim: true
     },
     dts:[{
-        type: mongoose.Schema.Types.ObjectId
+        type: mongoose.Schema.Types.ObjectId, ref: 'Usuario'
     }],
     delegados:[{
-        type: mongoose.Schema.Types.ObjectId
+        type: mongoose.Schema.Types.ObjectId,  ref: 'Usuario'
     }],
     tesoreros:[{
-        type: mongoose.Schema.Types.ObjectId
+        type: mongoose.Schema.Types.ObjectId,  ref: 'Usuario'
     }],
     jugadores:[{
-        type: mongoose.Schema.Types.ObjectId
+        type: mongoose.Schema.Types.ObjectId,  ref: 'Usuario'
     }],
     caja:{
         type: mongoose.Schema.Types.ObjectId, ref: 'Cuenta'
