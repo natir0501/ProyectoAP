@@ -35,6 +35,9 @@ var CuentaSchema = mongoose.Schema({
         type: Number,
         required: true,
         trim: true,
+    },
+    categoria:{
+        type: mongoose.Schema.Types.ObjectId, ref: 'Categoria'
     }
 })
 

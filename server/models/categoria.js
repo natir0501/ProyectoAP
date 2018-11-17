@@ -42,7 +42,7 @@ var CategoriaSchema = mongoose.Schema({
     jugadores:[{
         type: mongoose.Schema.Types.ObjectId,  ref: 'Usuario'
     }],
-    caja:{
+    cuenta:{
         type: mongoose.Schema.Types.ObjectId, ref: 'Cuenta'
     }
 })
