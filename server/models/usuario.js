@@ -15,6 +15,10 @@ var UsuarioSchema = mongoose.Schema({
         type: String,
         trim: true
     },
+    ci:{
+        type: String,
+        required: true
+    },
     fechaNacimiento: {
         type: Number
     },
@@ -43,6 +47,11 @@ var UsuarioSchema = mongoose.Schema({
     roles: [{
         type: mongoose.Schema.Types.ObjectId,
     }],
+    categorias:[
+        {
+            type: mongoose.Schema.Types.ObjectId, ref: 'Categoria'
+        }
+    ],
     tokens: [{
         access: {
             type: String,
@@ -140,4 +149,5 @@ UsuarioSchema.statics.findByCredentials = function (email, password) {
 
 
 var Usuario = mongoose.model('Usuario', UsuarioSchema)
+//var Categoria  = mongoose.model('Categoria', CategoriaSchema);
 module.exports = { Usuario }
