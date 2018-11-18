@@ -27,30 +27,29 @@ api.put('/cuenta/movimientos/ingresomovimiento', async (req,res) =>{
     
     try{ 
         let idCuenta=req.body._id;
-        let tipoMov=req.body.tipoMovimiento;
+        let tipo=req.body.tipo;
         let fecha=req.body.fecha;
         let monto=req.body.monto;
         let concepto= req.body.concepto;
         let comentario=req.body.comentario;
         let usuMovimiento=req.body.usuario;
 
-        if(tipoMov==="1"){tipoMov='Ingreso'} 
-        else if(tipoMov==="2"){tipoMov='Egreso';monto=-monto}
+        if(tipo==="1"){tipo="Ingreso"} 
+        else if(tipo==="2"){tipo="Egreso";monto=-monto}
         else{res.status(404).send(new ApiResponse({},"Tipo de movimiento inválido"))}
 
-        let movimiento = {fecha, monto, tipoMov, concepto, comentario,usuMovimiento}
+        let mov = {fecha, monto, tipo, concepto, comentario,usuMovimiento}
+        
         let cuenta= await Cuenta.findById(idCuenta).populate('movimientos').exec();
-        console.log(cuenta);
-        
-        //push del movimiento. 
-        //impactar saldo categoria.
-        console.log(movimiento);
-        
+        let nuevoSaldo=cuenta.saldo + monto;
+
+        let movimientosActualizados=cuenta.movimientos;
+        movimientosActualizados.push(mov);
 
         Cuenta.findOneAndUpdate({
             _id: idCuenta
         },{
-            $set: cuenta
+            $set: {saldo: nuevoSaldo, movimientos: movimientosActualizados}
         }, {
             new: true
         }).then((cuenta)=>{
