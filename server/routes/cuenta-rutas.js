@@ -39,8 +39,6 @@ api.put('/cuenta/movimientos/ingresomovimiento', async (req,res) =>{
         else{res.status(404).send(new ApiResponse({},"Tipo de movimiento inválido"))}
 
         let mov = {fecha, monto, tipo, concepto,comentario,usuario}
-        console.log(usuario);
-        
         
         let cuenta= await Cuenta.findById(idCuenta).populate('movimientos').exec();
         let nuevoSaldo=cuenta.saldo + monto;
