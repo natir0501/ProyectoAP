@@ -32,13 +32,15 @@ api.put('/cuenta/movimientos/ingresomovimiento', async (req,res) =>{
         let monto=req.body.monto;
         let concepto= req.body.concepto;
         let comentario=req.body.comentario;
-        let usuMovimiento=req.body.usuario;
+        let usuario=req.body.usuario;
 
         if(tipo==="1"){tipo="Ingreso"} 
         else if(tipo==="2"){tipo="Egreso";monto=-monto}
         else{res.status(404).send(new ApiResponse({},"Tipo de movimiento inválido"))}
 
-        let mov = {fecha, monto, tipo, concepto, comentario,usuMovimiento}
+        let mov = {fecha, monto, tipo, concepto,comentario,usuario}
+        console.log(usuario);
+        
         
         let cuenta= await Cuenta.findById(idCuenta).populate('movimientos').exec();
         let nuevoSaldo=cuenta.saldo + monto;
