@@ -23,28 +23,17 @@ api.get('/cuenta/:_id',(req,res)=>{
 })
 
 
-api.put('/cuenta/movimientos/ingresomovimiento', async (req,res) =>{
+api.patch('/cuenta/movimientos/ingresomovimiento/:id', async (req,res) =>{
     
     try{ 
-        let idCuenta=req.body._id;
-        let tipo=req.body.tipo;
-        let fecha=req.body.fecha;
-        let monto=req.body.monto;
-        let concepto= req.body.concepto;
-        let comentario=req.body.comentario;
-        let usuario=req.body.usuario;
+        let idCuenta=req.params.id;
+        let movimiento=req.body.movimiento;
 
-        if(tipo==="1"){tipo="Ingreso"} 
-        else if(tipo==="2"){tipo="Egreso";monto=-monto}
-        else{res.status(404).send(new ApiResponse({},"Tipo de movimiento inválido"))}
-
-        let mov = {fecha, monto, tipo, concepto,comentario,usuario}
-        
         let cuenta= await Cuenta.findById(idCuenta).populate('movimientos').exec();
-        let nuevoSaldo=cuenta.saldo + monto;
+        let nuevoSaldo=cuenta.saldo + movimiento.monto;
 
         let movimientosActualizados=cuenta.movimientos;
-        movimientosActualizados.push(mov);
+        movimientosActualizados.push(movimiento);
 
         Cuenta.findOneAndUpdate({
             _id: idCuenta
@@ -65,6 +54,7 @@ api.put('/cuenta/movimientos/ingresomovimiento', async (req,res) =>{
         res.status(400).send(new ApiResponse({},`Mensaje: ${e}`))
     }
 })
+
 
 
 module.exports=api;
