@@ -48,10 +48,10 @@ api.post('/categorias', async (req,res) =>{
 
             let cajaCategoria = new Cuenta({movimientos,saldo});
             await cajaCategoria.save();
-            let caja= cajaCategoria._id;
+            let cuenta= cajaCategoria._id;
             
             let categoria=new Categoria({nombre,valorCuota,diaGeneracionCuota,
-                diaVtoCuota,cantidadCuotasAnuales,dts,tesoreros,delegados,jugadores,caja})
+                diaVtoCuota,cantidadCuotasAnuales,dts,tesoreros,delegados,jugadores,cuenta})
             await categoria.save();
            
             await categoria.asignarRoles()
@@ -74,7 +74,7 @@ api.get('/categorias/:_id',(req,res)=>{
     .populate('delegados')
     .populate('tesoreros')
     .populate('jugadores')
-    .populate('caja')
+    .populate('cuenta')
     .then((categoria)=> {
         if(categoria){
             res.status(200).send(new ApiResponse({categoria}))
