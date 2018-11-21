@@ -52,6 +52,9 @@ var UsuarioSchema = mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId, ref: 'Categoria'
         }
     ],
+    cuenta:{
+        type: mongoose.Schema.Types.ObjectId, ref:'Cuenta'
+    },
     tokens: [{
         access: {
             type: String,
