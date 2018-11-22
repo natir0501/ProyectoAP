@@ -9,17 +9,20 @@ const { ApiResponse } = require('../models/api-response')
 
 api.post('/pagos', autenticacion, async (req, res) => {
     try {
+
+
         let jugador = await Usuario.findById(req.body.jugadorid)
         .populate('cuenta')
         .populate('movimientos')
         .exec();
-    let conf=true;
+    let conf=false;
 
     let categoria= await Categoria.findById(jugador.categoriacuota)
         .populate('cuenta')
         .populate('movimientos')
         .exec();
-    
+
+        
     let mov = {
         fecha: new Date(),
         monto: req.body.monto,

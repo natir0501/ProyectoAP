@@ -30,6 +30,10 @@ var CuentaSchema = mongoose.Schema({
             type: Boolean,
             default: true
         },
+        referencia: {
+            type: mongoose.Schema.Types.ObjectId,
+            default: null
+        },
         usuario:{
             type: mongoose.Schema.Types.ObjectId,
             require: true
