@@ -34,7 +34,7 @@ api.get('/usuarios/:ci',(req, res)=>{
 api.post('/usuarios', async (req,res) =>{
     
     try{        
-        var usuario = new Usuario(_.pick(req.body,['nombre','apellido','email','password','roles','categorias']))
+        var usuario = new Usuario(_.pick(req.body,['nombre','apellido','ci','email','password','roles','categorias','categoriacuota']))
         await usuario.save()
         const token = await usuario.generateAuthToken()
         usuario.enviarConfirmacionAlta();
