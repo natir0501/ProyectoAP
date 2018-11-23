@@ -55,15 +55,6 @@ api.patch('/cuenta/movimientos/ingresomovimiento/:id', async (req,res) =>{
     }
 })
 
-api.patch('/cuenta/nuevopago/:id', async (req,res) =>{
-//cuenta del usuario
-    try{ 
-
-
-    }catch(e){
-        res.status(400).send(new ApiResponse({},`Mensaje: ${e}`))
-    }
-})
 
 
 module.exports=api;

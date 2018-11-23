@@ -65,4 +65,44 @@ api.post('/pagos', autenticacion, async (req, res) => {
     }
 })
 
+
+api.patch('/pagos/:id',autenticacion, async (req,res) =>{
+    //id de la cuenta categoria
+    /*
+    {
+        "jugadorid":objectId,
+        "referencia": objectId del mov en la cuenta del usuario. 
+        "monto":monto pago
+    }
+     */
+
+    let jugador = await Usuario.findById(req.body.jugadorid)
+    .populate('cuenta')
+    .populate('movimientos')
+    .exec();
+
+    let cuentaCategoria = await Cuenta.findById(req.params.id)
+            .populate('movimientos')
+            .exec();
+
+    /* 
+    En el jugador, afectar saldo de la cuenta +monto
+                   confirmado=true
+
+    En la categoria, afectar saldo categoría
+                     confirmado=true
+                     referencia=null
+    */
+
+
+    try{ 
+
+
+
+
+    }catch(e){
+        res.status(400).send(new ApiResponse({},`Mensaje: ${e}`))
+    }
+})
+
 module.exports = api;
