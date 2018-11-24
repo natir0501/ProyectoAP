@@ -6,8 +6,8 @@ import { Storage } from '@ionic/storage';
 
 @Injectable()
 export class UsuarioService{
-    apiUrl: string = 'http://localhost:3000/'
-    //apiUrl: string = ''
+    //apiUrl: string = 'http://localhost:3000/'
+    apiUrl: string = ''
     token: string;
     usuario: Usuario = new Usuario()
     constructor(private http: HttpClient, private storage: Storage  ){
