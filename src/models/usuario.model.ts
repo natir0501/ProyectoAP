@@ -10,16 +10,18 @@ export class Usuario{
     nombre?: string;
     apellido?: string;
     password?: string;
-    documento?: string;
+    ci?: string;
     celular?: string;
     direccion?: string;
-    fmedica?: {vigente: boolean, fvenc: string} = {vigente:false, fvenc: getDate()};
-    fnac?: string = getDate();
+    fechaVtoCarneSalud: number = Date.now()
+ 
+    fechaNacimiento: number = Date.now()
+
     emergencia?: string;
     sociedad?: string;
     contacto?: string;
-    posiciones ?: string[] 
-    rol ?: Roles;
+    posiciones ?: string[] =[]
+    rol ?: string[];
     activo ?: boolean;
 
 

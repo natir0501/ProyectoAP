@@ -6,13 +6,14 @@ export class UtilsServiceProvider{
 
     constructor(private alertCtrl: AlertController){}
 
-    dispararAlert(title: string, text: string, callback ?: Function) {
+    dispararAlert(title: string, text: string, callback ?: any) {
         let alert = this.alertCtrl.create({
           title: title,
           message: text,
           buttons: [
             {
-              text: 'Aceptar'
+              text: 'Aceptar',
+             // handler: callback()
              
             }
             

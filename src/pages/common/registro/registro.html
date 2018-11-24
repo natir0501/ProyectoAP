@@ -45,7 +45,7 @@
             <ion-label>
               C.I.
             </ion-label>
-            <ion-input text-right type="text" #documento="ngModel" pattern="^[0-9]{8}$" placeholder="Ej: 12345678" name="documento" [(ngModel)]="usuario.documento" required></ion-input>
+            <ion-input text-right type="text" #documento="ngModel" pattern="^[0-9]{8}$" placeholder="Ej: 12345678" name="documento" [(ngModel)]="usuario.ci" required></ion-input>
           </ion-item>
           <ion-item [ngClass]="{ 'ng-touched' : celular.touched }" id="registro-input18">
             <ion-label>
@@ -74,19 +74,19 @@
             <ion-label>
               Fecha Nacimiento:
             </ion-label>
-            <ion-input text-right type="date" placeholder="" #fnacimiento="ngModel" name="fnacmiento" [(ngModel)]="usuario.fnac" required></ion-input>
+            <ion-input text-right type="date" placeholder="" #fnacimiento="ngModel" name="fnacmiento" [(ngModel)]="fechaNacTxt" required></ion-input>
           </ion-item>
           <ion-item [ngClass]="{ 'ng-touched' : tieneFmCs.touched }" id="registro-toggle3">
             <ion-label>
               C/Salud o F/Médica Vigente
             </ion-label>
-            <ion-toggle color="positive" #tieneFmCs="ngModel" name="tieneFmCs" [(ngModel)]="usuario.fmedica.vigente" required></ion-toggle>
+            <ion-toggle color="positive" #tieneFmCs="ngModel" name="tieneFmCs" [(ngModel)]="fmedicaVigente" required></ion-toggle>
           </ion-item>
-          <ion-item [ngClass]="{ 'ng-touched' : fvencimiento.touched }" id="registro-input20" *ngIf="usuario.fmedica.vigente">
+          <ion-item [ngClass]="{ 'ng-touched' : fvencimiento.touched }" id="registro-input20" *ngIf="fmedicaVigente">
             <ion-label>
               Fecha Vencimiento
             </ion-label>
-            <ion-input text-right type="date" #fvencimiento="ngModel"  placeholder="Ej: 01/01/2020" name="fvencimiento" [(ngModel)]="usuario.fmedica.fvenc" required></ion-input>
+            <ion-input text-right type="date" #fvencimiento="ngModel"  placeholder="Ej: 01/01/2020" name="fvencimiento" [(ngModel)]="fechaVtoTxt" required></ion-input>
           </ion-item>
           <ion-item [ngClass]="{ 'ng-touched' : sociedad.touched }" id="registro-input23">
             <ion-label>

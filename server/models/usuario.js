@@ -4,7 +4,7 @@ const validator = require('validator')
 const jwt = require('jsonwebtoken')
 const _ = require('lodash')
 const bcrypt = require('bcryptjs')
-var {enviarCorreoAlta} = require('../Utilidades/utilidades')
+var { enviarCorreoAlta } = require('../Utilidades/utilidades')
 
 var UsuarioSchema = mongoose.Schema({
     nombre: {
@@ -15,10 +15,22 @@ var UsuarioSchema = mongoose.Schema({
         type: String,
         trim: true
     },
-    ci:{
+    ci: {
         type: String,
         required: true
     },
+    celular: {
+        type: Number,
+        validate: {
+            validator: validator.isNumeric,
+            message: '{VALUE} No es un celular válido'
+        }
+    },
+    direccion: {
+        type: String,
+        required: true
+    },
+
     fechaNacimiento: {
         type: Number
     },
@@ -40,14 +52,21 @@ var UsuarioSchema = mongoose.Schema({
         type: String,
         minlength: 8
     },
+    contacto:{
+        type: String
+        
+    },
     activo: {
         type: Boolean,
         default: false
     },
+    posiciones: [{
+        type: String
+    }],
     roles: [{
         type: mongoose.Schema.Types.ObjectId,
     }],
-    categorias:[
+    categorias: [
         {
             type: mongoose.Schema.Types.ObjectId, ref: 'Categoria'
         }
@@ -120,7 +139,26 @@ UsuarioSchema.pre('save', function (next) {
 
 })
 
-UsuarioSchema.methods.enviarConfirmacionAlta = function (){
+UsuarioSchema.pre('findOneAndUpdate', function (next) {
+    var usuario = this.getUpdate().$set;
+
+
+
+    bcrypt.genSalt(10, (err, salt) => {
+
+        bcrypt.hash(usuario.password, salt, (err, hash) => {
+
+            usuario.password = hash
+
+            next()
+        })
+    })
+
+
+
+})
+
+UsuarioSchema.methods.enviarConfirmacionAlta = function () {
     var usuario = this;
     enviarCorreoAlta(usuario)
 }

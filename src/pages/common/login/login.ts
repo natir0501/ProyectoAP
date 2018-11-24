@@ -10,7 +10,12 @@ import { NgForm } from '@angular/forms';
  * Ionic pages and navigation.
  */
 
-@IonicPage()
+@IonicPage({
+  defaultHistory: []
+}
+
+
+)
 @Component({
   selector: 'page-login',
   templateUrl: 'login.html',
@@ -20,7 +25,9 @@ export class LoginPage {
   @ViewChild('loginForm') loginForm: NgForm
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
-
+  ionViewCanEnter(){
+   
+  }
   ionViewDidLoad() {
     console.log('ionViewDidLoad LoginPage');
     this.loginForm.form.patchValue({nombre:'Hola'})

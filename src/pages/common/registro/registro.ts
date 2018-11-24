@@ -1,3 +1,4 @@
+import { LoginPage } from './../login/login';
 import { Posiciones } from './../../../models/enum.models';
 import { UsuarioService } from './../../../providers/usuario.service';
 import { Usuario } from './../../../models/usuario.model';
@@ -27,7 +28,9 @@ export class RegistroPage implements OnInit {
   @ViewChild('form') form: NgForm
 
   usuario: Usuario = new Usuario()
-  
+  fmedicaVigente: boolean = false
+  fechaVtoTxt: string = '2018-11-24'
+  fechaNacTxt: string = '1988-05-23'
 
   posiciones = Object.keys(Posiciones).map(key => ({ 'id': key, 'value': Posiciones[key] }))
   posicionesElegidas: string[] = ['GK'];
@@ -42,35 +45,28 @@ export class RegistroPage implements OnInit {
 
   ngOnInit() {
 
-    this.usuario =  {
-    '_id':'0',  
-    'apellido': "Arce",
-    "celular": "099064178",
-    "contacto": "Padre 123456",
-    "direccion": "Dirección",
-    "documento": "12345678",
-    "emergencia": "SEMM",
-    "fmedica": {vigente: true, fvenc: "2018-11-23"},
-    "fnac": "1988-05-23",
-    "nombre": "Gabriel",
-    "password": "ga230588",
-    "sociedad": "Casmu",
-    "posiciones":  ['LTD','DF']
   }
-  }
-
-  ionViewDidLoad() {
-
-
-
+  ionViewCanEnter() {
     let token = this.navParams.get('token')
-    this.usuarioServ.getUserByToken(token).subscribe((resp) =>{
+    this.usuarioServ.getUserByToken(token).subscribe((resp) => {
+
+      if (resp.data.activo) {
+        this.util.dispararAlert('Registro completo', 'Ya has completado el registro')
+        this.navCtrl.goToRoot({})
+      }
       this.usuario._id = resp.data._id
+
       this.usuarioServ.setTokenInStorage(token)
-      console.log('Seteo Id', this.usuario._id)
-    },(err)=>{console.log(err)})
+
+    }, (err) => { console.log(err) })
+
+  }
+  ionViewDidLoad() {
     
-    
+
+
+
+
 
 
 
@@ -78,32 +74,36 @@ export class RegistroPage implements OnInit {
 
   onSubmit() {
 
-    if(this.validoUsuario()){
-      console.log('Usuario valido')
-      this.usuarioServ.actualizarUsuario(this.usuario).subscribe((resp)=>{
-        console.log('Si!')
+    if (this.validoUsuario()) {
+      this.usuario.activo = true;
+      this.usuarioServ.actualizarUsuario(this.usuario).subscribe((resp) => {
+        this.util.dispararAlert('Éxito', "Registro realizado correctamente")
 
-      },(err)=>{
+      }, (err) => {
+        this.util.dispararAlert('Error', "Error al dar de alta, intente nuevamente")
         console.log(err)
       })
     }
-    
+
   }
 
-  validoUsuario() : boolean{
-    console.log(this.usuario)
-    if(Date.parse(this.usuario.fnac) >= Date.now())
-    {
-      this.util.dispararAlert('Fecha de Nacimiento',"Fecha de nacimiento inválida")
+  validoUsuario(): boolean {
+
+
+    this.usuario.fechaNacimiento = Date.parse(this.fechaNacTxt)
+    if (this.usuario.fechaNacimiento >= Date.now()) {
+      this.util.dispararAlert('Fecha de Nacimiento', "Fecha de nacimiento inválida")
       return false
     }
-    if(this.usuario.fmedica.vigente && Date.parse(this.usuario.fmedica.fvenc) <= Date.now())
-    {
-      this.util.dispararAlert('F/Médica - C/ Salud',"Fecha de vencimiento inválida")
+    if (this.fmedicaVigente && Date.parse(this.fechaVtoTxt) <= Date.now()) {
+      this.util.dispararAlert('F/Médica - C/ Salud', "Fecha de vencimiento inválida")
       return false
     }
+    this.usuario.fechaVtoCarneSalud = Date.parse(this.fechaVtoTxt)
     return true
   }
-  
+  goToLogin() {
+    this.navCtrl.push(LoginPage)
+  }
 
 }

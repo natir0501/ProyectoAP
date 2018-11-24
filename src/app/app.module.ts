@@ -17,15 +17,14 @@ import { FirebaseMessagingProvider } from '../providers/firebase-messaging';
 import { IonicStorageModule } from '@ionic/storage';
 import { HttpClientModule } from '@angular/common/http' 
 import { UtilsServiceProvider } from '../providers/utils.service';
-import { BeforeTodayValidarorDirective } from '../directives/before-today.directive';
+
 
 @NgModule({
   declarations: [
     MyApp,
     HomePage,
     LoginPage,
-    TouchedWorkaroundDirective,
-    BeforeTodayValidarorDirective
+    TouchedWorkaroundDirective
 
   ],
   imports: [
