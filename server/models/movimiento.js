@@ -18,7 +18,7 @@ var MovimientoSchema = mongoose.Schema({
         require: true
     },
     concepto:{
-        type: mongoose.Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId, ref: 'ConceptosCaja',
         require: true
     },
     comentario:{
@@ -26,7 +26,7 @@ var MovimientoSchema = mongoose.Schema({
         trim: true
     },
     usuario:{
-        type: mongoose.Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId, ref: 'Usuario',
         require: true
     }
 
