@@ -149,7 +149,7 @@ api.patch('/pagos/confirmacion/:id', autenticacion, async (req, res) => {
             }, {
                 new: true
             })
-        res.status(200).send(new ApiResponse({}, 'OKk'))
+        res.status(200).send(new ApiResponse({}, 'Pago confirmado correctamente.'))
 
     } catch (e) {
         res.status(400).send(new ApiResponse({}, `Mensaje: ${e}`))
