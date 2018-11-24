@@ -4,7 +4,7 @@ const tiposmovimientos= ["Ingreso", "Egreso"];
 var CuentaSchema = mongoose.Schema({
     movimientos: [{
         fecha: {
-            type: String,
+            type: Number,
             required: true,
             trim: true
         },

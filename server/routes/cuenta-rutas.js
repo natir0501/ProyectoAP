@@ -1,60 +1,99 @@
 var express = require('express');
-var api= express.Router();
-const {Cuenta}=require('../models/cuenta')
+var api = express.Router();
+const { Cuenta } = require('../models/cuenta')
 const _ = require('lodash')
-const {ApiResponse} = require('../models/api-response')
+const { ObjectID } = require('mongodb')
+const { ApiResponse } = require('../models/api-response')
+const { autenticacion } = require('../middlewares/autenticacion')
 
 
-api.get('/cuenta/:_id',(req,res)=>{
+api.get('/cuenta/:_id', (req, res) => {
     let id = req.params._id;
-    
+
     Cuenta.findOne({
         _id: id
     })
-    .then((cuenta)=> {
-        if(cuenta){
-            res.status(200).send(new ApiResponse({cuenta}))
-        }else{
-            res.status(404).send(new ApiResponse({},"No hay datos para mostrar"));
+        .then((cuenta) => {
+            if (cuenta) {
+                res.status(200).send(new ApiResponse({ cuenta }))
+            } else {
+                res.status(404).send(new ApiResponse({}, "No hay datos para mostrar"));
+            }
+        }).catch((e) => {
+            res.status(400).send(new ApiResponse({}, `Mensaje: ${e}`))
+        })
+})
+
+api.get('/movimientos/:id', autenticacion, async (req, res) => {
+
+    try {
+        filtros = []
+        if (req.query.tipo) {
+            filtros.push({ 'movimientos.tipo': req.query.tipo })
         }
-    }).catch((e)=>{
-        res.status(400).send(new ApiResponse({},`Mensaje: ${e}`))
-    })    
+        if (req.query.concepto) {
+            filtros.push({ 'movimientos.concepto': ObjectID(req.query.concepto) })
+        }
+        if (req.query.fechaInicio) {
+            filtros.push({ 'movimientos.fecha': { $gt: req.query.fechaInicio } })
+        }
+        if (req.query.fechaFin) {
+            filtros.push({ 'movimientos.fecha': { $lt: req.query.fechaFin } })
+        }
+        let movimientosCuenta = await Cuenta.aggregate([
+            { $match: { _id: ObjectID(req.params.id) } },
+            { $unwind: { path: '$movimientos' } },
+            { $match: { $and: filtros } },
+            { $group: {_id: '$movimientos'}},
+        ])
+        let movimientos = []
+        movimientosCuenta.forEach((mov)=>{
+            movimientos.push({
+                ...mov._id
+            })
+        })
+        res.status(200).send(new ApiResponse({movimientos}))
+    } catch (e) {
+        res.status(400).send(new ApiResponse({}, `Mensaje: ${e}`))
+    }
+
 })
 
 
-api.patch('/cuenta/movimientos/ingresomovimiento/:id', async (req,res) =>{
-    
-    try{ 
-        let idCuenta=req.params.id;
-        let movimiento=req.body.movimiento;
 
-        let cuenta= await Cuenta.findById(idCuenta).populate('movimientos').exec();
-        let nuevoSaldo=cuenta.saldo + movimiento.monto;
 
-        let movimientosActualizados=cuenta.movimientos;
+api.patch('/cuenta/movimientos/ingresomovimiento/:id', async (req, res) => {
+
+    try {
+        let idCuenta = req.params.id;
+        let movimiento = req.body.movimiento;
+
+        let cuenta = await Cuenta.findById(idCuenta).populate('movimientos').exec();
+        let nuevoSaldo = cuenta.saldo + movimiento.monto;
+
+        let movimientosActualizados = cuenta.movimientos;
         movimientosActualizados.push(movimiento);
 
         Cuenta.findOneAndUpdate({
             _id: idCuenta
-        },{
-            $set: {saldo: nuevoSaldo, movimientos: movimientosActualizados}
         }, {
-            new: true
-        }).then((cuenta)=>{
-            if (cuenta) {
-                res.status(200).send(new ApiResponse({cuenta}));
-            } else {
-                res.status(404).send(new ApiResponse({},"Ocurrió un error al agregar el movimiento"))
-            }
-        }).catch((e)=>{
-            res.status(400).send(new ApiResponse({},"400-Ocurrió un error al agregar el movimiento"))
-        })
-    }catch(e){
-        res.status(400).send(new ApiResponse({},`Mensaje: ${e}`))
+                $set: { saldo: nuevoSaldo, movimientos: movimientosActualizados }
+            }, {
+                new: true
+            }).then((cuenta) => {
+                if (cuenta) {
+                    res.status(200).send(new ApiResponse({ cuenta }));
+                } else {
+                    res.status(404).send(new ApiResponse({}, "Ocurrió un error al agregar el movimiento"))
+                }
+            }).catch((e) => {
+                res.status(400).send(new ApiResponse({}, "400-Ocurrió un error al agregar el movimiento"))
+            })
+    } catch (e) {
+        res.status(400).send(new ApiResponse({}, `Mensaje: ${e}`))
     }
 })
 
 
 
-module.exports=api;
+module.exports = api;
