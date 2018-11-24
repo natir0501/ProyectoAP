@@ -57,8 +57,8 @@ api.post('/pagos', autenticacion, async (req, res) => {
         categoria.cuenta.movimientos.push(mov);
         await categoria.cuenta.save()
 
-        res.status(200).send(new ApiResponse({mov}))
-       
+        res.status(200).send(new ApiResponse({ mov }))
+
 
     } catch (e) {
         res.status(400).send(new ApiResponse({}, `Mensaje: ${e}`))
@@ -66,42 +66,83 @@ api.post('/pagos', autenticacion, async (req, res) => {
 })
 
 
-api.patch('/pagos/:id',autenticacion, async (req,res) =>{
-    //id de la cuenta categoria
+api.patch('/pagos/confirmacion/:id', autenticacion, async (req, res) => {
+
     /*
-    {
-        "jugadorid":objectId,
-        "referencia": objectId del mov en la cuenta del usuario. 
-        "monto":monto pago
+    En la URL viene el id de la cuenta de la categoria.
+    En el Body: viene pago{
+        id:idmovimientoCat
+        monto:monto
+        referencia: idmovimientoCtaJugador
     }
-     */
+    */
 
-    let jugador = await Usuario.findById(req.body.jugadorid)
-    .populate('cuenta')
-    .populate('movimientos')
-    .exec();
+    try {
 
-    let cuentaCategoria = await Cuenta.findById(req.params.id)
+        let categoria = await Categoria.findById(req.param.id)
+            .populate('cuenta')
             .populate('movimientos')
             .exec();
 
-    /* 
-    En el jugador, afectar saldo de la cuenta +monto
-                   confirmado=true
 
-    En la categoria, afectar saldo categoría
-                     confirmado=true
-                     referencia=null
-    */
+        let jugador = await Usuario.findById(req.body.jugadorid)
+            .populate('cuenta')
+            .populate('movimientos')
+            .exec();
 
+        let nuevoSaldoCat = categoria.cuenta.saldo + mov.monto
+        let movsActualizadosCat = categoria.cuenta.movimientos
 
-    try{ 
+        for (movim of movsActualizadosCat) {
+            if (movim.referencia === req.body.referencia) {
+                movim.confirmado = true;
+                movim.referencia = null;
+            }
+        }
 
+        let movsActualizadosJug = jugador.cuenta.movimientos
 
+        for (mov of movsActualizadosJug) {
+            if (mov._id === req.body.referencia) {
+                mov.confirmado = true;
+            }
+        }
+        //Cuenta Categoria
+        Cuenta.findOneAndUpdate({
+            _id: categoria.cuenta._id
+        }, {
+                $set: { saldo: nuevoSaldoCat, movimientos: movsActualizadosCat }
+            }, {
+                new: true
+            }).then((cuenta) => {
+                if (cuenta) {
+                    //Cuenta Jugador
+                    Cuenta.findOneAndUpdate({
+                        _id: jugador.cuenta._id
+                    }, {
+                            $set: { movimientos: movsActualizadosJug }
+                        }, {
+                            new: true
+                        }).then((cta)=>{
+                            if (cta) {
+                                res.status(200).send(new ApiResponse({},"Okkk"));
+                            } else {
+                                res.status(404).send(new ApiResponse({},
+                                    "Ocurrió un error al modificar el movimiento en el jugador"))
+                            }
+                        }).catch((e)=>{
+                            res.status(400).send(new ApiResponse({},"400-Ocurrió un error al agregar el movimiento"))
+                        })
 
-
-    }catch(e){
-        res.status(400).send(new ApiResponse({},`Mensaje: ${e}`))
+                } else {
+                    res.status(404).send(new ApiResponse({}, 
+                        "Ocurrió un error al modificar los saldos de la categoría"))
+                }
+            }).catch((e) => {
+                res.status(400).send(new ApiResponse({}, "400-Ocurrió un error al agregar el movimiento"))
+            })
+    } catch (e) {
+        res.status(400).send(new ApiResponse({}, `Mensaje: ${e}`))
     }
 })
 
