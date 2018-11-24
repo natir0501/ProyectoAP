@@ -1,3 +1,6 @@
+import { TouchedWorkaroundDirective } from './../directives/touched-workaround.directive';
+import { UsuarioService } from './../providers/usuario.service';
+import { LoginPage } from './../pages/common/login/login';
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
@@ -12,27 +15,41 @@ import 'firebase/messaging'; // only import firebase messaging or as needed;
 import { firebaseConfig } from '../enviroment'
 import { FirebaseMessagingProvider } from '../providers/firebase-messaging';
 import { IonicStorageModule } from '@ionic/storage';
+import { HttpClientModule } from '@angular/common/http' 
+import { UtilsServiceProvider } from '../providers/utils.service';
+import { BeforeTodayValidarorDirective } from '../directives/before-today.directive';
 
 @NgModule({
   declarations: [
     MyApp,
-    HomePage
+    HomePage,
+    LoginPage,
+    TouchedWorkaroundDirective,
+    BeforeTodayValidarorDirective
+
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(MyApp),
+    IonicModule.forRoot(MyApp,{scrollPadding: false,
+      scrollAssist: true,
+      autoFocusAssist: false
+    }),
     AngularFireModule.initializeApp(firebaseConfig),
-    IonicStorageModule.forRoot()
+    IonicStorageModule.forRoot(),
+    HttpClientModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    HomePage
+    HomePage,
+    LoginPage
   ],
   providers: [
     FirebaseMessagingProvider,
+    UsuarioService,
     StatusBar,
     SplashScreen,
+    UtilsServiceProvider,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

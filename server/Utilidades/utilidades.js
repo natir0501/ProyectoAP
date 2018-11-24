@@ -43,7 +43,7 @@ const enviarCorreoAlta = (usuario) =>{
     else{
         ambiente = `[${process.env.AMBIENTE}] - `
     }
-    let url = process.env.URLAPI + `usuarios/confirmacion/${usuario.tokens[0].token}`
+    let url = process.env.URLREGISTRO + `${usuario.tokens[0].token}`
     let html = `<h3>Hola ${usuario.nombre}! Bienvenido/a a la app del CEI.</h3>
                 <p>Por favor ingresa al siguiente link para completar registro:</p>
                 <a href="${url}">Link</a>`

@@ -4,6 +4,7 @@
         "MONGODB_URI" : "mongodb://localhost:27017/CEIApp_Dev",
         "JWT_SECRET" : "spodkjfasjakrkl3wjralk32lks",
         "URLAPI": "http://localhost:3000/api/",
+        "URLREGISTRO": "http://localhost:3000/#/registro/",
         "AMBIENTE": "Desarrollo"
         
     }
