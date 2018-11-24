@@ -18,7 +18,7 @@ var UsuarioSchema = mongoose.Schema({
     },
     ci: {
         type: String,
-        required: true
+        trim: true
     },
     celular: {
         type: Number,
@@ -29,7 +29,7 @@ var UsuarioSchema = mongoose.Schema({
     },
     direccion: {
         type: String,
-        required: true
+    
     },
 
     fechaNacimiento: {
