@@ -4,7 +4,8 @@ const validator = require('validator')
 const jwt = require('jsonwebtoken')
 const _ = require('lodash')
 const bcrypt = require('bcryptjs')
-var { enviarCorreoAlta } = require('../Utilidades/utilidades')
+var {enviarCorreoAlta} = require('../Utilidades/utilidades')
+const {Cuenta} = require('../models/cuenta')
 
 var UsuarioSchema = mongoose.Schema({
     nombre: {
@@ -71,6 +72,12 @@ var UsuarioSchema = mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId, ref: 'Categoria'
         }
     ],
+    categoriacuota:{
+            type: mongoose.Schema.Types.ObjectId, ref: 'Categoria'
+    },
+    cuenta:{
+        type: mongoose.Schema.Types.ObjectId, ref:'Cuenta'
+    },
     tokens: [{
         access: {
             type: String,
@@ -124,8 +131,15 @@ UsuarioSchema.statics.findByToken = function (token) {
         'tokens.access': 'auth'
     })
 }
-UsuarioSchema.pre('save', function (next) {
+UsuarioSchema.pre('save', async function (next) {
     var usuario = this;
+    if(!usuario.cuenta){
+        let cuenta = new Cuenta({movimientos:[],saldo:0});
+        cuenta.save()
+        usuario.cuenta= cuenta
+    }
+    usuario.cuenta.save()
+
     if (usuario.isModified('password')) {
         bcrypt.genSalt(10, (err, salt) => {
             bcrypt.hash(usuario.password, salt, (err, hash) => {
