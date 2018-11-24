@@ -9,12 +9,14 @@ const CategoriaRuta= require('./routes/categoria-rutas');
 const ConceptosCaja= require('./routes/conceptosCaja-rutas');
 const {cargaRoles}=require('./Utilidades/script-inicial');
 const tipoEvento= require('./routes/tipoEvento-rutas');
+const cors = require('cors')
 const cuentaRuta= require('./routes/cuenta-rutas');
 const pagosRuta= require('./routes/pagos-rutas');
 
 
 
 const app = express()
+app.use(cors())
 
 const port = process.env.PORT
 
