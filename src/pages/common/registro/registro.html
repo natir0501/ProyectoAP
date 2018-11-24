@@ -110,7 +110,7 @@
             <ion-label>
               Posiciones:
             </ion-label>
-            <ion-select  multiple="true" required   [(ngModel)] = "usuario.posiciones" name="posiciones" [selectedText]="usuario.posiciones.join(', ')">
+            <ion-select okText="Ok" cancelText="Cancelar" multiple="true" required   [(ngModel)] = "usuario.posiciones" name="posiciones" [selectedText]="usuario.posiciones.join(', ')">
               <ion-option *ngFor="let pos of posiciones" [id] = "pos.id" [value] = "pos.id">{{pos.value}}</ion-option>
             </ion-select>
           </ion-item>

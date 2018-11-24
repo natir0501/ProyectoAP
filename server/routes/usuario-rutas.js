@@ -21,8 +21,11 @@ api.get('/usuarios/:token', async (req, res) => {
         usuario = await Usuario.findByToken(token);
         if (usuario) {
             res.header('x-auth', token).status(200).send(new ApiResponse({ '_id': usuario._id, 'activo': usuario.activo }))
+        }else{
+            res.status(404).send(new ApiResponse({},'Usuario inválido'))
         }
     } catch (e) {
+        console.log(e)
         res.status(400).send(e)
     }
 
@@ -62,7 +65,7 @@ api.put('/usuarios/:id', async (req, res) => {
         res.status(200).send(new ApiResponse(usuario))
     }
     catch (err) {
-        console.log(err)
+      
         res.status(400).send(new ApiResponse({}, err))
     }
 

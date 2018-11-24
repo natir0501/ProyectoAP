@@ -58,11 +58,17 @@ export class RegistroPage implements OnInit {
 
       this.usuarioServ.setTokenInStorage(token)
 
-    }, (err) => { console.log(err) })
+    }, (err) => {
+      console.log(err)
+      this.navCtrl.goToRoot({})
+    }
+
+
+    )
 
   }
   ionViewDidLoad() {
-    
+
 
 
 
