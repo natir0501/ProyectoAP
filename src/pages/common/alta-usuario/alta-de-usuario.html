@@ -1,0 +1,78 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>
+      Alta de usuario
+    </ion-title>
+  </ion-navbar>
+
+</ion-header>
+<ion-content padding id="page12">
+  <form id="altausuario-form12" (ngSubmit)="onSubmit()" #form="ngForm">
+    <div id="altaDeUsuario-markdown9" class="show-list-numbers-and-dots">
+      <p style="color:#000000;">
+        <strong>
+          Ingrese los datos básicos del usuario para darlo de alta en el sistema
+        </strong>
+      </p>
+    </div>
+
+    <ion-list id="altaDeUsuario-list9">
+      <ion-item-divider color="light" id="altaDeUsuario-list-item-divider11">
+        Datos básicos para el alta:
+      </ion-item-divider>
+      <ion-item id="altaDeUsuario-input16">
+        <ion-label>
+          E-mail:
+        </ion-label>
+        <ion-input text-right type="text" placeholder="ej: juan.perez@cei.com.uy"></ion-input>
+      </ion-item>
+      <ion-item id="altaDeUsuario-select6">
+        <ion-label>
+          Categoría
+        </ion-label>
+        <ion-select name="">
+          <ion-option>
+            Mayor
+          </ion-option>
+          <ion-option>
+            Pre-senior
+          </ion-option>
+        </ion-select>
+      </ion-item>
+      <ion-item id="altaDeUsuario-select9">
+        <ion-label>
+          Cat. cobro cuota
+        </ion-label>
+        <ion-select name="">
+          <ion-option>
+            Mayor
+          </ion-option>
+          <ion-option>
+            Pre-senior
+          </ion-option>
+        </ion-select>
+      </ion-item>
+      <ion-item id="altaDeUsuario-select7">
+        <ion-label>
+          Roles
+        </ion-label>
+        <ion-select okText="Ok" cancelText="Cancelar" multiple="true" required [(ngModel)]="usuario.roles" name="roles"
+          [selectedText]="usuario.roles.join(', ')">
+          <ion-option *ngFor="let pos of roles" [id]="pos.id" [value]="pos.id">{{pos.value}}</ion-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
+    <div class="spacer" style="width:300px;height:20px;" id="altaDeUsuario-spacer14"></div>
+    <div id="altaDeUsuario-markdown11" class="show-list-numbers-and-dots">
+      <p style="color:#665C5C;">
+        Al confirmar se enviará un mail al usuario con la invitación para acceder a la aplicación
+      </p>
+    </div>
+    <button id="altaDeUsuario-button13" ion-button color="positive">
+      Confirmar
+    </button>
+  </form>
+</ion-content>
