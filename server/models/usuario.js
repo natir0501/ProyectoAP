@@ -4,7 +4,8 @@ const validator = require('validator')
 const jwt = require('jsonwebtoken')
 const _ = require('lodash')
 const bcrypt = require('bcryptjs')
-
+var {enviarCorreoAlta} = require('../Utilidades/utilidades')
+const {Cuenta} = require('../models/cuenta')
 
 var UsuarioSchema = mongoose.Schema({
     nombre: {
@@ -15,6 +16,22 @@ var UsuarioSchema = mongoose.Schema({
         type: String,
         trim: true
     },
+    ci: {
+        type: String,
+        trim: true
+    },
+    celular: {
+        type: String,
+        validate: {
+            validator: validator.isNumeric,
+            message: '{VALUE} No es un celular válido'
+        }
+    },
+    direccion: {
+        type: String,
+    
+    },
+
     fechaNacimiento: {
         type: Number
     },
@@ -36,13 +53,31 @@ var UsuarioSchema = mongoose.Schema({
         type: String,
         minlength: 8
     },
+    contacto:{
+        type: String
+        
+    },
     activo: {
         type: Boolean,
         default: false
     },
+    posiciones: [{
+        type: String
+    }],
     roles: [{
         type: mongoose.Schema.Types.ObjectId,
     }],
+    categorias: [
+        {
+            type: mongoose.Schema.Types.ObjectId, ref: 'Categoria'
+        }
+    ],
+    categoriacuota:{
+            type: mongoose.Schema.Types.ObjectId, ref: 'Categoria'
+    },
+    cuenta:{
+        type: mongoose.Schema.Types.ObjectId, ref:'Cuenta'
+    },
     tokens: [{
         access: {
             type: String,
@@ -96,8 +131,15 @@ UsuarioSchema.statics.findByToken = function (token) {
         'tokens.access': 'auth'
     })
 }
-UsuarioSchema.pre('save', function (next) {
+UsuarioSchema.pre('save', async function (next) {
     var usuario = this;
+    if(!usuario.cuenta){
+        let cuenta = new Cuenta({movimientos:[],saldo:0});
+        cuenta.save()
+        usuario.cuenta= cuenta
+    }
+    usuario.cuenta.save()
+
     if (usuario.isModified('password')) {
         bcrypt.genSalt(10, (err, salt) => {
             bcrypt.hash(usuario.password, salt, (err, hash) => {
@@ -110,6 +152,30 @@ UsuarioSchema.pre('save', function (next) {
     }
 
 })
+
+UsuarioSchema.pre('findOneAndUpdate', function (next) {
+    var usuario = this.getUpdate().$set;
+
+
+
+    bcrypt.genSalt(10, (err, salt) => {
+
+        bcrypt.hash(usuario.password, salt, (err, hash) => {
+
+            usuario.password = hash
+
+            next()
+        })
+    })
+
+
+
+})
+
+UsuarioSchema.methods.enviarConfirmacionAlta = function () {
+    var usuario = this;
+    enviarCorreoAlta(usuario)
+}
 
 UsuarioSchema.statics.findByCredentials = function (email, password) {
     Usuario = this
@@ -135,4 +201,5 @@ UsuarioSchema.statics.findByCredentials = function (email, password) {
 
 
 var Usuario = mongoose.model('Usuario', UsuarioSchema)
+//var Categoria  = mongoose.model('Categoria', CategoriaSchema);
 module.exports = { Usuario }

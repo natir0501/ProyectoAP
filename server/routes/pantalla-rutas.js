@@ -2,15 +2,15 @@ var express = require('express');
 var api = express.Router();
 const { Pantalla } = require('../models/pantalla')
 const _ = require('lodash')
-const { ObjectID } = require('mongodb')
-const { Rol } = require('../models/rol')
+const {ApiResponse} = require('../models/api-response')
+
 
 api.get('/pantallas', (req, res) => {
     Pantalla.find()
         .then((pantallas) => {
-            res.send({ pantallas })
+            res.status(200).send(new ApiResponse({pantallas},"Datos ok"));
         }), (e) => {
-            res.status(400).send(e)
+            res.status(400).send(new ApiResponse({},`Mensaje: ${e}`))
         }
 
 })
@@ -18,29 +18,18 @@ api.get('/pantallas', (req, res) => {
 api.post('/pantallas', async (req, res) => {
 
     try {
-        var arrayRolesIds = req.body.roles;
-        var roles = []
-
-        if (arrayRolesIds) {
-            for (let id of arrayRolesIds) {
-                if (!ObjectID.isValid(id)) {
-                    return res.status(400).send({ error: "No es un id" })
-                }
-                let rol = await Rol.findById(id)
-                console.log(typeof(rol))
-                if (!rol) {
-                    return res.status(400).send({ error: "No es un rol" })
-                }
-                roles.push(rol)
-            }
-        }
         var nombre = req.body.nombre
         var codigo = req.body.codigo
-        var pantalla = new Pantalla({ nombre, codigo, roles })
+        var rolesAlta=req.body.rolesAlta
+        var rolesModificacion=req.body.rolesModificacion
+        var rolesBaja=req.body.rolesBaja
+        var rolesConsulta=req.body.rolesConsulta
+        var pantalla = new Pantalla({ nombre, codigo, rolesAlta,rolesModificacion,rolesBaja,rolesConsulta})
         await pantalla.save()
-        res.status(200).send({ "mensaje": "Agregado ok" });
+        //res.status(200).send({"mensaje":"agregado ok"})
+        res.status(200).send(new ApiResponse({pantalla},"Agregado Ok."));
     } catch (e) {
-        res.status(400).send({ "error": e })
+        res.status(400).send(new ApiResponse({},`Mensaje: ${e}`))
     }
 })
 
@@ -51,18 +40,19 @@ api.get('/pantallas/:codigo', (req, res) => {
         codigo: codigo
     }).then((pantalla) => {
         if (pantalla) {
-            res.send({ pantalla })
+            //res.send({ pantalla })
+            res.status(200).send(new ApiResponse({pantalla},"Datos ok"));
         } else {
-            res.status(404).send()
+            res.status(404).send(new ApiResponse({},"No hay datos para mostrar"));
         }
     }).catch((e) => {
-        res.status(400).send()
+        res.status(400).send(new ApiResponse({},`Mensaje: ${e}`))
     })
 })
 
 api.put('/pantallas/:codigo', (req, res) => {
     var codigo = req.params.codigo;
-    var body = _pick(req.body, ['nombre', 'codigo', 'roles']);
+    var body = _.pick(req.body, ['nombre', 'codigo', 'rolesAlta','rolesBaja','rolesModificacion','rolesConsulta']);
 
     Pantalla.findOneAndUpdate({
         codigo: codigo
@@ -72,12 +62,13 @@ api.put('/pantallas/:codigo', (req, res) => {
             new: true
         }).then((pantalla) => {
             if (pantalla) {
-                res.send({ "mensaje": "Actualizado Ok" })
+                res.status(200).send(new ApiResponse({pantalla},"Actualizado correctamente"));
+                //res.send({ "mensaje": "Actualizado Ok" })
             } else {
-                res.status(404).send()
+                res.status(404).send(new ApiResponse({},"No hay datos para actualizar"));
             }
         }).catch((e) => {
-            res.status(400).send()
+            res.status(400).send(new ApiResponse({},`Mensaje: ${e}`))
         })
 })
 

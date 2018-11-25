@@ -1,3 +1,7 @@
+import { UtilsServiceProvider } from './../../providers/utils.service';
+import { Usuario } from './../../models/usuario.model';
+import { LoginPage } from './../common/login/login';
+import { UsuarioService } from './../../providers/usuario.service';
 import { FirebaseMessagingProvider } from './../../providers/firebase-messaging';
 import { Component } from '@angular/core';
 import { NavController, AlertController, Platform } from 'ionic-angular';
@@ -8,10 +12,30 @@ import { NavController, AlertController, Platform } from 'ionic-angular';
 })
 export class HomePage {
   
-  constructor(public navCtrl: NavController, private alertCtrk: AlertController, private platform: Platform, private fmp:FirebaseMessagingProvider) {
+  usuario: Usuario = new Usuario()
+  constructor(public navCtrl: NavController, private alertCtrk: AlertController, 
+    private platform: Platform, public fmp:FirebaseMessagingProvider,
+    private userServ: UsuarioService, public util : UtilsServiceProvider) {
 
   }
+  ionViewWillEnter() {
+    this.userServ.tokenGuardado().then((token) => {
+      
+      if (!token) {
+        this.navCtrl.setRoot(LoginPage)
+        
 
+      }else{
+        this.userServ.getUserByToken(token).subscribe((resp)=>{
+          if(resp.data.usuario){
+            this.userServ.setUsuario(resp.data.usuario)
+            this.usuario = resp.data.usuario
+          }
+        })
+      }
+      
+    })
+  }
   showPlatform(){
     let text = '' + this.platform.platforms();
     let alert= this.alertCtrk.create({
@@ -22,5 +46,14 @@ export class HomePage {
     alert.present()
 
   }
+
+  salir(){
+    this.userServ.logOut().then(()=>{
+      this.util.dispararAlert('Salir',`Hasta la vuelta, ${this.usuario.nombre}.`)
+      this.navCtrl.setRoot(LoginPage)
+    })
+  }
+
+  
 
 }
