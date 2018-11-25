@@ -7,6 +7,7 @@ function getDate() : string {
 
 export class Usuario{
     _id : string = '0';
+    email?: string;
     nombre?: string;
     apellido?: string;
     password?: string;
@@ -16,7 +17,7 @@ export class Usuario{
     fechaVtoCarneSalud: number = Date.now()
  
     fechaNacimiento: number = Date.now()
-
+    tokens?: any[]
     emergencia?: string;
     sociedad?: string;
     contacto?: string;

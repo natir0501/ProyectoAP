@@ -1,6 +1,10 @@
+import { HomePage } from './../../home/home';
+import { UsuarioService } from './../../../providers/usuario.service';
+import { Usuario } from './../../../models/usuario.model';
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { NgForm } from '@angular/forms';
+import { UtilsServiceProvider } from '../../../providers/utils.service';
 
 
 /**
@@ -23,19 +27,27 @@ import { NgForm } from '@angular/forms';
 export class LoginPage {
 
   @ViewChild('loginForm') loginForm: NgForm
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-  }
-  ionViewCanEnter(){
-   
-  }
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad LoginPage');
-    this.loginForm.form.patchValue({nombre:'Hola'})
+  usuario: Usuario = new Usuario()
+
+
+  constructor(public navCtrl: NavController, public utils: UtilsServiceProvider, public navParams: NavParams, private usuarioServ: UsuarioService) {
+
   }
 
-  onSubmit(){
-    console.log(this.loginForm)
-    this.loginForm.form.patchValue({nombre:'Hola'})
+
+
+
+  onSubmit() {
+    
+    this.usuarioServ.login(this.usuario).subscribe((resp) => {
+      this.utils.dispararAlert('Login Correcto', `Bienvenido ${resp.usuario.nombre}!`)
+      
+      this.usuarioServ.setUsuario(resp.usuario)
+      this.navCtrl.setRoot(HomePage)
+    },(err)=>{console.log(err)})
+
+
+
   }
 
 }

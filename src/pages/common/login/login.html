@@ -25,12 +25,12 @@
           <ion-list>
             <ion-item>
               <ion-label floating primary>Usuario</ion-label>
-              <ion-input ngModel type="text" value="" name="usuario" email required></ion-input>
+              <ion-input [(ngModel)]="usuario.email" type="text" value="" name="usuario" email required></ion-input>
             </ion-item>
 
             <ion-item>
               <ion-label floating primary>Password</ion-label>
-              <ion-input ngModel type="password" value="" name="password" required></ion-input>
+              <ion-input [(ngModel)] = "usuario.password" type="password" value="" name="password" required></ion-input>
             </ion-item>
 
 

@@ -21,7 +21,7 @@ var UsuarioSchema = mongoose.Schema({
         trim: true
     },
     celular: {
-        type: Number,
+        type: String,
         validate: {
             validator: validator.isNumeric,
             message: '{VALUE} No es un celular válido'

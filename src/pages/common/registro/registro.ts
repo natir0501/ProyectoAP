@@ -29,8 +29,8 @@ export class RegistroPage implements OnInit {
 
   usuario: Usuario = new Usuario()
   fmedicaVigente: boolean = false
-  fechaVtoTxt: string = '2018-11-24'
-  fechaNacTxt: string = '1988-05-23'
+  fechaVtoTxt: string = '2020-01-01'
+  fechaNacTxt: string = '1990-01-01'
 
   posiciones = Object.keys(Posiciones).map(key => ({ 'id': key, 'value': Posiciones[key] }))
   posicionesElegidas: string[] = ['GK'];
@@ -48,15 +48,17 @@ export class RegistroPage implements OnInit {
   }
   ionViewCanEnter() {
     let token = this.navParams.get('token')
+    this.usuarioServ.token=token
     this.usuarioServ.getUserByToken(token).subscribe((resp) => {
-
-      if (resp.data.activo) {
+      
+      if (resp.data.usuario.activo) {
         this.util.dispararAlert('Registro completo', 'Ya has completado el registro')
-        this.navCtrl.goToRoot({})
-      }
-      this.usuario._id = resp.data._id
+        this.navCtrl.setRoot(LoginPage)
 
-      this.usuarioServ.setTokenInStorage(token)
+      }
+      this.usuario._id = resp.data.usuario._id
+
+      
 
     }, (err) => {
       console.log(err)
@@ -67,16 +69,7 @@ export class RegistroPage implements OnInit {
     )
 
   }
-  ionViewDidLoad() {
 
-
-
-
-
-
-
-
-  }
 
   onSubmit() {
 
@@ -84,7 +77,8 @@ export class RegistroPage implements OnInit {
       this.usuario.activo = true;
       this.usuarioServ.actualizarUsuario(this.usuario).subscribe((resp) => {
         this.util.dispararAlert('Éxito', "Registro realizado correctamente")
-
+        this.navCtrl.setRoot(LoginPage)
+        this.navCtrl.goToRoot({})
       }, (err) => {
         this.util.dispararAlert('Error', "Error al dar de alta, intente nuevamente")
         console.log(err)
@@ -108,8 +102,6 @@ export class RegistroPage implements OnInit {
     this.usuario.fechaVtoCarneSalud = Date.parse(this.fechaVtoTxt)
     return true
   }
-  goToLogin() {
-    this.navCtrl.push(LoginPage)
-  }
+  
 
 }

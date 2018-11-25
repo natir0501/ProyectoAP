@@ -1,13 +1,18 @@
 <ion-header>
-  <ion-navbar>
-    <ion-title>
-      Ionic Blank
+  <ion-navbar color="primary">
+    <ion-title text-center>
+      CEI APP
     </ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="salir()">
+        <ion-icon name="log-out"></ion-icon>Salir
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-  <button ion-button full (click)="showPlatform()">Donde corre?</button>
+  <ion-item>{{usuario.nombre}}</ion-item>
   <ion-textarea [(ngModel)]="fmp.token" rows="10"></ion-textarea>
 
 </ion-content>
