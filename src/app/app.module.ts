@@ -1,3 +1,5 @@
+import { ConceptoService } from './../providers/concepto.service';
+import { AltaConceptosDeCajaPage } from '../pages/Backoffice/alta-conceptos-de-caja/alta-conceptos-de-caja';
 import { CategoriaService } from './../providers/categoria.service';
 import { AltaDeUsuarioPage } from './../pages/common/alta-usuario/alta-de-usuario';
 import { TouchedWorkaroundDirective } from './../directives/touched-workaround.directive';
@@ -19,6 +21,7 @@ import { FirebaseMessagingProvider } from '../providers/firebase-messaging';
 import { IonicStorageModule } from '@ionic/storage';
 import { HttpClientModule } from '@angular/common/http' 
 import { UtilsServiceProvider } from '../providers/utils.service';
+import { ConceptosDeCajaPage } from '../pages/Backoffice/conceptos-de-caja/conceptos-de-caja';
 
 
 @NgModule({
@@ -27,6 +30,8 @@ import { UtilsServiceProvider } from '../providers/utils.service';
     HomePage,
     LoginPage,
     AltaDeUsuarioPage,
+    AltaConceptosDeCajaPage,
+    ConceptosDeCajaPage,
     TouchedWorkaroundDirective
 
   ],
@@ -45,12 +50,15 @@ import { UtilsServiceProvider } from '../providers/utils.service';
     MyApp,
     HomePage,
     AltaDeUsuarioPage,
-    LoginPage
+    LoginPage,
+    ConceptosDeCajaPage,
+    AltaConceptosDeCajaPage
   ],
   providers: [
     FirebaseMessagingProvider,
     UsuarioService,
     CategoriaService,
+    ConceptoService,
     StatusBar,
     SplashScreen,
     UtilsServiceProvider,

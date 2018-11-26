@@ -6,6 +6,7 @@ import { UsuarioService } from './../../providers/usuario.service';
 import { FirebaseMessagingProvider } from './../../providers/firebase-messaging';
 import { Component } from '@angular/core';
 import { NavController, AlertController, Platform } from 'ionic-angular';
+import { AltaConceptosDeCajaPage } from '../Backoffice/alta-conceptos-de-caja/alta-conceptos-de-caja';
 
 @Component({
   selector: 'page-home',
@@ -58,6 +59,10 @@ export class HomePage {
 
   alta(){
     this.navCtrl.push(AltaDeUsuarioPage)
+  }
+
+  concepto(){
+    this.navCtrl.push(AltaConceptosDeCajaPage)
   }
   
 
