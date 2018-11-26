@@ -1,3 +1,5 @@
+import { CategoriaService } from './../providers/categoria.service';
+import { AltaDeUsuarioPage } from './../pages/common/alta-usuario/alta-de-usuario';
 import { TouchedWorkaroundDirective } from './../directives/touched-workaround.directive';
 import { UsuarioService } from './../providers/usuario.service';
 import { LoginPage } from './../pages/common/login/login';
@@ -24,6 +26,7 @@ import { UtilsServiceProvider } from '../providers/utils.service';
     MyApp,
     HomePage,
     LoginPage,
+    AltaDeUsuarioPage,
     TouchedWorkaroundDirective
 
   ],
@@ -41,11 +44,13 @@ import { UtilsServiceProvider } from '../providers/utils.service';
   entryComponents: [
     MyApp,
     HomePage,
+    AltaDeUsuarioPage,
     LoginPage
   ],
   providers: [
     FirebaseMessagingProvider,
     UsuarioService,
+    CategoriaService,
     StatusBar,
     SplashScreen,
     UtilsServiceProvider,
