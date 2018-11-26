@@ -1,4 +1,5 @@
 import { Posiciones, Roles } from './enum.models';
+import { Categoria } from './categoria.models';
 
 function getDate() : string {
     let date = new Date()
@@ -22,8 +23,10 @@ export class Usuario{
     sociedad?: string;
     contacto?: string;
     posiciones ?: string[] =[]
-    rol ?: string[];
+    roles ?: string[]=[];
     activo ?: boolean;
+    categorias?: Categoria[]=[];
+    categoriacuota ?: Categoria;
 
 
    

@@ -6,8 +6,8 @@ import { Storage } from '@ionic/storage';
 
 @Injectable()
 export class UsuarioService {
-    //apiUrl: string = 'http://localhost:3000/'
-    apiUrl: string = ''
+    apiUrl: string = 'http://localhost:3000/'
+    //apiUrl: string = ''
     token: string;
     usuario: Usuario
     constructor(private http: HttpClient, private storage: Storage) {
@@ -59,8 +59,6 @@ export class UsuarioService {
         
         headers = headers.set('x-auth', this.token)
 
-        console.log(headers)
-
         return this.http.put(`${this.apiUrl}api/usuarios/${usuario._id}`, usuario, { headers })
     }
 
@@ -79,5 +77,13 @@ export class UsuarioService {
         this.token = ''
         return this.storage.remove('apiToken')
         
+    }
+
+    public altaUsuario(usu:Usuario): Observable<any>{
+        let headers: HttpHeaders = new HttpHeaders().set("Content-Type", "application/json")
+        
+        headers = headers.set('x-auth', this.token)
+        
+        return this.http.post(`${this.apiUrl}api/usuarios`,usu,{headers})
     }
 }
