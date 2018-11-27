@@ -27,7 +27,7 @@ export class ConceptoService{
     obtenerConceptos(){
         let headers: HttpHeaders = new HttpHeaders().set("Content-Type", "application/json")
         headers = headers.set('x-auth', this.usuarioServ.token)
-        return this.http.get(`${this.apiUrl}api/conceptos`, { headers })
+        return this.http.get(`${this.apiUrl}api/conceptoscaja`, { headers })
     }
 
 }

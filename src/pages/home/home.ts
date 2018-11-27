@@ -1,3 +1,4 @@
+import { ConceptosDeCajaPage } from '../Backoffice/conceptos-de-caja/conceptos-de-caja';
 import { AltaDeUsuarioPage } from './../common/alta-usuario/alta-de-usuario';
 import { UtilsServiceProvider } from './../../providers/utils.service';
 import { Usuario } from './../../models/usuario.model';
@@ -63,6 +64,10 @@ export class HomePage {
 
   concepto(){
     this.navCtrl.push(AltaConceptosDeCajaPage, )
+  }
+
+  conceptosTodos(){
+    this.navCtrl.push(ConceptosDeCajaPage)
   }
   
 
