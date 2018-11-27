@@ -62,7 +62,7 @@ export class HomePage {
   }
 
   concepto(){
-    this.navCtrl.push(AltaConceptosDeCajaPage)
+    this.navCtrl.push(AltaConceptosDeCajaPage, )
   }
   
 

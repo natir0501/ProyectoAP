@@ -1,7 +1,7 @@
 import { Tipos } from "./enum.models";
 
 export class ConceptoCaja{
-    _id ?: string
+    _id ?: string=''
     nombre ?: string
-    tipo ?: Tipos
+    tipo ?: string
 }
