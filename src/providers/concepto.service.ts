@@ -1,3 +1,4 @@
+import { UtilsServiceProvider } from './utils.service';
 import { UsuarioService } from './usuario.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from "@angular/core";
@@ -6,9 +7,10 @@ import { ConceptoCaja } from '../models/concepto.models';
 
 @Injectable()
 export class ConceptoService{
-    apiUrl: string="http://localhost:3000/"
+    apiUrl: string=''
     //apiUrl: string = ''
-    constructor(public http: HttpClient, public usuarioServ: UsuarioService){
+    constructor(public http: HttpClient, public utils: UtilsServiceProvider, public usuarioServ: UsuarioService){
+        this.apiUrl = this.utils.apiUrl
     }
 
     agregarConcepto(concepto : ConceptoCaja):Observable<any>{

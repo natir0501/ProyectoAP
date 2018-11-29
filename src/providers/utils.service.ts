@@ -4,7 +4,7 @@ import { Injectable } from "@angular/core";
 @Injectable()
 export class UtilsServiceProvider{
     
-    apiUrl: string = 'http://localhost:3000/'
+    apiUrl: string = ''
     
     constructor(private alertCtrl: AlertController){}
 
