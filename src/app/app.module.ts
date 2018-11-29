@@ -1,3 +1,5 @@
+import { TipoEventosPage } from './../pages/Backoffice/tipo-eventos/tipo-eventos';
+import { TipoEventoService } from './../providers/tipoevento.service';
 import { ConceptoService } from './../providers/concepto.service';
 import { AltaConceptosDeCajaPage } from '../pages/Backoffice/alta-conceptos-de-caja/alta-conceptos-de-caja';
 import { CategoriaService } from './../providers/categoria.service';
@@ -32,6 +34,7 @@ import { ConceptosDeCajaPage } from '../pages/Backoffice/conceptos-de-caja/conce
     AltaDeUsuarioPage,
     AltaConceptosDeCajaPage,
     ConceptosDeCajaPage,
+    TipoEventosPage,
     TouchedWorkaroundDirective
 
   ],
@@ -52,7 +55,8 @@ import { ConceptosDeCajaPage } from '../pages/Backoffice/conceptos-de-caja/conce
     AltaDeUsuarioPage,
     LoginPage,
     ConceptosDeCajaPage,
-    AltaConceptosDeCajaPage
+    AltaConceptosDeCajaPage,
+    TipoEventosPage
   ],
   providers: [
     FirebaseMessagingProvider,
@@ -62,6 +66,7 @@ import { ConceptosDeCajaPage } from '../pages/Backoffice/conceptos-de-caja/conce
     StatusBar,
     SplashScreen,
     UtilsServiceProvider,
+    TipoEventoService,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

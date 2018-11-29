@@ -1,3 +1,4 @@
+import { TipoEventosPage } from './../Backoffice/tipo-eventos/tipo-eventos';
 import { ConceptosDeCajaPage } from '../Backoffice/conceptos-de-caja/conceptos-de-caja';
 import { AltaDeUsuarioPage } from './../common/alta-usuario/alta-de-usuario';
 import { UtilsServiceProvider } from './../../providers/utils.service';
@@ -68,6 +69,10 @@ export class HomePage {
 
   conceptosTodos(){
     this.navCtrl.push(ConceptosDeCajaPage)
+  }
+
+  tipoEventosTodos(){
+    this.navCtrl.push(TipoEventosPage)
   }
   
 

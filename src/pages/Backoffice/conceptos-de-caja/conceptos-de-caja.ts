@@ -1,17 +1,10 @@
+import { AltaConceptosDeCajaPage } from './../alta-conceptos-de-caja/alta-conceptos-de-caja';
 import { ConceptoCaja } from './../../../models/concepto.models';
-import { Concepto } from './../../../models/categoria.models';
 import { ConceptoService } from './../../../providers/concepto.service';
-import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
 import { UtilsServiceProvider } from '../../../providers/utils.service';
-import { NgForm } from '@angular/forms';
+import { Component } from '@angular/core';
 
-/**
- * Generated class for the ConceptosDeCajaPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
 
 @IonicPage()
 @Component({
@@ -20,35 +13,46 @@ import { NgForm } from '@angular/forms';
 })
 export class ConceptosDeCajaPage {
 
-  conceptos : ConceptoCaja[] = [];
-  
-  @ViewChild("form") formulario: NgForm
+  conceptos: ConceptoCaja[] = [];
+
 
   constructor(public navCtrl: NavController, public navParams: NavParams
-    , public conceptoServ: ConceptoService, public utilServ: UtilsServiceProvider) {
+    , public conceptoServ: ConceptoService, public utilServ: UtilsServiceProvider,
+    public loadingCtrl: LoadingController) {
   }
 
   ionViewDidLoad() {
+    let loading = this.loadingCtrl.create({
+      content: 'Cargando',
+      spinner : 'circles'
+    });
+    loading.present()
+  
     this.conceptoServ.obtenerConceptos()
       .subscribe((resp) => {
 
-        console.log(resp);
-        
         this.conceptos = resp.data.conceptosCaja;
+
+
 
       },
         (err) => {
           console.log("Error obteniendo conceptos de caja", err)
           this.utilServ.dispararAlert("Error", "Ocurrió un error al obtener los conceptos de caja")
+        },()=>{
+          loading.dismiss();
         })
   }
 
 
-  onSubmit() {
-
-    console.log("Hice algo");
+ 
+  irAlta(){
     
+    this.navCtrl.setRoot(AltaConceptosDeCajaPage)
+  }
 
+  modificarConcepto(concepto: ConceptoCaja) {
+    this.navCtrl.setRoot(AltaConceptosDeCajaPage, {concepto})
   }
 
 

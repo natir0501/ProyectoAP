@@ -24,7 +24,7 @@ export class ConceptoService{
         return this.http.put(`${this.apiUrl}api/conceptoscaja/${concepto._id}`,concepto, { headers })
     }
 
-    obtenerConceptos(){
+    obtenerConceptos():Observable<any>{
         let headers: HttpHeaders = new HttpHeaders().set("Content-Type", "application/json")
         headers = headers.set('x-auth', this.usuarioServ.token)
         return this.http.get(`${this.apiUrl}api/conceptoscaja`, { headers })
