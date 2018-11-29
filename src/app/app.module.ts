@@ -1,4 +1,8 @@
 import { MantenimientoCategoriaPage } from './../pages/mantenimiento-categoria/mantenimiento-categoria';
+import { TipoEventosPage } from './../pages/Backoffice/tipo-eventos/tipo-eventos';
+import { TipoEventoService } from './../providers/tipoevento.service';
+import { ConceptoService } from './../providers/concepto.service';
+import { AltaConceptosDeCajaPage } from '../pages/Backoffice/alta-conceptos-de-caja/alta-conceptos-de-caja';
 import { CategoriaService } from './../providers/categoria.service';
 import { AltaDeUsuarioPage } from './../pages/common/alta-usuario/alta-de-usuario';
 import { TouchedWorkaroundDirective } from './../directives/touched-workaround.directive';
@@ -20,6 +24,8 @@ import { FirebaseMessagingProvider } from '../providers/firebase-messaging';
 import { IonicStorageModule } from '@ionic/storage';
 import { HttpClientModule } from '@angular/common/http' 
 import { UtilsServiceProvider } from '../providers/utils.service';
+import { ConceptosDeCajaPage } from '../pages/Backoffice/conceptos-de-caja/conceptos-de-caja';
+
 
 
 @NgModule({
@@ -29,7 +35,11 @@ import { UtilsServiceProvider } from '../providers/utils.service';
     LoginPage,
     AltaDeUsuarioPage,
     TouchedWorkaroundDirective,
-    MantenimientoCategoriaPage
+    MantenimientoCategoriaPage,
+    AltaConceptosDeCajaPage,
+    ConceptosDeCajaPage,
+    TipoEventosPage,
+    TouchedWorkaroundDirective
 
   ],
   imports: [
@@ -48,15 +58,20 @@ import { UtilsServiceProvider } from '../providers/utils.service';
     HomePage,
     AltaDeUsuarioPage,
     LoginPage,
-    MantenimientoCategoriaPage
+    MantenimientoCategoriaPage,
+    ConceptosDeCajaPage,
+    AltaConceptosDeCajaPage,
+    TipoEventosPage
   ],
   providers: [
     FirebaseMessagingProvider,
     UsuarioService,
     CategoriaService,
+    ConceptoService,
     StatusBar,
     SplashScreen,
     UtilsServiceProvider,
+    TipoEventoService,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

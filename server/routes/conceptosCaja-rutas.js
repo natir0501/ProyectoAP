@@ -4,7 +4,7 @@ const {ConceptosCaja}=require('../models/conceptosCaja')
 const _ = require('lodash')
 const {ApiResponse} = require('../models/api-response')
 
-api.get('/conceptosCaja',(req, res)=>{
+api.get('/conceptoscaja',(req, res)=>{
     
     ConceptosCaja.find()
     .then((conceptosCaja)=>{
@@ -15,7 +15,7 @@ api.get('/conceptosCaja',(req, res)=>{
 })
 
 
-api.get('/conceptosCaja/:id', async (req,res)=>{
+api.get('/conceptoscaja/:id', async (req,res)=>{
     var id = req.params.id;
     
     if(!ObjectID.isValid(id)){
@@ -35,7 +35,7 @@ api.get('/conceptosCaja/:id', async (req,res)=>{
     })    
 })
 
-api.post('/conceptosCaja', async (req,res) =>{
+api.post('/conceptoscaja', async (req,res) =>{
     
     try{
         var conceptoCaja = new ConceptosCaja(_.pick(req.body,['nombre','tipo']))
@@ -47,7 +47,7 @@ api.post('/conceptosCaja', async (req,res) =>{
     }
 })
 
-api.put('/conceptosCaja/:id', (req, res) => {
+api.put('/conceptoscaja/:id', (req, res) => {
     var id = req.params.id;
     var body = _.pick(req.body, ['nombre','tipo']);
 

@@ -5,7 +5,7 @@ const _ = require('lodash')
 const {ObjectID} = require('mongodb')
 const {ApiResponse} = require('../models/api-response')
 
-api.get('/tipoEventos',(req, res)=>{
+api.get('/tipoeventos',(req, res)=>{
     
     TipoEvento.find()
     .then((tipoEventos)=>{
@@ -15,7 +15,7 @@ api.get('/tipoEventos',(req, res)=>{
     }
 })
 
-api.post('/tipoEventos', async (req,res) =>{
+api.post('/tipoeventos', async (req,res) =>{
     
     try{
         var tipoEvento = new TipoEvento(_.pick(req.body,['nombre']))
@@ -28,7 +28,7 @@ api.post('/tipoEventos', async (req,res) =>{
 })
 
 
-api.get('/tipoEventos/:id', async (req,res)=>{
+api.get('/tipoeventos/:id', async (req,res)=>{
     var id = req.params.id;
     
     if(!ObjectID.isValid(id)){
@@ -48,7 +48,7 @@ api.get('/tipoEventos/:id', async (req,res)=>{
     })    
 })
 
-api.put('/tipoEventos/:id', (req, res) => {
+api.put('/tipoeventos/:id', (req, res) => {
     var id = req.params.id;
     var body = _.pick(req.body, ['nombre']);
     console.log(id);
