@@ -1,3 +1,4 @@
+import { MantenimientoCategoriaPage } from './../pages/mantenimiento-categoria/mantenimiento-categoria';
 import { CategoriaService } from './../providers/categoria.service';
 import { AltaDeUsuarioPage } from './../pages/common/alta-usuario/alta-de-usuario';
 import { TouchedWorkaroundDirective } from './../directives/touched-workaround.directive';
@@ -27,7 +28,8 @@ import { UtilsServiceProvider } from '../providers/utils.service';
     HomePage,
     LoginPage,
     AltaDeUsuarioPage,
-    TouchedWorkaroundDirective
+    TouchedWorkaroundDirective,
+    MantenimientoCategoriaPage
 
   ],
   imports: [
@@ -45,7 +47,8 @@ import { UtilsServiceProvider } from '../providers/utils.service';
     MyApp,
     HomePage,
     AltaDeUsuarioPage,
-    LoginPage
+    LoginPage,
+    MantenimientoCategoriaPage
   ],
   providers: [
     FirebaseMessagingProvider,

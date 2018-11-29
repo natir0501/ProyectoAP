@@ -20,6 +20,7 @@ export class HomePage {
 
   }
   ionViewWillEnter() {
+    
     this.userServ.tokenGuardado().then((token) => {
       
       if (!token) {
