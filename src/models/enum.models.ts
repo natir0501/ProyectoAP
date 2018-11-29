@@ -20,3 +20,8 @@ export enum Roles{
     TES = 'Tesorero',
     JUG = 'Jugador'
 }
+
+export enum Tipos{
+    Ingreso = 'Ingreso',
+    Egreso = 'Egreso'
+}

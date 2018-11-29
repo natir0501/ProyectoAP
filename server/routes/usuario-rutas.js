@@ -1,6 +1,7 @@
 var express = require('express');
 var api = express.Router();
 const { Usuario } = require('../models/usuario')
+const { Rol } = require('../models/rol')
 const _ = require('lodash')
 const { ApiResponse } = require('../models/api-response')
 
@@ -20,9 +21,9 @@ api.get('/usuarios/:token', async (req, res) => {
 
         usuario = await Usuario.findByToken(token);
         if (usuario) {
-            res.header('x-auth', token).status(200).send(new ApiResponse({usuario}))
-        }else{
-            res.status(404).send(new ApiResponse({},'Usuario inválido'))
+            res.header('x-auth', token).status(200).send(new ApiResponse({ usuario }))
+        } else {
+            res.status(404).send(new ApiResponse({}, 'Usuario inválido'))
         }
     } catch (e) {
         console.log(e)
@@ -31,10 +32,15 @@ api.get('/usuarios/:token', async (req, res) => {
 
 })
 
-api.post('/usuarios', async (req,res) =>{
+api.post('/usuarios', async (req, res) => {
+
     
-    try{        
-        var usuario = new Usuario(_.pick(req.body,['nombre','apellido','ci','email','password','roles','categorias','categoriacuota']))
+    try {
+
+        var usuario = new Usuario(_.pick(req.body,['email']))
+        usuario.roles = await Rol.find({ codigo: { $in:  req.body.roles } })
+        usuario.categoriacuota = req.body.categoriacuota
+        usuario.categorias = req.body.categorias
         await usuario.save()
         const token = await usuario.generateAuthToken()
         usuario.enviarConfirmacionAlta();
@@ -43,14 +49,15 @@ api.post('/usuarios', async (req,res) =>{
         res.status(400).send(new ApiResponse({}, `Mensaje: ${e}`))
     }
 })
-api.post('/usuarios/login', async (req,res) =>{
-    
-    try{        
+
+api.post('/usuarios/login', async (req, res) => {
+
+    try {
         let usuario = await Usuario.findByCredentials(req.body.email, req.body.password)
-        if(usuario){
-            res.status(200).send({usuario});
+        if (usuario) {
+            res.status(200).send({ usuario });
         }
-        res.status(404).send(new ApiResponse({},'Usuario y/o contraseña inválidos'));
+        res.status(404).send(new ApiResponse({}, 'Usuario y/o contraseña inválidos'));
     } catch (e) {
         res.status(400).send(new ApiResponse({}, `Mensaje: ${e}`))
     }
@@ -74,11 +81,11 @@ api.put('/usuarios/:id', async (req, res) => {
         if (!usuario) {
             res.status(401).send(new ApiResponse({}, 'Usuario inválido'))
         }
-        
+
         res.status(200).send(new ApiResponse(usuario))
     }
     catch (err) {
-      
+
         res.status(400).send(new ApiResponse({}, err))
     }
 
