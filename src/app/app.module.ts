@@ -1,3 +1,4 @@
+import { MantenimientoCategoriaPage } from './../pages/mantenimiento-categoria/mantenimiento-categoria';
 import { TipoEventosPage } from './../pages/Backoffice/tipo-eventos/tipo-eventos';
 import { TipoEventoService } from './../providers/tipoevento.service';
 import { ConceptoService } from './../providers/concepto.service';
@@ -26,12 +27,15 @@ import { UtilsServiceProvider } from '../providers/utils.service';
 import { ConceptosDeCajaPage } from '../pages/Backoffice/conceptos-de-caja/conceptos-de-caja';
 
 
+
 @NgModule({
   declarations: [
     MyApp,
     HomePage,
     LoginPage,
     AltaDeUsuarioPage,
+    TouchedWorkaroundDirective,
+    MantenimientoCategoriaPage,
     AltaConceptosDeCajaPage,
     ConceptosDeCajaPage,
     TipoEventosPage,
@@ -54,6 +58,7 @@ import { ConceptosDeCajaPage } from '../pages/Backoffice/conceptos-de-caja/conce
     HomePage,
     AltaDeUsuarioPage,
     LoginPage,
+    MantenimientoCategoriaPage,
     ConceptosDeCajaPage,
     AltaConceptosDeCajaPage,
     TipoEventosPage

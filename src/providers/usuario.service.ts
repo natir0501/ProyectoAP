@@ -1,3 +1,5 @@
+import { UtilsServiceProvider } from './utils.service';
+
 import { Usuario } from './../models/usuario.model';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from "@angular/core";
@@ -6,12 +8,14 @@ import { Storage } from '@ionic/storage';
 
 @Injectable()
 export class UsuarioService {
-    apiUrl: string = 'http://localhost:3000/'
-    //apiUrl: string = ''
+    
+    apiUrl: string = ''
     token: string;
-    usuario: Usuario
-    constructor(private http: HttpClient, private storage: Storage) {
+    usuario: Usuario 
 
+    constructor(private http: HttpClient, private storage: Storage, private util: UtilsServiceProvider) {
+        this.apiUrl = this.util.apiUrl
+        this.tokenGuardado()
     }
 
     public getUserByToken(token: string): Observable<any> {
@@ -25,7 +29,11 @@ export class UsuarioService {
     public async tokenGuardado() {
         try{
             let token = await this.storage.get('apiToken')
+
             if (token){
+                let resp: any = await this.getUserByToken(token).toPromise()
+                
+                this.usuario = resp.data.usuario
                 return token
             }
             return undefined
@@ -43,7 +51,7 @@ export class UsuarioService {
                 let token = await this.storage.get('apiToken')
                 this.token = token;
                 let resp = await this.getUserByToken(token).toPromise()
-                console.log(resp,'Respuesta')
+              
                 this.usuario = resp.data
                 return this.usuario
             }

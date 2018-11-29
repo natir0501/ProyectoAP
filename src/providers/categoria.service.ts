@@ -1,3 +1,4 @@
+import { UtilsServiceProvider } from './utils.service';
 import { UsuarioService } from './usuario.service';
 import { Categoria } from './../models/categoria.models';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -5,12 +6,14 @@ import { Injectable } from "@angular/core";
 import { Observable } from 'rxjs/Observable';
 import { Storage } from '@ionic/storage';
 
+
+
 @Injectable()
 export class CategoriaService{
     
-    apiUrl: string="http://localhost:3000/"
-    constructor(public http:HttpClient, public usuarioServ: UsuarioService){
-
+    apiUrl: string 
+    constructor(public http:HttpClient, private utils: UtilsServiceProvider, public usuarioServ: UsuarioService){
+        this.apiUrl = this.utils.apiUrl
     }
 
     obtenerCategorias():Observable<any>{

@@ -3,7 +3,9 @@ import { Injectable } from "@angular/core";
 
 @Injectable()
 export class UtilsServiceProvider{
-
+    
+    apiUrl: string = 'http://localhost:3000/'
+    
     constructor(private alertCtrl: AlertController){}
 
     dispararAlert(title: string, text: string, callback ?: any) {
