@@ -1,3 +1,4 @@
+import { UtilsServiceProvider } from './utils.service';
 import { UsuarioService } from './usuario.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from "@angular/core";
@@ -6,9 +7,10 @@ import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class TipoEventoService{
-    apiUrl: string="http://localhost:3000/"
-    //apiUrl: string = ''
-    constructor(public http: HttpClient, public usuarioServ: UsuarioService){
+    apiUrl: string= ''
+    
+    constructor(public http: HttpClient, private utils: UtilsServiceProvider, public usuarioServ: UsuarioService){
+        this.apiUrl = this.utils.apiUrl;
     }
 
     obtenerEventos() :Observable<any>{

@@ -34,8 +34,8 @@ export class MyApp {
       statusBar.styleDefault();
       splashScreen.hide();
       this.http.get('../assets/ambiente.json').subscribe((res: any) => {
-        if (res.env === 'prod') {
-          this.utils.apiUrl = ''
+        if (res.env === 'dev') {
+          this.utils.apiUrl = 'http://localhost:3000/'
         }
       })
 
