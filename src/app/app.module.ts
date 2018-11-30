@@ -25,6 +25,7 @@ import { IonicStorageModule } from '@ionic/storage';
 import { HttpClientModule } from '@angular/common/http' 
 import { UtilsServiceProvider } from '../providers/utils.service';
 import { ConceptosDeCajaPage } from '../pages/Backoffice/conceptos-de-caja/conceptos-de-caja';
+import { ListaCategoriasPage } from '../pages/lista-categorias/lista-categorias';
 
 
 
@@ -39,7 +40,8 @@ import { ConceptosDeCajaPage } from '../pages/Backoffice/conceptos-de-caja/conce
     AltaConceptosDeCajaPage,
     ConceptosDeCajaPage,
     TipoEventosPage,
-    TouchedWorkaroundDirective
+    TouchedWorkaroundDirective,
+    ListaCategoriasPage,
 
   ],
   imports: [
@@ -61,7 +63,8 @@ import { ConceptosDeCajaPage } from '../pages/Backoffice/conceptos-de-caja/conce
     MantenimientoCategoriaPage,
     ConceptosDeCajaPage,
     AltaConceptosDeCajaPage,
-    TipoEventosPage
+    TipoEventosPage,
+    ListaCategoriasPage
   ],
   providers: [
     FirebaseMessagingProvider,

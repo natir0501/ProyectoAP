@@ -13,7 +13,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { HomePage } from '../pages/home/home';
 import { FirebaseMessagingProvider } from '../providers/firebase-messaging';
 import { LoginPage } from '../pages/common/login/login';
-import { GENERIC, AVATAR } from '../providers/constant';
+import { ListaCategoriasPage } from '../pages/lista-categorias/lista-categorias';
+
 @Component({
   templateUrl: 'app.html'
 })
@@ -34,8 +35,11 @@ export class MyApp {
       statusBar.styleDefault();
       splashScreen.hide();
       this.http.get('../assets/ambiente.json').subscribe((res: any) => {
+        
         if (res.env === 'dev') {
+          
           this.utils.apiUrl = 'http://localhost:3000/'
+          this.usuarioServ.apiUrl = this.utils.apiUrl
         }
       })
 
@@ -65,7 +69,7 @@ export class MyApp {
         title: 'Delegado', icon: 'clipboard', right_icon: 'add',
         sub: [
           { sub_title: 'Alta de usuario', component: AltaDeUsuarioPage },
-          { sub_title: 'Mant. de Categorías', component: MantenimientoCategoriaPage, badge_value: '9' }
+          { sub_title: 'Categorias', component: ListaCategoriasPage, badge_value: '9' }
 
         ]
       },

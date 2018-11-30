@@ -5,8 +5,9 @@ const {Cuenta}=require('../models/cuenta')
 const _ = require('lodash')
 const {validarId} = require('../Utilidades/utilidades')
 const {ApiResponse} = require('../models/api-response')
+const {autenticacion} = require('../middlewares/autenticacion')
 
-api.get('/categorias',(req, res)=>{
+api.get('/categorias',autenticacion,(req, res)=>{
     Categoria.find()
     .populate('dts')
     .populate('delegados')
@@ -31,14 +32,24 @@ api.post('/categorias', async (req,res) =>{
         let valorCuota=req.body.valorCuota;
         let diaGeneracionCuota=req.body.diaGeneracionCuota;
         let diaVtoCuota=req.body.diaVtoCuota;
-        let cantidadCuotasAnuales=req.body.cantidadCuotasAnuales;
+        console.log(req.body.cantidadCoutasAnuales)
+        let cantidadCuotasAnuales= parseInt(req.body.cantidadCuotasAnuales)
 
         //En el body de la categoría, recibo saldo inicial
         let saldo=req.body.saldoInicial;
         let movimientos=[]
 
+        let correoDelegados = req.body.correosDelegados
+        let correoJugadores = req.body.correosJugadores
+        let correosTesoreros = req.body.correosTesoreros
+        let correoDts = req.body.correosDts
+
         let arrayIds = []
         
+        
+
+
+
         arrayIds.push(...tesoreros)
         arrayIds.push(...delegados)
         arrayIds.push(...jugadores)
@@ -60,6 +71,7 @@ api.post('/categorias', async (req,res) =>{
         }
         res.status(400).send(new ApiResponse({},'Algunos de los usuarios no son válidos'))        
     }catch(e){
+        console.log(e)
         res.status(400).send(e)
     }
 })

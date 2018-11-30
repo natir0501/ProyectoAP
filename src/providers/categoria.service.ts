@@ -24,7 +24,14 @@ export class CategoriaService{
 
         return this.http.get(`${this.apiUrl}api/categorias`, { headers })
     }
+    crearCategoria(categoriaData: any): Observable<any>{
+        
+        let headers: HttpHeaders = new HttpHeaders().set("Content-Type", "application/json")
+        
+        headers = headers.set('x-auth', this.usuarioServ.token)
 
+        return this.http.post(`${this.apiUrl}api/categorias`,categoriaData, { headers })
+    }
 
     
 }

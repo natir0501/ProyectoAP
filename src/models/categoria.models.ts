@@ -6,7 +6,8 @@ export class Categoria{
     valorCuota?: number
     diaGeneracionCuota?: number
     diaVtoCuota?: number
-    cantidadCoutasAnuales?: number
+    cantidadCuotasAnuales?: number
+    saldoInicial: number
     cuenta?: Cuenta
     dts?: Usuario[] = []
     delegados?: Usuario[] = []
