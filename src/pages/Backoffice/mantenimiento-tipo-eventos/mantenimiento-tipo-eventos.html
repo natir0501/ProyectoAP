@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Mantenimiento Tipo de Eventos</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content padding="pagetipevent">
+  <form id="manttipevent-form" (ngSubmit)="onSubmit()" #form="ngForm">
+    <ion-grid>
+      <ion-row justify-content-center>
+        <ion-col col-xl-6>
+          <div>
+            <p style="color:#000000;">
+              Ingrese un nombre para crear un nuevo tipo de evento.
+            </p>
+          </div>
+          <ion-item-divider color="light" id="manttipevent-list-item-divider3">
+          </ion-item-divider>
+          <ion-item [ngClass]="{'ng-touched' : nombre.touched}">
+            <ion-label>
+              <ion-input text-right type="text" placeholder="Ej: Partido amistoso" name="nombre" nombre [(ngModel)]="tEventos.nombre" #nombre="ngModel" 
+              required>
+              </ion-input>
+            </ion-label>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col col-xl-2>
+          <button id="manttipevent-btn" type="submit" ion-button block color="positive" [disabled]="form.form.invalid">
+          </button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+</ion-content>
