@@ -4,6 +4,7 @@ import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { NgForm } from '@angular/forms';
 import { UtilsServiceProvider } from '../../../providers/utils.service';
+import { TipoEventosPage } from '../tipo-eventos/tipo-eventos';
 
 /**
  * Generated class for the MantenimientoTipoEventosPage page.
@@ -28,17 +29,44 @@ export class MantenimientoTipoEventosPage {
   }
 
   ionViewDidLoad() {
-    /*
+        
     let te: TipoEvento = this.navParams.get('te')
+
     if (te) {
       this.tipoEvento = te
-    }*/
-    console.log('entre');
+    }
     
   }
 
   onSubmit() {
-    console.log("something");
+    
+    if (this.tipoEvento._id === '') {
+      this.tipEventServ.agregarTipoEvento(this.tipoEvento)
+        .subscribe(
+          (resp) => {
+            this.utilServ.dispararAlert("Ok", "Tipo de evento agregado correctamente.")
+            this.navCtrl.setRoot(TipoEventosPage)
+          },
+          (err) => {
+            console.log("Error dando de alta el tipo de evento", err)
+            this.utilServ.dispararAlert("Error", "Ocurrió un error al agregar el tipo de evento")
+          }
+        )
+
+    } else {
+      this.tipEventServ.actualizarTipoEvento(this.tipoEvento)
+        .subscribe(
+          (resp) => {
+            this.utilServ.dispararAlert("Ok", "Concepto modificado correctamente.")
+            this.navCtrl.setRoot(TipoEventosPage)
+          },
+          (err) => {
+            console.log("Error al modificar el tipo de evento", err)
+            this.utilServ.dispararAlert("Error", "Ocurrió un error al modificar el tipo de evento")
+          }
+        )
+
+    }
 
   }
 

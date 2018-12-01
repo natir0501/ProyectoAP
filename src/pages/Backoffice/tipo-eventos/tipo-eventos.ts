@@ -43,19 +43,14 @@ export class TipoEventosPage {
         })
   }
 
-  onSubmit() {
-    console.log("Algo en tipo eventos");
-  }
-
   altaTipoEvento() {
-    console.log("Agregar");
-
-    this.navCtrl.setRoot(MantenimientoTipoEventosPage)
+    //Con Push para que no pierda la navegavilidad
+    this.navCtrl.push(MantenimientoTipoEventosPage)
   }
 
   modificarTipoEvento(te: TipoEvento) {
-    console.log('Modificar');
-    this.navCtrl.setRoot(MantenimientoTipoEventosPage, { te })
+    //Con Push para que no pierda la navegavilidad
+    this.navCtrl.push(MantenimientoTipoEventosPage, { te })
   }
 
 }

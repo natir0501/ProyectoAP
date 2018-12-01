@@ -40,14 +40,13 @@ export class ConceptosDeCajaPage {
         })
   }
 
-
  
   irAlta(){
-    this.navCtrl.setRoot(AltaConceptosDeCajaPage)
+    this.navCtrl.push(AltaConceptosDeCajaPage)
   }
 
   modificarConcepto(concepto: ConceptoCaja) {
-    this.navCtrl.setRoot(AltaConceptosDeCajaPage, {concepto})
+    this.navCtrl.push(AltaConceptosDeCajaPage, {concepto})
   }
 
 
