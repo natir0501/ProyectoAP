@@ -1,6 +1,7 @@
 var express = require('express');
 var api = express.Router();
 const { Cuenta } = require('../models/cuenta')
+const { ConceptosCaja } = require('../models/conceptosCaja')
 const _ = require('lodash')
 const { ObjectID } = require('mongodb')
 const { ApiResponse } = require('../models/api-response')
@@ -40,18 +41,29 @@ api.get('/movimientos/:id', autenticacion, async (req, res) => {
         if (req.query.fechaFin) {
             filtros.push({ 'movimientos.fecha': { $lt: req.query.fechaFin } })
         }
-        let movimientosCuenta = await Cuenta.aggregate([
+
+        let arrayConsultas=[
             { $match: { _id: ObjectID(req.params.id) } },
             { $unwind: { path: '$movimientos' } },
-            { $match: { $and: filtros } },
             { $group: {_id: '$movimientos'}},
-        ])
+        ]
+
+        if(filtros.length>0){
+            arrayConsultas.push({ $match: { $and: filtros } })
+        }
+
+        let movimientosCuenta = await Cuenta.aggregate(arrayConsultas)
         let movimientos = []
-        movimientosCuenta.forEach((mov)=>{
-            movimientos.push({
+
+        for (let mov of movimientosCuenta){           
+            let concepto = await ConceptosCaja.findOne({'_id': mov._id.concepto})
+            let movimiento = {
                 ...mov._id
-            })
-        })
+            }
+            movimiento.concepto = concepto.nombre
+            console.log(movimiento)
+            movimientos.push(movimiento)    
+        }
         res.status(200).send(new ApiResponse({movimientos}))
     } catch (e) {
         res.status(400).send(new ApiResponse({}, `Mensaje: ${e}`))

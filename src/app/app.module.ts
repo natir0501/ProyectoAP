@@ -1,3 +1,4 @@
+import { CuentaService } from './../providers/cuenta.service';
 import { MantenimientoTipoEventosPage } from './../pages/Backoffice/mantenimiento-tipo-eventos/mantenimiento-tipo-eventos';
 import { MantenimientoCategoriaPage } from './../pages/mantenimiento-categoria/mantenimiento-categoria';
 import { TipoEventosPage } from './../pages/Backoffice/tipo-eventos/tipo-eventos';
@@ -27,6 +28,7 @@ import { HttpClientModule } from '@angular/common/http'
 import { UtilsServiceProvider } from '../providers/utils.service';
 import { ConceptosDeCajaPage } from '../pages/Backoffice/conceptos-de-caja/conceptos-de-caja';
 import { ListaCategoriasPage } from '../pages/lista-categorias/lista-categorias';
+import { SaldoMovimientosCategoriaPage } from '../pages/Contabilidad/saldo-movimientos-categoria/saldo-movimientos-categoria';
 
 
 
@@ -44,6 +46,7 @@ import { ListaCategoriasPage } from '../pages/lista-categorias/lista-categorias'
     TouchedWorkaroundDirective,
     ListaCategoriasPage,
     MantenimientoTipoEventosPage,
+    SaldoMovimientosCategoriaPage
     
 
   ],
@@ -69,6 +72,7 @@ import { ListaCategoriasPage } from '../pages/lista-categorias/lista-categorias'
     TipoEventosPage,
     ListaCategoriasPage,
     MantenimientoTipoEventosPage,
+    SaldoMovimientosCategoriaPage
     
   ],
   providers: [
@@ -80,6 +84,7 @@ import { ListaCategoriasPage } from '../pages/lista-categorias/lista-categorias'
     SplashScreen,
     UtilsServiceProvider,
     TipoEventoService,
+    CuentaService,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

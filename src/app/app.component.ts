@@ -89,6 +89,13 @@ export class MyApp {
           { sub_title: 'Mantenimiento de Cateogorías', component: MantenimientoCategoriaPage, badge_value: '9' }
 
         ]
+      },
+      {
+        title: 'Contabilidad', icon: 'cash', right_icon: 'add',
+        sub: [
+          { sub_title: 'Categorias', component: ListaCategoriasPage }
+
+        ]
       }
 
 

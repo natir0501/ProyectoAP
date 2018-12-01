@@ -16,8 +16,9 @@ export class Categoria{
 }
 
 export class Cuenta {
-    movimintos?: Movimiento[] = []
+    movimientos?: Movimiento[] = []
     saldo?: number
+    _id: any;
 }
 
 export class Movimiento{

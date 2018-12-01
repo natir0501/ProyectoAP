@@ -1,3 +1,4 @@
+import { SaldoMovimientosCategoriaPage } from './../Contabilidad/saldo-movimientos-categoria/saldo-movimientos-categoria';
 import { MantenimientoCategoriaPage } from './../mantenimiento-categoria/mantenimiento-categoria';
 import { CategoriaService } from './../../providers/categoria.service';
 import { Component } from '@angular/core';
@@ -60,6 +61,12 @@ export class ListaCategoriasPage {
   modificar(categoria: Categoria) {
     
     this.navCtrl.setRoot(MantenimientoCategoriaPage, { categoria })
+  }
+
+  verSdos(categoria: Categoria) {
+    this.navCtrl.setRoot(SaldoMovimientosCategoriaPage, {'cuenta':categoria.cuenta})
+   
+    
   }
 
 

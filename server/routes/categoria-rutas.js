@@ -15,7 +15,7 @@ api.get('/categorias', autenticacion, (req, res) => {
         .populate('delegados')
         .populate('jugadores')
         .populate('tesorero')
-        .populate('caja')
+        .populate('cuenta')
         .then((categorias) => {
             res.status(200).send(new ApiResponse({ categorias }))
         }), (e) => {
@@ -45,17 +45,10 @@ api.post('/categorias', async (req, res) => {
 
         roles = await Rol.find()
 
-
         let tesoreros = await altaMasivaUsuarios(correosTesoreros, roles[2]._id);
         let delegados = await altaMasivaUsuarios(correoDelegados, roles[0]._id)
         let jugadores = await altaMasivaUsuarios(correoJugadores, roles[3]._id);
         let dts = await altaMasivaUsuarios(correoDts, roles[1]._id);
-
-
-
-
-
-
 
         let cajaCategoria = new Cuenta({ movimientos, saldo });
         await cajaCategoria.save();

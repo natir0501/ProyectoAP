@@ -19,7 +19,7 @@ var CuentaSchema = mongoose.Schema({
             require: true
         },
         concepto:{
-            type: mongoose.Schema.Types.ObjectId,
+            type: mongoose.Schema.Types.ObjectId, ref: 'Concepto',
             require: true
         },
         comentario:{

@@ -1,0 +1,42 @@
+<ion-header>
+  <ion-navbar text-center color="primary">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Saldo y moivimientos de Categoría</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content padding id="sdomovscat">
+  <ion-grid>
+    <ion-row justify-content-center>
+      <ion-col col-xl-6>
+
+        <ion-item-divider color="light" id="sdomovscat1">
+          Saldo disponible:
+        </ion-item-divider>
+        <div>
+          <ion-item color="none" icon-start>
+            <ion-icon name="cash" item-left></ion-icon>
+            $ {{cuenta.saldo}}
+          </ion-item>
+        </div>
+        <ion-item-divider color="light" id="sdomovscat2">
+          Movimientos:
+        </ion-item-divider>
+        <ion-item *ngFor="let mov of cuenta.movimientos">
+          <ion-icon name="calculator" item-left></ion-icon>
+          <label>Fecha:</label> {{mov.fecha | date:'dd-MM-yyyy'}} <br>
+          <label>Concepto:</label> {{mov.concepto}} <br>
+          <label>Monto:</label> $ {{mov.monto}}<br>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row justify-content-center>
+      <ion-col col-xl-2>
+        <button id="tipoEventos-button4" (click)="ingresarMovimiento()" ion-button block color="positive">
+          Nuevo movimiento
+        </button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
