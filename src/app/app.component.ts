@@ -22,7 +22,7 @@ export class MyApp {
   rootPage: any = HomePage;
   pages: any;
   shownGroup: any;
-  
+
   avatar: string = CEILOGO;
   usuario: Usuario = new Usuario()
   @ViewChild(Nav) nav: NavController;
@@ -35,27 +35,28 @@ export class MyApp {
       statusBar.styleDefault();
       splashScreen.hide();
       this.http.get('../assets/ambiente.json').subscribe((res: any) => {
-        
+
         if (res.env === 'dev') {
-          
+
           this.utils.apiUrl = 'http://localhost:3000/'
           this.usuarioServ.apiUrl = this.utils.apiUrl
         }
-        this.usuarioServ.getActualUser().then((resp : any)=>{
-          this.usuario = resp.usuario
-          
-        })
+        if (this.nav.getActive().name !== 'RegistroPage') {
+          this.usuarioServ.getActualUser().then((resp: any) => {
+            this.usuario = resp.usuario
+          })
+        }
       })
 
     });
-    
+
   }
 
   ngOnInit(): void {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
     //Add 'implements OnInit' to the class.
 
-    
+
     this.pages = [
 
       {
@@ -96,7 +97,7 @@ export class MyApp {
   }
 
   ionViewDidLoad() {
-   
+
   }
 
   showChild(page) {
@@ -121,15 +122,15 @@ export class MyApp {
     }
   }
 
-  home(){
+  home() {
     this.nav.setRoot(HomePage)
     this.menu.close();
   }
 
   logout() {
-    
+
     this.usuarioServ.logOut();
-    
+
     this.nav.setRoot(LoginPage)
     this.menu.close()
   }

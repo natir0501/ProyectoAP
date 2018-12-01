@@ -18,9 +18,9 @@ export class UsuarioService {
         this.tokenGuardado()
     }
 
-    public getUserByToken(token: string): Observable<any> {
-
-        return this.http.get<any>(this.apiUrl + 'api/usuarios/' + token)
+    public getUserByToken(): Observable<any> {
+        
+        return this.http.get<any>(this.apiUrl + 'api/usuarios/' + this.token)
 
     }
 
@@ -31,7 +31,7 @@ export class UsuarioService {
             let token = await this.storage.get('apiToken')
 
             if (token){
-                let resp: any = await this.getUserByToken(token).toPromise()
+                let resp: any = await this.getUserByToken().toPromise()
                 
                 this.usuario = resp.data.usuario
                 return token
@@ -50,7 +50,7 @@ export class UsuarioService {
             if (!this.usuario) {
                 let token = await this.storage.get('apiToken')
                 this.token = token;
-                let resp = await this.getUserByToken(token).toPromise()
+                let resp = await this.getUserByToken().toPromise()
               
                 this.usuario = resp.data
                 return this.usuario

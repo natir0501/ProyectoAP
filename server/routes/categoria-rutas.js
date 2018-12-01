@@ -47,10 +47,15 @@ api.post('/categorias', async (req, res) => {
 
 
         let tesoreros = await altaMasivaUsuarios(correosTesoreros, roles[2]._id);
+        console.log('1')
         let delegados = await altaMasivaUsuarios(correoDelegados, roles[0]._id)
+        console.log('1')
         let jugadores = await altaMasivaUsuarios(correoJugadores, roles[3]._id);
+        console.log('1')
+        
         let dts = await altaMasivaUsuarios(correoDts, roles[1]._id);
 
+        console.log('1')
 
 
 
@@ -65,8 +70,9 @@ api.post('/categorias', async (req, res) => {
             nombre, valorCuota, diaGeneracionCuota,
             diaVtoCuota, cantidadCuotasAnuales, dts, tesoreros, delegados, jugadores, cuenta
         })
-        await categoria.save();
 
+        await categoria.save();
+        await cate
         
         return res.status(200).send(new ApiResponse(categoria, ''));
 
@@ -110,9 +116,9 @@ altaMasivaUsuarios = async (correos, rolId) => {
             usu = new Usuario({ email })
             usu.roles.push(rolId)
             console.log('no existe', usu)
-            usu = await usu.save()
+            
             await usu.generateAuthToken()
-            usuario.enviarConfirmacionAlta();
+            usu.enviarConfirmacionAlta();
             usuariosIds.push(usu._id)
         }
         else {
