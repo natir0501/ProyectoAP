@@ -3,7 +3,7 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Saldo y moivimientos de Categoría</ion-title>
+    <ion-title>Saldo y Movimientos</ion-title>
   </ion-navbar>
 </ion-header>
 <ion-content padding id="sdomovscat">
@@ -23,12 +23,21 @@
         <ion-item-divider color="light" id="sdomovscat2">
           Movimientos:
         </ion-item-divider>
-        <ion-item *ngFor="let mov of cuenta.movimientos">
-          <ion-icon name="calculator" item-left></ion-icon>
-          <label>Fecha:</label> {{mov.fecha | date:'dd-MM-yyyy'}} <br>
-          <label>Concepto:</label> {{mov.concepto}} <br>
-          <label>Monto:</label> $ {{mov.monto}}<br>
-        </ion-item>
+        <ion-list>
+        <ion-item-sliding *ngFor="let mov of cuenta.movimientos">
+          <ion-item color="none" id="mov._id" icon-start>
+            <ion-icon name="calculator" item-left></ion-icon>
+            <label><b>Fecha:</b></label> {{mov.fecha | date:'dd-MM-yyyy'}} <br>
+            <label><b>Concepto:</b></label> {{mov.concepto}} <br>
+            <label><b>Monto:</b></label> $ {{mov.monto}}<br>
+          </ion-item>
+          <ion-item-options side="right">
+            <button ion-button color="positive" (click)="verDetalle(mov)">
+              Ver Detalle
+            </button>
+          </ion-item-options>
+        </ion-item-sliding>
+      </ion-list>
       </ion-col>
     </ion-row>
     <ion-row justify-content-center>

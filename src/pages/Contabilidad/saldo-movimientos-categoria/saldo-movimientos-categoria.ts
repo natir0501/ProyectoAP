@@ -54,4 +54,8 @@ export class SaldoMovimientosCategoriaPage {
     
   }
 
+  verDetalle(mov){
+  console.log(mov);
+  }
+
 }
