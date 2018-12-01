@@ -26,7 +26,6 @@ api.get('/usuarios/:token', async (req, res) => {
             res.status(404).send(new ApiResponse({}, 'Usuario inválido'))
         }
     } catch (e) {
-        console.log(e)
         res.status(400).send(e)
     }
 

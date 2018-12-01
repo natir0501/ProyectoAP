@@ -9,7 +9,6 @@
   </ion-navbar>
 </ion-header>
 <ion-content padding id="page6">
-  <form id="tiposEventos" (ngSubmit)="onSubmit()" #form="ngForm">
     <ion-grid>
       <ion-row justify-content-center>
         <ion-col col-xl-6>
@@ -31,10 +30,10 @@
                 {{tip.nombre}}
               </ion-item>
               <ion-item-options side="right">
-                <button ion-button color="positive">
+                <button ion-button color="positive" (click)="modificarTipoEvento(tip)">
                   Modificar
                 </button>
-                <button ion-button color="positive"></button>
+                <button ion-button color="positive" ></button>
               </ion-item-options>
             </ion-item-sliding>
           </ion-list>
@@ -42,11 +41,10 @@
       </ion-row>
       <ion-row justify-content-center>
         <ion-col col-xl-2>
-          <button id="tipoEventos-button4" type="submit" ion-button block color="positive">
+          <button id="tipoEventos-button4"  (click)="altaTipoEvento()"  ion-button block color="positive">
             Nuevo tipo de evento
           </button>
         </ion-col>
       </ion-row>
     </ion-grid>
-  </form>
 </ion-content>

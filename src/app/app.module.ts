@@ -1,3 +1,4 @@
+import { MantenimientoTipoEventosPage } from './../pages/Backoffice/mantenimiento-tipo-eventos/mantenimiento-tipo-eventos';
 import { MantenimientoCategoriaPage } from './../pages/mantenimiento-categoria/mantenimiento-categoria';
 import { TipoEventosPage } from './../pages/Backoffice/tipo-eventos/tipo-eventos';
 import { TipoEventoService } from './../providers/tipoevento.service';
@@ -42,6 +43,8 @@ import { ListaCategoriasPage } from '../pages/lista-categorias/lista-categorias'
     TipoEventosPage,
     TouchedWorkaroundDirective,
     ListaCategoriasPage,
+    MantenimientoTipoEventosPage,
+    
 
   ],
   imports: [
@@ -64,7 +67,9 @@ import { ListaCategoriasPage } from '../pages/lista-categorias/lista-categorias'
     ConceptosDeCajaPage,
     AltaConceptosDeCajaPage,
     TipoEventosPage,
-    ListaCategoriasPage
+    ListaCategoriasPage,
+    MantenimientoTipoEventosPage,
+    
   ],
   providers: [
     FirebaseMessagingProvider,

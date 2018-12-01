@@ -41,13 +41,14 @@ export class MyApp {
           this.utils.apiUrl = 'http://localhost:3000/'
           this.usuarioServ.apiUrl = this.utils.apiUrl
         }
+        this.usuarioServ.getActualUser().then((resp : any)=>{
+          this.usuario = resp.usuario
+          
+        })
       })
 
     });
-    this.usuarioServ.getActualUser().then((resp : any)=>{
-      this.usuario = resp.usuario
-      
-    })
+    
   }
 
   ngOnInit(): void {
