@@ -43,7 +43,7 @@ export class AltaConceptosDeCajaPage {
           },
           (err) => {
             console.log("Error dando de alta el concepto", err)
-            this.utilServ.dispararAlert("Error", "Ocurrió un error al agregar el concepto")
+            this.utilServ.dispararAlert("Error", "Ocurrió un error al agregar el concepto", err)
           }
         )
 
