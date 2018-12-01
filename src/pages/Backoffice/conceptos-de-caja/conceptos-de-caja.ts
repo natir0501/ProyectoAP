@@ -30,11 +30,7 @@ export class ConceptosDeCajaPage {
   
     this.conceptoServ.obtenerConceptos()
       .subscribe((resp) => {
-
         this.conceptos = resp.data.conceptosCaja;
-
-
-
       },
         (err) => {
           console.log("Error obteniendo conceptos de caja", err)
@@ -44,15 +40,13 @@ export class ConceptosDeCajaPage {
         })
   }
 
-
  
   irAlta(){
-    
-    this.navCtrl.setRoot(AltaConceptosDeCajaPage)
+    this.navCtrl.push(AltaConceptosDeCajaPage)
   }
 
   modificarConcepto(concepto: ConceptoCaja) {
-    this.navCtrl.setRoot(AltaConceptosDeCajaPage, {concepto})
+    this.navCtrl.push(AltaConceptosDeCajaPage, {concepto})
   }
 
 

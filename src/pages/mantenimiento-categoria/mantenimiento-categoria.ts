@@ -19,7 +19,7 @@ export class MantenimientoCategoriaPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad MantenimientoCategoriaPage');
+   
   }
 
 }

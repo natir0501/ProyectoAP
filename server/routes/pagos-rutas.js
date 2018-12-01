@@ -40,16 +40,11 @@ api.post('/pagos', autenticacion, async (req, res) => {
         asumo que el registro de pago lo hace el tesorero, entonces confirmado=true y cambio saldo 
         de la categoría
          */
-
-         console.log(req.usuario._id);
-         console.log(jugador._id);
         if (jugador._id.toString()!==req.usuario._id.toString()) {
             mov.confirmado = true;
             conf=true
             categoria.cuenta.saldo = categoria.cuenta.saldo + mov.monto
         }
-
-        console.log(mov);
         jugador.cuenta.movimientos.push(mov);
         jugador = await jugador.save()
 
@@ -86,7 +81,6 @@ api.patch('/pagos/confirmacion/:id', autenticacion, async (req, res) => {
 
     try {
 
-
         let categoria = await Categoria.findById(req.params.id)
             .populate('cuenta')
             .populate('movimientos')
@@ -99,8 +93,6 @@ api.patch('/pagos/confirmacion/:id', autenticacion, async (req, res) => {
 
         let nuevoSaldoCat = categoria.cuenta.saldo + req.body.monto
         let movsActualizadosCat = categoria.cuenta.movimientos
-
-        console.log("antes");
 
         for (movim of movsActualizadosCat) {
             if (movim.referencia !== null) {
@@ -117,7 +109,6 @@ api.patch('/pagos/confirmacion/:id', autenticacion, async (req, res) => {
                 }
             }
         }
-
         let movsActualizadosJug = jugador.cuenta.movimientos
         for (mov of movsActualizadosJug) {
             if (mov._id.toString() === req.body.referencia) {
@@ -131,8 +122,6 @@ api.patch('/pagos/confirmacion/:id', autenticacion, async (req, res) => {
 
             }
         }
-
-        //Cuenta Categoria
         await Cuenta.findOneAndUpdate({
             _id: categoria.cuenta._id
         }, {
@@ -140,8 +129,6 @@ api.patch('/pagos/confirmacion/:id', autenticacion, async (req, res) => {
             }, {
                 new: true
             })
-
-        //Cuenta jugador 
         await Cuenta.findOneAndUpdate({
             _id: jugador.cuenta._id
         }, {

@@ -51,8 +51,6 @@ api.get('/tipoeventos/:id', async (req,res)=>{
 api.put('/tipoeventos/:id', (req, res) => {
     var id = req.params.id;
     var body = _.pick(req.body, ['nombre']);
-    console.log(id);
-    
 
     TipoEvento.findOneAndUpdate({
         _id: id

@@ -1,3 +1,4 @@
+import { MantenimientoTipoEventosPage } from './../pages/Backoffice/mantenimiento-tipo-eventos/mantenimiento-tipo-eventos';
 import { MantenimientoCategoriaPage } from './../pages/mantenimiento-categoria/mantenimiento-categoria';
 import { TipoEventosPage } from './../pages/Backoffice/tipo-eventos/tipo-eventos';
 import { TipoEventoService } from './../providers/tipoevento.service';
@@ -39,6 +40,7 @@ import { ConceptosDeCajaPage } from '../pages/Backoffice/conceptos-de-caja/conce
     AltaConceptosDeCajaPage,
     ConceptosDeCajaPage,
     TipoEventosPage,
+    MantenimientoTipoEventosPage,
     TouchedWorkaroundDirective
 
   ],
@@ -61,6 +63,7 @@ import { ConceptosDeCajaPage } from '../pages/Backoffice/conceptos-de-caja/conce
     MantenimientoCategoriaPage,
     ConceptosDeCajaPage,
     AltaConceptosDeCajaPage,
+    MantenimientoTipoEventosPage,
     TipoEventosPage
   ],
   providers: [
