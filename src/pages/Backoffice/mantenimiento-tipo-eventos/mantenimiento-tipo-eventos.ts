@@ -1,5 +1,9 @@
-import { Component } from '@angular/core';
+import { TipoEventoService } from './../../../providers/tipoevento.service';
+import { TipoEvento } from './../../../models/tipo.evento.models';
+import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { NgForm } from '@angular/forms';
+import { UtilsServiceProvider } from '../../../providers/utils.service';
 
 /**
  * Generated class for the MantenimientoTipoEventosPage page.
@@ -15,16 +19,27 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class MantenimientoTipoEventosPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  tipoEvento: TipoEvento = new TipoEvento;
+
+  @ViewChild("form") formulario: NgForm
+
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+    public utilServ: UtilsServiceProvider, public tipEventServ: TipoEventoService) {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad MantenimientoTipoEventosPage');
+    /*
+    let te: TipoEvento = this.navParams.get('te')
+    if (te) {
+      this.tipoEvento = te
+    }*/
+    console.log('entre');
+    
   }
 
   onSubmit() {
     console.log("something");
-    
+
   }
 
 }

@@ -26,11 +26,9 @@ export class AltaConceptosDeCajaPage {
   }
 
   ionViewDidLoad() {
-    
-    let conc : Concepto = this.navParams.get('concepto')  
-    
-    if(conc){
-      this.concepto=conc
+    let conc: Concepto = this.navParams.get('concepto')
+    if (conc) {
+      this.concepto = conc
     }
   }
 

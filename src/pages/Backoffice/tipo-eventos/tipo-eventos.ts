@@ -19,7 +19,7 @@ export class TipoEventosPage {
   @ViewChild("form") formulario: NgForm
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-    public tipEventServ: TipoEventoService, public utilServ: UtilsServiceProvider, 
+    public tipEventServ: TipoEventoService, public utilServ: UtilsServiceProvider,
     public loadingCtrl: LoadingController) {
   }
 
@@ -27,7 +27,7 @@ export class TipoEventosPage {
 
     let loading = this.loadingCtrl.create({
       content: 'Cargando',
-      spinner : 'circles'
+      spinner: 'circles'
     });
     loading.present();
 
@@ -38,7 +38,7 @@ export class TipoEventosPage {
         (err) => {
           console.log("Error obteniendo tipos de Eventos", err)
           this.utilServ.dispararAlert("Error", "Ocurrió un error al obtener los tipos de eventos")
-        },()=>{
+        }, () => {
           loading.dismiss();
         })
   }
@@ -47,12 +47,15 @@ export class TipoEventosPage {
     console.log("Algo en tipo eventos");
   }
 
-  altaTipoEvento(){
+  altaTipoEvento() {
+    console.log("Agregar");
+
     this.navCtrl.setRoot(MantenimientoTipoEventosPage)
   }
 
   modificarTipoEvento(te: TipoEvento) {
-    this.navCtrl.setRoot(MantenimientoTipoEventosPage, {te})
+    console.log('Modificar');
+    this.navCtrl.setRoot(MantenimientoTipoEventosPage, { te })
   }
 
 }
