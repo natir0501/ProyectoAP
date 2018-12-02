@@ -30,6 +30,7 @@
             <label><b>Fecha:</b></label> {{mov.fecha | date:'dd-MM-yyyy'}} <br>
             <label><b>Concepto:</b></label> {{mov.concepto}} <br>
             <label><b>Monto:</b></label> $ {{mov.monto}}<br>
+            <label><b>Usuario:</b></label> {{mov.usuario}}<br>
           </ion-item>
           <ion-item-options side="right">
             <button ion-button color="positive" (click)="verDetalle(mov)">

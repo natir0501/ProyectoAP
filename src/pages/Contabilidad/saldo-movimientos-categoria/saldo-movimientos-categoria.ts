@@ -38,7 +38,6 @@ export class SaldoMovimientosCategoriaPage {
     this.cuentaServ.obtenerMovimientos(this.cuenta._id)    
       .subscribe((resp) => {
         this.cuenta.movimientos = resp.data.movimientos;
-        console.log(this.cuenta);
       },
         (err) => {
           console.log("Error obteniendo movimientos", err)

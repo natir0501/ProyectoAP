@@ -1,6 +1,7 @@
 var express = require('express');
 var api = express.Router();
 const { Cuenta } = require('../models/cuenta')
+const { Usuario } = require('../models/usuario')
 const { ConceptosCaja } = require('../models/conceptosCaja')
 const _ = require('lodash')
 const { ObjectID } = require('mongodb')
@@ -57,12 +58,15 @@ api.get('/movimientos/:id', autenticacion, async (req, res) => {
 
         for (let mov of movimientosCuenta){           
             let concepto = await ConceptosCaja.findOne({'_id': mov._id.concepto})
+            let usu = await Usuario.findOne({'_id': mov._id.usuario})
+            
             let movimiento = {
                 ...mov._id
             }
-            movimiento.concepto = concepto.nombre
-            console.log(movimiento)
+            movimiento.concepto = concepto.nombre            
+            movimiento.usuario= usu.nombre + " " + usu.apellido
             movimientos.push(movimiento)    
+            
         }
         res.status(200).send(new ApiResponse({movimientos}))
     } catch (e) {
