@@ -1,6 +1,7 @@
 var express = require('express');
 var api = express.Router();
 const { Usuario } = require('../models/usuario')
+const { Categoria } = require('../models/categoria')
 const { Rol } = require('../models/rol')
 const _ = require('lodash')
 const { ApiResponse } = require('../models/api-response')
@@ -40,6 +41,26 @@ api.post('/usuarios', async (req, res) => {
         usuario.roles = await Rol.find({ codigo: { $in:  req.body.roles } })
         usuario.categoriacuota = req.body.categoriacuota
         usuario.categorias = req.body.categorias
+        
+        categoria = await Categoria.findById(usuario.categorias[0]._id)
+
+        for (let rol of usuario.roles){
+            if(rol.codigo === 'DEL'){
+                categoria.delegados.push(usuario._id)
+            }
+            if(rol.codigo === 'DTS'){
+                categoria.dts.push(usuario._id)
+            }
+            if(rol.codigo === 'TES'){
+                categoria.tesoreros.push(usuario._id)
+            }
+            if(rol.codigo === 'JUG'){
+                categoria.jugadores.push(usuario._id)
+            }
+
+        }
+        await categoria.save()
+
         await usuario.save()
         const token = await usuario.generateAuthToken()
         usuario.enviarConfirmacionAlta();

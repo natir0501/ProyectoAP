@@ -24,23 +24,9 @@ export class HomePage {
   }
   ionViewWillEnter() {
     
-    this.userServ.tokenGuardado().then((token) => {
-      
-      if (!token) {
-        this.navCtrl.setRoot(LoginPage)
-        
-
-      }else{
-        this.userServ.token=token
-        this.userServ.getUserByToken(token).subscribe((resp)=>{
-          if(resp.data.usuario){
-            this.userServ.setUsuario(resp.data.usuario)
-            this.usuario = resp.data.usuario
-          }
-        })
-      }
-      
-    })
+  if(!this.userServ.usuario){
+    this.navCtrl.setRoot(LoginPage)
+  }
   }
   showPlatform(){
     let text = '' + this.platform.platforms();
@@ -60,21 +46,7 @@ export class HomePage {
     })
   }
 
-  alta(){
-    this.navCtrl.push(AltaDeUsuarioPage)
-  }
 
-  concepto(){
-    this.navCtrl.push(AltaConceptosDeCajaPage, )
-  }
-
-  conceptosTodos(){
-    this.navCtrl.push(ConceptosDeCajaPage)
-  }
-
-  tipoEventosTodos(){
-    this.navCtrl.push(TipoEventosPage)
-  }
   
 
 }

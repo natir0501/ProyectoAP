@@ -8,10 +8,10 @@ import { Storage } from '@ionic/storage';
 
 @Injectable()
 export class UsuarioService {
-    
+
     apiUrl: string = ''
     token: string;
-    usuario: Usuario 
+    usuario: Usuario
 
     constructor(private http: HttpClient, private storage: Storage, private util: UtilsServiceProvider) {
         this.apiUrl = this.util.apiUrl
@@ -19,41 +19,44 @@ export class UsuarioService {
     }
 
     public getUserByToken(): Observable<any> {
-        
+
         return this.http.get<any>(this.apiUrl + 'api/usuarios/' + this.token)
 
     }
 
-    
+
 
     public async tokenGuardado() {
-        try{
+        try {
             let token = await this.storage.get('apiToken')
 
-            if (token){
+            if (token) {
                 let resp: any = await this.getUserByToken().toPromise()
-                
+
                 this.usuario = resp.data.usuario
                 return token
             }
             return undefined
-        }catch(e){
+        } catch (e) {
             console.log(e)
             return undefined
         }
-       
-       
+
+
     }
 
     public async getActualUser() {
         try {
             if (!this.usuario) {
                 let token = await this.storage.get('apiToken')
-                this.token = token;
-                let resp = await this.getUserByToken().toPromise()
-              
-                this.usuario = resp.data
-                return this.usuario
+                if (token) {
+                    this.token = token;
+                    let resp = await this.getUserByToken().toPromise()
+
+                    this.usuario = resp.data
+                    return this.usuario
+                }
+                return undefined
             }
         }
         catch (e) {
@@ -64,7 +67,7 @@ export class UsuarioService {
 
     public actualizarUsuario(usuario: Usuario): Observable<any> {
         let headers: HttpHeaders = new HttpHeaders().set("Content-Type", "application/json")
-        
+
         headers = headers.set('x-auth', this.token)
 
         return this.http.put(`${this.apiUrl}api/usuarios/${usuario._id}`, usuario, { headers })
@@ -75,23 +78,23 @@ export class UsuarioService {
         return this.http.post(`${this.apiUrl}api/usuarios/login`, usuario, { headers })
     }
 
-    public setUsuario(usuario: Usuario){
-    
-        this.storage.set('apiToken',usuario.tokens[0].token)
+    public setUsuario(usuario: Usuario) {
+
+        this.storage.set('apiToken', usuario.tokens[0].token)
         this.usuario = usuario
     }
 
-    public logOut(){
+    public logOut() {
         this.token = ''
         return this.storage.remove('apiToken')
-        
+
     }
 
-    public altaUsuario(usu:Usuario): Observable<any>{
+    public altaUsuario(usu: Usuario): Observable<any> {
         let headers: HttpHeaders = new HttpHeaders().set("Content-Type", "application/json")
-        
+
         headers = headers.set('x-auth', this.token)
-        
-        return this.http.post(`${this.apiUrl}api/usuarios`,usu,{headers})
+
+        return this.http.post(`${this.apiUrl}api/usuarios`, usu, { headers })
     }
 }

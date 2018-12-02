@@ -43,7 +43,9 @@ export class MyApp {
         }
         if (this.nav.getActive().name !== 'RegistroPage') {
           this.usuarioServ.getActualUser().then((resp: any) => {
-            this.usuario = resp.usuario
+            if(resp){
+              this.usuario = resp.usuario
+            }
           })
         }
       })

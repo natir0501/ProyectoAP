@@ -49,6 +49,38 @@ var CategoriaSchema = mongoose.Schema({
 
 CategoriaSchema.plugin(uniqueValidator);
 
+CategoriaSchema.methods.asignarRoles = async function(){
+    console.log('enAsingarRoles')
+    var categoria = this
+    const roles = await Rol.find()
+
+    let usuario;
+
+    
+    for(id of categoria.jugadores){
+        console.log(id)
+        usuario = await Usuario.findById(id)
+        console.log(usuario)
+        usuario.roles.push(roles[3]._id)
+        usuario.save()
+    }
+    for(id of categoria.delegados){
+        usuario = await Usuario.findById(id)
+        usuario.roles.push(roles[0]._id)
+        usuario.save()
+    }
+    for(id of categoria.tesoreros){
+        usuario = await Usuario.findById(id)
+        usuario.roles.push(roles[2]._id)
+        usuario.save()
+    }
+    for(id of categoria.dts){
+        usuario = await Usuario.findById(id)
+        usuario.roles.push(roles[1]._id)
+        usuario.save()
+    } 
+    
+}
 
 
 var Categoria = mongoose.model('Categoria',CategoriaSchema)

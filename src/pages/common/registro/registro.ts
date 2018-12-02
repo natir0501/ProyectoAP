@@ -69,8 +69,8 @@ export class RegistroPage implements OnInit {
 
         }
         this.usuario._id = resp.data.usuario._id
-        this.usuarioServ = resp.data.usuario
-
+        this.usuarioServ.usuario = resp.data.usuario
+        
 
 
       }, (err) => {
@@ -89,6 +89,7 @@ export class RegistroPage implements OnInit {
 
     if (this.validoUsuario()) {
       this.usuario.activo = true;
+  
       this.usuarioServ.actualizarUsuario(this.usuario).subscribe((resp) => {
         this.util.dispararAlert('Éxito', "Registro realizado correctamente")
         this.navCtrl.setRoot(LoginPage)
