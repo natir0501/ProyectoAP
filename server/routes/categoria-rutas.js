@@ -132,6 +132,7 @@ altaMasivaUsuarios = async (correos, rolId, catId) => {
         } else {
             let perfiles = [{ 'categoria': catId, 'roles': [rolId] }]
             usu = await new Usuario({ email, perfiles })
+            usu.categoriacuota = catId
             usu = await usu.save()
             usu.generateAuthToken()
             usu.enviarConfirmacionAlta()

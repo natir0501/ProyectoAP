@@ -41,13 +41,7 @@ export class MyApp {
           this.utils.apiUrl = 'http://localhost:3000/'
           this.usuarioServ.apiUrl = this.utils.apiUrl
         }
-        if (this.nav.getActive().name !== 'RegistroPage') {
-          this.usuarioServ.getActualUser().then((resp: any) => {
-            if(resp){
-              this.usuario = resp.usuario
-            }
-          })
-        }
+      
       })
 
     });

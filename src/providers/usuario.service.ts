@@ -47,9 +47,12 @@ export class UsuarioService {
 
     public async getActualUser() {
         try {
+            console.log('Hay usuario? ', this.usuario)
             if (!this.usuario) {
                 let token = await this.storage.get('apiToken')
+
                 if (token) {
+                    console.log('hay token',token)
                     this.token = token;
                     let resp = await this.getUserByToken().toPromise()
 
@@ -58,6 +61,7 @@ export class UsuarioService {
                 }
                 return undefined
             }
+            return this.usuario
         }
         catch (e) {
             console.log(e)
@@ -79,9 +83,11 @@ export class UsuarioService {
     }
 
     public setUsuario(usuario: Usuario) {
-
+        
         this.storage.set('apiToken', usuario.tokens[0].token)
+        this.token = usuario.tokens[0].token
         this.usuario = usuario
+        
     }
 
     public logOut() {

@@ -24,9 +24,17 @@ export class HomePage {
   }
   ionViewWillEnter() {
     
-  if(!this.userServ.usuario){
-    this.navCtrl.setRoot(LoginPage)
-  }
+    this.userServ.getActualUser().then((resp: any) => {
+      console.log(resp)
+      if(resp){
+        this.usuario = resp
+        
+      
+      }else{
+        console.log('me fui')
+        this.navCtrl.setRoot(LoginPage)
+      }
+    })
   }
   showPlatform(){
     let text = '' + this.platform.platforms();
