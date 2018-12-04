@@ -23,6 +23,23 @@ api.get('/categorias', autenticacion, (req, res) => {
         }
 })
 
+api.put('/categorias/:id', autenticacion, async (req,res)=>{
+    try {
+        let _id = req.params.id
+        let categoria = await Categoria.findOneAndUpdate({_id},req.body)
+        if(categoria){
+            res.send(new ApiResponse({categoria}))
+        }
+        else{
+            res.status(404).send(new ApiResponse({}, 'Categoría no encontrada'))
+        }
+    } catch (error) {
+        res.status(400).send({},error)
+    }
+    
+
+})
+
 api.post('/categorias', async (req, res) => {
 
     try {
