@@ -24,22 +24,16 @@ export class HomePage {
   }
   ionViewWillEnter() {
     
-    this.userServ.tokenGuardado().then((token) => {
-      
-      if (!token) {
-        this.navCtrl.setRoot(LoginPage)
+    this.userServ.getActualUser().then((resp: any) => {
+      console.log(resp)
+      if(resp){
+        this.usuario = resp
         
-
-      }else{
-        this.userServ.token=token
-        this.userServ.getUserByToken(token).subscribe((resp)=>{
-          if(resp.data.usuario){
-            this.userServ.setUsuario(resp.data.usuario)
-            this.usuario = resp.data.usuario
-          }
-        })
-      }
       
+      }else{
+        console.log('me fui')
+        this.navCtrl.setRoot(LoginPage)
+      }
     })
   }
   showPlatform(){
@@ -60,21 +54,7 @@ export class HomePage {
     })
   }
 
-  alta(){
-    this.navCtrl.push(AltaDeUsuarioPage)
-  }
 
-  concepto(){
-    this.navCtrl.push(AltaConceptosDeCajaPage, )
-  }
-
-  conceptosTodos(){
-    this.navCtrl.push(ConceptosDeCajaPage)
-  }
-
-  tipoEventosTodos(){
-    this.navCtrl.push(TipoEventosPage)
-  }
   
 
 }

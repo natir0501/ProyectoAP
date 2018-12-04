@@ -23,11 +23,15 @@ export class Usuario{
     sociedad?: string;
     contacto?: string;
     posiciones ?: string[] =[]
-    roles ?: string[]=[];
     activo ?: boolean;
-    categorias?: Categoria[]=[];
+    perfiles:  Perfil[] = []
     categoriacuota ?: Categoria;
 
 
    
+}
+
+export class Perfil{
+    categoria?: Categoria
+    roles?: string [] = []
 }

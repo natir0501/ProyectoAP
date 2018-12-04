@@ -13,7 +13,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { HomePage } from '../pages/home/home';
 import { FirebaseMessagingProvider } from '../providers/firebase-messaging';
 import { LoginPage } from '../pages/common/login/login';
-import { GENERIC, AVATAR } from '../providers/constant';
+import { ListaCategoriasPage } from '../pages/lista-categorias/lista-categorias';
+
 @Component({
   templateUrl: 'app.html'
 })
@@ -21,7 +22,7 @@ export class MyApp {
   rootPage: any = HomePage;
   pages: any;
   shownGroup: any;
-  
+
   avatar: string = CEILOGO;
   usuario: Usuario = new Usuario()
   @ViewChild(Nav) nav: NavController;
@@ -34,25 +35,24 @@ export class MyApp {
       statusBar.styleDefault();
       splashScreen.hide();
       this.http.get('../assets/ambiente.json').subscribe((res: any) => {
+
         if (res.env === 'dev') {
+
           this.utils.apiUrl = 'http://localhost:3000/'
-          this.usuarioServ.apiUrl=this.utils.apiUrl
+          this.usuarioServ.apiUrl = this.utils.apiUrl
         }
-        this.usuarioServ.getActualUser().then((resp : any)=>{
-          this.usuario = resp.usuario
-          
-        })
+      
       })
 
     });
-    
+
   }
 
   ngOnInit(): void {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
     //Add 'implements OnInit' to the class.
 
-    
+
     this.pages = [
 
       {
@@ -67,7 +67,7 @@ export class MyApp {
         title: 'Delegado', icon: 'clipboard', right_icon: 'add',
         sub: [
           { sub_title: 'Alta de usuario', component: AltaDeUsuarioPage },
-          { sub_title: 'Mant. de Categorías', component: MantenimientoCategoriaPage, badge_value: '9' }
+          { sub_title: 'Categorias', component: ListaCategoriasPage, badge_value: '9' }
 
         ]
       },
@@ -93,7 +93,7 @@ export class MyApp {
   }
 
   ionViewDidLoad() {
-   
+
   }
 
   showChild(page) {
@@ -118,15 +118,15 @@ export class MyApp {
     }
   }
 
-  home(){
+  home() {
     this.nav.setRoot(HomePage)
     this.menu.close();
   }
 
   logout() {
-    
+
     this.usuarioServ.logOut();
-    
+
     this.nav.setRoot(LoginPage)
     this.menu.close()
   }

@@ -56,7 +56,7 @@ CategoriaSchema.methods.asignarRoles = async function(){
 
     let usuario;
 
-    console.log(JSON.stringify(roles))
+    
     for(id of categoria.jugadores){
         console.log(id)
         usuario = await Usuario.findById(id)
@@ -81,6 +81,7 @@ CategoriaSchema.methods.asignarRoles = async function(){
     } 
     
 }
+
 
 var Categoria = mongoose.model('Categoria',CategoriaSchema)
 module.exports = {Categoria}

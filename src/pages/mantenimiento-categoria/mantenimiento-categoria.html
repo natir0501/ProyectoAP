@@ -7,7 +7,12 @@
 <ion-header>
 
   <ion-navbar text-center color="primary">
-    <ion-title>Mantenimienot de Categoría</ion-title>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>
+      Mantenimiento Categorias
+    </ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -20,7 +25,7 @@
         <ion-col col-xl-6>
           <div id="registro-markdown6" class="show-list-numbers-and-dots">
             <p class="title">
-              Bienvenido, por favor complete el registro:
+              Ingrese los datos de la categoría:
             </p>
           </div>
           <div class="spacer" style="width:300px;height:15px;" id="registro-spacer8"></div>
@@ -31,96 +36,132 @@
             <ion-label>
               Nombre
             </ion-label>
-            <ion-input text-right type="text" placeholder="Ej: Carlos" name="nombre" [(ngModel)]="usuario.nombre" #nombre="ngModel"  required></ion-input>
+            <ion-input text-right type="text" placeholder="Ej: Mayores" name="nombre" [(ngModel)]="categoria.nombre"
+              #nombre="ngModel" required></ion-input>
           </ion-item>
-          <ion-item [ngClass]="{ 'ng-touched' : apellido.touched }" id="registro-input17" [ngClass]="{ 'ng-touched' : apellido.touched }" >
+          <ion-item [ngClass]="{ 'ng-touched' : valorCuota.touched }" fixed id="registro-input15">
             <ion-label>
-              Apellido
+              Valor de la cuota ($):
             </ion-label>
-            <ion-input text-right type="text" placeholder="Ej: Romano" name="apellido" [(ngModel)]="usuario.apellido" 
-            #apellido="ngModel"  required  ></ion-input>
+            <ion-input text-right type="text" placeholder="Ej: 800" pattern="^[0-9]{1,5}$" name="valorCuota"
+              [(ngModel)]="categoria.valorCuota" #valorCuota="ngModel" required></ion-input>
           </ion-item>
-          <ion-item [ngClass]="{ 'ng-touched' : documento.touched }" id="registro-input26" >
+          <ion-item [ngClass]="{ 'ng-touched' : diaGeneracionCuota.touched }" fixed id="registro-input15">
             <ion-label>
-              C.I.
+              Día gen. cuota:
             </ion-label>
-            <ion-input text-right type="text" #documento="ngModel" pattern="^[0-9]{8}$" placeholder="Ej: 12345678" name="documento" [(ngModel)]="usuario.ci" required></ion-input>
+            <ion-input text-right type="text" placeholder="Ej: 4" name="diaGeneracionCuota" pattern="^([1-9]|1[0123456789])$"
+              [(ngModel)]="categoria.diaGeneracionCuota" #diaGeneracionCuota="ngModel" required></ion-input>
           </ion-item>
-          <ion-item [ngClass]="{ 'ng-touched' : celular.touched }" id="registro-input18">
+          <ion-item [ngClass]="{ 'ng-touched' : diaVtoCuota.touched }" fixed id="registro-input15">
             <ion-label>
-              Celular:
+              Día vto. cuota:
             </ion-label>
-            <ion-input text-right type="text" #celular="ngModel" pattern="^[0-9]{9}$" placeholder="Ej: 099123456" name="celular" [(ngModel)]="usuario.celular" required></ion-input>
+            <ion-input text-right type="text" placeholder="Ej: 10" name="diaVtoCuota" pattern="^([1-9]|1[0123456789])$"
+              [(ngModel)]="categoria.diaVtoCuota" #diaVtoCuota="ngModel" required></ion-input>
           </ion-item>
-          <ion-item [ngClass]="{ 'ng-touched' : direccion.touched }" id="registro-input19">
+          <ion-item [ngClass]="{ 'ng-touched' : cantidadCuotasAnuales.touched }" fixed id="registro-input15">
             <ion-label>
-              Dirección:
+              Cant. de cuotas:
             </ion-label>
-            <ion-input text-right type="text" #direccion="ngModel" placeholder="Ej: Verdi 1234" name="direccion" [(ngModel)]="usuario.direccion" required></ion-input>
+            <ion-input text-right type="text" placeholder="Ej: 10" name="cantidadCuotasAnuales" pattern="^([1-9]|1[012])$"
+              [(ngModel)]="categoria.cantidadCuotasAnuales" #cantidadCuotasAnuales="ngModel" required></ion-input>
           </ion-item>
-          <ion-item [ngClass]="{ 'ng-touched' : password.touched }" id="registro-input25">
+          <ion-item *ngIf="categoria._id === undefined" [ngClass]="{ 'ng-touched' : saldoInicial.touched }" fixed id="registro-input15">
             <ion-label>
-              Password:
+              Saldo Inicial ($):
             </ion-label>
-            <ion-input text-right type="password" pattern="^(?=.*?[a-z])(?=.*?[0-9]).{8,}$" #password="ngModel" placeholder="" name="password" [(ngModel)]="usuario.password" required></ion-input>
+            <ion-input text-right type="text" placeholder="Ej: 10000" name="saldoInicial" pattern="^[0-9]{1,9}$"
+              [(ngModel)]="categoria.saldoInicial" #saldoInicial="ngModel" required></ion-input>
           </ion-item>
-          <div class="error-message" *ngIf="password.touched && password.invalid">La contraseña debe ser alfanumérica de largo mínimo 8</div>
-          <div class="spacer" style="width:300px;height:9px;" id="registro-spacer9"></div>
-          <ion-item-divider color="light" id="registro-list-item-divider9">
-            Datos Complementarios:
-          </ion-item-divider>
-          <ion-item [ngClass]="{ 'ng-touched' : fnacimiento.touched }" id="registro-input21">
-            <ion-label>
-              Fecha Nacimiento:
-            </ion-label>
-            <ion-input text-right type="date" placeholder="" #fnacimiento="ngModel" name="fnacmiento" [(ngModel)]="fechaNacTxt" required></ion-input>
-          </ion-item>
-          <ion-item [ngClass]="{ 'ng-touched' : tieneFmCs.touched }" id="registro-toggle3">
-            <ion-label>
-              C/Salud o F/Médica Vigente
-            </ion-label>
-            <ion-toggle color="positive" #tieneFmCs="ngModel" name="tieneFmCs" [(ngModel)]="fmedicaVigente" required></ion-toggle>
-          </ion-item>
-          <ion-item [ngClass]="{ 'ng-touched' : fvencimiento.touched }" id="registro-input20" *ngIf="fmedicaVigente">
-            <ion-label>
-              Fecha Vencimiento
-            </ion-label>
-            <ion-input text-right type="date" #fvencimiento="ngModel"  placeholder="Ej: 01/01/2020" name="fvencimiento" [(ngModel)]="fechaVtoTxt" required></ion-input>
-          </ion-item>
-          <ion-item [ngClass]="{ 'ng-touched' : sociedad.touched }" id="registro-input23">
-            <ion-label>
-              Sociedad Médica:
-            </ion-label>
-            <ion-input text-right type="text" #sociedad="ngModel" placeholder="Ej: Casmu" name="sMedica" [(ngModel)]="usuario.sociedad" required></ion-input>
-          </ion-item>
-          <ion-item [ngClass]="{ 'ng-touched' : eMovil.touched }" id="registro-input22">
-            <ion-label>
-              Emerg. Móvil:
-            </ion-label>
-            <ion-input  text-right type="text" #eMovil="ngModel" placeholder="Ej: SEMM" name="eMovil" [(ngModel)]="usuario.emergencia" required></ion-input>
-          </ion-item>
-          <ion-item [ngClass]="{ 'ng-touched' : contacto.touched }" id="registro-input27">
-            <ion-label>
-              Contacto Em.
-            </ion-label>
-            <ion-input text-right type="text" #contacto="ngModel"  placeholder="Ej: Papá (099123456)" name="cEmergencia" [(ngModel)]="usuario.contacto" required></ion-input>
-          </ion-item>
-          <ion-item [ngClass]="{ 'ng-touched' : posiciones.touched }" id="registro-select2">
-            <ion-label>
-              Posiciones:
-            </ion-label>
-            <ion-select okText="Ok" cancelText="Cancelar" multiple="true" required   [(ngModel)] = "usuario.posiciones" name="posiciones" [selectedText]="usuario.posiciones.join(', ')">
-              <ion-option *ngFor="let pos of posiciones" [id] = "pos.id" [value] = "pos.id">{{pos.value}}</ion-option>
-            </ion-select>
-          </ion-item>
-          <div class="spacer" style="width:300px;height:14px;" id="registro-spacer10"></div>
+          <div class="spacer" style="width:300px;height:15px;" id="registro-spacer8"></div>
+
+          <ng-container *ngIf="categoria._id!==undefined">
+
+            <ion-item-divider color="light">
+              Delegados
+              <button ion-button item-end class="btn-mostrar" type="button" (click)="mostrar('delegados',!verDelegados)">{{btnDelegados}}</button>
+            </ion-item-divider>
+            <ng-container *ngIf="verDelegados">
+              <ion-item *ngFor="let usu of categoria.delegados" fixed>
+                {{descUsu(usu)}}
+              </ion-item>
+            </ng-container>
+            <ion-item-divider color="light">
+              Tesoreros
+              <button ion-button item-end class="btn-mostrar" type="button" (click)="mostrar('tesoreros',!verTesoreros)">{{btnTesoreros}}</button>
+            </ion-item-divider>
+            <ng-container *ngIf="verTesoreros">
+              <ion-item *ngFor="let usu of categoria.tesoreros" fixed>
+                {{descUsu(usu)}}
+              </ion-item>
+            </ng-container>
+            <ion-item-divider color="light">
+              Dts
+              <button ion-button item-end type="button"  class="btn-mostrar" (click)="mostrar('dts',!verDts)">{{btnDts}}</button>
+            </ion-item-divider>
+            <ng-container *ngIf="verDts">
+              <ion-item *ngFor="let usu of categoria.dts" fixed>
+                {{descUsu(usu)}}
+              </ion-item>
+            </ng-container>
+            <ion-item-divider color="light">
+              Jugadores
+              <button ion-button item-end type="button" class="btn-mostrar" (click)="mostrar('jugadores',!verJugadores)">{{btnJugadores}}</button>
+            </ion-item-divider>
+            <ng-container *ngIf="verJugadores">
+              <ion-item *ngFor="let usu of categoria.jugadores" fixed>
+                {{descUsu(usu)}}
+              </ion-item>
+            </ng-container>
+
+          </ng-container>
+
+          <ng-container *ngIf="categoria._id === undefined">
+
+            <div id="registro-markdown6" class="show-list-numbers-and-dots">
+              <p class="title">
+                Ingrese separados por ";" los correos de los usuarios para cada rol. Se enviará un correo inicialdo en
+                proceso de
+                registro de los usuarios.
+              </p>
+            </div>
+            <div class="spacer" style="width:300px;height:15px;" id="registro-spacer8"></div>
+            <ion-item-divider color="light" id="registro-list-item-divider8">
+              Correos:
+            </ion-item-divider>
+            <ion-item [ngClass]="{ 'ng-touched' : correosJugadores.touched, 'ng-invalid': correosJugadores.invalid }">
+              <ion-label>
+                Jugadores:
+              </ion-label>
+              <ion-textarea text-right #correosJugadores="ngModel" ngModel name="correosJugadores" rows=5 placeholder="Ej: correo1@gmail.com;correo2@gmail.com"></ion-textarea>
+            </ion-item>
+            <ion-item [ngClass]="{ 'ng-touched' : correosDelegados.touched, 'ng-invalid': correosDelegados.invalid }">
+              <ion-label>
+                Delegados:
+              </ion-label>
+              <ion-textarea text-right #correosDelegados="ngModel" ngModel name="correosDelegados" rows=5 placeholder="Ej: correo1@gmail.com;correo2@gmail.com"></ion-textarea>
+            </ion-item>
+            <ion-item [ngClass]="{ 'ng-touched' : correosTesoreros.touched, 'ng-invalid': correosTesoreros.invalid }">
+              <ion-label>
+                Tesoreros:
+              </ion-label>
+              <ion-textarea text-right #correosTesoreros="ngModel" ngModel name="correosTesoreros" rows=5 placeholder="Ej: correo1@gmail.com;correo2@gmail.com"></ion-textarea>
+            </ion-item>
+            <ion-item [ngClass]="{ 'ng-touched' : correosDT.touched, 'ng-invalid': correosDT.invalid }">
+              <ion-label>
+                Directores Técnicos:
+              </ion-label>
+              <ion-textarea text-right #correosDT="ngModel" ngModel name="correosDT" rows=5 placeholder="Ej: correo1@gmail.com;correo2@gmail.com"></ion-textarea>
+            </ion-item>
+          </ng-container>
 
         </ion-col>
       </ion-row>
       <ion-row justify-content-center>
         <ion-col col-xl-2>
-          <button [disabled]="form.form.invalid" type="submit" ion-button="" block color="positive">
-            Aceptar
+          <button type="submit" [disabled]="form.form.invalid" ion-button="" block color="positive">
+            Guardar
           </button>
         </ion-col>
       </ion-row>
