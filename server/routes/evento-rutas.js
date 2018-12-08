@@ -5,15 +5,36 @@ const _ = require('lodash')
 const {ApiResponse} = require('../models/api-response')
 const {ObjectID} = require('mongodb')
 
-api.get('/eventos',(req, res)=>{
+api.get('/eventos', async (req, res)=>{
     
-    Evento.find()
-    .then((eventos)=>{
-        res.status(200).send(new ApiResponse({eventos},''))
-    }),(e)=>{
-        res.status(400).send(new ApiResponse({},"Error al obtener datos."))
-        console.log(e);
+    try{
+        filtros = []
+        if (req.query.tipoEvento) {
+            filtros.push({ 'tipoEvento': ObjectID(req.query.tipoEvento)})
+            console.log("tipoevento :" + req.query.tipoEvento);
+            
+        }
+        if (req.query.fechaInicio) {
+            filtros.push({ 'fecha': { $gt: req.query.fechainicio } })
+        }
+        if (req.query.fechaFin) {
+            filtros.push({ 'fecha': { $lt: req.query.fechafin } })
+        }
         
+        if(filtros.length>0){
+            console.log("Filtros");
+            console.log(filtros[0]);
+            
+                await Evento.find(filtros[0]).then((eventos)=>{
+                res.status(200).send(new ApiResponse({eventos}))
+            })
+        }else{
+                await Evento.find().then((eventos)=>{
+                res.status(200).send(new ApiResponse({eventos}))
+            })
+        }
+    }catch (e){
+        res.status(400).send(new ApiResponse({}, `Error al obtener datos: ${e}`))
     }
 })
 
