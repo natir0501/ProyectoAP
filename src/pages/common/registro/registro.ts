@@ -50,13 +50,7 @@ export class RegistroPage implements OnInit {
   }
   ionViewCanEnter() {
 
-    this.http.get('../assets/ambiente.json').subscribe((res: any) => {
-
-      if (res.env === 'dev') {
-
-        this.util.apiUrl = 'http://localhost:3000/'
-        this.usuarioServ.apiUrl = this.util.apiUrl
-      }
+      console.log('component')
       let token = this.navParams.get('token')
       
       this.usuarioServ.token = token
@@ -65,22 +59,24 @@ export class RegistroPage implements OnInit {
         this.usuarioServ.usuario = resp.data.usuario
         if (resp.data.usuario.activo) {
           this.util.dispararAlert('Registro completo', 'Ya has completado el registro')
-          this.navCtrl.setRoot(LoginPage)
-
+          window.location.href = window.location.origin
         }
         this.usuario._id = resp.data.usuario._id
+        this.usuario.perfiles = resp.data.perfiles
         this.usuarioServ.usuario = resp.data.usuario
         
 
 
       }, (err) => {
         console.log(err)
+        console.log(window.location)
+        window.location.href = window.location.origin
         this.navCtrl.goToRoot({})
       }
 
 
       )
-    })
+    
 
   }
 
@@ -92,8 +88,8 @@ export class RegistroPage implements OnInit {
   
       this.usuarioServ.actualizarUsuario(this.usuario).subscribe((resp) => {
         this.util.dispararAlert('Éxito', "Registro realizado correctamente")
-        this.navCtrl.setRoot(LoginPage)
-        this.navCtrl.goToRoot({})
+        window.location.href = window.location.origin
+        
       }, (err) => {
         this.util.dispararAlert('Error', "Error al dar de alta, intente nuevamente")
         console.log(err)

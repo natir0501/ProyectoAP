@@ -24,17 +24,7 @@ export class HomePage {
   }
   ionViewWillEnter() {
     
-    this.userServ.getActualUser().then((resp: any) => {
-      console.log(resp)
-      if(resp){
-        this.usuario = resp
-        
-      
-      }else{
-        console.log('me fui')
-        this.navCtrl.setRoot(LoginPage)
-      }
-    })
+    
   }
   showPlatform(){
     let text = '' + this.platform.platforms();
@@ -47,12 +37,7 @@ export class HomePage {
 
   }
 
-  salir(){
-    this.userServ.logOut().then(()=>{
-      this.util.dispararAlert('Salir',`Hasta la vuelta, ${this.usuario.nombre}.`)
-      this.navCtrl.setRoot(LoginPage)
-    })
-  }
+  
 
 
   

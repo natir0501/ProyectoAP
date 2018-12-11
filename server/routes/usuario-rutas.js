@@ -8,8 +8,7 @@ const { ApiResponse } = require('../models/api-response')
 
 api.get('/usuarios', (req, res) => {
 
-    Usuario.find().populate('categorias')
-        .exec()
+    Usuario.find()
         .then((usuarios) => res.status(200).send(new ApiResponse({ usuarios })))
         .catch((e) => res.status(400).send(new ApiResponse({}, `Mensaje: ${e}`)))
 })
@@ -22,6 +21,7 @@ api.get('/usuarios/:token', async (req, res) => {
 
         usuario = await Usuario.findByToken(token);
         if (usuario) {
+           
             res.header('x-auth', token).status(200).send(new ApiResponse({ usuario }))
         } else {
             res.status(404).send(new ApiResponse({}, 'Usuario inválido'))
@@ -83,10 +83,14 @@ api.post('/usuarios/login', async (req, res) => {
 
     try {
         let usuario = await Usuario.findByCredentials(req.body.email, req.body.password)
+        
         if (usuario) {
+           
             res.status(200).send({ usuario });
+        }else{
+            res.status(404).send(new ApiResponse({}, 'Usuario y/o contraseña inválidos'));
         }
-        res.status(404).send(new ApiResponse({}, 'Usuario y/o contraseña inválidos'));
+        
     } catch (e) {
         res.status(400).send(new ApiResponse({}, `Mensaje: ${e}`))
     }

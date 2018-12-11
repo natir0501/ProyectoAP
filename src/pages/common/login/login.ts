@@ -37,15 +37,21 @@ export class LoginPage {
 
 
 
-  onSubmit() {
-    
-    this.usuarioServ.login(this.usuario).subscribe((resp) => {
-      this.utils.dispararAlert('Login Correcto', `Bienvenido ${resp.usuario.nombre}!`)
-      
-      this.usuarioServ.setUsuario(resp.usuario)
-      this.navCtrl.setRoot(HomePage)
-    },(err)=>{console.log(err)})
+ onSubmit() {
 
+    
+    this.usuarioServ.login(this.usuario).then((resp: Usuario) => {
+      if (resp) {
+        this.utils.dispararAlert('Login Correcto', `Bienvenido/a ${resp.nombre}!`)
+        this.navCtrl.setRoot(HomePage)
+      } else {
+        this.utils.dispararAlert('Login Incorrecto', 'Por favor verifica tu usuario y password')
+      }
+
+    }).catch((err) => {
+      console.log(err)
+
+    })
 
 
   }

@@ -18,7 +18,8 @@ export enum Roles{
     DEL = 'Delegado',
     DTS = 'Director técnico',
     TES = 'Tesorero',
-    JUG = 'Jugador'
+    JUG = 'Jugador',
+    DIN = 'Delegado Institucional'
 }
 
 export enum Tipos{

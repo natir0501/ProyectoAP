@@ -7,7 +7,7 @@ const rolesRuta= require('./routes/rol-rutas');
 const UsuariosRuta= require('./routes/usuario-rutas');
 const CategoriaRuta= require('./routes/categoria-rutas');
 const ConceptosCaja= require('./routes/conceptosCaja-rutas');
-const {cargaRoles}=require('./Utilidades/script-inicial');
+const {scriptInicial}=require('./Utilidades/script-inicial');
 const tipoEvento= require('./routes/tipoEvento-rutas');
 const cors = require('cors')
 const cuentaRuta= require('./routes/cuenta-rutas');
@@ -43,7 +43,7 @@ app.listen(port,()=>{
 
 })
 
-cargaRoles();
+scriptInicial()
 
 
 module.exports={app}

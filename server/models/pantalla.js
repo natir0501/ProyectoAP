@@ -7,25 +7,22 @@ var PantallaSchema = mongoose.Schema({
         required: true,
         trim: true
     },
-    codigo: {
+  
+    roles: [{
+        type: mongoose.Schema.Types.ObjectId,
+    }],
+    menu: {
         type: String,
-        required: true,
-        minlength:5,
         trim: true,
-        unique: true
     },
-    rolesAlta:[{
-        type: mongoose.Schema.Types.ObjectId,
-    }],
-    rolesBaja:[{
-        type: mongoose.Schema.Types.ObjectId,
-    }],
-    rolesModificacion:[{
-        type: mongoose.Schema.Types.ObjectId,
-    }],
-    rolesConsulta:[{
-        type: mongoose.Schema.Types.ObjectId,
-    }]    
+    opcionMenu: {
+        type: String,
+        trim: true
+    },
+    componente: {
+        type: String,
+        trim: true
+    }
 
 })
 
