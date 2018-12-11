@@ -2,6 +2,7 @@ var express = require('express');
 var api= express.Router();
 const {Rol}=require('../models/rol')
 const _ = require('lodash')
+const {ObjectID} = require('mongodb')
 const {ApiResponse} = require('../models/api-response')
 
  api.get('/roles',(req, res)=>{
@@ -17,11 +18,21 @@ const {ApiResponse} = require('../models/api-response')
 api.post('/roles', async (req,res) =>{
     
     try{
-        var rol = new Rol(_.pick(req.body,['nombre','codigo']))
-        await rol.save()
-        res.status(200).send(new ApiResponse({rol},'Agregado Ok.'));
+   
+        let rolesStr = req.body.rolesId
+        let rolesId = []
+        for (let i = 0; i< rolesStr.length; i++){
+            rolesId.push(ObjectID(rolesStr[i]))
+        }
+        const roles = await Rol.find({'_id': {$in:rolesId}})
+      
+        let nombreRoles = roles.map((rol)=> rol.nombre)
+
+
+        res.status(200).send(new ApiResponse({nombreRoles},''));
     }catch(e){
-        res.status(400).send(new ApiResponse({},"Ya existe código"))
+        console.log(e)
+        res.status(400).send(new ApiResponse({},"Error"))
     }
 })
 

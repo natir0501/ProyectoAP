@@ -141,7 +141,7 @@ export class MantenimientoCategoriaPage {
             'correosDts': this.correosDts
           }).subscribe((resp) => {
             loader.dismiss()
-            this.utils.dispararAlert('Éxito!', 'Categoría creada correctamente')
+            this.utils.dispararAlert('Éxito!', 'Categoría creada correctamente, Debe salir y entrar nuevamente para ver los cambios')
             this.navCtrl.setRoot(ListaCategoriasPage)
           },
             (err) => {

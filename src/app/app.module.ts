@@ -1,3 +1,4 @@
+import { MenuService } from './../providers/menu.service';
 import { MantenimientoTipoEventosPage } from './../pages/Backoffice/mantenimiento-tipo-eventos/mantenimiento-tipo-eventos';
 import { MantenimientoCategoriaPage } from './../pages/mantenimiento-categoria/mantenimiento-categoria';
 import { TipoEventosPage } from './../pages/Backoffice/tipo-eventos/tipo-eventos';
@@ -27,12 +28,14 @@ import { HttpClientModule } from '@angular/common/http'
 import { UtilsServiceProvider } from '../providers/utils.service';
 import { ConceptosDeCajaPage } from '../pages/Backoffice/conceptos-de-caja/conceptos-de-caja';
 import { ListaCategoriasPage } from '../pages/lista-categorias/lista-categorias';
+import { PlaceHolderPage } from '../pages/place-holder/place-holder';
 
 
 
 @NgModule({
   declarations: [
     MyApp,
+    PlaceHolderPage,
     HomePage,
     LoginPage,
     AltaDeUsuarioPage,
@@ -61,6 +64,7 @@ import { ListaCategoriasPage } from '../pages/lista-categorias/lista-categorias'
   entryComponents: [
     MyApp,
     HomePage,
+    PlaceHolderPage,
     AltaDeUsuarioPage,
     LoginPage,
     MantenimientoCategoriaPage,
@@ -80,6 +84,7 @@ import { ListaCategoriasPage } from '../pages/lista-categorias/lista-categorias'
     SplashScreen,
     UtilsServiceProvider,
     TipoEventoService,
+    MenuService,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

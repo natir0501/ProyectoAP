@@ -63,7 +63,7 @@
             <ion-label>
               Password:
             </ion-label>
-            <ion-input text-right type="password" pattern="^(?=.*?[a-z])(?=.*?[0-9]).{8,}$" #password="ngModel" placeholder="" name="password" [(ngModel)]="usuario.password" required></ion-input>
+            <ion-input text-right type="text" pattern="^(?=.*?[a-z])(?=.*?[0-9]).{8,}$" #password="ngModel" placeholder="" name="password" [(ngModel)]="usuario.password" required></ion-input>
           </ion-item>
           <div class="error-message" *ngIf="password.touched && password.invalid">La contraseña debe ser alfanumérica de largo mínimo 8</div>
           <div class="spacer" style="width:300px;height:9px;" id="registro-spacer9"></div>

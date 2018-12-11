@@ -1,3 +1,9 @@
+import { Categoria } from './../models/categoria.models';
+import { MenuService } from './../providers/menu.service';
+//import { Pantallas } from './../config/pantallas';
+import { PlaceHolderPage } from './../pages/place-holder/place-holder';
+import { ListaCategoriasPage } from './../pages/lista-categorias/lista-categorias';
+import { AppModule } from './app.module';
 import { UsuarioService } from './../providers/usuario.service';
 import { Usuario } from './../models/usuario.model';
 import { CEILOGO } from './../providers/constant';
@@ -6,44 +12,46 @@ import { AltaDeUsuarioPage } from './../pages/common/alta-usuario/alta-de-usuari
 import { UtilsServiceProvider } from './../providers/utils.service';
 import { HttpClient } from '@angular/common/http';
 import { Component, ViewChild } from '@angular/core';
-import { Platform, NavController, MenuController, Nav } from 'ionic-angular';
+import { Platform, NavController, MenuController, Nav, App } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { HomePage } from '../pages/home/home';
 import { FirebaseMessagingProvider } from '../providers/firebase-messaging';
 import { LoginPage } from '../pages/common/login/login';
-import { ListaCategoriasPage } from '../pages/lista-categorias/lista-categorias';
+
+
 
 @Component({
   templateUrl: 'app.html'
 })
 export class MyApp {
+  usuario: Usuario
   rootPage: any = HomePage;
-  pages: any;
+  nombreCategoria : string = ''
+  pages: any = [];
   shownGroup: any;
+  mostrar: boolean = false;
 
   avatar: string = CEILOGO;
-  usuario: Usuario = new Usuario()
+
+  roles: string[] = []
   @ViewChild(Nav) nav: NavController;
 
-  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, public usuarioServ: UsuarioService,
+  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen,
+    public usuarioServ: UsuarioService, public menuServ: MenuService,
     fcmService: FirebaseMessagingProvider, private http: HttpClient, private menu: MenuController, private utils: UtilsServiceProvider) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
+
       statusBar.styleDefault();
       splashScreen.hide();
-      this.http.get('../assets/ambiente.json').subscribe((res: any) => {
 
-        if (res.env === 'dev') {
-
-          this.utils.apiUrl = 'http://localhost:3000/'
-          this.usuarioServ.apiUrl = this.utils.apiUrl
-        }
-      
-      })
-
+      if (window.location.host === 'localhost:8100') {
+        this.utils.apiUrl = 'http://localhost:3000/'
+        this.usuarioServ.apiUrl = this.utils.apiUrl
+      }
     });
 
   }
@@ -53,47 +61,68 @@ export class MyApp {
     //Add 'implements OnInit' to the class.
 
 
-    this.pages = [
+  }
 
-      {
-        title: 'Jugador', icon: 'football', right_icon: 'add',
-        sub: [
-          { sub_title: 'Alta de usuario', component: AltaDeUsuarioPage },
-          { sub_title: 'Cateogorías', component: MantenimientoCategoriaPage, badge_value: '9' }
-
-        ]
-      },
-      {
-        title: 'Delegado', icon: 'clipboard', right_icon: 'add',
-        sub: [
-          { sub_title: 'Alta de usuario', component: AltaDeUsuarioPage },
-          { sub_title: 'Categorias', component: ListaCategoriasPage, badge_value: '9' }
-
-        ]
-      },
-      {
-        title: 'Tesorero', icon: 'cash', right_icon: 'add',
-        sub: [
-          { sub_title: 'Alta de usuario', component: AltaDeUsuarioPage },
-          { sub_title: 'Mant. de Categorías', component: MantenimientoCategoriaPage, badge_value: '9' }
-
-        ]
-      },
-      {
-        title: 'Director Técnico', icon: 'person', right_icon: 'add',
-        sub: [
-          { sub_title: 'Alta de usuario', component: AltaDeUsuarioPage },
-          { sub_title: 'Mantenimiento de Cateogorías', component: MantenimientoCategoriaPage, badge_value: '9' }
-
-        ]
-      }
+  async ngAfterContentInit() {
+    //Called after ngOnInit when the component's or directive's content has been initialized.
+    //Add 'implements AfterContentInit' to the class.
+    let registro: boolean = window.location.hash.split('/').indexOf('registro') > 0
+    if (!registro) {
 
 
-    ];
+      this.usuarioServ.usuConectado.subscribe(async (usu: Usuario) => {
+        console.log('Nuevo usuario', usu)
+        if (usu) {
+
+          this.usuario = usu
+          if (this.usuario.perfiles.length === 0) {
+            this.roles = ['Delegado Institucional']
+            this.pages = await this.menuServ.menuDelegadoInstitucional(this.usuario)
+            console.log(this.pages)
+
+            
+
+          }
+          else {
+            if (this.usuario.perfiles.length === 1) {
+              console.log(this.usuario.perfiles)
+              let resp = await this.usuarioServ.getRoles(this.usuario.perfiles[0].roles).toPromise()
+
+              this.roles = resp.data.nombreRoles 
+              console.log(this.roles)
+              let menu = await this.menuServ.getMenu(this.usuario.perfiles[0].roles)
+              if(this.menuServ.categoriasUsuario.length>1){
+                menu = [
+                  ...menu,
+                  await this.menuServ.switchCategoríaInterno()
+                ]
+              }
+              this.pages = menu
+              this.nombreCategoria = await this.menuServ.nombreCategoria(this.usuario.perfiles[0].categoria)
+              
+
+            } else {
+              this.roles = ['Seleccione categoría']
+              this.pages = [await this.menuServ.switchCategoría(this.usuario)]
+            }
+
+          }
+
+        } else {
+          this.pages = []
+          return this.nav.setRoot(LoginPage)
+        }
+
+      })
+
+      await this.usuarioServ.recuperoUsuario()
+
+
+    }
   }
 
   ionViewDidLoad() {
-
+    
   }
 
   showChild(page) {
@@ -109,9 +138,22 @@ export class MyApp {
   }
 
   openPage(page) {
+   
     if (!(page.component)) {
       this.showChild(page);
     } else {
+      if(page.component.categoria){
+       
+       this.menuServ.cambioCategoria(page.component.categoria).then(()=>{
+        
+         this.shownGroup = null;
+         this.menu.close();
+         
+       }).catch(()=>{
+         
+       })
+       return 
+      }
       this.shownGroup = null;
       this.nav.setRoot(page.component);
       this.menu.close();
@@ -126,9 +168,12 @@ export class MyApp {
   logout() {
 
     this.usuarioServ.logOut();
-
+    this.menuServ.categoriaSeleccionada = undefined
+    this.menuServ.categoriasUsuario = []
+    this.menuServ.perfilesUsuario = []
     this.nav.setRoot(LoginPage)
     this.menu.close()
+    this.nombreCategoria = ''
   }
 }
 

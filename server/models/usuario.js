@@ -49,6 +49,11 @@ var UsuarioSchema = mongoose.Schema({
             message: '{VALUE} No es un email válido.'
         }
     },
+    delegadoInstitucional: {
+        type: Boolean,
+        default: false
+
+    },
     password: {
         type: String,
         minlength: 8
@@ -180,10 +185,12 @@ UsuarioSchema.methods.enviarConfirmacionAlta = function () {
 
 UsuarioSchema.statics.findByCredentials = function (email, password) {
     Usuario = this
-    return Usuario.findOne({ email }).then((usuario) => {
+    return Usuario.findOne({ email }).exec().then((usuario) => {
+        
         if (!usuario) {
             return Promise.reject()
         }
+        
         return new Promise((resolve, reject) => {
             bcrypt.compare(password, usuario.password, (err, res) => {
                 if (!res) {

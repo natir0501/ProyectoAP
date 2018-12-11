@@ -9,7 +9,7 @@ function getDate() : string {
 export class Usuario{
     _id : string = '0';
     email?: string;
-    nombre?: string;
+    nombre?: string ='';
     apellido?: string;
     password?: string;
     ci?: string;
@@ -32,6 +32,6 @@ export class Usuario{
 }
 
 export class Perfil{
-    categoria?: Categoria
+    categoria?: string
     roles?: string [] = []
 }
