@@ -97,11 +97,22 @@ api.post('/categorias', async (req, res) => {
         delegadosInstitucionales = await Usuario.find({ 'delegadoInstitucional': true })
         rolDelegadoInst = await Rol.findOne({ 'codigo': 'DIN' })
 
-
+        let cargue = false;
         for (let i = 0; i < delegadosInstitucionales.length; i++) {
-
-            delegadosInstitucionales[i].perfiles.push({categoria: categoria._id, roles: [rolDelegadoInst._id]})
+            for(let j = 0; j < delegadosInstitucionales[i].perfiles.length; j++){
+               
+                if(delegadosInstitucionales[i].perfiles[j].categoria.toString() === categoria._id.toString()){
+                    delegadosInstitucionales[i].perfiles[j].roles.push(rolDelegadoInst._id)
+                    cargue = true
+                   
+                }
+              
+            }
+            if(!cargue){
+                delegadosInstitucionales[i].perfiles.push({categoria: categoria._id, roles: [rolDelegadoInst._id]})
+            }
             delegadosInstitucionales[i].save()
+           
 
         }
         return res.status(200).send(new ApiResponse(categoria, ''));
