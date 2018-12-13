@@ -78,18 +78,18 @@ export class MyApp {
           if (this.usuario.perfiles.length === 0) {
             this.roles = ['Delegado Institucional']
             this.pages = await this.menuServ.menuDelegadoInstitucional(this.usuario)
-            console.log(this.pages)
+           
 
             
 
           }
           else {
             if (this.usuario.perfiles.length === 1) {
-              console.log(this.usuario.perfiles)
+             
               let resp = await this.usuarioServ.getRoles(this.usuario.perfiles[0].roles).toPromise()
 
               this.roles = resp.data.nombreRoles 
-              console.log(this.roles)
+           
               let menu = await this.menuServ.getMenu(this.usuario.perfiles[0].roles)
               if(this.menuServ.categoriasUsuario.length>1){
                 menu = [
@@ -168,6 +168,8 @@ export class MyApp {
   logout() {
 
     this.usuarioServ.logOut();
+    this.usuario = undefined
+    this.roles = []
     this.menuServ.categoriaSeleccionada = undefined
     this.menuServ.categoriasUsuario = []
     this.menuServ.perfilesUsuario = []

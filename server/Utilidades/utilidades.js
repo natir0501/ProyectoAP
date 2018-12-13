@@ -1,45 +1,65 @@
-const {Usuario} = require('../models/usuario')
-const {Rol} = require('../models/rol')
-const {ObjectID} = require('mongodb')
+const { Usuario } = require('../models/usuario')
+const { Rol } = require('../models/rol')
+const { ObjectID } = require('mongodb')
 const nodemailer = require('nodemailer');
+const { google } = require("googleapis");
+const OAuth2 = google.auth.OAuth2;
 
 const validarTipo = async (arrayUsuarios, tipoUsuario) => {
     let usuariosInvalidos = []
-    const idTipoUsuario = await Rol.find({codigo: tipoUsuario})
-    let usuarios = await Usuario.find({_id:{$in: arrayUsuarios}}) 
-    for (usuario of usuarios){
-        if(!usuario.roles.includes(idTipoUsuario)){
+    const idTipoUsuario = await Rol.find({ codigo: tipoUsuario })
+    let usuarios = await Usuario.find({ _id: { $in: arrayUsuarios } })
+    for (usuario of usuarios) {
+        if (!usuario.roles.includes(idTipoUsuario)) {
             usuariosInvalidos.push(usuario._id)
         }
     }
     return usuariosInvalidos
-     
+
 
 }
 
 const validarId = async (arrayId) => {
-    for (id of arrayId){
-        if(!ObjectID.isValid){
+    for (id of arrayId) {
+        if (!ObjectID.isValid) {
             return false
         }
     }
     return true
 }
 
-const enviarCorreoAlta = (usuario) =>{
+const enviarCorreoAlta = async (usuario) => {
+
+    const oauth2Client = new OAuth2(
+        '349297601621-s63gdr5v1ms3kb88ahe5r4glaqire5t0.apps.googleusercontent.com',
+        '4k7UuEp__UAjcVfOsVJtZTe0', // Client Secret
+        'https://developers.google.com/oauthplayground' // Redirect URL
+    );
+
+    oauth2Client.setCredentials({
+        refresh_token: '1/1tC904dBJ2cw_-7KUdqe9qroSdRr4Zpz6maMeJEHmQY'
+    });
+    const tokens = await oauth2Client.refreshAccessToken()
+    const accessToken = tokens.credentials.access_token
+
+
     var transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-          user: 'appcei.2018@gmail.com',
-          pass: 'Proyecto2018'
-        }
-      });
-    
+            type: "OAuth2",
+            user: "appcei.2018@gmail.com", 
+            clientId: "349297601621-s63gdr5v1ms3kb88ahe5r4glaqire5t0.apps.googleusercontent.com",
+            clientSecret: "4k7UuEp__UAjcVfOsVJtZTe0",
+            refreshToken: "1/1tC904dBJ2cw_-7KUdqe9qroSdRr4Zpz6maMeJEHmQY",
+            accessToken: accessToken
+       }
+    });
+
     let ambiente;
-    if(process.env.AMBIENTE==='PROD'){
+    if (process.env.AMBIENTE === 'PROD') {
         ambiente = ''
     }
-    else{
+    else {
         ambiente = `[${process.env.AMBIENTE}] - `
     }
     let url = process.env.URLREGISTRO + `${usuario.tokens[0].token}`
@@ -47,17 +67,17 @@ const enviarCorreoAlta = (usuario) =>{
                 <p>Por favor ingresa al siguiente link para completar registro:</p>
                 <a href="${url}">Link</a>`
     var mailOptions = {
-    from: 'appcei.2018@gmail.com',
-    to: usuario.email,
-    subject: `${ambiente}Confirmación de registro y alta en CEIapp`,
-    html
+        from: 'appcei.2018@gmail.com',
+        to: usuario.email,
+        subject: `${ambiente}Confirmación de registro y alta en CEIapp`,
+        html
     };
-    
-    transporter.sendMail(mailOptions, function(error, info){
-    if (error) {
-        console.log(error);
-    }
+
+    transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+            console.log(error);
+        }
     });
 }
 
-module.exports={validarTipo,validarId, enviarCorreoAlta};
+module.exports = { validarTipo, validarId, enviarCorreoAlta };
