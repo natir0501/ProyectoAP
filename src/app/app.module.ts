@@ -1,13 +1,13 @@
 import { CuentaService } from './../providers/cuenta.service';
 import { MenuService } from './../providers/menu.service';
 import { MantenimientoTipoEventosPage } from './../pages/Backoffice/mantenimiento-tipo-eventos/mantenimiento-tipo-eventos';
-import { MantenimientoCategoriaPage } from './../pages/mantenimiento-categoria/mantenimiento-categoria';
+import { MantenimientoCategoriaPage } from './../pages/Backoffice/mantenimiento-categoria/mantenimiento-categoria';
 import { TipoEventosPage } from './../pages/Backoffice/tipo-eventos/tipo-eventos';
 import { TipoEventoService } from './../providers/tipoevento.service';
 import { ConceptoService } from './../providers/concepto.service';
 import { AltaConceptosDeCajaPage } from '../pages/Backoffice/alta-conceptos-de-caja/alta-conceptos-de-caja';
 import { CategoriaService } from './../providers/categoria.service';
-import { AltaDeUsuarioPage } from './../pages/common/alta-usuario/alta-de-usuario';
+import { AltaDeUsuarioPage } from './../pages/Backoffice/alta-usuario/alta-de-usuario';
 import { TouchedWorkaroundDirective } from './../directives/touched-workaround.directive';
 import { UsuarioService } from './../providers/usuario.service';
 import { LoginPage } from './../pages/common/login/login';

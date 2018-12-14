@@ -1,0 +1,52 @@
+<ion-header>
+  <ion-navbar text-center color="primary">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Ingreso movimiento de caja</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content padding id="nuevosmovs">
+  <form id='formnuevomov' (ngSubmit)="onSubmit()" #form="ngForm">
+    <ion-grid>
+      <ion-row justify-content-center>
+        <ion-col col-xl-6>
+          <ion-list id="lst-nuevomovim">
+            <ion-item-divider color="light" id="sdomovscat1">
+              Ingreso de Movimiento de Caja
+            </ion-item-divider>
+            <div id="divnuevosmovs">
+              <p style="color:#000000;">
+                Seleccione un concepto de caja y el monto del movimiento para afectar el saldo de la categoría.
+              </p>
+            </div>
+            <ion-item>
+              <ion-label>
+                Concepto del mov.:
+              </ion-label>
+              <ion-select okText="Ok" cancelText="Cancelar" required [(ngModel)]="concepto.nombre" name="concepto">
+                <ion-option *ngFor="let c of conceptos" [id]="c._id" [value]="c._id">
+                  {{concepto.nombre}}
+                </ion-option>
+              </ion-select>
+            </ion-item>
+            <ion-item>
+              <ion-label>
+                Monto:
+              </ion-label>
+              <ion-input text-right type="text" placeholder="Ej: 500" name="monto">
+              </ion-input>
+            </ion-item>
+          </ion-list>
+        </ion-col>
+      </ion-row>
+      <ion-row justify-content-center>
+        <ion-col col-xl-2>
+          <button id="btn-confirmarmov" type="submit" ion-button block color="positive" [disabled]="form.form.invalid">
+            Confirmar
+          </button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+</ion-content>
