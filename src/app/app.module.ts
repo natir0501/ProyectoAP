@@ -16,10 +16,8 @@ import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
-
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
-
 import { AngularFireModule } from 'angularfire2';
 import 'firebase/messaging'; // only import firebase messaging or as needed;
 import { firebaseConfig } from '../enviroment'
@@ -31,6 +29,7 @@ import { ConceptosDeCajaPage } from '../pages/Backoffice/conceptos-de-caja/conce
 import { ListaCategoriasPage } from '../pages/lista-categorias/lista-categorias';
 import { SaldoMovimientosCategoriaPage } from '../pages/Contabilidad/saldo-movimientos-categoria/saldo-movimientos-categoria';
 import { PlaceHolderPage } from '../pages/place-holder/place-holder';
+import { RegistroMovCajaPage } from '../pages/Contabilidad/registro-mov-caja/registro-mov-caja';
 
 
 
@@ -49,7 +48,8 @@ import { PlaceHolderPage } from '../pages/place-holder/place-holder';
     TouchedWorkaroundDirective,
     ListaCategoriasPage,
     MantenimientoTipoEventosPage,
-    SaldoMovimientosCategoriaPage
+    SaldoMovimientosCategoriaPage,
+    RegistroMovCajaPage
     
 
   ],
@@ -76,7 +76,8 @@ import { PlaceHolderPage } from '../pages/place-holder/place-holder';
     TipoEventosPage,
     ListaCategoriasPage,
     MantenimientoTipoEventosPage,
-    SaldoMovimientosCategoriaPage
+    SaldoMovimientosCategoriaPage,
+    RegistroMovCajaPage
     
   ],
   providers: [
