@@ -21,4 +21,8 @@ export class CuentaService{
         return this.http.get(`${this.apiUrl}api/movimientos/${_id}`, { headers })
       }
 
+    ingresarMovimiento():Observable<any>{
+        return 
+    }
+
 }

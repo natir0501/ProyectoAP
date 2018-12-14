@@ -1,3 +1,4 @@
+import { ConceptoService } from './../../../providers/concepto.service';
 import { ConceptoCaja } from './../../../models/concepto.models';
 import { Component } from '@angular/core';
 import { CuentaService } from './../../../providers/cuenta.service';
@@ -13,18 +14,33 @@ import { UtilsServiceProvider } from '../../../providers/utils.service';
 export class RegistroMovCajaPage {
 
   conceptos: ConceptoCaja[] = [];
-  concepto : ConceptoCaja = new ConceptoCaja()
-  cuenta : Cuenta = new Cuenta()
- 
+  concepto: ConceptoCaja = new ConceptoCaja()
+  cuenta: Cuenta = new Cuenta()
+
   constructor(public navCtrl: NavController, public navParams: NavParams,
-    public cuentaServ: CuentaService, public loadingCtrl : LoadingController
-    , public utilServ: UtilsServiceProvider) {
+    public cuentaServ: CuentaService, public loadingCtrl: LoadingController
+    , public utilServ: UtilsServiceProvider, public conceptoServ: ConceptoService) {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad RegistroMovCajaPage');
+    let loading = this.loadingCtrl.create({
+      content: 'Cargando',
+      spinner: 'circles'
+    });
+    loading.present()
+
+    this.conceptoServ.obtenerConceptos()
+      .subscribe((resp) => {
+        this.conceptos = resp.data.conceptosCaja;
+      },
+        (err) => {
+          console.log("Error obteniendo conceptos de caja", err)
+          this.utilServ.dispararAlert("Error", "Ocurrió un error al obtener los conceptos de caja")
+        }, () => {
+          loading.dismiss();
+        })
   }
 
-  onSubmit() {}
+  onSubmit() { }
 
 }
