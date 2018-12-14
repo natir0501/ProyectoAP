@@ -1,3 +1,4 @@
+import { UsuariosEnCategoriaPage } from './../pages/usuarios-en-categoria/usuarios-en-categoria';
 import { MenuService } from './../providers/menu.service';
 import { MantenimientoTipoEventosPage } from './../pages/Backoffice/mantenimiento-tipo-eventos/mantenimiento-tipo-eventos';
 import { MantenimientoCategoriaPage } from './../pages/mantenimiento-categoria/mantenimiento-categoria';
@@ -29,6 +30,7 @@ import { UtilsServiceProvider } from '../providers/utils.service';
 import { ConceptosDeCajaPage } from '../pages/Backoffice/conceptos-de-caja/conceptos-de-caja';
 import { ListaCategoriasPage } from '../pages/lista-categorias/lista-categorias';
 import { PlaceHolderPage } from '../pages/place-holder/place-holder';
+import { ModificacionPeriflesPage } from '../pages/modificacion-perifles/modificacion-perifles';
 
 
 
@@ -47,6 +49,8 @@ import { PlaceHolderPage } from '../pages/place-holder/place-holder';
     TouchedWorkaroundDirective,
     ListaCategoriasPage,
     MantenimientoTipoEventosPage,
+    UsuariosEnCategoriaPage,
+    ModificacionPeriflesPage
     
 
   ],
@@ -73,6 +77,8 @@ import { PlaceHolderPage } from '../pages/place-holder/place-holder';
     TipoEventosPage,
     ListaCategoriasPage,
     MantenimientoTipoEventosPage,
+    UsuariosEnCategoriaPage,
+    ModificacionPeriflesPage
     
   ],
   providers: [
