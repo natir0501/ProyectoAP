@@ -7,11 +7,12 @@ const rolesRuta= require('./routes/rol-rutas');
 const UsuariosRuta= require('./routes/usuario-rutas');
 const CategoriaRuta= require('./routes/categoria-rutas');
 const ConceptosCaja= require('./routes/conceptosCaja-rutas');
-const {cargaRoles}=require('./Utilidades/script-inicial');
+const {scriptInicial}=require('./Utilidades/script-inicial');
 const tipoEvento= require('./routes/tipoEvento-rutas');
 const cors = require('cors')
 const cuentaRuta= require('./routes/cuenta-rutas');
 const pagosRuta= require('./routes/pagos-rutas');
+const eventoRuta= require('./routes/evento-rutas');
 
 
 
@@ -30,6 +31,7 @@ app.use('/api', ConceptosCaja)
 app.use('/api', tipoEvento);
 app.use('/api', cuentaRuta);
 app.use('/api', pagosRuta);
+app.use('/api', eventoRuta);
 
 let ruta = __dirname
 ruta = ruta.substring(0,ruta.length-6) + 'www'
@@ -41,6 +43,7 @@ app.listen(port,()=>{
 
 })
 
-cargaRoles();
+scriptInicial()
+
 
 module.exports={app}

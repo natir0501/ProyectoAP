@@ -11,18 +11,18 @@ import { Storage } from '@ionic/storage';
 @Injectable()
 export class CategoriaService{
     
-    apiUrl: string 
+   
     constructor(public http:HttpClient, private utils: UtilsServiceProvider, public usuarioServ: UsuarioService){
-        this.apiUrl = this.utils.apiUrl
+        
     }
 
     obtenerCategorias():Observable<any>{
 
         let headers: HttpHeaders = new HttpHeaders().set("Content-Type", "application/json")
-        
+        console.log(this.utils.apiUrl)
         headers = headers.set('x-auth', this.usuarioServ.token)
 
-        return this.http.get(`${this.apiUrl}api/categorias`, { headers })
+        return this.http.get(`${this.utils.apiUrl}api/categorias`, { headers })
     }
     crearCategoria(categoriaData: any): Observable<any>{
         
@@ -30,7 +30,24 @@ export class CategoriaService{
         
         headers = headers.set('x-auth', this.usuarioServ.token)
 
-        return this.http.post(`${this.apiUrl}api/categorias`,categoriaData, { headers })
+        return this.http.post(`${this.utils.apiUrl}api/categorias`,categoriaData, { headers })
+    }
+
+    actualizarCategoria(categoriaData: any): Observable<any>{
+        
+        let headers: HttpHeaders = new HttpHeaders().set("Content-Type", "application/json")
+        
+        headers = headers.set('x-auth', this.usuarioServ.token)
+
+        return this.http.put(`${this.utils.apiUrl}api/categorias/${categoriaData._id}`,categoriaData, { headers })
+    }
+
+    obtenerCategoria(_id: string): Observable<any>{
+        let headers: HttpHeaders = new HttpHeaders().set("Content-Type", "application/json")
+        
+        headers = headers.set('x-auth', this.usuarioServ.token)
+
+        return this.http.get<any>(`${this.utils.apiUrl}api/categorias/${_id}`,{ headers })
     }
 
     

@@ -1,4 +1,4 @@
-<ion-menu [content]="content">
+<ion-menu  [content]="content">
     <ion-content class="menu">
 
         <div class="avatar-list">
@@ -6,8 +6,9 @@
                 <ion-list>
                     <img data-src="{{avatar}}" class="avatar" (click)="home()">
 
-                    <p class="user">{{usuario.nombre}}</p>
-                    <p class="role">Delegado</p>
+                    <p *ngIf="usuario" class="user">{{usuario.nombre}}</p>
+                    <p *ngIf="usuario && roles.length>0" class="role">{{roles.join(', ')}}</p>
+                    <p *ngIf="usuario && roles.length>0" class="nombre-cat">{{nombreCategoria}}</p>
                 </ion-list>
             </div>
             <div class="avatar-shadow"></div>
@@ -44,7 +45,7 @@
 
     </ion-content>
 
-    <ion-footer>
+    <ion-footer *ngIf="usuario" >
         <ion-toolbar color="#dedee4">
             <ion-title (click)="logout()" class="salir" icon-left>
                 <ion-icon name="log-out"></ion-icon>

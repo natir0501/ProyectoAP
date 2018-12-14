@@ -35,17 +35,6 @@
                 #email="ngModel" required>
               </ion-input>
             </ion-item>
-            <ion-item id="altaDeUsuario-select6">
-              <ion-label>
-                Categoría
-              </ion-label>
-              <ion-select okText="Ok" cancelText="Cancelar" multiple="true" required [(ngModel)]="usuario.categorias"
-                name="categorias">
-                <ion-option *ngFor="let categoria of categorias" [id]="categoria._id" [value]="categoria._id">
-                  {{categoria.nombre}}
-                </ion-option>
-              </ion-select>
-            </ion-item>
             <ion-item id="altaDeUsuario-select9">
               <ion-label>
                 Cat. cobro cuota
@@ -56,15 +45,19 @@
                 </ion-option>
               </ion-select>
             </ion-item>
-            <ion-item id="altaDeUsuario-select7">
-              <ion-label>
-                Roles
-              </ion-label>
-              <ion-select okText="Ok" cancelText="Cancelar" multiple="true" required [(ngModel)]="usuario.roles" name="roles"
-                [selectedText]="usuario.roles.join(', ')">
-                <ion-option *ngFor="let rol of roles" [id]="rol.id" [value]="rol.id">{{rol.value}}</ion-option>
-              </ion-select>
+            <ion-item-divider color="light" id="altaDeUsuario-list-item-divider11">
+                Elija rol de usuario por categoría:
+            </ion-item-divider>
+            <ion-item *ngFor="let cat of categorias" id="altaDeUsuario-select7">
+                <ion-label>
+                  {{cat.nombre}}
+                </ion-label>
+                <ion-select okText="Ok" cancelText="Cancelar" multiple="true" required [(ngModel)]="perfiles[cat._id]" name="roles"
+                  [selectedText]="perfiles[cat._id].join(', ')">
+                  <ion-option *ngFor="let rol of roles" [id]="rol.id" [value]="rol.id">{{rol.value}}</ion-option>
+                </ion-select>
             </ion-item>
+
           </ion-list>
           <div id="altaDeUsuario-markdown11" class="show-list-numbers-and-dots">
             <p style="color:#665C5C;">
@@ -75,7 +68,7 @@
       </ion-row>
       <ion-row justify-content-center>
         <ion-col col-xl-2>
-          <button id="altaDeUsuario-button13" type="submit" ion-button block color="positive"[disabled]="form.form.invalid">
+          <button id="altaDeUsuario-button13" type="submit" ion-button block color="positive" [disabled]="form.form.invalid">
             Confirmar
           </button>
         </ion-col>

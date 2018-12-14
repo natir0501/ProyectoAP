@@ -75,6 +75,48 @@
               [(ngModel)]="categoria.saldoInicial" #saldoInicial="ngModel" required></ion-input>
           </ion-item>
           <div class="spacer" style="width:300px;height:15px;" id="registro-spacer8"></div>
+
+          <ng-container *ngIf="categoria._id!==undefined">
+
+            <ion-item-divider color="light">
+              Delegados
+              <button ion-button item-end class="btn-mostrar" type="button" (click)="mostrar('delegados',!verDelegados)">{{btnDelegados}}</button>
+            </ion-item-divider>
+            <ng-container *ngIf="verDelegados">
+              <ion-item *ngFor="let usu of categoria.delegados" fixed>
+                {{descUsu(usu)}}
+              </ion-item>
+            </ng-container>
+            <ion-item-divider color="light">
+              Tesoreros
+              <button ion-button item-end class="btn-mostrar" type="button" (click)="mostrar('tesoreros',!verTesoreros)">{{btnTesoreros}}</button>
+            </ion-item-divider>
+            <ng-container *ngIf="verTesoreros">
+              <ion-item *ngFor="let usu of categoria.tesoreros" fixed>
+                {{descUsu(usu)}}
+              </ion-item>
+            </ng-container>
+            <ion-item-divider color="light">
+              Dts
+              <button ion-button item-end type="button"  class="btn-mostrar" (click)="mostrar('dts',!verDts)">{{btnDts}}</button>
+            </ion-item-divider>
+            <ng-container *ngIf="verDts">
+              <ion-item *ngFor="let usu of categoria.dts" fixed>
+                {{descUsu(usu)}}
+              </ion-item>
+            </ng-container>
+            <ion-item-divider color="light">
+              Jugadores
+              <button ion-button item-end type="button" class="btn-mostrar" (click)="mostrar('jugadores',!verJugadores)">{{btnJugadores}}</button>
+            </ion-item-divider>
+            <ng-container *ngIf="verJugadores">
+              <ion-item *ngFor="let usu of categoria.jugadores" fixed>
+                {{descUsu(usu)}}
+              </ion-item>
+            </ng-container>
+
+          </ng-container>
+
           <ng-container *ngIf="categoria._id === undefined">
 
             <div id="registro-markdown6" class="show-list-numbers-and-dots">
@@ -119,7 +161,7 @@
       <ion-row justify-content-center>
         <ion-col col-xl-2>
           <button type="submit" [disabled]="form.form.invalid" ion-button="" block color="positive">
-            Aceptar
+            Guardar
           </button>
         </ion-col>
       </ion-row>

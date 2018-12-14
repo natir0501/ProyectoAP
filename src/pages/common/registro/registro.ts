@@ -6,6 +6,7 @@ import { Component, ViewChild, OnInit } from '@angular/core';
 import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
 import { NgForm, NgControl, FormControl } from '@angular/forms';
 import { UtilsServiceProvider } from '../../../providers/utils.service';
+import { HttpClient } from '@angular/common/http';
 
 /**
  * Generated class for the RegistroPage page.
@@ -38,6 +39,7 @@ export class RegistroPage implements OnInit {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private usuarioServ: UsuarioService,
+    private http: HttpClient,
     private toast: ToastController,
     private util: UtilsServiceProvider) {
 
@@ -47,26 +49,34 @@ export class RegistroPage implements OnInit {
 
   }
   ionViewCanEnter() {
-    let token = this.navParams.get('token')
-    this.usuarioServ.token=token
-    this.usuarioServ.getUserByToken(token).subscribe((resp) => {
-      
-      if (resp.data.usuario.activo) {
-        this.util.dispararAlert('Registro completo', 'Ya has completado el registro')
-        this.navCtrl.setRoot(LoginPage)
 
+      console.log('component')
+      let token = this.navParams.get('token')
+      
+      this.usuarioServ.token = token
+      
+      this.usuarioServ.getUserByToken().subscribe((resp) => {
+        this.usuarioServ.usuario = resp.data.usuario
+        if (resp.data.usuario.activo) {
+          this.util.dispararAlert('Registro completo', 'Ya has completado el registro')
+          window.location.href = window.location.origin
+        }
+        this.usuario._id = resp.data.usuario._id
+        this.usuario.perfiles = resp.data.perfiles
+        this.usuarioServ.usuario = resp.data.usuario
+        
+
+
+      }, (err) => {
+        console.log(err)
+        console.log(window.location)
+        window.location.href = window.location.origin
+        this.navCtrl.goToRoot({})
       }
-      this.usuario._id = resp.data.usuario._id
-
-      
-
-    }, (err) => {
-      console.log(err)
-      this.navCtrl.goToRoot({})
-    }
 
 
-    )
+      )
+    
 
   }
 
@@ -75,10 +85,11 @@ export class RegistroPage implements OnInit {
 
     if (this.validoUsuario()) {
       this.usuario.activo = true;
+  
       this.usuarioServ.actualizarUsuario(this.usuario).subscribe((resp) => {
         this.util.dispararAlert('Éxito', "Registro realizado correctamente")
-        this.navCtrl.setRoot(LoginPage)
-        this.navCtrl.goToRoot({})
+        window.location.href = window.location.origin
+        
       }, (err) => {
         this.util.dispararAlert('Error', "Error al dar de alta, intente nuevamente")
         console.log(err)
@@ -102,6 +113,6 @@ export class RegistroPage implements OnInit {
     this.usuario.fechaVtoCarneSalud = Date.parse(this.fechaVtoTxt)
     return true
   }
-  
+
 
 }

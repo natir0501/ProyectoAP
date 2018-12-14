@@ -4,8 +4,8 @@ const validator = require('validator')
 const jwt = require('jsonwebtoken')
 const _ = require('lodash')
 const bcrypt = require('bcryptjs')
-var {enviarCorreoAlta} = require('../Utilidades/utilidades')
-const {Cuenta} = require('../models/cuenta')
+var { enviarCorreoAlta } = require('../Utilidades/utilidades')
+const { Cuenta } = require('../models/cuenta')
 
 var UsuarioSchema = mongoose.Schema({
     nombre: {
@@ -29,7 +29,7 @@ var UsuarioSchema = mongoose.Schema({
     },
     direccion: {
         type: String,
-    
+
     },
 
     fechaNacimiento: {
@@ -49,13 +49,18 @@ var UsuarioSchema = mongoose.Schema({
             message: '{VALUE} No es un email válido.'
         }
     },
+    delegadoInstitucional: {
+        type: Boolean,
+        default: false
+
+    },
     password: {
         type: String,
         minlength: 8
     },
-    contacto:{
+    contacto: {
         type: String
-        
+
     },
     activo: {
         type: Boolean,
@@ -64,19 +69,22 @@ var UsuarioSchema = mongoose.Schema({
     posiciones: [{
         type: String
     }],
-    roles: [{
-        type: mongoose.Schema.Types.ObjectId,
-    }],
-    categorias: [
+    perfiles: [{
+        categoria:
         {
             type: mongoose.Schema.Types.ObjectId, ref: 'Categoria'
+        },
+        roles: [{
+            type: mongoose.Schema.Types.ObjectId,
+        }],
         }
     ],
-    categoriacuota:{
-            type: mongoose.Schema.Types.ObjectId, ref: 'Categoria'
+    
+    categoriacuota: {
+        type: mongoose.Schema.Types.ObjectId, ref: 'Categoria'
     },
-    cuenta:{
-        type: mongoose.Schema.Types.ObjectId, ref:'Cuenta'
+    cuenta: {
+        type: mongoose.Schema.Types.ObjectId, ref: 'Cuenta'
     },
     tokens: [{
         access: {
@@ -90,17 +98,15 @@ var UsuarioSchema = mongoose.Schema({
 
 UsuarioSchema.plugin(uniqueValidator);
 
-UsuarioSchema.methods.generateAuthToken = function () {
+UsuarioSchema.methods.generateAuthToken = async function  () {
     var usuario = this;
     var access = 'auth'
     var token = jwt.sign({ _id: usuario._id.toHexString(), access }, process.env.JWT_SECRET).toString()
 
     usuario.tokens = usuario.tokens.concat([{ access, token }])
-
-    return usuario.save().then(() => {
-
-        return token
-    })
+    await usuario.save()
+    return token
+    
 }
 
 UsuarioSchema.methods.removeToken = function (token) {
@@ -133,12 +139,12 @@ UsuarioSchema.statics.findByToken = function (token) {
 }
 UsuarioSchema.pre('save', async function (next) {
     var usuario = this;
-    if(!usuario.cuenta){
-        let cuenta = new Cuenta({movimientos:[],saldo:0});
+    if (!usuario.cuenta) {
+        let cuenta = new Cuenta({ movimientos: [], saldo: 0 });
         cuenta.save()
-        usuario.cuenta= cuenta
+        usuario.cuenta = cuenta
     }
-    usuario.cuenta.save()
+
 
     if (usuario.isModified('password')) {
         bcrypt.genSalt(10, (err, salt) => {
@@ -179,10 +185,12 @@ UsuarioSchema.methods.enviarConfirmacionAlta = function () {
 
 UsuarioSchema.statics.findByCredentials = function (email, password) {
     Usuario = this
-    return Usuario.findOne({ email }).then((usuario) => {
+    return Usuario.findOne({ email }).exec().then((usuario) => {
+        
         if (!usuario) {
             return Promise.reject()
         }
+        
         return new Promise((resolve, reject) => {
             bcrypt.compare(password, usuario.password, (err, res) => {
                 if (!res) {
