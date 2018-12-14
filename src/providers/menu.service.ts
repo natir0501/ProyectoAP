@@ -1,3 +1,4 @@
+import { UsuariosEnCategoriaPage } from './../pages/usuarios-en-categoria/usuarios-en-categoria';
 import { CategoriaService } from './categoria.service';
 import { Categoria } from './../models/categoria.models';
 import { UtilsServiceProvider } from './utils.service';
@@ -40,6 +41,7 @@ export class MenuService {
         this.map.set('AltaDeUsuarioPage', AltaDeUsuarioPage)
         this.map.set('ConceptosDeCajaPage', ConceptosDeCajaPage)
         this.map.set('TipoEventosPage', TipoEventosPage)
+        this.map.set('UsuariosEnCategoríaPage',UsuariosEnCategoriaPage)
 
 
     }

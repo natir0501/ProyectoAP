@@ -111,6 +111,14 @@ export class UsuarioService {
 
         return this.http.post(`${this.apiUrl}api/usuarios`, usu, { headers })
     }
+    
+    public modificarPerfil(usu: Usuario): Observable<any> {
+        let headers: HttpHeaders = new HttpHeaders().set("Content-Type", "application/json")
+
+        headers = headers.set('x-auth', this.token)
+
+        return this.http.put(`${this.apiUrl}api/usuarios/perfiles`, usu, { headers })
+    }
 
     public getRoles(rolesId: string[]): Observable<any>{
         let headers: HttpHeaders = new HttpHeaders().set("Content-Type", "application/json")
