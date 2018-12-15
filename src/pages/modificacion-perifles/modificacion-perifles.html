@@ -33,7 +33,7 @@
                 Cat. cobro cuota
               </ion-label>
               <ion-select okText="Ok" cancelText="Cancelar" required [(ngModel)]="usuario.categoriacuota" name="categoriacuota">
-                <ion-option *ngFor="let categoria of categorias" [id]="categoria._id" [value]="categoria._id">
+                <ion-option *ngFor="let categoria of categoriasCuotas" [id]="categoria._id" [value]="categoria._id">
                   {{categoria.nombre}}
                 </ion-option>
               </ion-select>
@@ -45,7 +45,7 @@
                 </ion-label>
                 <ion-select okText="Ok" cancelText="Cancelar" multiple="true" required [(ngModel)]="perfiles[cat._id]" name="roles"
                   [selectedText]="perfiles[cat._id].join(', ')">
-                  <ion-option *ngFor="let rol of roles" [id]="rol.id" [value]="rol.id">{{rol.value}}</ion-option>
+                  <ion-option *ngFor="let rol of roles" [disabled]="rol.id == 'DIN'" [id]="rol.id" [value]="rol.id">{{rol.value}}</ion-option>
                 </ion-select>
             </ion-item>
 

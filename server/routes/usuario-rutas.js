@@ -124,8 +124,9 @@ api.put('/usuarios/perfiles', async (req, res) => {
 
 
 
-
-        if (usuario.categoriacuota.toString() !== req.body.categoriacuota) {
+        console.log(usuario.categoriacuota)
+        
+        if (usuario.categoriacuota && usuario.categoriacuota.toString() !== req.body.categoriacuota) {
             usuario.categoriacuota = req.body.categoriacuota
         }
 

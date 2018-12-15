@@ -8,7 +8,6 @@ import { NgForm } from '@angular/forms';
 import { UsuarioService } from '../../providers/usuario.service';
 import { CategoriaService } from '../../providers/categoria.service';
 import { UtilsServiceProvider } from '../../providers/utils.service';
-import { elementProperty } from '@angular/core/src/render3/instructions';
 
 /**
  * Generated class for the ModificacionPeriflesPage page.
@@ -25,6 +24,7 @@ import { elementProperty } from '@angular/core/src/render3/instructions';
 export class ModificacionPeriflesPage {
 
   categorias: Categoria[] = [];
+  categoriasCuotas: Categoria[] = [];
   usuario: Usuario = new Usuario();
   roles = Object.keys(Roles).map(key => ({ 'id': key, 'value': Roles[key] }))
   rolesBack = []
@@ -40,6 +40,8 @@ export class ModificacionPeriflesPage {
   }
 
   async ionViewWillEnter() {
+    let categoriasData = await this.categoriaServ.obtenerCategorias().toPromise()
+    this.categoriasCuotas = categoriasData.data.categorias
     let catId = this.usuarioServ.usuario.perfiles[0].categoria
     let resp = await this.categoriaServ.obtenerCategoria(catId).toPromise()
     this.usuario = this.navParams.get('usuario')
