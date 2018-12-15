@@ -1,4 +1,5 @@
 import { CuentaService } from './../providers/cuenta.service';
+import { UsuariosEnCategoriaPage } from './../pages/usuarios-en-categoria/usuarios-en-categoria';
 import { MenuService } from './../providers/menu.service';
 import { MantenimientoTipoEventosPage } from './../pages/Backoffice/mantenimiento-tipo-eventos/mantenimiento-tipo-eventos';
 import { MantenimientoCategoriaPage } from './../pages/Backoffice/mantenimiento-categoria/mantenimiento-categoria';
@@ -30,6 +31,7 @@ import { ListaCategoriasPage } from '../pages/lista-categorias/lista-categorias'
 import { SaldoMovimientosCategoriaPage } from '../pages/Contabilidad/saldo-movimientos-categoria/saldo-movimientos-categoria';
 import { PlaceHolderPage } from '../pages/place-holder/place-holder';
 import { RegistroMovCajaPage } from '../pages/Contabilidad/registro-mov-caja/registro-mov-caja';
+import { ModificacionPeriflesPage } from '../pages/modificacion-perifles/modificacion-perifles';
 
 
 
@@ -49,7 +51,9 @@ import { RegistroMovCajaPage } from '../pages/Contabilidad/registro-mov-caja/reg
     ListaCategoriasPage,
     MantenimientoTipoEventosPage,
     SaldoMovimientosCategoriaPage,
-    RegistroMovCajaPage
+    RegistroMovCajaPage,
+    UsuariosEnCategoriaPage,
+    ModificacionPeriflesPage
     
 
   ],
@@ -77,7 +81,9 @@ import { RegistroMovCajaPage } from '../pages/Contabilidad/registro-mov-caja/reg
     ListaCategoriasPage,
     MantenimientoTipoEventosPage,
     SaldoMovimientosCategoriaPage,
-    RegistroMovCajaPage
+    RegistroMovCajaPage,
+    UsuariosEnCategoriaPage,
+    ModificacionPeriflesPage
     
   ],
   providers: [
