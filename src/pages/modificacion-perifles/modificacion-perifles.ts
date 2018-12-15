@@ -1,6 +1,6 @@
 import { UsuariosEnCategoriaPage } from './../usuarios-en-categoria/usuarios-en-categoria';
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
 import { Categoria } from '../../models/categoria.models';
 import { Usuario } from '../../models/usuario.model';
 import { Roles } from '../../models/enum.models';
@@ -32,14 +32,20 @@ export class ModificacionPeriflesPage {
 
 
   @ViewChild("form") formulario: NgForm
+ 
 
-  constructor(public navCtrl: NavController, public usuarioServ: UsuarioService, public navParams: NavParams
-    , public categoriaServ: CategoriaService, public utilServ: UtilsServiceProvider) {
+  constructor(public navCtrl: NavController, public usuarioServ: UsuarioService, public navParams: NavParams,
+    private load: LoadingController, public categoriaServ: CategoriaService, public utilServ: UtilsServiceProvider) {
 
 
   }
 
   async ionViewWillEnter() {
+    let loader = this.load.create({
+      content: 'Cargando',
+      spinner: 'circles'
+    })
+    loader.present()
     let categoriasData = await this.categoriaServ.obtenerCategorias().toPromise()
     this.categoriasCuotas = categoriasData.data.categorias
     let catId = this.usuarioServ.usuario.perfiles[0].categoria
@@ -49,6 +55,7 @@ export class ModificacionPeriflesPage {
     this.rolesBack = resp2.data.roles
 
     await this.cargoPerfiles(resp)
+    loader.dismiss()
   }
 
   cargoPerfiles(resp: any) {
@@ -90,7 +97,11 @@ export class ModificacionPeriflesPage {
   }
 
   onSubmit() {
-
+    let loader = this.load.create({
+      content: 'Cargando',
+      spinner: 'circles'
+    })
+    loader.present()
     this.armoPerfiles()
 
 
@@ -99,11 +110,12 @@ export class ModificacionPeriflesPage {
         (resp) => {
           this.utilServ.dispararAlert("Listo!", "Usuario modificado correctamente.")
           this.navCtrl.setRoot(UsuariosEnCategoriaPage)
-
+          loader.dismiss()
         },
         (err) => {
           console.log("Error modificando usuario", err)
           this.utilServ.dispararAlert("Error", "Ocurrió un error al modificar usuario")
+          loader.dismiss()
         }
       )
 
