@@ -1,36 +1,37 @@
-import { UsuariosEnCategoriaPage } from './../pages/usuarios-en-categoria/usuarios-en-categoria';
-import { MenuService } from './../providers/menu.service';
-import { MantenimientoTipoEventosPage } from './../pages/Backoffice/mantenimiento-tipo-eventos/mantenimiento-tipo-eventos';
-import { MantenimientoCategoriaPage } from './../pages/mantenimiento-categoria/mantenimiento-categoria';
-import { TipoEventosPage } from './../pages/Backoffice/tipo-eventos/tipo-eventos';
-import { TipoEventoService } from './../providers/tipoevento.service';
-import { ConceptoService } from './../providers/concepto.service';
-import { AltaConceptosDeCajaPage } from '../pages/Backoffice/alta-conceptos-de-caja/alta-conceptos-de-caja';
-import { CategoriaService } from './../providers/categoria.service';
-import { AltaDeUsuarioPage } from './../pages/common/alta-usuario/alta-de-usuario';
-import { TouchedWorkaroundDirective } from './../directives/touched-workaround.directive';
-import { UsuarioService } from './../providers/usuario.service';
-import { LoginPage } from './../pages/common/login/login';
-import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
 import { ErrorHandler, NgModule } from '@angular/core';
-import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
+import { BrowserModule } from '@angular/platform-browser';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
-
-import { MyApp } from './app.component';
-import { HomePage } from '../pages/home/home';
-
+import { IonicStorageModule } from '@ionic/storage';
 import { AngularFireModule } from 'angularfire2';
 import 'firebase/messaging'; // only import firebase messaging or as needed;
-import { firebaseConfig } from '../enviroment'
-import { FirebaseMessagingProvider } from '../providers/firebase-messaging';
-import { IonicStorageModule } from '@ionic/storage';
-import { HttpClientModule } from '@angular/common/http' 
-import { UtilsServiceProvider } from '../providers/utils.service';
+import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
+import { firebaseConfig } from '../enviroment';
+import { AltaConceptosDeCajaPage } from '../pages/Backoffice/alta-conceptos-de-caja/alta-conceptos-de-caja';
 import { ConceptosDeCajaPage } from '../pages/Backoffice/conceptos-de-caja/conceptos-de-caja';
+import { HomePage } from '../pages/home/home';
 import { ListaCategoriasPage } from '../pages/lista-categorias/lista-categorias';
-import { PlaceHolderPage } from '../pages/place-holder/place-holder';
 import { ModificacionPeriflesPage } from '../pages/modificacion-perifles/modificacion-perifles';
+import { PlaceHolderPage } from '../pages/place-holder/place-holder';
+import { FirebaseMessagingProvider } from '../providers/firebase-messaging';
+import { UtilsServiceProvider } from '../providers/utils.service';
+import { TouchedWorkaroundDirective } from './../directives/touched-workaround.directive';
+import { MantenimientoTipoEventosPage } from './../pages/Backoffice/mantenimiento-tipo-eventos/mantenimiento-tipo-eventos';
+import { TipoEventosPage } from './../pages/Backoffice/tipo-eventos/tipo-eventos';
+import { AltaDeUsuarioPage } from './../pages/common/alta-usuario/alta-de-usuario';
+import { LoginPage } from './../pages/common/login/login';
+import { MantenimientoCategoriaPage } from './../pages/mantenimiento-categoria/mantenimiento-categoria';
+import { ModificarPasswordPage } from './../pages/modificar-password/modificar-password';
+import { UsuariosEnCategoriaPage } from './../pages/usuarios-en-categoria/usuarios-en-categoria';
+import { CategoriaService } from './../providers/categoria.service';
+import { ConceptoService } from './../providers/concepto.service';
+import { MenuService } from './../providers/menu.service';
+import { TipoEventoService } from './../providers/tipoevento.service';
+import { UsuarioService } from './../providers/usuario.service';
+import { MyApp } from './app.component';
+
+
 
 
 
@@ -50,7 +51,8 @@ import { ModificacionPeriflesPage } from '../pages/modificacion-perifles/modific
     ListaCategoriasPage,
     MantenimientoTipoEventosPage,
     UsuariosEnCategoriaPage,
-    ModificacionPeriflesPage
+    ModificacionPeriflesPage,
+    ModificarPasswordPage
     
 
   ],
@@ -78,7 +80,8 @@ import { ModificacionPeriflesPage } from '../pages/modificacion-perifles/modific
     ListaCategoriasPage,
     MantenimientoTipoEventosPage,
     UsuariosEnCategoriaPage,
-    ModificacionPeriflesPage
+    ModificacionPeriflesPage,
+    ModificarPasswordPage
     
   ],
   providers: [

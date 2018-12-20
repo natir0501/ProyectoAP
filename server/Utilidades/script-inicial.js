@@ -38,7 +38,7 @@ const cargaPantallas = async () => {
         await new Pantalla({ 'nombre': 'Informe de Pago', 'menu': 'Jugador', 'opcionMenu': 'Informe de Pago', 'componente': 'PlaceHolderPage', 'roles': [delegadoInst._id, jugador._id,] }).save()
         await new Pantalla({ 'nombre': 'Saldos y Movs.', 'menu': 'Jugador', 'opcionMenu': 'Saldos y Movs.', 'componente': 'PlaceHolderPage', 'roles': [delegadoInst._id, jugador._id,] }).save()
         await new Pantalla({ 'nombre': 'Datos deportivos', 'menu': 'Jugador', 'opcionMenu': 'Datos deportivos', 'componente': 'PlaceHolderPage', 'roles': [delegadoInst._id, jugador._id,] }).save()
-        await new Pantalla({ 'nombre': 'Cambiar Password', 'menu': 'Jugador', 'opcionMenu': 'Cambiar Passowrd', 'componente': 'PlaceHolderPage', 'roles': [jugador._id,delegadoInst._id, delegado._id,] }).save()
+        await new Pantalla({ 'nombre': 'Cambiar Password', 'menu': 'Jugador', 'opcionMenu': 'Cambiar Passowrd', 'componente': 'ModificarPasswordPage', 'roles': [jugador._id,delegadoInst._id, delegado._id,] }).save()
         
         
         await new Pantalla({ 'nombre': 'Eventos', 'menu': 'Agenda', 'opcionMenu': 'Eventos', 'componente': 'PlaceHolderPage', 'roles': [delegadoInst._id, jugador._id, delegado._id, dt._id,] }).save()
@@ -56,15 +56,14 @@ const cargaPantallas = async () => {
         
         await new Pantalla({ 'nombre': 'Registro de datos', 'menu': 'Dirección Técnica', 'opcionMenu': 'Registro de datos', 'componente': 'PlaceHolderPage', 'roles': [delegadoInst._id, dt._id,] }).save()
         await new Pantalla({ 'nombre': 'Consulta de datos', 'menu': 'Dirección Técnica', 'opcionMenu': 'Consulta de datos', 'componente': 'PlaceHolderPage', 'roles': [delegadoInst._id, jugador._id, dt._id,] }).save()
-        await new Pantalla({ 'nombre': 'Cambiar Password', 'menu': 'Dirección Técnica', 'opcionMenu': 'Cambiar Passowrd', 'componente': 'PlaceHolderPage', 'roles': [dt._id,] }).save()
+        await new Pantalla({ 'nombre': 'Cambiar Password', 'menu': 'Dirección Técnica', 'opcionMenu': 'Cambiar Passowrd', 'componente': 'ModificarPasswordPage', 'roles': [dt._id,] }).save()
 
 
         await new Pantalla({ 'nombre': 'Permisos', 'menu': 'Back Office', 'opcionMenu': 'Permisos', 'componente': 'PlaceHolderPage', 'roles': [delegadoInst._id, delegado._id,] }).save()
         await new Pantalla({ 'nombre': 'Creación de Usuario', 'menu': 'Back Office', 'opcionMenu': 'Creación de Usuario', 'componente': 'AltaDeUsuarioPage', 'roles': [delegadoInst._id, delegado._id,] }).save()
         await new Pantalla({ 'nombre': 'Categorías', 'menu': 'Back Office', 'opcionMenu': 'Categorías', 'componente': 'ListaCategoriasPage', 'roles': [delegadoInst._id,] }).save()
         await new Pantalla({ 'nombre': 'Tipo de Eventos', 'menu': 'Back Office', 'opcionMenu': 'Tipo de Eventos', 'componente': 'TipoEventosPage', 'roles': [delegadoInst._id, delegado._id,] }).save()
-        await new Pantalla({ 'nombre': 'Cambio forzado de Password', 'menu': 'Back Office', 'opcionMenu': 'Cambio forzado de Password', 'componente': 'PlaceHolderPage', 'roles': [delegadoInst._id, delegado._id,] }).save()
-        await new Pantalla({ 'nombre': 'Modificación perfiles', 'menu': 'Back Office', 'opcionMenu': 'Modificación Perfiles', 'componente': 'UsuariosEnCategoríaPage', 'roles': [delegadoInst._id, delegado._id,] }).save()
+        await new Pantalla({ 'nombre': 'Mod perfiles y password', 'menu': 'Back Office', 'opcionMenu': 'Mod perfiles y password', 'componente': 'UsuariosEnCategoríaPage', 'roles': [delegadoInst._id, delegado._id,] }).save()
       
      
      
