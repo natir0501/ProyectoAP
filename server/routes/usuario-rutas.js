@@ -5,6 +5,7 @@ const { Categoria } = require('../models/categoria')
 const { Rol } = require('../models/rol')
 const _ = require('lodash')
 const { ApiResponse } = require('../models/api-response')
+const { ObjectID} = require ('mongodb')
 
 api.get('/usuarios', (req, res) => {
 
@@ -98,7 +99,7 @@ api.post('/usuarios/login', async (req, res) => {
 
 api.put('/usuarios/perfiles', async (req, res) => {
 
-    
+
     try {
 
         let usuario = await Usuario.findOne({ _id: req.body._id })
@@ -111,11 +112,11 @@ api.put('/usuarios/perfiles', async (req, res) => {
             let rol = await Rol.findOne({ codigo: rolCod })
             roles.push(rol._id)
         }
-        
+
         for (let i = 0; i < usuario.perfiles.length; i++) {
-       
+
             if (usuario.perfiles[i].categoria.toString() === perfil.categoria.toString()) {
-           
+
                 usuario.perfiles[i].roles = [
                     ...roles
                 ]
@@ -125,7 +126,7 @@ api.put('/usuarios/perfiles', async (req, res) => {
 
 
         console.log(usuario.categoriacuota)
-        
+
         if (usuario.categoriacuota && usuario.categoriacuota.toString() !== req.body.categoriacuota) {
             usuario.categoriacuota = req.body.categoriacuota
         }
@@ -149,7 +150,7 @@ api.put('/usuarios/perfiles', async (req, res) => {
             categoria.jugadores.splice(categoria.jugadores.indexOf(usuario._id), 1)
         }
 
-      
+
 
         for (let rolCod of perfil.roles) {
             rol = await Rol.findOne({ 'codigo': rolCod })
@@ -170,7 +171,7 @@ api.put('/usuarios/perfiles', async (req, res) => {
 
         await categoria.save()
 
-     
+
 
         res.status(200).send({ usuario })
     } catch (e) {
@@ -179,9 +180,30 @@ api.put('/usuarios/perfiles', async (req, res) => {
     }
 })
 
+api.put('/usuarios/password', async (req, res) => {
+    try {
+
+        let password = req.body.nuevaPassword
+        
+        let usuario = await Usuario.findOneAndUpdate({ _id: ObjectID(req.body.usuario._id) }, {$set: {password}})
+
+        if(usuario){
+            usuario.tokens = []
+            usuario = await usuario.save()
+            usuario.generateAuthToken()
+            res.send(new ApiResponse({text: 'Cambio exitoso'}))
+        }else{
+            res.status(404).send(new ApiResponse(undefined, {error: 'No existe el usuario'}))
+        }
+    }
+    catch(e){
+        console.log(e)
+        res.status(400).send(new ApiResponse(undefined,{error: 'Error al cambiar password'}))
+    }
+})
+
 
 api.put('/usuarios/:id', async (req, res) => {
-    console.log('usuarios/:id')
     let token = req.header('x-auth')
 
 

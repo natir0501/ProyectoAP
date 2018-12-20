@@ -148,6 +148,7 @@ UsuarioSchema.pre('save', async function (next) {
 
     if (usuario.isModified('password')) {
         bcrypt.genSalt(10, (err, salt) => {
+            
             bcrypt.hash(usuario.password, salt, (err, hash) => {
                 usuario.password = hash
                 next()

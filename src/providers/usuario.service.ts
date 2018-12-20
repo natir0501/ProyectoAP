@@ -128,6 +128,14 @@ export class UsuarioService {
         return this.http.post(`${this.apiUrl}api/roles`, {rolesId}, { headers })
     }
 
+    public modificarPassword(data : any): Observable<any>{
+        let headers: HttpHeaders = new HttpHeaders().set("Content-Type", "application/json")
+
+        headers = headers.set('x-auth', this.token)
+       
+        return this.http.put(`${this.apiUrl}api/usuarios/password`, data, { headers })
+    }
+
     seleccionarPerfil(perfil : Perfil){
         
         this.usuario.perfiles = [perfil]
