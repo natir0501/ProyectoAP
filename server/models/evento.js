@@ -17,12 +17,10 @@ var EventoSchema = mongoose.Schema({
     },
     lugar : {
         nombre:{
-            type: String,
-            required:true
+            type: String
         },
         direccion:{
-            type: String,
-            required:true
+            type: String
         },
         linkUbicacion:{
             type: String
