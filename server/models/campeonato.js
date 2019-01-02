@@ -7,7 +7,7 @@ var CampeonatoSchema = mongoose.Schema({
         required: true,
         unique: true
     },
-    año: {
+    anio: {
         type: Number,
         required: true
     },
