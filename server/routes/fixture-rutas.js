@@ -24,7 +24,9 @@ pi.post('/campeonato', async (req, res) => {
         let fechas = req.body.fechas;
 
         let campeonato = new Campeonato({nombre, anio, fechas})
+
         //aca para cada fecha agregar un evento?? .. un for y voy a agregando?
+
         campeonato = await campeonato.save();
         return res.status(200).send(new ApiResponse(campeonato));
 
@@ -33,6 +35,25 @@ pi.post('/campeonato', async (req, res) => {
         res.status(400).send(new ApiResponse({}, `Mensaje: ${e}`))
     }
 })
+
+api.get('/campeonato/:_id', (req, res) => {
+    let id = req.params._id;
+
+    Campeonato.findOne({
+        _id: id
+    })
+        .populate('fechas')
+        .then((campeonato) => {
+            if (campeonato) {
+                res.status(200).send(new ApiResponse({ campeonato }))
+            } else {
+                res.status(404).send(new ApiResponse({}, "No hay datos para mostrar"));
+            }
+        }).catch((e) => {
+            res.status(400).send(new ApiResponse({}, `Mensaje: ${e}`))
+        })
+})
+
 
 
 
