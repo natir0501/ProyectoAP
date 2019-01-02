@@ -1,6 +1,7 @@
 var express = require('express');
 var api = express.Router();
 const { Campeonato } = require('../models/campeonato')
+const { Fecha } = require('../models/fecha')
 const _ = require('lodash')
 const { ApiResponse } = require('../models/api-response')
 const { ObjectID } = require('mongodb')
@@ -15,10 +16,12 @@ api.get('/campeonatos', (req, res) => {
         }
 })
 
-pi.post('/campeonato', async (req, res) => {
+api.post('/campeonato', async (req, res) => {
 
     try {
 
+        console.log("hola");
+        
         let nombre = req.body.nombre;
         let anio = req.body.anio;
         let fechas = req.body.fechas;
@@ -53,8 +56,5 @@ api.get('/campeonato/:_id', (req, res) => {
             res.status(400).send(new ApiResponse({}, `Mensaje: ${e}`))
         })
 })
-
-
-
 
 module.exports = api;

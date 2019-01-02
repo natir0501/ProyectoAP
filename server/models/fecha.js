@@ -1,7 +1,7 @@
 var mongoose = require('mongoose')
 
 var FechaSchema = mongoose.Schema({
-    fechaReal: {
+    fechaEncuentro: {
         type: Number,
         required: true
     },
@@ -23,7 +23,7 @@ var FechaSchema = mongoose.Schema({
             required:true
         },
         local:{
-            type: boolean,
+            type: Boolean,
             required: true
         },
         lugar:{
