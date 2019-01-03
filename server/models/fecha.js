@@ -1,6 +1,9 @@
 var mongoose = require('mongoose')
 
 var FechaSchema = mongoose.Schema({
+    numeroFecha: {
+        type: Number
+    },
     fechaEncuentro: {
         type: Number,
         required: true

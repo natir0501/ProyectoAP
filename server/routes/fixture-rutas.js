@@ -19,16 +19,12 @@ api.get('/campeonatos', (req, res) => {
 api.post('/campeonato', async (req, res) => {
 
     try {
-
-        console.log("hola");
         
         let nombre = req.body.nombre;
         let anio = req.body.anio;
         let fechas = req.body.fechas;
 
         let campeonato = new Campeonato({nombre, anio, fechas})
-
-        //aca para cada fecha agregar un evento?? .. un for y voy a agregando?
 
         campeonato = await campeonato.save();
         return res.status(200).send(new ApiResponse(campeonato));
