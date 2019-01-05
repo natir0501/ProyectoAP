@@ -1,3 +1,5 @@
+import { CampeonatoService } from './../providers/campeonato.service';
+import { ListaCampeonatosPage } from './../pages/common/lista-campeonatos/lista-campeonatos';
 import { HttpClientModule } from '@angular/common/http';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
@@ -30,6 +32,7 @@ import { MenuService } from './../providers/menu.service';
 import { TipoEventoService } from './../providers/tipoevento.service';
 import { UsuarioService } from './../providers/usuario.service';
 import { MyApp } from './app.component';
+import { MantenimientoCampeonatosPage } from '../pages/common/mantenimiento-campeonatos/mantenimiento-campeonatos';
 
 
 
@@ -52,7 +55,9 @@ import { MyApp } from './app.component';
     MantenimientoTipoEventosPage,
     UsuariosEnCategoriaPage,
     ModificacionPeriflesPage,
-    ModificarPasswordPage
+    ModificarPasswordPage,
+    ListaCampeonatosPage,
+    MantenimientoCampeonatosPage
     
 
   ],
@@ -81,7 +86,9 @@ import { MyApp } from './app.component';
     MantenimientoTipoEventosPage,
     UsuariosEnCategoriaPage,
     ModificacionPeriflesPage,
-    ModificarPasswordPage
+    ModificarPasswordPage,
+    ListaCampeonatosPage,
+    MantenimientoCampeonatosPage
     
   ],
   providers: [
@@ -94,6 +101,7 @@ import { MyApp } from './app.component';
     UtilsServiceProvider,
     TipoEventoService,
     MenuService,
+    CampeonatoService,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
