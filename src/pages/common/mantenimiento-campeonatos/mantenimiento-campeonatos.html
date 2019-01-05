@@ -1,18 +1,51 @@
-<!--
-  Generated template for the MantenimientoCampeonatosPage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
-
-  <ion-navbar>
-    <ion-title>mantenimiento-campeonatos</ion-title>
+  <ion-navbar text-center color="primary">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>
+      Mantenimiento de campeonatos
+    </ion-title>
   </ion-navbar>
-
 </ion-header>
-
-
-<ion-content padding>
-
+<ion-content padding id="page6">
+  <form id="altaCamp-form3" (ngSubmit)="onSubmit()" #form="ngForm">
+    <ion-grid>
+      <ion-row justify-content-center>
+        <ion-col col-xl-6>
+          <div id="alta-markdown3" class="show-list-numbers-and-dots">
+            <p style="color:#000000;">
+              Completar los siguientes datos para dar de alta/modificar un campeonato:
+            </p>
+          </div>
+          <ion-item-divider color="light" id="altaCamp-list-item-divider3">
+            Datos básicos:
+          </ion-item-divider>
+          <ion-item [ngClass]="{'ng-touched' : nombre.touched}" id="altaCamp-input13">
+            <ion-label>
+              Nombre:
+            </ion-label>
+            <ion-input text-right type="text" placeholder="Ej: Pre-Senior LUD 2019" name="nombre" 
+            nombre [(ngModel)]="campeonato.nombre" #nombre="ngModel" required>
+            </ion-input>
+          </ion-item>
+          <ion-item [ngClass]="{'ng-touched' : anio.touched}" id="altaCamp-input14">
+            <ion-label>
+              Año:
+            </ion-label>
+            <ion-input text-right type="text" placeholder="Ej:2019" name="anio" 
+            anio [(ngModel)]="campeonato.anio" #anio="ngModel" required>
+            </ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row justify-content-center>
+        <ion-col col-xl-2>
+          <button id="altaCamp-button4" type="submit" ion-button block color="positive" [disabled]="form.form.invalid">
+            Guardar
+          </button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
 </ion-content>
