@@ -4,6 +4,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { UtilsServiceProvider } from '../../../providers/utils.service';
 import { ListaCampeonatosPage } from '../lista-campeonatos/lista-campeonatos';
+import { MantenimientoFechaPage } from '../../Backoffice/mantenimiento-fecha/mantenimiento-fecha';
 
 /**
  * Generated class for the MantenimientoCampeonatosPage page.
@@ -84,8 +85,8 @@ export class MantenimientoCampeonatosPage {
     console.log("ir a alta de fecha");
   }
   agregarFecha(){
-    console.log("ALGO");
-    
+    let camp=this.campeonato
+    this.navCtrl.push((MantenimientoFechaPage), {camp})
   }
 
 
