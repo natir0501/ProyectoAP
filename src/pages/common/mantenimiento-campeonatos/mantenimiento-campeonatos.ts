@@ -31,6 +31,8 @@ export class MantenimientoCampeonatosPage {
   ionViewDidLoad() {
     let camp: Campeonato = this.navParams.get('campeonato')
     if (camp) {
+      console.log("ACAAA",camp);
+      
       this.campeonato = camp
       this.fechas = camp.fechas
     }
@@ -51,6 +53,7 @@ export class MantenimientoCampeonatosPage {
         )
 
     } else {
+      /*TDB*/
       this.campServ.actualizarCampeonato(this.campeonato)
         .subscribe(
           (resp) => {
@@ -68,14 +71,23 @@ export class MantenimientoCampeonatosPage {
   }
 
   editarFecha(fech : Fecha){
-    console.log("Editar fecha", fech);
+    console.log("Editar fecha");
     
   }
 
   consultarFecha(fech : Fecha){
-    console.log("Consultar fecha", fech);
+    console.log("Consultar fecha");
     
   }
+
+  altaFecha(){
+    console.log("ir a alta de fecha");
+  }
+  agregarFecha(){
+    console.log("ALGO");
+    
+  }
+
 
 }
  

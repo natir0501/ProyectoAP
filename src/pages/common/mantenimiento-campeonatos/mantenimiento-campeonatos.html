@@ -37,26 +37,32 @@
               #anio="ngModel" required>
             </ion-input>
           </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row justify-content-center>
+        <ion-col col-xl-6>
           <ion-item-divider color="light" id="altaCamp-list-item-divider3">
             Fechas:
+
+            <button ion-button item-end class="btn-mostrar" type="button" (click)="agregarFecha()">+</button>
           </ion-item-divider>
           <ion-list>
             <ion-item-sliding *ngFor="let fech of fechas">
               <ion-item color="none" id="fech._id" icon-start>
                 <ion-icon name="calendar" item-left></ion-icon>
-                {{fech.numeroFecha}}
+                <b>Fecha N°:</b> {{fech.numeroFecha}} <br>
+                <b>Rival:</b> {{fech.partido.rival}} <br>
               </ion-item>
               <ion-item-options side="right">
-                <button ion-button color="positive" (click)="editarFecha(fech)">
+                <button type="button" ion-button color="positive" (click)="editarFecha(fech)">
                   Editar
                 </button>
-                <button ion-button color="positive" (click)="consultarFecha(fech)">
-                Consultar
+                <button type="button" ion-button color="positive" (click)="consultarFecha(fech)">
+                  Consultar
                 </button>
               </ion-item-options>
             </ion-item-sliding>
           </ion-list>
-
         </ion-col>
       </ion-row>
       <ion-row justify-content-center>
