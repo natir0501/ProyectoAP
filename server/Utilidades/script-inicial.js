@@ -64,7 +64,7 @@ const cargaPantallas = async () => {
         await new Pantalla({ 'nombre': 'Categorías', 'menu': 'Back Office', 'opcionMenu': 'Categorías', 'componente': 'ListaCategoriasPage', 'roles': [delegadoInst._id,] }).save()
         await new Pantalla({ 'nombre': 'Tipo de Eventos', 'menu': 'Back Office', 'opcionMenu': 'Tipo de Eventos', 'componente': 'TipoEventosPage', 'roles': [delegadoInst._id, delegado._id,] }).save()
         await new Pantalla({ 'nombre': 'Mod perfiles y password', 'menu': 'Back Office', 'opcionMenu': 'Mod perfiles y password', 'componente': 'UsuariosEnCategoríaPage', 'roles': [delegadoInst._id, delegado._id,] }).save()
-      
+        await new Pantalla({ 'nombre': 'Campeonatos', 'menu': 'Back Office', 'opcionMenu': 'Campeonatos', 'componente': 'ListaCampeonatosPage', 'roles': [delegadoInst._id, delegado._id,] }).save()
      
      
         

@@ -25,18 +25,38 @@
             <ion-label>
               Nombre:
             </ion-label>
-            <ion-input text-right type="text" placeholder="Ej: Pre-Senior LUD 2019" name="nombre" 
-            nombre [(ngModel)]="campeonato.nombre" #nombre="ngModel" required>
+            <ion-input text-right type="text" placeholder="Ej: Pre-Senior LUD 2019" name="nombre" nombre [(ngModel)]="campeonato.nombre"
+              #nombre="ngModel" required>
             </ion-input>
           </ion-item>
           <ion-item [ngClass]="{'ng-touched' : anio.touched}" id="altaCamp-input14">
             <ion-label>
               Año:
             </ion-label>
-            <ion-input text-right type="text" placeholder="Ej:2019" name="anio" 
-            anio [(ngModel)]="campeonato.anio" #anio="ngModel" required>
+            <ion-input text-right type="text" placeholder="Ej: 2019" name="anio" anio [(ngModel)]="campeonato.anio"
+              #anio="ngModel" required>
             </ion-input>
           </ion-item>
+          <ion-item-divider color="light" id="altaCamp-list-item-divider3">
+            Fechas:
+          </ion-item-divider>
+          <ion-list>
+            <ion-item-sliding *ngFor="let fech of fechas">
+              <ion-item color="none" id="fech._id" icon-start>
+                <ion-icon name="calendar" item-left></ion-icon>
+                {{fech.numeroFecha}}
+              </ion-item>
+              <ion-item-options side="right">
+                <button ion-button color="positive" (click)="editarFecha(fech)">
+                  Editar
+                </button>
+                <button ion-button color="positive" (click)="consultarFecha(fech)">
+                Consultar
+                </button>
+              </ion-item-options>
+            </ion-item-sliding>
+          </ion-list>
+
         </ion-col>
       </ion-row>
       <ion-row justify-content-center>

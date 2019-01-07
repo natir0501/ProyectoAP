@@ -15,9 +15,9 @@
         <div id="pagecamps-markdown3" class="show-list-numbers-and-dots">
           <p style="color:#000000;">
             A continuación se listan los campeonatos cargados en el sistema.
-            <br>
-            Para agregar nuevos seleccione la opción "Nuevo Campeonato" para ver el detalle de las fechas deslice
-            el registro hacia la izquierda y seleccione la opción "consultar"
+            <br><br>
+            Para agregar nuevos seleccione la opción "Nuevo Campeonato" para editar datos o acceder al 
+            mantenimiento deslice el registro hacia la izquierda y seleccione la opción "consultar"
           </p>
         </div>
         <ion-item-divider color="light" id="pagecamps-list-item-divider3">
@@ -30,8 +30,8 @@
               {{camp.anio}} {{camp.nombre}}
             </ion-item>
             <ion-item-options side="right">
-              <button ion-button color="positive" (click)="consultarCampeonato(camp)">
-                Consultar
+              <button ion-button color="positive" (click)="editarCampeonato(camp)">
+                Editar
               </button>
               <button ion-button color="positive"></button>
             </ion-item-options>

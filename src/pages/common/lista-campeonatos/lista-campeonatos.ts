@@ -1,3 +1,4 @@
+import { MantenimientoCampeonatosPage } from './../mantenimiento-campeonatos/mantenimiento-campeonatos';
 import { Campeonato } from './../../../models/campeonato.model';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
@@ -37,14 +38,14 @@ export class ListaCampeonatosPage {
         })
   }
 
-  consultarCampeonato(campeonato: Campeonato) {
-    //this.navCtrl.push(page de mantCampeonato, {campeonato})
+  editarCampeonato(campeonato: Campeonato) {
+    this.navCtrl.push((MantenimientoCampeonatosPage), {campeonato})
     console.log(campeonato);
     
   }
 
   irAltaCamp(){
-    //this.navCtrl.push(mantCampeonato)
+    this.navCtrl.push(MantenimientoCampeonatosPage)
   }
 
 

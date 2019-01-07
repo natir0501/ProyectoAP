@@ -1,5 +1,5 @@
 import { CampeonatoService } from './../../../providers/campeonato.service';
-import { Campeonato } from './../../../models/campeonato.model';
+import { Campeonato, Fecha } from './../../../models/campeonato.model';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { UtilsServiceProvider } from '../../../providers/utils.service';
@@ -20,6 +20,8 @@ import { ListaCampeonatosPage } from '../lista-campeonatos/lista-campeonatos';
 export class MantenimientoCampeonatosPage {
 
   campeonato: Campeonato = new Campeonato;
+  fecha: Fecha = new Fecha;
+  fechas : Fecha [] = [];
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public campServ: CampeonatoService,
@@ -30,6 +32,7 @@ export class MantenimientoCampeonatosPage {
     let camp: Campeonato = this.navParams.get('campeonato')
     if (camp) {
       this.campeonato = camp
+      this.fechas = camp.fechas
     }
   }
 
@@ -64,4 +67,15 @@ export class MantenimientoCampeonatosPage {
 
   }
 
+  editarFecha(fech : Fecha){
+    console.log("Editar fecha", fech);
+    
+  }
+
+  consultarFecha(fech : Fecha){
+    console.log("Consultar fecha", fech);
+    
+  }
+
 }
+ 
