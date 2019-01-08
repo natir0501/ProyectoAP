@@ -81,9 +81,7 @@ export class MantenimientoCampeonatosPage {
     
   }
 
-  altaFecha(){
-    console.log("ir a alta de fecha");
-  }
+
   agregarFecha(){
     let camp=this.campeonato
     this.navCtrl.push((MantenimientoFechaPage), {camp})

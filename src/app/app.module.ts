@@ -33,6 +33,7 @@ import { TipoEventoService } from './../providers/tipoevento.service';
 import { UsuarioService } from './../providers/usuario.service';
 import { MyApp } from './app.component';
 import { MantenimientoCampeonatosPage } from '../pages/common/mantenimiento-campeonatos/mantenimiento-campeonatos';
+import { MantenimientoFechaPage } from '../pages/Backoffice/mantenimiento-fecha/mantenimiento-fecha';
 
 
 
@@ -57,7 +58,8 @@ import { MantenimientoCampeonatosPage } from '../pages/common/mantenimiento-camp
     ModificacionPeriflesPage,
     ModificarPasswordPage,
     ListaCampeonatosPage,
-    MantenimientoCampeonatosPage
+    MantenimientoCampeonatosPage,
+    MantenimientoFechaPage
     
 
   ],
@@ -88,7 +90,8 @@ import { MantenimientoCampeonatosPage } from '../pages/common/mantenimiento-camp
     ModificacionPeriflesPage,
     ModificarPasswordPage,
     ListaCampeonatosPage,
-    MantenimientoCampeonatosPage
+    MantenimientoCampeonatosPage,
+    MantenimientoFechaPage
     
   ],
   providers: [
