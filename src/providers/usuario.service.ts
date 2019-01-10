@@ -6,6 +6,7 @@ import { Injectable } from "@angular/core";
 import { Observable } from 'rxjs/Observable';
 import { Storage } from '@ionic/storage';
 import { Subject } from 'rxjs/Subject';
+import { Categoria } from '../models/categoria.models';
 
 @Injectable()
 export class UsuarioService {
@@ -143,4 +144,7 @@ export class UsuarioService {
         this.usuSubject.next(this.usuario)
 
     }
+
+    
+
 }

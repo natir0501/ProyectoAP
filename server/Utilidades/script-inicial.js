@@ -41,7 +41,7 @@ const cargaPantallas = async () => {
         await new Pantalla({ 'nombre': 'Cambiar Password', 'menu': 'Jugador', 'opcionMenu': 'Cambiar Passowrd', 'componente': 'ModificarPasswordPage', 'roles': [jugador._id,delegadoInst._id, delegado._id,] }).save()
         
         
-        await new Pantalla({ 'nombre': 'Eventos', 'menu': 'Agenda', 'opcionMenu': 'Eventos', 'componente': 'PlaceHolderPage', 'roles': [delegadoInst._id, jugador._id, delegado._id, dt._id,] }).save()
+        await new Pantalla({ 'nombre': 'Eventos', 'menu': 'Agenda', 'opcionMenu': 'Eventos', 'componente': 'ListaEventosPage', 'roles': [delegadoInst._id, jugador._id, delegado._id, dt._id,] }).save()
         await new Pantalla({ 'nombre': 'Mant Fixture', 'menu': 'Agenda', 'opcionMenu': 'Mant Fixture', 'componente': 'PlaceHolderPage', 'roles': [delegadoInst._id, delegado._id,] }).save()
         await new Pantalla({ 'nombre': 'Fixture', 'menu': 'Agenda', 'opcionMenu': 'Fixture', 'componente': 'PlaceHolderPage', 'roles': [delegadoInst._id, jugador._id, delegado._id, dt._id,] }).save()
         

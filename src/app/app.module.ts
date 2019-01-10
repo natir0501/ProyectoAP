@@ -1,3 +1,4 @@
+import { ModificarEventoPage } from './../pages/modificar-evento/modificar-evento';
 import { HttpClientModule } from '@angular/common/http';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
@@ -5,6 +6,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { IonicStorageModule } from '@ionic/storage';
 import { AngularFireModule } from 'angularfire2';
+import { CalendarModule } from 'ionic3-calendar-en';
 import 'firebase/messaging'; // only import firebase messaging or as needed;
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { firebaseConfig } from '../enviroment';
@@ -30,6 +32,8 @@ import { MenuService } from './../providers/menu.service';
 import { TipoEventoService } from './../providers/tipoevento.service';
 import { UsuarioService } from './../providers/usuario.service';
 import { MyApp } from './app.component';
+import { ListaEventosPage } from '../pages/lista-eventos/lista-eventos';
+import { EventoService } from '../providers/evento.service';
 
 
 
@@ -52,7 +56,9 @@ import { MyApp } from './app.component';
     MantenimientoTipoEventosPage,
     UsuariosEnCategoriaPage,
     ModificacionPeriflesPage,
-    ModificarPasswordPage
+    ModificarPasswordPage,
+    ListaEventosPage,
+    ModificarEventoPage
     
 
   ],
@@ -62,6 +68,7 @@ import { MyApp } from './app.component';
       scrollAssist: true,
       autoFocusAssist: false
     }),
+    CalendarModule,
     AngularFireModule.initializeApp(firebaseConfig),
     IonicStorageModule.forRoot(),
     HttpClientModule
@@ -81,7 +88,9 @@ import { MyApp } from './app.component';
     MantenimientoTipoEventosPage,
     UsuariosEnCategoriaPage,
     ModificacionPeriflesPage,
-    ModificarPasswordPage
+    ModificarPasswordPage,
+    ListaEventosPage,
+    ModificarEventoPage
     
   ],
   providers: [
@@ -94,6 +103,7 @@ import { MyApp } from './app.component';
     UtilsServiceProvider,
     TipoEventoService,
     MenuService,
+    EventoService,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
