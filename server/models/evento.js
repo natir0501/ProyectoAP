@@ -43,10 +43,11 @@ var EventoSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref:'usuario'
     }],
-    categorias:[{
+    categoria:{
         type: mongoose.Schema.Types.ObjectId,
-        ref:'usuario'
-    }]
+        ref:'categoria',
+        require:true
+    }
 })
 
 var Evento = mongoose.model('Evento',EventoSchema)
