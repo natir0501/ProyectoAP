@@ -12,7 +12,7 @@ var EventoSchema = mongoose.Schema({
     },
     tipoEvento: {
         type: mongoose.Schema.Types.ObjectId,
-        ref:'tipoEvento',
+        ref:'TipoEvento',
         required:true
     },
     lugar : {
@@ -33,19 +33,19 @@ var EventoSchema = mongoose.Schema({
     },
     invitados:[{
         type: mongoose.Schema.Types.ObjectId,
-        ref:'usuario'
+        ref:'Usuario'
     }],
     confirmados:[{
         type: mongoose.Schema.Types.ObjectId,
-        ref:'usuario'
+        ref:'Usuario'
     }],
     noAsisten: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref:'usuario'
+        ref:'Usuario'
     }],
     categoria:{
         type: mongoose.Schema.Types.ObjectId,
-        ref:'categoria',
+        ref:'Categoria',
         require:true
     }
 })
