@@ -37,7 +37,12 @@ api.get('/eventos/:id', async (req, res) => {
 
     Evento.findOne({
         _id: id
-    }).then((evento) => {
+    }).populate('invitados')
+    .populate('noAsisten')
+    .populate('confirmados')
+    .populate('categoria')
+    .populate('tipoEvento')
+    .then((evento) => {
         if (evento) {
             res.status(200).send(new ApiResponse({ evento }, ''))
         } else {
