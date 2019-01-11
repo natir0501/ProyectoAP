@@ -15,7 +15,7 @@
     </ion-title>
     <ion-buttons end>
       <button ion-button icon-only (click)="goBack()">
-        <ion-icon name="exit"  ></ion-icon>
+        <ion-icon name="exit"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>
@@ -131,15 +131,16 @@
       </ion-row>
       <div class="spacer" style="width:300px;height:15px;" id="registro-spacer8"></div>
       <ion-row justify-content-center>
-        <ion-col col-xl-2>
-          <button type="submit" [disabled]="form.form.invalid || !validarForm()" ion-button="" block color="positive">
-            Guardar
-          </button>
-        </ion-col>
+
         <ion-col col-xl-2>
           <button type="button" [disabled]="evento._id ==='' || nopuedeCancelar() " ion-button="" (click)="confirmarCancelacion()"
             block color="positive">
             Borrar
+          </button>
+        </ion-col>
+        <ion-col col-xl-2>
+          <button type="submit" [disabled]="form.form.invalid || !validarForm()" ion-button="" block color="positive">
+            Guardar
           </button>
         </ion-col>
       </ion-row>

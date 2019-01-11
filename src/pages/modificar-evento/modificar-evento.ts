@@ -177,14 +177,14 @@ export class ModificarEventoPage {
 
   toggle(lista: string) {
     if (lista === 'usuarios') {
-      if (this.verUsuarios) {
+      if (!this.verUsuarios) {
         this.btnUsuario = '-'
       } else {
         this.btnUsuario = '+'
       }
       this.verUsuarios = !this.verUsuarios
     } else {
-      if (this.verInvitados) {
+      if (!this.verInvitados) {
         this.btnInvitados = '-'
       } else {
         this.btnInvitados = '+'
