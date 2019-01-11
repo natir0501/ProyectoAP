@@ -1,7 +1,9 @@
+import { UtilsServiceProvider } from './../../providers/utils.service';
+import { EventoService } from './../../providers/evento.service';
 import { UsuarioService } from './../../providers/usuario.service';
 import { ListaEventosPage } from './../lista-eventos/lista-eventos';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
 import { Evento } from '../../models/evento.models';
 import { Usuario } from '../../models/usuario.model';
 
@@ -28,7 +30,10 @@ export class DetallesEventoPage {
   verNoVan: boolean = false
   usuario : Usuario = new Usuario()
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private usuServ: UsuarioService) {
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, 
+    private loader: LoadingController, private usuServ: UsuarioService,
+    private utilServ: UtilsServiceProvider, private eventServ: EventoService) {
     this.evento = this.navParams.get('evento')
   }
 
@@ -48,16 +53,20 @@ export class DetallesEventoPage {
     return usu.email
   }
   toggle(lista: string) {
+    console.log(lista)
     if (lista === 'convocados') {
-      if (this.verConvocados) {
+
+      if (!this.verConvocados) {
+        
         this.btnConvocados = '-'
+        
       } else {
         this.btnConvocados = '+'
       }
       this.verConvocados = !this.verConvocados
     }
     if (lista === 'van') {
-      if (this.verVan) {
+      if (!this.verVan) {
         this.btnVan = '-'
       } else {
         this.btnVan = '+'
@@ -65,7 +74,7 @@ export class DetallesEventoPage {
       this.verVan = !this.verVan
     }
     if (lista === 'noVan'){
-      if (this.verNoVan) {
+      if (!this.verNoVan) {
         this.btnNoVan = '-'
       } else {
         this.btnNoVan = '+'
@@ -76,5 +85,26 @@ export class DetallesEventoPage {
 
   diayhora():string{
     return new Date(this.evento.fecha).toLocaleString()
+  }
+
+  confirmar(asiste: boolean){
+    let loader = this.loader.create({
+      content: 'Cargando...',
+      spinner: 'circles'
+
+    })
+    loader.present()
+    this.eventServ.confirmar(this.usuario, asiste, this.evento._id).subscribe((resp)=>{
+      loader.dismiss()
+      if(asiste){
+        this.utilServ.dispararAlert("Procesado","Ha confirmado que asiste al evento")
+      }else{
+        this.utilServ.dispararAlert("Procesado","Ha confirmado que no asiste al evento")
+      }
+      this.navCtrl.setRoot(ListaEventosPage)
+    },(err)=>{
+      console.log(err)
+      this.utilServ.dispararAlert('Error',"No se ha podido completar la solicitud")
+    })
   }
 }

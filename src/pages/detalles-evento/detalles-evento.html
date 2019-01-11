@@ -112,15 +112,16 @@
     <div class="spacer" style="width:300px;height:15px;" id="registro-spacer8"></div>
     <ion-row justify-content-center>
       <ion-col col-xl-2>
-        <button type="submit" ion-button="" block color="positive">
-          Voy
-        </button>
-      </ion-col>
-      <ion-col col-xl-2>
-        <button type="button" ion-button="" block color="positive">
+        <button type="button" ion-button="" block color="positive" (click)="confirmar(false)">
           No Voy
         </button>
       </ion-col>
+      <ion-col col-xl-2>
+        <button type="submit" ion-button="" block color="positive" (click)="confirmar(true)">
+          Voy
+        </button>
+      </ion-col>
+
     </ion-row>
   </ion-grid>
 

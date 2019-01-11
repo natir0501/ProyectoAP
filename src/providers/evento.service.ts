@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { HttpHeaders, HttpClient, HttpParams } from '@angular/common/http';
 import { UtilsServiceProvider } from './utils.service';
 import { UsuarioService } from './usuario.service';
+import { Usuario } from '../models/usuario.model';
 
 @Injectable()
 export class EventoService {
@@ -46,5 +47,10 @@ export class EventoService {
         headers = headers.set('x-auth', this.usuarioServ.token)
         
         return this.http.delete<any>(`${this.apiUrl}api/eventos/${evento._id}`, { headers })
+    }
+    confirmar(usuario : Usuario, asiste: boolean, idEvento: string){
+        let headers: HttpHeaders = new HttpHeaders().set("Content-Type", "application/json")
+        headers = headers.set('x-auth', this.usuarioServ.token)
+        return this.http.put<any>(`${this.apiUrl}api/eventos/${idEvento}/confirmar`,{usuario, asiste}, { headers})
     }
 }
