@@ -55,7 +55,7 @@ api.post('/eventos', async (req, res) => {
     
     try {
         var evento = new Evento(_.pick(req.body, ['fecha', 'nombre', 'tipoEvento', 'tipoEvento', 'lugar',
-            'rival', 'invitados', 'categorias']))
+            'rival', 'invitados', 'categoria']))
         await evento.save()
 
         res.status(200).send(new ApiResponse({ evento }));
@@ -65,6 +65,22 @@ api.post('/eventos', async (req, res) => {
         res.status(400).send(new ApiResponse({}, "No se pudo agregar el evento."))
         console.log(e);
 
+    }
+})
+api.put('/eventos/:id/confirmar', async (req,res) => {
+    try {
+        let _id = req.params.id;
+        let usuario = req.body.usuario
+        let asiste = req.body.asiste
+        let evento = await Evento.find({_id})
+        if(evento){
+            console.log(evento.invitados)
+            //pendiente continuar
+        }
+        res.status(200).send()
+    }catch(e){
+        console.log(e)
+        res.status(400).send()
     }
 })
 

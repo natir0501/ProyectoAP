@@ -130,12 +130,14 @@ export class ModificarEventoPage {
   }
 
   agregar(u: Usuario) {
-    this.usuarios = this.usuarios.filter((usu) => { usu._id !== u._id })
-    this.evento.invitados.push(u)
+    
+    this.usuarios = this.usuarios.filter((usu) => usu._id !== u._id )
+    console.log(this.usuarios)
+    
   }
 
   quitar(u: Usuario) {
-    this.evento.invitados = this.evento.invitados.filter((usu) => { usu._id !== u._id })
+    this.evento.invitados = this.evento.invitados.filter((usu) => usu._id !== u._id )
     this.usuarios.push(u)
   }
 

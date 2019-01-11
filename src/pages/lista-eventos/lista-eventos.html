@@ -43,8 +43,8 @@
                 {{evt.nombre || ' - ' || evt.lugar }}
               </ion-item>
               <ion-item-options side="right">
-                <button ion-button color="positive">
-                  Consultar
+                <button ion-button color="positive" (click)="detalles(evt)">
+                  Consultar 
                 </button>
                 <button *ngIf="esDelegado() && puedeEditar(evt)" (click)="editarEvento(evt)" ion-button color="positive">
                   Editar

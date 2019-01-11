@@ -7,6 +7,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Evento } from '../../models/evento.models';
 import { isRightSide } from 'ionic-angular/umd/util/util';
+import { DetallesEventoPage } from '../detalles-evento/detalles-evento';
 
 /**
  * Generated class for the ListaEventosPage page.
@@ -42,6 +43,9 @@ export class ListaEventosPage {
   }
   editarEvento(evento : Evento){
     this.navCtrl.setRoot(ModificarEventoPage,{evento} )
+  }
+  detalles(evento: Evento){
+    this.navCtrl.setRoot(DetallesEventoPage,{evento})
   }
 
   onDateSelected(data: any) {

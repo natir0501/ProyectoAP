@@ -34,6 +34,7 @@ import { UsuarioService } from './../providers/usuario.service';
 import { MyApp } from './app.component';
 import { ListaEventosPage } from '../pages/lista-eventos/lista-eventos';
 import { EventoService } from '../providers/evento.service';
+import { DetallesEventoPage } from '../pages/detalles-evento/detalles-evento';
 
 
 
@@ -58,7 +59,8 @@ import { EventoService } from '../providers/evento.service';
     ModificacionPeriflesPage,
     ModificarPasswordPage,
     ListaEventosPage,
-    ModificarEventoPage
+    ModificarEventoPage,
+    DetallesEventoPage
     
 
   ],
@@ -90,7 +92,8 @@ import { EventoService } from '../providers/evento.service';
     ModificacionPeriflesPage,
     ModificarPasswordPage,
     ListaEventosPage,
-    ModificarEventoPage
+    ModificarEventoPage,
+    DetallesEventoPage
     
   ],
   providers: [
