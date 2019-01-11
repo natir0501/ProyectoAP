@@ -47,7 +47,7 @@
         </ion-item>
         <ion-item *ngIf="evento.tipoEvento.nombre">
           <ion-icon name="clipboard"></ion-icon>
-          <b>Categoria: </b><span item-end>{{evento.tipoEvento.nombre}}</span>
+          <b>Evento: </b><span item-end>{{evento.tipoEvento.nombre}}</span>
         </ion-item>
         <ion-item>
           <ion-icon name="clock"></ion-icon>
@@ -112,7 +112,7 @@
     <div class="spacer" style="width:300px;height:15px;" id="registro-spacer8"></div>
     <ion-row justify-content-center>
       <ion-col col-xl-2>
-        <button type="button" ion-button="" block color="positive" (click)="confirmar(false)">
+        <button type="button"  ion-button="" block color="positive" (click)="confirmar(false)">
           No Voy
         </button>
       </ion-col>
