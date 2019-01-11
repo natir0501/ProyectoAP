@@ -37,7 +37,7 @@ export class DetallesEventoPage {
       this.evento = this.navParams.get('evento')
   }
 
-  async ionViewDidLoad() {
+  async ionViewWillEnter() {
     console.log('hola')
     this.usuario = this.usuServ.usuario
     try {
@@ -92,7 +92,7 @@ export class DetallesEventoPage {
       this.verNoVan = !this.verNoVan
     }
   }
-
+  
   diayhora(): string {
     return new Date(this.evento.fecha).toLocaleString()
   }
