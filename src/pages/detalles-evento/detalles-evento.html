@@ -72,7 +72,7 @@
 
 
         <ion-item-divider color="light">
-          Convocados{{' ('+ evento.invitados.length + ')'}}
+          Pendientes{{' ('+ evento.invitados.length + ')'}}
           <button ion-button item-end class="btn-mostrar" type="button" (click)="toggle('convocados')">{{btnConvocados}}</button>
 
         </ion-item-divider>
@@ -110,14 +110,14 @@
       </ion-col>
     </ion-row>
     <div class="spacer" style="width:300px;height:15px;" id="registro-spacer8"></div>
-    <ion-row justify-content-center>
+    <ion-row justify-content-center *ngIf="convocado()">
       <ion-col col-xl-2>
-        <button type="button"  ion-button="" block color="positive" (click)="confirmar(false)">
+        <button type="button"  ion-button="" block color="positive"  [disabled]="!puedoNoIr()" (click)="confirmar(false)">
           No Voy
         </button>
       </ion-col>
       <ion-col col-xl-2>
-        <button type="submit" ion-button="" block color="positive" (click)="confirmar(true)">
+        <button type="submit" ion-button="" block color="positive"  [disabled]="!puedoIr()" (click)="confirmar(true)">
           Voy
         </button>
       </ion-col>
