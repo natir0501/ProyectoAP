@@ -1,3 +1,4 @@
+import { Partido } from './../../../models/campeonato.model';
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Campeonato, Fecha } from '../../../models/campeonato.model';
@@ -24,6 +25,7 @@ export class MantenimientoFechaPage {
 
   campeonato: Campeonato = new Campeonato;
   fecha: Fecha = new Fecha;
+  partido: Partido= new Partido;
   fechaEncuentrotxt: string = '1990-01-01';
   rueda = Object.keys(Ruedas).map(key => ({ 'id': key, 'value': Ruedas[key] }));
 

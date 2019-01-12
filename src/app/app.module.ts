@@ -1,5 +1,6 @@
 import { CampeonatoService } from './../providers/campeonato.service';
 import { ListaCampeonatosPage } from './../pages/common/lista-campeonatos/lista-campeonatos';
+import { ModificarEventoPage } from './../pages/modificar-evento/modificar-evento';
 import { HttpClientModule } from '@angular/common/http';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
@@ -7,6 +8,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { IonicStorageModule } from '@ionic/storage';
 import { AngularFireModule } from 'angularfire2';
+import { CalendarModule } from 'ionic3-calendar-en';
 import 'firebase/messaging'; // only import firebase messaging or as needed;
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { firebaseConfig } from '../enviroment';
@@ -34,6 +36,9 @@ import { UsuarioService } from './../providers/usuario.service';
 import { MyApp } from './app.component';
 import { MantenimientoCampeonatosPage } from '../pages/common/mantenimiento-campeonatos/mantenimiento-campeonatos';
 import { MantenimientoFechaPage } from '../pages/Backoffice/mantenimiento-fecha/mantenimiento-fecha';
+import { ListaEventosPage } from '../pages/lista-eventos/lista-eventos';
+import { EventoService } from '../providers/evento.service';
+import { DetallesEventoPage } from '../pages/detalles-evento/detalles-evento';
 
 
 
@@ -59,7 +64,10 @@ import { MantenimientoFechaPage } from '../pages/Backoffice/mantenimiento-fecha/
     ModificarPasswordPage,
     ListaCampeonatosPage,
     MantenimientoCampeonatosPage,
-    MantenimientoFechaPage
+    MantenimientoFechaPage,
+    ListaEventosPage,
+    ModificarEventoPage,
+    DetallesEventoPage
     
 
   ],
@@ -69,6 +77,7 @@ import { MantenimientoFechaPage } from '../pages/Backoffice/mantenimiento-fecha/
       scrollAssist: true,
       autoFocusAssist: false
     }),
+    CalendarModule,
     AngularFireModule.initializeApp(firebaseConfig),
     IonicStorageModule.forRoot(),
     HttpClientModule
@@ -91,7 +100,10 @@ import { MantenimientoFechaPage } from '../pages/Backoffice/mantenimiento-fecha/
     ModificarPasswordPage,
     ListaCampeonatosPage,
     MantenimientoCampeonatosPage,
-    MantenimientoFechaPage
+    MantenimientoFechaPage,
+    ListaEventosPage,
+    ModificarEventoPage,
+    DetallesEventoPage
     
   ],
   providers: [
@@ -105,6 +117,7 @@ import { MantenimientoFechaPage } from '../pages/Backoffice/mantenimiento-fecha/
     TipoEventoService,
     MenuService,
     CampeonatoService,
+    EventoService,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

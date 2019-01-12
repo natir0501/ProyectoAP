@@ -26,11 +26,11 @@ export class UtilsServiceProvider {
 
   fechahoraToText(tiempo: Date): string{
     let year = tiempo.getFullYear()
-    let mes = tiempo.getMonth() +1 < 10 ? '0' + (tiempo.getMonth()+1) : (tiempo.getMonth() +1)
+    let mes = tiempo.getMonth() +1  < 10 ? '0' + (tiempo.getMonth()+1) : (tiempo.getMonth() +1)
     let dia = tiempo.getDate() < 10 ? '0' + tiempo.getDate() : tiempo.getDate()
     let hora = tiempo.getHours() < 10 ? '0' + tiempo.getHours() : tiempo.getHours()
     let minutos = tiempo.getMinutes() < 10 ? '0' + tiempo.getMinutes() : tiempo.getMinutes()
-    
+
     return `${year}-${mes}-${dia}T${hora}:${minutos}`
-    }
+  }
 }

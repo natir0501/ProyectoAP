@@ -1,4 +1,5 @@
 import { ListaCampeonatosPage } from './../pages/common/lista-campeonatos/lista-campeonatos';
+import { ListaEventosPage } from './../pages/lista-eventos/lista-eventos';
 import { ModificarPasswordPage } from './../pages/modificar-password/modificar-password';
 import { UsuariosEnCategoriaPage } from './../pages/usuarios-en-categoria/usuarios-en-categoria';
 import { CategoriaService } from './categoria.service';
@@ -46,7 +47,7 @@ export class MenuService {
         this.map.set('UsuariosEnCategoríaPage',UsuariosEnCategoriaPage)
         this.map.set('ModificarPasswordPage', ModificarPasswordPage)
         this.map.set('ListaCampeonatosPage', ListaCampeonatosPage)
-        
+        this.map.set('ListaEventosPage',ListaEventosPage)
 
 
     }
