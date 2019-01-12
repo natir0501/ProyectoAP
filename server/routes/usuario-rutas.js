@@ -5,7 +5,8 @@ const { Categoria } = require('../models/categoria')
 const { Rol } = require('../models/rol')
 const _ = require('lodash')
 const { ApiResponse } = require('../models/api-response')
-const { ObjectID} = require ('mongodb')
+const { ObjectID } = require('mongodb')
+
 
 api.get('/usuarios', (req, res) => {
 
@@ -184,24 +185,55 @@ api.put('/usuarios/password', async (req, res) => {
     try {
 
         let password = req.body.nuevaPassword
-        
-        let usuario = await Usuario.findOneAndUpdate({ _id: ObjectID(req.body.usuario._id) }, {$set: {password}})
 
-        if(usuario){
+        let usuario = await Usuario.findOneAndUpdate({ _id: ObjectID(req.body.usuario._id) }, { $set: { password } })
+
+        if (usuario) {
             usuario.tokens = []
             usuario = await usuario.save()
             usuario.generateAuthToken()
-            res.send(new ApiResponse({text: 'Cambio exitoso'}))
-        }else{
-            res.status(404).send(new ApiResponse(undefined, {error: 'No existe el usuario'}))
+            res.send(new ApiResponse({ text: 'Cambio exitoso' }))
+        } else {
+            res.status(404).send(new ApiResponse(undefined, { error: 'No existe el usuario' }))
         }
     }
-    catch(e){
+    catch (e) {
         console.log(e)
-        res.status(400).send(new ApiResponse(undefined,{error: 'Error al cambiar password'}))
+        res.status(400).send(new ApiResponse(undefined, { error: 'Error al cambiar password' }))
     }
 })
 
+
+api.put('/usuarios/:id/push', async (req, res) => {
+    console.log('vine')
+    let _id = req.params.id;
+    let platform = req.body.platform
+    let token = req.body.token
+    try {
+        let usuario = await Usuario.findOne({ _id })
+        if (usuario) {
+            if (!usuario.tokens.find((obj) => obj.access === platform)) {
+                usuario.tokens = usuario.tokens.concat([{ access: platform, token: req.body.token }])
+                usuario = await usuario.save()
+                res.status(200).send(new ApiResponse({}, 'Se guardo token correctamente'))
+            } else {
+                for (let obj of usuario.tokens){
+                    if(obj.access === platform){
+                        obj.token = token
+                    }
+                }
+                usuario = await usuario.save()
+                res.status(200).send(new ApiResponse({}, 'Se guardo token correctamente'))
+            }
+
+        } else {
+            res.status(404).send()
+        }
+    } catch (e) {
+        console.log(e)
+        res.status(400).send(new ApiResponse({}, 'Error'))
+    }
+})
 
 api.put('/usuarios/:id', async (req, res) => {
     let token = req.header('x-auth')
@@ -246,5 +278,7 @@ api.get('/usuarios/confirmacion/:token', async (req, res) => {
     }
 
 })
+
+
 
 module.exports = api;

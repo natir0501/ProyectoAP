@@ -38,9 +38,9 @@ export class MyApp {
   roles: string[] = []
   @ViewChild(Nav) nav: NavController;
 
-  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen,
+  constructor(private platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen,
     public usuarioServ: UsuarioService, public menuServ: MenuService,
-    fcmService: FirebaseMessagingProvider, private http: HttpClient, private menu: MenuController, private utils: UtilsServiceProvider) {
+    private fcmService: FirebaseMessagingProvider, private http: HttpClient, private menu: MenuController, private utils: UtilsServiceProvider) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
@@ -73,6 +73,24 @@ export class MyApp {
       this.usuarioServ.usuConectado.subscribe(async (usu: Usuario) => {
         console.log('Nuevo usuario', usu)
         if (usu) {
+          console.log(this.fcmService.token)
+          if (this.usuarioServ.usuario && this.fcmService.token) {
+            if (this.platform.platforms().indexOf('mobile') >= 0) {
+              this.usuarioServ.registrarPush({ platform: 'mobile', token: this.fcmService.token }).subscribe((resp)=>{
+                console.log(resp)
+              },(error)=>{
+                console.log(error)
+              })
+            }
+            else{
+              this.usuarioServ.registrarPush({ platform: 'desktop', token: this.fcmService.token }).subscribe((resp)=>{
+                console.log(resp)
+              },(error)=>{
+                console.log(error)
+              })
+            }
+          }
+         
 
           this.usuario = usu
           if (this.usuario.perfiles.length === 0) {

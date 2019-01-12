@@ -4,6 +4,7 @@ const { ObjectID } = require('mongodb')
 const nodemailer = require('nodemailer');
 const { google } = require("googleapis");
 const OAuth2 = google.auth.OAuth2;
+const axios = require('axios')
 
 const validarTipo = async (arrayUsuarios, tipoUsuario) => {
     let usuariosInvalidos = []
@@ -18,6 +19,7 @@ const validarTipo = async (arrayUsuarios, tipoUsuario) => {
 
 
 }
+
 
 const validarId = async (arrayId) => {
     for (id of arrayId) {
@@ -80,4 +82,33 @@ const enviarCorreoAlta = async (usuario) => {
     });
 }
 
-module.exports = { validarTipo, validarId, enviarCorreoAlta };
+const enviarNotificacion = async (usuario,evento) => {
+    var headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'key=AAAAOcMNI0o:APA91bHamReBWXoEEMRMwA5B7KS8K73DEIhMNJizbIzX1IJ6Eb_LIaBFYdbXhIUHzIEutsD-8sGL4RGB2vgn086rcWqSRsVOpwv4oNwOfffjc9JDc1O1l2wwPijXX89NEZ3TxcR53_3J' 
+    }
+    
+    for (let i = 1; i<usuario.tokens.length ; i++){
+        let mensaje = {
+            "notification": {
+                "title": `Nuevo evento: ${evento.nombre}`,
+                    "body": `Hola ${usuario.nombre}. Has sido inivtado al evento del título. Confirma asistencia en la app por favor`
+            },
+            "to" : usuario.tokens[i].token
+        }
+        
+    
+        axios.post('https://fcm.googleapis.com/fcm/send', mensaje, {headers})
+            .then((res) => {
+                console.log('Envió')
+            })
+            .catch((error) => {
+                console.log('Error')
+            })
+
+    }
+
+}
+
+
+module.exports = { validarTipo, validarId, enviarCorreoAlta, enviarNotificacion };
