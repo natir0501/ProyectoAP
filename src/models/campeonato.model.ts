@@ -8,6 +8,7 @@ export class Campeonato{
 }
 
 export class Fecha {
+    _id?: string
     numeroFecha?: number
     fechaEncuentro?: number
     rueda?: string

@@ -13,7 +13,10 @@ var CampeonatoSchema = mongoose.Schema({
     },
     fechas:[{
         type: mongoose.Schema.Types.ObjectId, ref: 'Fecha'
-    }]
+    }],
+    categoria:{
+        type: mongoose.Schema.Types.ObjectId, ref: 'Categoria',
+    }
 })
 
 CampeonatoSchema.plugin(uniqueValidator);

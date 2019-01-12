@@ -9,6 +9,14 @@ import { UsuarioService } from "./usuario.service";
 
 @Injectable()
 export class CampeonatoService {
+    
+  actualizarFecha(campeonato: Campeonato, fecha: Fecha): any {
+    throw new Error("Method not implemented.");
+  }
+
+  agregarFecha(fecha: Fecha, campeonato: Campeonato): any {
+    throw new Error("Method not implemented.");
+  }
 
     apiUrl: string = ''
 

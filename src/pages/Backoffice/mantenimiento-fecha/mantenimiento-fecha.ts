@@ -1,3 +1,4 @@
+import { MantenimientoCampeonatosPage } from './../../common/mantenimiento-campeonatos/mantenimiento-campeonatos';
 import { Partido, Campeonato, Fecha, Lugar } from './../../../models/campeonato.model';
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
@@ -37,14 +38,22 @@ export class MantenimientoFechaPage {
 
   ionViewDidLoad() {
     let fecha: Fecha = this.navParams.get('fecha')
+    let camp: Campeonato = this.navParams.get('campeonato')
     if (fecha) {
       console.log("Voy a editar");
       this.fecha = fecha
+      this.campeonato= camp
     }
   }
 
   onSubmit() {
-    console.log('submit!!!')
+    if (this.fecha._id === '') {
+
+
+    } else {
+
+
+    }
   }
 
 

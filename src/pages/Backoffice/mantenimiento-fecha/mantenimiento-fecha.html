@@ -67,25 +67,25 @@
             <ion-label>
               Lugar:
             </ion-label>
-            <ion-input text-right type="text" placeholder="Ej: Cancha Club Naval" name="nombre" 
-            [(ngModel)]="fecha.partido.lugar.nombre" #nombre="ngModel" required>
+            <ion-input text-right type="text" placeholder="Ej: Cancha Club Naval" name="nombre" [(ngModel)]="fecha.partido.lugar.nombre"
+              #nombre="ngModel" required>
             </ion-input>
-            <ion-item id="altaFecha-input17" [ngClass]="{'ng-touched' : direccion.touched}">
-              <ion-label>
-                Dirección:
-              </ion-label>
-              <ion-input text-right type="text" placeholder="Ej:  Gral. French 1641" name="direccion" 
-              [(ngModel)]="fecha.partido.lugar.direccion" #direccion="ngModel" required>
-              </ion-input>
-            </ion-item>
-            <ion-item id="altaFecha-input18" [ngClass]="{'ng-touched' : link.touched}">
-              <ion-label>
-                Link Ubicación:
-              </ion-label>
-              <ion-input text-right type="text" placeholder="Ej: https://goo.gl/maps/QEtNhiPCmas" 
-              name="link" [(ngModel)]="fecha.partido.lugar.linkUbicacion" #link="ngModel" required>
-              </ion-input>
-            </ion-item>
+          </ion-item>
+          <ion-item id="altaFecha-input17" [ngClass]="{'ng-touched' : direccion.touched}">
+            <ion-label>
+              Dirección:
+            </ion-label>
+            <ion-input text-right type="text" placeholder="Ej:  Gral. French 1641" name="direccion" [(ngModel)]="fecha.partido.lugar.direccion"
+              #direccion="ngModel" required>
+            </ion-input>
+          </ion-item>
+          <ion-item id="altaFecha-input18" [ngClass]="{'ng-touched' : link.touched}">
+            <ion-label>
+              Link Ubicación:
+            </ion-label>
+            <ion-input text-right type="text" placeholder="Ej: https://goo.gl/maps/QEtNhiPCmas" name="link" [(ngModel)]="fecha.partido.lugar.linkUbicacion"
+              #link="ngModel" required>
+            </ion-input>
           </ion-item>
         </ion-col>
       </ion-row>

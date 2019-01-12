@@ -18,12 +18,10 @@ var FechaSchema = mongoose.Schema({
             required:true
         },
         golesPropios:{
-            type: Number,
-            required:true
+            type: Number
         },
         golesRival:{
-            type: Number,
-            required:true
+            type: Number
         },
         local:{
             type: Boolean,
@@ -31,10 +29,10 @@ var FechaSchema = mongoose.Schema({
         },
         lugar:{
             nombre:{
-                type: String,
+                type: String
             },
             direccion:{
-                type: String,
+                type: String
             },
             linkUbicacion:{
                 type: String
