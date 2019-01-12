@@ -30,7 +30,8 @@
         <ion-col col-xl-6>
           <div id="registro-markdown6" class="show-list-numbers-and-dots">
             <p class="title">
-              Ingrese los datos del evento:
+              Ingrese los datos del evento, todos los datos son obligatorios.
+              Para continuar al menos debe convocar a un usuario.
             </p>
           </div>
           <div class="spacer" style="width:300px;height:15px;" id="registro-spacer8"></div>
@@ -76,9 +77,9 @@
             <ion-input text-right type="text" placeholder="Rambla y Bvar Artigas" required name="direccion" [(ngModel)]="evento.lugar.direccion"
               #direccion="ngModel"></ion-input>
           </ion-item>
-          <ion-item [ngClass]="{ 'ng-touched' : nombre.touched }" fixed id="registro-input15">
+          <ion-item [ngClass]="{ 'ng-touched' : linkUbicacion.touched }" fixed id="registro-input15">
             <ion-label>
-              Ubicación
+              Link Ubicación
             </ion-label>
             <ion-input text-right type="text" required placeholder="https://goo.gl/maps/QEtNhiPCmas" name="linkUbicacion"
               [(ngModel)]="evento.lugar.linkUbicacion" #linkUbicacion="ngModel"></ion-input>
