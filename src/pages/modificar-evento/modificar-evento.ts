@@ -148,7 +148,7 @@ export class ModificarEventoPage {
 
     })
     loader.present()
-    this.evento.fecha = Date.parse(this.form.value.diahora)
+    this.evento.fecha = Date.parse(this.form.value.diahora.replace(/-/g,'/').replace('T',' '))
 
     if (this.evento._id === '') {
       this.eventoService.altaEvento(this.evento).subscribe((resp) => {
