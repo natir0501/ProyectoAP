@@ -1,8 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Campeonato, Fecha } from '../../../models/campeonato.model';
 import { UtilsServiceProvider } from '../../../providers/utils.service';
 import { CampeonatoService } from '../../../providers/campeonato.service';
+import { NgForm } from '@angular/forms';
+import { Ruedas } from '../../../models/enum.models';
 
 /**
  * Generated class for the MantenimientoFechaPage page.
@@ -18,8 +20,12 @@ import { CampeonatoService } from '../../../providers/campeonato.service';
 })
 export class MantenimientoFechaPage {
 
+  @ViewChild('form') form: NgForm
+
   campeonato: Campeonato = new Campeonato;
   fecha: Fecha = new Fecha;
+  fechaEncuentrotxt: string = '1990-01-01';
+  rueda = Object.keys(Ruedas).map(key => ({ 'id': key, 'value': Ruedas[key] }));
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public campServ: CampeonatoService,
@@ -33,5 +39,10 @@ export class MantenimientoFechaPage {
       this.fecha = fecha
     }
   }
+
+  onSubmit() {
+    console.log('submit!!!')
+  }
+
 
 }

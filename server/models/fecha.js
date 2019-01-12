@@ -9,7 +9,7 @@ var FechaSchema = mongoose.Schema({
         required: true
     },
     rueda:{
-        type: Number,
+        type: String,
         required: true
     },
     partido: {

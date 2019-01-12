@@ -10,7 +10,7 @@ export class Campeonato{
 export class Fecha {
     numeroFecha?: number
     fechaEncuentro?: number
-    rueda?: number
+    rueda?: string
     partido?: Partido= new Partido()
 }
 

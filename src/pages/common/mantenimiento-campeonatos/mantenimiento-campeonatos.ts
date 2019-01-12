@@ -85,6 +85,8 @@ export class MantenimientoCampeonatosPage {
   agregarFecha(){
     let camp=this.campeonato
     this.navCtrl.push((MantenimientoFechaPage), {camp})
+    console.log(camp);
+    
   }
 
 

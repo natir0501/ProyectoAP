@@ -26,3 +26,9 @@ export enum Tipos{
     Ingreso = 'Ingreso',
     Egreso = 'Egreso'
 }
+
+export enum Ruedas{
+    PrimerRueda = 'Primer Rueda',
+    SegundaRueda = 'Segunda Rueda'
+}
+
