@@ -1,7 +1,6 @@
-import { Partido } from './../../../models/campeonato.model';
+import { Partido, Campeonato, Fecha, Lugar } from './../../../models/campeonato.model';
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { Campeonato, Fecha } from '../../../models/campeonato.model';
 import { UtilsServiceProvider } from '../../../providers/utils.service';
 import { CampeonatoService } from '../../../providers/campeonato.service';
 import { NgForm } from '@angular/forms';
@@ -23,15 +22,17 @@ export class MantenimientoFechaPage {
 
   @ViewChild('form') form: NgForm
 
-  campeonato: Campeonato = new Campeonato;
-  fecha: Fecha = new Fecha;
-  partido: Partido= new Partido;
-  fechaEncuentrotxt: string = '1990-01-01';
+  campeonato: Campeonato = new Campeonato();
+  fecha: Fecha = new Fecha();
+  partido: Partido= new Partido();
+  lugar: Lugar = new Lugar();
+  fechaEncuentrotxt= `2019-01-04T02:01`;
   rueda = Object.keys(Ruedas).map(key => ({ 'id': key, 'value': Ruedas[key] }));
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public campServ: CampeonatoService,
     public utilServ: UtilsServiceProvider) {
+      this.fechaEncuentrotxt=this.utilServ.fechahoraToText(new Date())
   }
 
   ionViewDidLoad() {
