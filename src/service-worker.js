@@ -20,7 +20,7 @@ self.toolbox.options.cache = {
 // pre-cache our key assets
 self.toolbox.precache(
   [
-     './build/main.js',
+    './build/main.js',
     './build/vendor.js',
     './build/main.css',
     './build/polyfills.js',
@@ -38,14 +38,22 @@ self.toolbox.router.default = self.toolbox.networkFirst;
 
 firebase.initializeApp({
   // get this from Firebase console, Cloud messaging section
-  'messagingSenderId': '248085553994' 
+  'messagingSenderId': '248085553994'
 })
 
 const messaging = firebase.messaging();
 
+messaging.onMessage(function (payload) {
+  console.log('Received background message ', payload);
+  // here you can override some options describing what's in the message; 
+  // however, the actual content will come from the Webtask
+  const notificationOptions = {
+    icon: './assets/imgs/cei.png'
+  };
+  return self.registration.showNotification(notificationTitle, notificationOptions);
+});
 
-
-messaging.setBackgroundMessageHandler(function(payload) {
+messaging.setBackgroundMessageHandler(function (payload) {
   console.log('Received background message ', payload);
   // here you can override some options describing what's in the message; 
   // however, the actual content will come from the Webtask
