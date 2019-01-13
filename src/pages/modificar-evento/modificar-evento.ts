@@ -7,7 +7,7 @@ import { TipoEvento } from './../../models/tipo.evento.models';
 import { NgForm } from '@angular/forms';
 import { Evento } from './../../models/evento.models';
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController, Alert, AlertController } from 'ionic-angular';
+import {  NavController, NavParams, LoadingController, Alert, AlertController } from 'ionic-angular';
 import { Usuario } from '../../models/usuario.model';
 import { UsuarioService } from '../../providers/usuario.service';
 import * as _ from 'lodash';
@@ -19,7 +19,7 @@ import * as _ from 'lodash';
  * Ionic pages and navigation.
  */
 
-@IonicPage()
+
 @Component({
   selector: 'page-modificar-evento',
   templateUrl: 'modificar-evento.html',

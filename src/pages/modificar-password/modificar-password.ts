@@ -3,7 +3,7 @@ import { UtilsServiceProvider } from './../../providers/utils.service';
 import { UsuarioService } from './../../providers/usuario.service';
 import { Usuario } from './../../models/usuario.model';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
+import {  NavController, NavParams, LoadingController } from 'ionic-angular';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 /**
@@ -13,7 +13,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
  * Ionic pages and navigation.
  */
 
-@IonicPage()
+
 @Component({
   selector: 'page-modificar-password',
   templateUrl: 'modificar-password.html',
