@@ -22,9 +22,9 @@ api.post('/campeonato/:id/agregarfecha', async (req, res) => {
 
     let id = req.params.id
     try {
-        let campeonato = await Campeonato.findById({ _id: id })
-        let fecha = new Fecha(req.body)
-
+        let campeonato = await Campeonato.findById({ _id: id }) 
+        let fecha = new Fecha(_.pick(req.body, ['numeroFecha', 
+        'fechaEncuentro', 'rueda', 'partido']))
         if (campeonato) {
             campeonato.fechas.push(fecha)
             await fecha.save()
@@ -46,7 +46,7 @@ api.post('/campeonato', async (req, res) => {
         let nombre = req.body.nombre;
         let anio = req.body.anio;
         let fechas = req.body.fechas;
-        let categoria = req.body.categoria;
+        let categoria = req.body.categoria._id;
 
         let campeonato = new Campeonato({ nombre, anio, fechas, categoria })
         campeonato = await campeonato.save();

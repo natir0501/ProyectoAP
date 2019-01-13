@@ -28,7 +28,7 @@ export enum Tipos{
 }
 
 export enum Ruedas{
-    PrimerRueda = 'Primer Rueda',
-    SegundaRueda = 'Segunda Rueda'
+    R1 = 'Primer Rueda',
+    R2 = 'Segunda Rueda'
 }
 

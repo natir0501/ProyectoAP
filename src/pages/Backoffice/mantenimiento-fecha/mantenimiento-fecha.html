@@ -25,13 +25,13 @@
             <ion-label>
               Número Fecha:
             </ion-label>
-            <ion-input text-right type="text" placeholder="Ej: 1" pattern="^[0-26]{1,2}$" name="numeroFecha" numero
+            <ion-input text-right type="text" placeholder="Ej: 1" pattern="^(2[0-6]|[1][0-9]|[1-9])$" name="numeroFecha" 
               [(ngModel)]="fecha.numeroFecha" #numeroFecha="ngModel" required>
             </ion-input>
           </ion-item>
           <ion-item [ngClass]="{'ng-touched' : fechaEncuentro.touched}" id="altafecha-input14">
             <ion-label>
-              Fecha/Hora:
+              Día y hora:
             </ion-label>
             <ion-input text-right type="datetime-local" placeholder="" #fechaEncuentro="ngModel" name="fechaEncuentro"
               [(ngModel)]="fechaEncuentrotxt" required>

@@ -1,3 +1,4 @@
+import { UsuarioService } from './../../../providers/usuario.service';
 import { MantenimientoCampeonatosPage } from './../../common/mantenimiento-campeonatos/mantenimiento-campeonatos';
 import { Partido, Campeonato, Fecha, Lugar } from './../../../models/campeonato.model';
 import { Component, ViewChild } from '@angular/core';
@@ -25,34 +26,50 @@ export class MantenimientoFechaPage {
 
   campeonato: Campeonato = new Campeonato();
   fecha: Fecha = new Fecha();
-  partido: Partido= new Partido();
+  partido: Partido = new Partido();
   lugar: Lugar = new Lugar();
-  fechaEncuentrotxt= `2019-01-04T02:01`;
+  fechaEncuentrotxt = `2019-01-04T02:01`;
   rueda = Object.keys(Ruedas).map(key => ({ 'id': key, 'value': Ruedas[key] }));
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public campServ: CampeonatoService,
-    public utilServ: UtilsServiceProvider) {
-      this.fechaEncuentrotxt=this.utilServ.fechahoraToText(new Date())
+    public utilServ: UtilsServiceProvider,
+    public usuServ: UsuarioService) {
+    this.fechaEncuentrotxt = this.utilServ.fechahoraToText(new Date())
   }
 
   ionViewDidLoad() {
-    let fecha: Fecha = this.navParams.get('fecha')
-    let camp: Campeonato = this.navParams.get('campeonato')
+    let fecha: Fecha = this.navParams.get('fecha')    
+    let camp: Campeonato = this.navParams.get('camp')
     if (fecha) {
-      console.log("Voy a editar");
+      console.log("Solo voy a editar");
       this.fecha = fecha
-      this.campeonato= camp
+    }
+    if(camp){
+      this.campeonato = camp
     }
   }
 
   onSubmit() {
-    if (this.fecha._id === '') {
 
-
-    } else {
-
-
+    this.fecha.fechaEncuentro = Date.parse(this.form.value.fechaEncuentro)
+    console.log("FECHA A AGREGAR", this.fecha);
+    
+    if (this.fecha._id === '') {      
+    
+      this.campServ.agregarFechaCamp(this.fecha, this.campeonato)
+        .subscribe(
+          (resp) => {
+            this.utilServ.dispararAlert("Ok", "Fecha agregada correctamente.")
+            let camp=this.campeonato;
+            this.navCtrl.push((MantenimientoCampeonatosPage), {camp});
+          },
+          (err) => {
+            console.log("Error dando de alta el campeonato", err)
+            this.utilServ.dispararAlert("Error", "Ocurrió un error al agregar el campeonato")
+          })
+    }else{
+      console.log(this.fecha);
     }
   }
 

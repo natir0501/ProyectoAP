@@ -1,3 +1,5 @@
+import { CategoriaService } from './../../../providers/categoria.service';
+import { UsuarioService } from './../../../providers/usuario.service';
 import { CampeonatoService } from './../../../providers/campeonato.service';
 import { Campeonato, Fecha } from './../../../models/campeonato.model';
 import { Component } from '@angular/core';
@@ -5,6 +7,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { UtilsServiceProvider } from '../../../providers/utils.service';
 import { ListaCampeonatosPage } from '../lista-campeonatos/lista-campeonatos';
 import { MantenimientoFechaPage } from '../../Backoffice/mantenimiento-fecha/mantenimiento-fecha';
+import { Categoria } from '../../../models/categoria.models';
 
 /**
  * Generated class for the MantenimientoCampeonatosPage page.
@@ -16,31 +19,39 @@ import { MantenimientoFechaPage } from '../../Backoffice/mantenimiento-fecha/man
 @IonicPage()
 @Component({
   selector: 'page-mantenimiento-campeonatos',
-  templateUrl: 'mantenimiento-campeonatos.html', 
+  templateUrl: 'mantenimiento-campeonatos.html',
 })
 export class MantenimientoCampeonatosPage {
 
-  campeonato: Campeonato = new Campeonato;
+  campeonato: Campeonato = new Campeonato();
   fecha: Fecha = new Fecha;
-  fechas : Fecha [] = [];
+  fechas: Fecha[] = [];
+  categoria: Categoria = new Categoria()
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public campServ: CampeonatoService,
-    public utilServ: UtilsServiceProvider) {
+    public utilServ: UtilsServiceProvider,
+    public usuServ: UsuarioService,
+    public catService: CategoriaService) {
   }
 
   ionViewDidLoad() {
     let camp: Campeonato = this.navParams.get('campeonato')
     if (camp) {
-      console.log("ACAAA",camp);
-      
       this.campeonato = camp
       this.fechas = camp.fechas
     }
   }
 
-  onSubmit() {
+  async onSubmit() {
     if (this.campeonato._id === '') {
+
+      this.categoria._id = this.usuServ.usuario.perfiles[0].categoria
+      let dataUsuarios: any = await this.catService.obtenerCategoria(this.categoria._id).toPromise()
+      if (dataUsuarios) {
+        this.categoria = dataUsuarios.data.categoria
+      }
+      this.campeonato.categoria=this.categoria
       this.campServ.agregarCampeonato(this.campeonato)
         .subscribe(
           (resp) => {
@@ -71,24 +82,24 @@ export class MantenimientoCampeonatosPage {
 
   }
 
-  editarFecha(fech : Fecha){
+  editarFecha(fech: Fecha) {
     console.log("Editar fecha");
-    
+
   }
 
-  consultarFecha(fech : Fecha){
+  consultarFecha(fech: Fecha) {
     console.log("Consultar fecha");
-    
+
   }
 
 
-  agregarFecha(){
-    let camp=this.campeonato
-    this.navCtrl.push((MantenimientoFechaPage), {camp})
-    console.log(camp);
+  agregarFecha() {
+    let camp = this.campeonato;
+    console.log("agregarFecha en Mant page", this.campeonato);
+    this.navCtrl.push((MantenimientoFechaPage), { camp })
+    console.log("agregarFecha en Mant page camp ", camp);
     
   }
 
 
 }
- 

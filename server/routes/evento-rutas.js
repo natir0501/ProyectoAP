@@ -56,8 +56,6 @@ api.get('/eventos/:id', async (req, res) => {
 
 api.post('/eventos', async (req, res) => {
 
-
-
     try {
         var evento = new Evento(_.pick(req.body, ['fecha', 'nombre', 'tipoEvento', 'tipoEvento', 'lugar',
             'rival', 'invitados', 'categoria']))
