@@ -43,22 +43,14 @@ firebase.initializeApp({
 
 const messaging = firebase.messaging();
 
-messaging.onMessage(function (payload) {
-  console.log('Received background message ', payload);
-  // here you can override some options describing what's in the message; 
-  // however, the actual content will come from the Webtask
-  const notificationOptions = {
-    icon: './assets/imgs/cei.png'
-  };
-  return self.registration.showNotification(notificationTitle, notificationOptions);
-});
+
 
 messaging.setBackgroundMessageHandler(function (payload) {
   console.log('Received background message ', payload);
   // here you can override some options describing what's in the message; 
   // however, the actual content will come from the Webtask
   const notificationOptions = {
-    icon: './assets/imgs/cei.png'
+    icon: 'assets/imgs/cei.png'
   };
   return self.registration.showNotification(notificationTitle, notificationOptions);
 });
