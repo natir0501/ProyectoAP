@@ -11,7 +11,7 @@
     "test-api": "nodemon server/serverjs.",
     "clean": "ionic-app-scripts clean",
     "build": "ionic-app-scripts build",
-    "build-prod": "ionic:build --prod",
+    "build-prod": "ionic build --prod",
     "lint": "ionic-app-scripts lint"
   },
   "dependencies": {
