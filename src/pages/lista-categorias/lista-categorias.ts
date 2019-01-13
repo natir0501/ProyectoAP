@@ -1,7 +1,7 @@
 import { MantenimientoCategoriaPage } from './../mantenimiento-categoria/mantenimiento-categoria';
 import { CategoriaService } from './../../providers/categoria.service';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
+import { NavController, NavParams, LoadingController } from 'ionic-angular';
 import { Categoria } from '../../models/categoria.models';
 import { UtilsServiceProvider } from '../../providers/utils.service';
 
@@ -12,7 +12,7 @@ import { UtilsServiceProvider } from '../../providers/utils.service';
  * Ionic pages and navigation.
  */
 
-@IonicPage()
+
 @Component({
   selector: 'page-lista-categorias',
   templateUrl: 'lista-categorias.html',

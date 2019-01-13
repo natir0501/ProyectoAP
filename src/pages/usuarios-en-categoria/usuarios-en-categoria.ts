@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, LoadingController, NavController, NavParams } from 'ionic-angular';
+import {  LoadingController, NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
 import { Usuario } from '../../models/usuario.model';
 import { CategoriaService } from '../../providers/categoria.service';
@@ -17,7 +17,7 @@ import { UsuarioService } from './../../providers/usuario.service';
  * Ionic pages and navigation.
  */
 
-@IonicPage()
+
 @Component({
   selector: 'page-usuarios-en-categoria',
   templateUrl: 'usuarios-en-categoria.html',

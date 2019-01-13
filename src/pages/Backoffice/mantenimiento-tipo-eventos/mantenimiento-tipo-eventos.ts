@@ -1,7 +1,7 @@
 import { TipoEventoService } from './../../../providers/tipoevento.service';
 import { TipoEvento } from './../../../models/tipo.evento.models';
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {  NavController, NavParams } from 'ionic-angular';
 import { NgForm } from '@angular/forms';
 import { UtilsServiceProvider } from '../../../providers/utils.service';
 import { TipoEventosPage } from '../tipo-eventos/tipo-eventos';
@@ -13,7 +13,7 @@ import { TipoEventosPage } from '../tipo-eventos/tipo-eventos';
  * Ionic pages and navigation.
  */
 
-@IonicPage()
+
 @Component({
   selector: 'page-mantenimiento-tipo-eventos',
   templateUrl: 'mantenimiento-tipo-eventos.html',
