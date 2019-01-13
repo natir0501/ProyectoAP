@@ -1,28 +1,32 @@
-import { Platform } from 'ionic-angular';
+import { Platform, ToastController } from 'ionic-angular';
 import { UsuarioService } from './usuario.service';
 import { Injectable } from "@angular/core";
 import { FirebaseApp } from 'angularfire2';
 // I am importing simple ionic storage (local one), in prod this should be remote storage of some sort.
 import { Storage } from '@ionic/storage';
 import { HttpClient } from "@angular/common/http";
+import { BehaviorSubject } from 'rxjs/BehaviorSubject'
 
 @Injectable()
 export class FirebaseMessagingProvider {
   private messaging;
   private unsubscribeOnTokenRefresh = () => {};
   public token: string
+  currentMessage = new BehaviorSubject(null)
 
   constructor(
     private storage: Storage,
     private app: FirebaseApp,
     private usuServ: UsuarioService,
-    private platform : Platform
+    private platform : Platform,
+    private toaster: ToastController
   ) {
     this.messaging = app.messaging();
     navigator.serviceWorker.register('service-worker.js').then((registration) => {
     this.messaging.useServiceWorker(registration);
     //this.disableNotifications()
     this.enableNotifications();
+    
 });
   }
 
@@ -33,7 +37,9 @@ export class FirebaseMessagingProvider {
           console.log('Permission granted');
           // token might change - we need to listen for changes to it and update it
           this.setupOnTokenRefresh();
+          this.receiveMessage()
           return this.updateToken();
+
         })
         .catch((err)=>console.log(err))
         ;
@@ -53,22 +59,22 @@ export class FirebaseMessagingProvider {
     return this.messaging.getToken().then((currentToken) => {
       if (currentToken) {
         // we've got the token from Firebase, now let's store it in the database
-        console.log(currentToken)
+      
         this.token = currentToken
-        console.log(this.usuServ.usuario)
+    
         if(this.usuServ.usuario){
           if (this.platform.platforms().indexOf('mobile') >= 0) {
             this.usuServ.registrarPush({ platform: 'mobile', token: this.token }).subscribe((resp)=>{
-              console.log(resp)
+        
             },(error)=>{
-              console.log(error)
+         
             })
           }
           else{
             this.usuServ.registrarPush({ platform: 'desktop', token: this.token }).subscribe((resp)=>{
-              console.log(resp)
+        
             },(error)=>{
-              console.log(error)
+      
             })
           }
         }
@@ -86,5 +92,25 @@ export class FirebaseMessagingProvider {
       this.storage.set('fcmToken','').then(() => { this.updateToken(); });
     });
   }
+  receiveMessage() {
+    
+    this.messaging.onMessage((payload) => {
+      let toast = this.toaster.create({
+        message: `${payload.notification.body}`,
+        duration: 5000,
+        position: 'top',
+        cssClass: "yourtoastclass"
+      });
+    
+      toast.onDidDismiss(() => {
+        
+      });
+    
+      toast.present();
+     
+     this.currentMessage.next(payload)
+   });
+
+ }
     
 }

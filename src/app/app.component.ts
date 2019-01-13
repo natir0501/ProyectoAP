@@ -1,24 +1,17 @@
-import { Categoria } from './../models/categoria.models';
-import { MenuService } from './../providers/menu.service';
-//import { Pantallas } from './../config/pantallas';
-import { PlaceHolderPage } from './../pages/place-holder/place-holder';
-import { ListaCategoriasPage } from './../pages/lista-categorias/lista-categorias';
-import { AppModule } from './app.module';
-import { UsuarioService } from './../providers/usuario.service';
-import { Usuario } from './../models/usuario.model';
-import { CEILOGO } from './../providers/constant';
-import { MantenimientoCategoriaPage } from './../pages/mantenimiento-categoria/mantenimiento-categoria';
-import { AltaDeUsuarioPage } from './../pages/common/alta-usuario/alta-de-usuario';
-import { UtilsServiceProvider } from './../providers/utils.service';
 import { HttpClient } from '@angular/common/http';
 import { Component, ViewChild } from '@angular/core';
-import { Platform, NavController, MenuController, Nav, App } from 'ionic-angular';
-import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-
+import { StatusBar } from '@ionic-native/status-bar';
+import { MenuController, Nav, NavController, Platform } from 'ionic-angular';
+import { LoginPage } from '../pages/common/login/login';
 import { HomePage } from '../pages/home/home';
 import { FirebaseMessagingProvider } from '../providers/firebase-messaging';
-import { LoginPage } from '../pages/common/login/login';
+import { Usuario } from './../models/usuario.model';
+import { CEILOGO } from './../providers/constant';
+import { MenuService } from './../providers/menu.service';
+import { UsuarioService } from './../providers/usuario.service';
+import { UtilsServiceProvider } from './../providers/utils.service';
+
 
 
 
@@ -71,20 +64,20 @@ export class MyApp {
 
 
       this.usuarioServ.usuConectado.subscribe(async (usu: Usuario) => {
-        console.log('Nuevo usuario', usu)
+        
         if (usu) {
-          console.log(this.fcmService.token)
+          
           if (this.usuarioServ.usuario && this.fcmService.token) {
             if (this.platform.platforms().indexOf('mobile') >= 0) {
               this.usuarioServ.registrarPush({ platform: 'mobile', token: this.fcmService.token }).subscribe((resp)=>{
-                console.log(resp)
+         
               },(error)=>{
                 console.log(error)
               })
             }
             else{
               this.usuarioServ.registrarPush({ platform: 'desktop', token: this.fcmService.token }).subscribe((resp)=>{
-                console.log(resp)
+            
               },(error)=>{
                 console.log(error)
               })
