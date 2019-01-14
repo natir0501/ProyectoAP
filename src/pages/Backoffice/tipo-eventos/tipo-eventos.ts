@@ -1,13 +1,13 @@
 import { TipoEventoService } from './../../../providers/tipoevento.service';
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
+import {  NavController, NavParams, LoadingController } from 'ionic-angular';
 import { UtilsServiceProvider } from '../../../providers/utils.service';
 import { TipoEvento } from '../../../models/tipo.evento.models';
 import { NgForm } from '@angular/forms';
 import { MantenimientoTipoEventosPage } from '../mantenimiento-tipo-eventos/mantenimiento-tipo-eventos';
 
 
-@IonicPage()
+
 @Component({
   selector: 'page-tipo-eventos',
   templateUrl: 'tipo-eventos.html',

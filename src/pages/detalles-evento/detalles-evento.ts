@@ -3,7 +3,7 @@ import { EventoService } from './../../providers/evento.service';
 import { UsuarioService } from './../../providers/usuario.service';
 import { ListaEventosPage } from './../lista-eventos/lista-eventos';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
+import { NavController, NavParams, LoadingController } from 'ionic-angular';
 import { Evento } from '../../models/evento.models';
 import { Usuario } from '../../models/usuario.model';
 
@@ -14,7 +14,7 @@ import { Usuario } from '../../models/usuario.model';
  * Ionic pages and navigation.
  */
 
-@IonicPage()
+
 @Component({
   selector: 'page-detalles-evento',
   templateUrl: 'detalles-evento.html',

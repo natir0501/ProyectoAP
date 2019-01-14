@@ -2,7 +2,7 @@ import { HomePage } from './../../home/home';
 import { UsuarioService } from './../../../providers/usuario.service';
 import { Usuario } from './../../../models/usuario.model';
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {  NavController, NavParams } from 'ionic-angular';
 import { NgForm } from '@angular/forms';
 import { UtilsServiceProvider } from '../../../providers/utils.service';
 
@@ -14,12 +14,10 @@ import { UtilsServiceProvider } from '../../../providers/utils.service';
  * Ionic pages and navigation.
  */
 
-@IonicPage({
-  defaultHistory: []
-}
 
 
-)
+
+
 @Component({
   selector: 'page-login',
   templateUrl: 'login.html',
