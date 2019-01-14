@@ -46,10 +46,12 @@ const messaging = firebase.messaging();
 self.addEventListener('push', function (event) {
   console.log(event.data.json())
   var data = event.data.json()
-
+  
+  var notification = JSON.parse(data.data.notification)
+ 
   const notificationOptions = {
     icon: 'assets/imgs/cei_logo-224.png',
-    body: data.notification.body,
+    body: notification.body,
     badge: 'assets/imgs/logoxd.png'
   
     
@@ -58,7 +60,17 @@ self.addEventListener('push', function (event) {
 
 
 
-    self.registration.showNotification(data.notification.title, notificationOptions)
+    self.registration.showNotification(notification.title, notificationOptions)
   );
+});
+
+messaging.setBackgroundMessageHandler(function (payload) {
+  console.log('Received background message ', payload);
+  // here you can override some options describing what's in the message; 
+  // however, the actual content will come from the Webtask
+  const notificationOptions = {
+    icon: 'assets/imgs/cei.png'
+  };
+  return self.registration.showNotification(notificationTitle, notificationOptions);
 });
 
