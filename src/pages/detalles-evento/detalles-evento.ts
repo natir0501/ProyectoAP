@@ -3,7 +3,7 @@ import { EventoService } from './../../providers/evento.service';
 import { UsuarioService } from './../../providers/usuario.service';
 import { ListaEventosPage } from './../lista-eventos/lista-eventos';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
+import { NavController, NavParams, LoadingController } from 'ionic-angular';
 import { Evento } from '../../models/evento.models';
 import { Usuario } from '../../models/usuario.model';
 
@@ -14,7 +14,7 @@ import { Usuario } from '../../models/usuario.model';
  * Ionic pages and navigation.
  */
 
-@IonicPage()
+
 @Component({
   selector: 'page-detalles-evento',
   templateUrl: 'detalles-evento.html',
@@ -38,7 +38,7 @@ export class DetallesEventoPage {
   }
 
   async ionViewWillEnter() {
-    console.log('hola')
+    
     this.usuario = this.usuServ.usuario
     try {
       
@@ -63,7 +63,7 @@ export class DetallesEventoPage {
     return usu.email
   }
   toggle(lista: string) {
-    console.log(lista)
+
     if (lista === 'convocados') {
 
       if (!this.verConvocados) {
@@ -95,6 +95,24 @@ export class DetallesEventoPage {
   
   diayhora(): string {
     return new Date(this.evento.fecha).toLocaleString()
+  }
+
+  puedoIr(){
+    if(this.evento.confirmados.find((u)=> u._id === this.usuario._id)) return false
+  
+    return true
+  }
+
+  puedoNoIr(){
+    if(this.evento.noAsisten.find((u)=> u._id === this.usuario._id)) return false
+    
+    return true
+  }
+  convocado(){
+    if(this.evento.invitados.find((u)=>u._id === this.usuario._id)) return true
+    if(this.evento.confirmados.find((u)=>u._id === this.usuario._id)) return true
+    if(this.evento.noAsisten.find((u)=>u._id === this.usuario._id)) return true
+    return false
   }
 
   confirmar(asiste: boolean) {

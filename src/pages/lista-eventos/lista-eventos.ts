@@ -4,7 +4,7 @@ import { Categoria } from './../../models/categoria.models';
 import { EventoService } from './../../providers/evento.service';
 import { ModificarEventoPage } from './../modificar-evento/modificar-evento';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 import { Evento } from '../../models/evento.models';
 import { isRightSide } from 'ionic-angular/umd/util/util';
 import { DetallesEventoPage } from '../detalles-evento/detalles-evento';
@@ -16,7 +16,7 @@ import { DetallesEventoPage } from '../detalles-evento/detalles-evento';
  * Ionic pages and navigation.
  */
 
-@IonicPage()
+
 @Component({
   selector: 'page-lista-eventos',
   templateUrl: 'lista-eventos.html',
@@ -69,8 +69,8 @@ export class ListaEventosPage {
   }
 
   async cargarEventos(year: number, mes: number) {
-    let fechaInicio = new Date(year, mes, 1)
-    let fechaFin = new Date(year, mes + 1, 0)
+    let fechaInicio = new Date(year, mes, 0)
+    let fechaFin = new Date(year, mes + 1, 1)
     try{
       let resp: any = await this.eventoServ.obtenerEventos(fechaInicio.valueOf(), fechaFin.valueOf()).toPromise()
       if(resp){

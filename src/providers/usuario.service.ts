@@ -86,6 +86,14 @@ export class UsuarioService {
 
         
     }
+    registrarPush( data : {platform: string, token : string}): Observable<any>{
+     
+        let headers: HttpHeaders = new HttpHeaders().set("Content-Type", "application/json")
+
+        headers = headers.set('x-auth', this.token)
+
+        return this.http.put(`${this.apiUrl}api/usuarios/${this.usuario._id}/push`, data, { headers })
+    }
 
     public setUsuario(usuario: Usuario) {
         

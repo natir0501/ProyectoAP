@@ -1,6 +1,6 @@
 import { UsuariosEnCategoriaPage } from './../usuarios-en-categoria/usuarios-en-categoria';
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
+import { NavController, NavParams, LoadingController } from 'ionic-angular';
 import { Categoria } from '../../models/categoria.models';
 import { Usuario } from '../../models/usuario.model';
 import { Roles } from '../../models/enum.models';
@@ -16,7 +16,7 @@ import { UtilsServiceProvider } from '../../providers/utils.service';
  * Ionic pages and navigation.
  */
 
-@IonicPage()
+
 @Component({
   selector: 'page-modificacion-perifles',
   templateUrl: 'modificacion-perifles.html',

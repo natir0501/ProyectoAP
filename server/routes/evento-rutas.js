@@ -4,6 +4,8 @@ const { Evento } = require('../models/evento')
 const _ = require('lodash')
 const { ApiResponse } = require('../models/api-response')
 const { ObjectID } = require('mongodb')
+var { enviarNotificacion } = require('../Utilidades/utilidades')
+const { Usuario } = require('../models/usuario')
 
 api.get('/eventos', async (req, res) => {
 
@@ -61,6 +63,10 @@ api.post('/eventos', async (req, res) => {
             'rival', 'invitados', 'categoria']))
         await evento.save()
 
+        for (let id of evento.invitados){
+            let user = await Usuario.findOne({_id: id})
+            enviarNotificacion(user,evento)
+        }
         res.status(200).send(new ApiResponse({ evento }));
         console.log("agregado OK.");
 

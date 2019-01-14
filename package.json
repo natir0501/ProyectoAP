@@ -5,13 +5,13 @@
   "homepage": "http://ionicframework.com/",
   "private": true,
   "scripts": {
-    "postinstall": "npm run build",
+    "postinstall": "npm run build-prod",
     "start": "node server/server.js",
     "test": "npm run build && npm start",
     "test-api": "nodemon server/serverjs.",
     "clean": "ionic-app-scripts clean",
     "build": "ionic-app-scripts build",
-    "build-prod": "ionic:build --prod",
+    "build-prod": "ionic-app-scripts build --prod",
     "lint": "ionic-app-scripts lint"
   },
   "dependencies": {
@@ -30,6 +30,7 @@
     "@ionic/app-scripts": "3.2.0",
     "@ionic/storage": "2.2.0",
     "angularfire2": "^5.0.0-rc.4",
+    "axios": "^0.18.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
     "cors": "^2.8.4",
@@ -48,7 +49,7 @@
     "nodemon": "^1.18.8",
     "rxjs": "5.5.11",
     "sw-toolbox": "3.6.0",
-    "typescript": "~2.6.2",
+    "typescript": "~2.4.2",
     "validator": "^10.8.0",
     "zone.js": "0.8.26"
   },
