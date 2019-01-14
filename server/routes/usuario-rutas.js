@@ -205,7 +205,7 @@ api.put('/usuarios/password', async (req, res) => {
 
 
 api.put('/usuarios/:id/push', async (req, res) => {
-    console.log('vine')
+   
     let _id = req.params.id;
     let platform = req.body.platform
     let token = req.body.token

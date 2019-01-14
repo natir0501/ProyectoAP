@@ -47,21 +47,25 @@ export class AltaDeUsuarioPage {
       this.perfiles[cat._id] = []
 
     }
-    
+
 
   }
 
-  armoPerfiles(){
+  armoPerfiles() {
     let perfiles = []
     let keys = Object.keys(this.perfiles)
-    for (let key of keys){
-      perfiles.push({
-        'categoria':key,
-        'roles': this.perfiles[key]
-      })
+
+    for (let key of keys) {
+      if (this.perfiles[key].length > 0) {
+        perfiles.push({
+          'categoria': key,
+          'roles': this.perfiles[key]
+        })
+
+      }
     }
     this.usuario.perfiles = perfiles
-    
+
   }
 
   ionViewDidLoad() {
@@ -70,25 +74,25 @@ export class AltaDeUsuarioPage {
   }
 
   onSubmit() {
-    
-    this.armoPerfiles()
-    console.log(this.usuario)
 
-     
+    this.armoPerfiles()
+
+
+
     this.usuarioServ.altaUsuario(this.usuario)
       .subscribe(
         (resp) => {
           this.utilServ.dispararAlert("Gol!", "Usuario creado correctamente.")
           this.usuario.email = ''
-          
+
           this.usuario.categoriacuota = null
-          
+
         },
         (err) => {
           console.log("Error creando usuario", err)
           this.utilServ.dispararAlert("Error", "Ocurrió un error al crear usuario")
         }
-      ) 
+      )
 
   }
 
