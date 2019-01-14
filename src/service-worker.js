@@ -43,14 +43,31 @@ firebase.initializeApp({
 
 const messaging = firebase.messaging();
 
+self.addEventListener('push', function (event) {
+  console.log(event.data.json())
+  var data = event.data.json()
 
+  const notificationOptions = {
+    icon: 'assets/imgs/cei_logo-224.png',
+    body: data.notification.body,
+    badge: 'assets/imgs/cei_logo-96.png'
+  
+    
+  };
+  event.waitUntil(
+
+
+
+    self.registration.showNotification(data.notification.title, notificationOptions)
+  );
+});
 
 messaging.setBackgroundMessageHandler(function (payload) {
   console.log('Received background message ', payload);
   // here you can override some options describing what's in the message; 
   // however, the actual content will come from the Webtask
   const notificationOptions = {
-    icon: 'assets/imgs/cei.png'
+    icon: 'assets/imgs/cei_logo.jpg'
   };
   return self.registration.showNotification(notificationTitle, notificationOptions);
 });
