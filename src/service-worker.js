@@ -58,17 +58,7 @@ self.addEventListener('push', function (event) {
 
 
 
-    self.registration.showNotification('Push '||data.notification.title, notificationOptions)
+    self.registration.showNotification(data.notification.title, notificationOptions)
   );
 });
 
-messaging.setBackgroundMessageHandler(function (payload) {
-  console.log('Received background message ', payload);
-  // here you can override some options describing what's in the message; 
-  // however, the actual content will come from the Webtask
-  const notificationOptions = {
-    icon: 'assets/imgs/cei_logo.jpg',
-    badge: 'assets/imgs/logoxd.png'
-  };
-  return self.registration.showNotification(notificationTitle, notificationOptions);
-});
