@@ -2,20 +2,13 @@ import { UsuarioService } from './../../../providers/usuario.service';
 import { MantenimientoCampeonatosPage } from './../../common/mantenimiento-campeonatos/mantenimiento-campeonatos';
 import { Partido, Campeonato, Fecha, Lugar } from './../../../models/campeonato.model';
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 import { UtilsServiceProvider } from '../../../providers/utils.service';
 import { CampeonatoService } from '../../../providers/campeonato.service';
 import { NgForm } from '@angular/forms';
 import { Ruedas } from '../../../models/enum.models';
 
-/**
- * Generated class for the MantenimientoFechaPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
 
-@IonicPage()
 @Component({
   selector: 'page-mantenimiento-fecha',
   templateUrl: 'mantenimiento-fecha.html',

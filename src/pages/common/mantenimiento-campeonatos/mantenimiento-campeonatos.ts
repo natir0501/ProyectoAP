@@ -3,20 +3,13 @@ import { UsuarioService } from './../../../providers/usuario.service';
 import { CampeonatoService } from './../../../providers/campeonato.service';
 import { Campeonato, Fecha } from './../../../models/campeonato.model';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 import { UtilsServiceProvider } from '../../../providers/utils.service';
 import { ListaCampeonatosPage } from '../lista-campeonatos/lista-campeonatos';
 import { MantenimientoFechaPage } from '../../Backoffice/mantenimiento-fecha/mantenimiento-fecha';
 import { Categoria } from '../../../models/categoria.models';
 
-/**
- * Generated class for the MantenimientoCampeonatosPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
 
-@IonicPage()
 @Component({
   selector: 'page-mantenimiento-campeonatos',
   templateUrl: 'mantenimiento-campeonatos.html',

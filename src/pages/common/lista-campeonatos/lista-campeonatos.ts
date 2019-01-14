@@ -1,11 +1,11 @@
 import { MantenimientoCampeonatosPage } from './../mantenimiento-campeonatos/mantenimiento-campeonatos';
 import { Campeonato } from './../../../models/campeonato.model';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
+import { NavController, NavParams, LoadingController } from 'ionic-angular';
 import { CampeonatoService } from '../../../providers/campeonato.service';
 import { UtilsServiceProvider } from '../../../providers/utils.service';
 
-@IonicPage()
+
 @Component({
   selector: 'page-lista-campeonatos',
   templateUrl: 'lista-campeonatos.html',
