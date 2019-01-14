@@ -58,7 +58,7 @@ self.addEventListener('push', function (event) {
 
 
 
-    self.registration.showNotification(data.notification.title, notificationOptions)
+    self.registration.showNotification('Push '||data.notification.title, notificationOptions)
   );
 });
 
