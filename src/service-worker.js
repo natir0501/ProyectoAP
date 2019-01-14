@@ -50,7 +50,7 @@ self.addEventListener('push', function (event) {
   const notificationOptions = {
     icon: 'assets/imgs/cei_logo-224.png',
     body: data.notification.body,
-    badge: 'assets/imgs/cei_logo-96.png'
+    badge: 'assets/imgs/logoxd.png'
   
     
   };
@@ -67,7 +67,8 @@ messaging.setBackgroundMessageHandler(function (payload) {
   // here you can override some options describing what's in the message; 
   // however, the actual content will come from the Webtask
   const notificationOptions = {
-    icon: 'assets/imgs/cei_logo.jpg'
+    icon: 'assets/imgs/cei_logo.jpg',
+    badge: 'assets/imgs/logoxd.png'
   };
   return self.registration.showNotification(notificationTitle, notificationOptions);
 });
