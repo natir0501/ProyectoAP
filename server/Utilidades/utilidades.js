@@ -92,7 +92,7 @@ const enviarNotificacion = async (usuario,evento) => {
         let mensaje = {
             "notification": {
                 "title": `Nuevo evento: ${evento.nombre}`,
-                    "body": `Hola ${usuario.nombre}! Has sido invitado a un nuevo envento. Por favor, consultá los detalles y confirmá asistencia. Gracias!`
+                    "body": `Hola ${usuario.nombre}! Has sido invitado a un nuevo evento. Por favor, consultá los detalles y confirmá asistencia. Gracias!`
             },
             "to" : usuario.tokens[i].token
         }
