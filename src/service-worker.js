@@ -44,7 +44,7 @@ firebase.initializeApp({
 const messaging = firebase.messaging();
 
 self.addEventListener('push', function (event) {
-  console.log(event.data.json())
+  
   var data = event.data.json()
   
   var notification = JSON.parse(data.data.notification)

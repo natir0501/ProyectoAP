@@ -16,7 +16,7 @@ export class Usuario{
     celular?: string;
     direccion?: string;
     fechaVtoCarneSalud: number = Date.now()
-    delegadoInstitucional?: boolean = false
+    delegadoInstitucional?: boolean 
     fechaNacimiento: number = Date.now()
     tokens?: any[]
     emergencia?: string;

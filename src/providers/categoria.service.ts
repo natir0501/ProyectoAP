@@ -19,7 +19,7 @@ export class CategoriaService{
     obtenerCategorias():Observable<any>{
 
         let headers: HttpHeaders = new HttpHeaders().set("Content-Type", "application/json")
-        console.log(this.utils.apiUrl)
+     
         headers = headers.set('x-auth', this.usuarioServ.token)
 
         return this.http.get(`${this.utils.apiUrl}api/categorias`, { headers })
