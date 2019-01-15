@@ -19,6 +19,7 @@ api.get('/usuarios', (req, res) => {
 
 api.get('/usuarios/:token', async (req, res) => {
     try {
+        
         let token = req.params.token;
 
         usuario = await Usuario.findByToken(token);
@@ -195,6 +196,7 @@ api.put('/usuarios/:id/push', async (req, res) => {
     let _id = req.params.id;
     let platform = req.body.platform
     let token = req.body.token
+    
     try {
         let usuario = await Usuario.findOne({ _id })
         if (usuario) {
@@ -231,13 +233,12 @@ api.put('/usuarios/:id/unpush', async (req, res) => {
         if (usuario) {
             let pos = -1
             for (let i = 0; i < usuario.tokens.length; i++) {
-                console.log(usuario.tokens[i].access)
+               
                 if (usuario.tokens[i].access === platform) {
                     pos = i
                 }
             }
-            console.log(platform)
-            console.log(pos)
+         
             if (pos >= 0) { usuario.tokens.splice(pos, 1) }
             usuario = await usuario.save()
             res.status(200).send(new ApiResponse({}, 'Se quito token correctamente'))
