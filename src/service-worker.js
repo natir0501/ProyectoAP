@@ -16,6 +16,7 @@ importScripts('https://www.gstatic.com/firebasejs/4.9.0/firebase-messaging.js');
 self.toolbox.options.cache = {
   name: 'ionic-cache'
 };
+self.toolbox.options.networkTimeoutSeconds = 10;
 
 // pre-cache our key assets
 self.toolbox.precache(
@@ -32,11 +33,11 @@ self.toolbox.precache(
 );
 
 // dynamically cache any other local assets
-self.toolbox.router.any('/*', self.toolbox.networkOnly);
+self.toolbox.router.any('/*', self.toolbox.networkFirst);
 
 // for any other requests go to the network, cache,
 // and then only use that cached resource if your user goes offline
-self.toolbox.router.default = self.toolbox.networkOnly;
+self.toolbox.router.default = self.toolbox.networkFirst;
 
 firebase.initializeApp({
   // get this from Firebase console, Cloud messaging section
