@@ -16,8 +16,10 @@ export class CampeonatoService {
     return this.http.post(`${this.apiUrl}api/campeonato/${campeonato._id}/agregarfecha`,fecha, { headers })
   }
     
-  actualizarFecha(campeonato: Campeonato, fecha: Fecha): any {
-    throw new Error("Method not implemented.");
+  actualizarFecha(fecha: Fecha): any {
+    let headers: HttpHeaders = new HttpHeaders().set("Content-Type", "application/json")
+    headers = headers.set('x-auth', this.usuarioServ.token)
+    return this.http.put(`${this.apiUrl}api/campeonato/${fecha._id}/modificarfecha`,fecha, { headers })
   }
 
     apiUrl: string = ''

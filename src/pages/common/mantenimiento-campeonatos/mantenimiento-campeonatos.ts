@@ -8,6 +8,7 @@ import { UtilsServiceProvider } from '../../../providers/utils.service';
 import { ListaCampeonatosPage } from '../lista-campeonatos/lista-campeonatos';
 import { MantenimientoFechaPage } from '../../Backoffice/mantenimiento-fecha/mantenimiento-fecha';
 import { Categoria } from '../../../models/categoria.models';
+import { DetalleFechaPage } from '../../detalle-fecha/detalle-fecha';
 
 
 @Component({
@@ -78,11 +79,18 @@ export class MantenimientoCampeonatosPage {
   }
 
   editarFecha(fech: Fecha) {
+    let fecha=fech
+    let camp=this.campeonato
+    this.navCtrl.push((MantenimientoFechaPage), {fecha,camp})
     console.log("Editar fecha");
 
   }
 
   consultarFecha(fech: Fecha) {
+    let fecha=fech
+    this.navCtrl.push((DetalleFechaPage), {fecha})
+    console.log("Mi fecha", fecha);
+    
     console.log("Consultar fecha");
 
   }

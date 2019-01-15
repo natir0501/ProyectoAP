@@ -39,6 +39,7 @@ import { MantenimientoFechaPage } from '../pages/Backoffice/mantenimiento-fecha/
 import { ListaEventosPage } from '../pages/lista-eventos/lista-eventos';
 import { EventoService } from '../providers/evento.service';
 import { DetallesEventoPage } from '../pages/detalles-evento/detalles-evento';
+import { DetalleFechaPage } from '../pages/detalle-fecha/detalle-fecha';
 
 
 
@@ -67,7 +68,8 @@ import { DetallesEventoPage } from '../pages/detalles-evento/detalles-evento';
     MantenimientoFechaPage,
     ListaEventosPage,
     ModificarEventoPage,
-    DetallesEventoPage
+    DetallesEventoPage,
+    DetalleFechaPage
     
 
   ],
@@ -103,7 +105,8 @@ import { DetallesEventoPage } from '../pages/detalles-evento/detalles-evento';
     MantenimientoFechaPage,
     ListaEventosPage,
     ModificarEventoPage,
-    DetallesEventoPage
+    DetallesEventoPage,
+    DetalleFechaPage
     
   ],
   providers: [

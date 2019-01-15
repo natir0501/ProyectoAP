@@ -37,6 +37,7 @@ export class MantenimientoFechaPage {
 
     if (fecha) {
       this.fecha = fecha
+      this.fechaEncuentrotxt = this.utilServ.fechahoraToText(new Date(fecha.fechaEncuentro))
     }
     if (camp) {
       this.campeonato = camp
@@ -44,36 +45,37 @@ export class MantenimientoFechaPage {
   }
 
   onSubmit() {
-
     this.fecha.fechaEncuentro = Date.parse(this.form.value.fechaEncuentro)
-
     if (this.fecha._id === '') {
-
       this.campServ.agregarFechaCamp(this.fecha, this.campeonato)
         .subscribe(
           (resp) => {
             this.utilServ.dispararAlert("Ok", "Fecha agregada correctamente.")
             let fecha = resp.data;
-
-            console.log("respuesta", resp.data);
-            
-            if(resp.data==={}){
-              console.log("no hay data");
+            if (resp.data === {}) {
               this.utilServ.dispararAlert("Error", "No se agregó. Ya existe el número de fecha")
-              
             } else {
-              console.log("tengo fecha");
               let campeonato = this.campeonato
               campeonato.fechas.push(fecha);
               this.navCtrl.setRoot(MantenimientoCampeonatosPage, { campeonato })
             }
-
           },
           (err) => {
             this.utilServ.dispararAlert("Error", "Ocurrió un error al agregar la fecha. Verifique los datos")
+            console.log(err);
+
           })
     } else {
-      console.log(this.fecha);
+      this.campServ.actualizarFecha(this.fecha).subscribe(
+        (resp) => {
+          this.utilServ.dispararAlert("Ok", "Fecha modificada correctamente.")
+          let campeonato = this.campeonato
+          this.navCtrl.setRoot(MantenimientoCampeonatosPage, { campeonato })
+        },
+        (err) => {
+          this.utilServ.dispararAlert("Error", "Ocurrió un error al modificar la fecha. Verifique los datos")
+          console.log(err);
+        })
     }
   }
 

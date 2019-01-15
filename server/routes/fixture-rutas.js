@@ -23,21 +23,21 @@ api.post('/campeonato/:id/agregarfecha', async (req, res) => {
     let id = req.params.id
     try {
         let campeonato = await Campeonato.findById({ _id: id }).populate('fechas');
-        let f = new Fecha(_.pick(req.body, ['numeroFecha', 
-        'fechaEncuentro', 'rueda', 'partido']))
+        let f = new Fecha(_.pick(req.body, ['numeroFecha',
+            'fechaEncuentro', 'rueda', 'partido']))
 
         let fecha = new Fecha()
         if (campeonato) {
 
-            for(let fecha of campeonato.fechas){
-                
-                if(fecha.numeroFecha===f.numeroFecha && fecha.rueda===f.rueda){
-                    return res.status(400).send(new ApiResponse({}, 
+            for (let fecha of campeonato.fechas) {
+
+                if (fecha.numeroFecha === f.numeroFecha && fecha.rueda === f.rueda) {
+                    return res.status(400).send(new ApiResponse({},
                         "No se agregó. Ya existe el número de fecha"));
                 }
             }
             campeonato.fechas.push(f)
-            let fecha= await f.save()
+            let fecha = await f.save()
             await campeonato.save()
 
             return res.status(200).send(new ApiResponse(fecha));
@@ -78,10 +78,8 @@ api.put('/campeonato/:idfecha/modificarfecha', async (req, res) => {
 
     try {
         let id = req.params.idfecha
-        let fecha = await Fecha.findById(id)
+        let fecha = await Fecha.findOneAndUpdate({ _id: id }, req.body)
         if (fecha) {
-            fecha = new Fecha(req.body) 
-            fecha.save();
             return res.status(200).send(new ApiResponse(fecha));
         } else {
             res.status(404).send(new ApiResponse({}, "Ocurrió un error al modificar"));
@@ -96,7 +94,7 @@ api.put('/campeonato/:id', async (req, res) => {
 
     try {
         let id = req.params.id
-        let campeonato = await Campeonato.findOneAndUpdate({ id }, req.body)
+        let campeonato = await Campeonato.findOneAndUpdate({ _id: id }, req.body)
         if (campeonato) {
             return res.status(200).send(new ApiResponse(campeonato));
         } else {
@@ -118,6 +116,23 @@ api.get('/campeonato/:_id', (req, res) => {
         .then((campeonato) => {
             if (campeonato) {
                 res.status(200).send(new ApiResponse({ campeonato }))
+            } else {
+                res.status(404).send(new ApiResponse({}, "No hay datos para mostrar"));
+            }
+        }).catch((e) => {
+            res.status(400).send(new ApiResponse({}, `Mensaje: ${e}`))
+        })
+})
+
+api.get('/fecha/:_id', (req, res) => {
+    let id = req.params._id;
+
+    Fecha.findOne({
+        _id: id
+    })
+        .then((fecha) => {
+            if (fecha) {
+                res.status(200).send(new ApiResponse({ fecha }))
             } else {
                 res.status(404).send(new ApiResponse({}, "No hay datos para mostrar"));
             }
