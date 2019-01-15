@@ -32,7 +32,7 @@ self.toolbox.precache(
 );
 
 // dynamically cache any other local assets
-self.toolbox.router.any('/*', self.toolbox.cacheFirst);
+self.toolbox.router.any('/*', self.toolbox.networkOnly);
 
 // for any other requests go to the network, cache,
 // and then only use that cached resource if your user goes offline
