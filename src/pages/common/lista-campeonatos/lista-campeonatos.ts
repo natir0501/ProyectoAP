@@ -40,8 +40,6 @@ export class ListaCampeonatosPage {
 
   editarCampeonato(campeonato: Campeonato) {
     this.navCtrl.push((MantenimientoCampeonatosPage), {campeonato})
-    console.log("Editar Camp", campeonato);
-    
   }
 
   irAltaCamp(){

@@ -33,6 +33,8 @@ export class MantenimientoCampeonatosPage {
     if (camp) {
       this.campeonato = camp
       this.fechas = camp.fechas
+      console.log(camp);
+      
     }
   }
 

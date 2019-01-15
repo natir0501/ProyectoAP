@@ -13,7 +13,6 @@ export class CampeonatoService {
   agregarFechaCamp(fecha: Fecha, campeonato: Campeonato): any {
     let headers: HttpHeaders = new HttpHeaders().set("Content-Type", "application/json")
     headers = headers.set('x-auth', this.usuarioServ.token)
-    console.log("CAMPEONATOOOO", campeonato);
     return this.http.post(`${this.apiUrl}api/campeonato/${campeonato._id}/agregarfecha`,fecha, { headers })
   }
     

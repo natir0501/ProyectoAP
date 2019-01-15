@@ -22,14 +22,25 @@ api.post('/campeonato/:id/agregarfecha', async (req, res) => {
 
     let id = req.params.id
     try {
-        let campeonato = await Campeonato.findById({ _id: id }) 
-        let fecha = new Fecha(_.pick(req.body, ['numeroFecha', 
+        let campeonato = await Campeonato.findById({ _id: id }).populate('fechas');
+        let f = new Fecha(_.pick(req.body, ['numeroFecha', 
         'fechaEncuentro', 'rueda', 'partido']))
+
+        let fecha = new Fecha()
         if (campeonato) {
-            campeonato.fechas.push(fecha)
-            await fecha.save()
+
+            for(let fecha of campeonato.fechas){
+                
+                if(fecha.numeroFecha===f.numeroFecha && fecha.rueda===f.rueda){
+                    return res.status(400).send(new ApiResponse({}, 
+                        "No se agregó. Ya existe el número de fecha"));
+                }
+            }
+            campeonato.fechas.push(f)
+            let fecha= await f.save()
             await campeonato.save()
-            return res.status(200).send(new ApiResponse(campeonato));
+
+            return res.status(200).send(new ApiResponse(fecha));
         } else {
             res.status(404).send(new ApiResponse({}, "No hay datos para mostrar"));
         }

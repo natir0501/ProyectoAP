@@ -32,13 +32,13 @@ export class MantenimientoFechaPage {
   }
 
   ionViewDidLoad() {
-    let fecha: Fecha = this.navParams.get('fecha')    
+    let fecha: Fecha = this.navParams.get('fecha')
     let camp: Campeonato = this.navParams.get('camp')
+
     if (fecha) {
-      console.log("Solo voy a editar");
       this.fecha = fecha
     }
-    if(camp){
+    if (camp) {
       this.campeonato = camp
     }
   }
@@ -46,22 +46,33 @@ export class MantenimientoFechaPage {
   onSubmit() {
 
     this.fecha.fechaEncuentro = Date.parse(this.form.value.fechaEncuentro)
-    console.log("FECHA A AGREGAR", this.fecha);
-    
-    if (this.fecha._id === '') {      
-    
+
+    if (this.fecha._id === '') {
+
       this.campServ.agregarFechaCamp(this.fecha, this.campeonato)
         .subscribe(
           (resp) => {
             this.utilServ.dispararAlert("Ok", "Fecha agregada correctamente.")
-            let camp=this.campeonato;
-            this.navCtrl.push((MantenimientoCampeonatosPage), {camp});
+            let fecha = resp.data;
+
+            console.log("respuesta", resp.data);
+            
+            if(resp.data==={}){
+              console.log("no hay data");
+              this.utilServ.dispararAlert("Error", "No se agregó. Ya existe el número de fecha")
+              
+            } else {
+              console.log("tengo fecha");
+              let campeonato = this.campeonato
+              campeonato.fechas.push(fecha);
+              this.navCtrl.setRoot(MantenimientoCampeonatosPage, { campeonato })
+            }
+
           },
           (err) => {
-            console.log("Error dando de alta el campeonato", err)
-            this.utilServ.dispararAlert("Error", "Ocurrió un error al agregar el campeonato")
+            this.utilServ.dispararAlert("Error", "Ocurrió un error al agregar la fecha. Verifique los datos")
           })
-    }else{
+    } else {
       console.log(this.fecha);
     }
   }
