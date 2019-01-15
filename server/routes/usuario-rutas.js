@@ -102,21 +102,21 @@ api.put('/usuarios/perfiles', async (req, res) => {
 
 
     try {
-        
+
         let usuario = await Usuario.findOne({ _id: req.body._id })
 
         usuario.perfiles = req.body.perfiles
 
 
 
-        
+
 
         if (usuario.categoriacuota.toString() !== req.body.categoriacuota) {
             usuario.categoriacuota = req.body.categoriacuota
         }
-        
+
         usuario = await usuario.save()
-        
+
 
         for (let perfil of usuario.perfiles) {
 
@@ -135,11 +135,11 @@ api.put('/usuarios/perfiles', async (req, res) => {
                 categoria.jugadores.splice(categoria.jugadores.indexOf(usuario._id), 1)
             }
 
-        
+
 
             for (let rolId of perfil.roles) {
                 rol = await Rol.findOne({ '_id': rolId })
-            
+
                 if (rol.codigo === 'DEL') {
                     categoria.delegados.push(usuario._id)
                 }
@@ -211,6 +211,37 @@ api.put('/usuarios/:id/push', async (req, res) => {
                 usuario = await usuario.save()
                 res.status(200).send(new ApiResponse({}, 'Se guardo token correctamente'))
             }
+
+        } else {
+            res.status(404).send()
+        }
+    } catch (e) {
+        console.log(e)
+        res.status(400).send(new ApiResponse({}, 'Error'))
+    }
+})
+
+api.put('/usuarios/:id/unpush', async (req, res) => {
+
+    let _id = req.params.id;
+    let platform = req.body.platform
+
+    try {
+        let usuario = await Usuario.findOne({ _id })
+        if (usuario) {
+            let pos = -1
+            for (let i = 0; i < usuario.tokens.length; i++) {
+                console.log(usuario.tokens[i].access)
+                if (usuario.tokens[i].access === platform) {
+                    pos = i
+                }
+            }
+            console.log(platform)
+            console.log(pos)
+            if (pos >= 0) { usuario.tokens.splice(pos, 1) }
+            usuario = await usuario.save()
+            res.status(200).send(new ApiResponse({}, 'Se quito token correctamente'))
+
 
         } else {
             res.status(404).send()
