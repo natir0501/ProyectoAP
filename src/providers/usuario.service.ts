@@ -7,6 +7,7 @@ import { Observable } from 'rxjs/Observable';
 import { Storage } from '@ionic/storage';
 import { Subject } from 'rxjs/Subject';
 import { Categoria } from '../models/categoria.models';
+import { Platform } from 'ionic-angular';
 
 @Injectable()
 export class UsuarioService {
@@ -18,7 +19,7 @@ export class UsuarioService {
     usuConectado : Observable<Usuario>
     private usuSubject: Subject<Usuario>
 
-    constructor(private http: HttpClient, private storage: Storage, private util: UtilsServiceProvider) {
+    constructor(private http: HttpClient, private storage: Storage, private util: UtilsServiceProvider, private platform: Platform) {
         this.apiUrl = this.util.apiUrl
         this.usuSubject = new Subject<Usuario>()
         this.usuConectado = this.usuSubject.asObservable()
@@ -106,11 +107,22 @@ export class UsuarioService {
     }
 
     public logOut() {
+        let token : string = this.platform.is('mobile') ? 'mobile' : 'desktop'
+        this.quitarpush(token).subscribe((resp)=>{},(err)=>{console.log(err)})
         this.token = ''
         this.usuario = undefined
+       
         this.usuSubject.next(this.usuario)
         return this.storage.remove('apiToken')
 
+    }
+
+    private quitarpush(platform: string): Observable<any>{
+        let headers: HttpHeaders = new HttpHeaders().set("Content-Type", "application/json")
+
+        headers = headers.set('x-auth', this.token)
+
+        return this.http.put(`${this.apiUrl}api/usuarios/${this.usuario._id}/unpush`, {platform}, { headers })
     }
 
     public altaUsuario(usu: Usuario): Observable<any> {

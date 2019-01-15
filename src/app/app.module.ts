@@ -68,7 +68,8 @@ import { DetallesEventoPage } from '../pages/detalles-evento/detalles-evento';
     BrowserModule,
     IonicModule.forRoot(MyApp,{scrollPadding: false,
       scrollAssist: true,
-      autoFocusAssist: false
+      autoFocusAssist: false,
+      backButtonText: ''
     }),
     CalendarModule,
     AngularFireModule.initializeApp(firebaseConfig),

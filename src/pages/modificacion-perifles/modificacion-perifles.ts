@@ -1,13 +1,14 @@
-import { UsuariosEnCategoriaPage } from './../usuarios-en-categoria/usuarios-en-categoria';
 import { Component, ViewChild } from '@angular/core';
-import { NavController, NavParams, LoadingController } from 'ionic-angular';
+import { NgForm } from '@angular/forms';
+import { LoadingController, NavController, NavParams } from 'ionic-angular';
 import { Categoria } from '../../models/categoria.models';
 import { Usuario } from '../../models/usuario.model';
-import { Roles } from '../../models/enum.models';
-import { NgForm } from '@angular/forms';
-import { UsuarioService } from '../../providers/usuario.service';
 import { CategoriaService } from '../../providers/categoria.service';
+import { UsuarioService } from '../../providers/usuario.service';
 import { UtilsServiceProvider } from '../../providers/utils.service';
+import { Roles } from './../../models/enum.models';
+import { Perfil } from './../../models/usuario.model';
+import { UsuariosEnCategoriaPage } from './../usuarios-en-categoria/usuarios-en-categoria';
 
 /**
  * Generated class for the ModificacionPeriflesPage page.
@@ -29,10 +30,12 @@ export class ModificacionPeriflesPage {
   roles = Object.keys(Roles).map(key => ({ 'id': key, 'value': Roles[key] }))
   rolesBack = []
   perfiles: any = {}
+  array: any
+
 
 
   @ViewChild("form") formulario: NgForm
- 
+
 
   constructor(public navCtrl: NavController, public usuarioServ: UsuarioService, public navParams: NavParams,
     private load: LoadingController, public categoriaServ: CategoriaService, public utilServ: UtilsServiceProvider) {
@@ -46,48 +49,47 @@ export class ModificacionPeriflesPage {
       spinner: 'circles'
     })
     loader.present()
+    this.usuario = this.navParams.get('usuario')
     let categoriasData = await this.categoriaServ.obtenerCategorias().toPromise()
     this.categoriasCuotas = categoriasData.data.categorias
-    let catId = this.usuarioServ.usuario.perfiles[0].categoria
-    let resp = await this.categoriaServ.obtenerCategoria(catId).toPromise()
-    this.usuario = this.navParams.get('usuario')
+
     let resp2 = await this.categoriaServ.obtenerRoles().toPromise()
+    console.log(this.roles)
     this.rolesBack = resp2.data.roles
 
-    await this.cargoPerfiles(resp)
+    await this.cargoPerfiles(categoriasData)
     loader.dismiss()
   }
 
   cargoPerfiles(resp: any) {
-    this.categorias = [resp.data.categoria]
-    let roles = []
-    for (let perfil of this.usuario.perfiles) {
-      if (perfil.categoria === this.categorias[0]._id) {
-        roles = perfil.roles
-      }
-    }
-    for (let i = 0; i < roles.length; i++) {
-      roles[i] = {
-        _id: roles[i],
-        codigo: this.rolesBack.filter((elem) => elem._id === roles[i])[0].codigo
-      }
+    this.categorias = resp.data.categorias
+
+    this.categorias = resp.data.categorias
+    for (let cat of this.categorias) {
+      this.perfiles[cat._id] = []
+
     }
 
-    for (let cat of this.categorias) {
-      this.perfiles[cat._id] = [...roles.map(ele => ele.codigo)]
-    }
   }
 
   armoPerfiles() {
+    
+
+
     let perfiles = []
     let keys = Object.keys(this.perfiles)
+
     for (let key of keys) {
-      perfiles.push({
-        'categoria': key,
-        'roles': this.perfiles[key]
-      })
+      if (this.perfiles[key].length > 0) {
+        perfiles.push({
+          'categoria': key,
+          'roles': this.perfiles[key]
+        })
+
+      }
     }
     this.usuario.perfiles = perfiles
+    
 
   }
 
@@ -127,6 +129,27 @@ export class ModificacionPeriflesPage {
     etiqueta = usuario.apellido ? etiqueta + ' ' + usuario.apellido : etiqueta
     etiqueta = etiqueta === '' ? ` (${usuario.email})` : etiqueta
     return etiqueta
+  }
+
+
+  listarRol(perfil: Perfil): string {
+    let nombreCat
+    for (let cat of this.categorias) {
+      if (perfil.categoria === cat._id) {
+        nombreCat = cat.nombre
+      }
+    }
+    let roles = []
+    for (let rolId of perfil.roles) {
+      for (let rol of this.rolesBack) {
+        if (rolId === rol._id) {
+          roles.push(rol.nombre)
+        }
+      }
+    }
+    let stringRoles = roles.join(',')
+
+    return `Categoría ${nombreCat}: ${stringRoles}.`
   }
 
 }

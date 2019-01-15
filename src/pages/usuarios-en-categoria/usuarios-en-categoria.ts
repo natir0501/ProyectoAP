@@ -67,11 +67,11 @@ export class UsuariosEnCategoriaPage {
 
   modificarPerfil(usuario: Usuario) {
     
-    this.navCtrl.setRoot(ModificacionPeriflesPage, { usuario })
+    this.navCtrl.push(ModificacionPeriflesPage, { usuario })
   }
 
   modificarPassword(usuario: Usuario){
-    this.navCtrl.setRoot(ModificarPasswordPage, { usuario })
+    this.navCtrl.push(ModificarPasswordPage, { usuario })
   }
 
   mostrarUsuario(usuario: Usuario){

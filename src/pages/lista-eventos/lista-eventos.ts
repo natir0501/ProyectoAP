@@ -39,13 +39,13 @@ export class ListaEventosPage {
   }
 
   altaEvento() {
-    this.navCtrl.setRoot(ModificarEventoPage, { fecha: this.fechaSeleccionada })
+    this.navCtrl.push(ModificarEventoPage, { fecha: this.fechaSeleccionada })
   }
   editarEvento(evento : Evento){
-    this.navCtrl.setRoot(ModificarEventoPage,{evento} )
+    this.navCtrl.push(ModificarEventoPage,{evento} )
   }
   detalles(evento: Evento){
-    this.navCtrl.setRoot(DetallesEventoPage,{evento})
+    this.navCtrl.push(DetallesEventoPage,{evento})
   }
 
   onDateSelected(data: any) {
@@ -92,6 +92,10 @@ export class ListaEventosPage {
 
   puedeEditar(evento: Evento):boolean{
     return evento.fecha > Date.now() 
+  }
+
+  puedeCrear():boolean{
+    return new Date(this.fechaSeleccionada.getFullYear(), this.fechaSeleccionada.getMonth(), this.fechaSeleccionada.getDate() +1).valueOf() > Date.now()
   }
 
 }

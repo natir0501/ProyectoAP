@@ -19,6 +19,7 @@ api.get('/usuarios', (req, res) => {
 
 api.get('/usuarios/:token', async (req, res) => {
     try {
+        
         let token = req.params.token;
 
         usuario = await Usuario.findByToken(token);
@@ -105,72 +106,58 @@ api.put('/usuarios/perfiles', async (req, res) => {
 
         let usuario = await Usuario.findOne({ _id: req.body._id })
 
-        let perfil = req.body.perfiles[0]
-
-        let roles = []
-
-        for (let rolCod of req.body.perfiles[0].roles) {
-            let rol = await Rol.findOne({ codigo: rolCod })
-            roles.push(rol._id)
-        }
-
-        for (let i = 0; i < usuario.perfiles.length; i++) {
-
-            if (usuario.perfiles[i].categoria.toString() === perfil.categoria.toString()) {
-
-                usuario.perfiles[i].roles = [
-                    ...roles
-                ]
-            }
-        }
+        usuario.perfiles = req.body.perfiles
 
 
 
-        console.log(usuario.categoriacuota)
 
-        if (usuario.categoriacuota && usuario.categoriacuota.toString() !== req.body.categoriacuota) {
+
+        if (usuario.categoriacuota.toString() !== req.body.categoriacuota) {
             usuario.categoriacuota = req.body.categoriacuota
         }
 
         usuario = await usuario.save()
 
 
+        for (let perfil of usuario.perfiles) {
 
-        categoria = await Categoria.findOne({ '_id': perfil.categoria })
+            categoria = await Categoria.findOne({ '_id': perfil.categoria })
 
-        if (categoria.delegados.indexOf(usuario._id) > -1) {
-            categoria.delegados.splice(categoria.delegados.indexOf(usuario._id), 1)
-        }
-        if (categoria.dts.indexOf(usuario._id) > -1) {
-            categoria.dts.splice(categoria.dts.indexOf(usuario._id), 1)
-        }
-        if (categoria.tesoreros.indexOf(usuario._id) > -1) {
-            categoria.tesoreros.splice(categoria.tesoreros.indexOf(usuario._id), 1)
-        }
-        if (categoria.jugadores.indexOf(usuario._id) > -1) {
-            categoria.jugadores.splice(categoria.jugadores.indexOf(usuario._id), 1)
-        }
-
-
-
-        for (let rolCod of perfil.roles) {
-            rol = await Rol.findOne({ 'codigo': rolCod })
-
-            if (rol.codigo === 'DEL') {
-                categoria.delegados.push(usuario._id)
+            if (categoria.delegados.indexOf(usuario._id) > -1) {
+                categoria.delegados.splice(categoria.delegados.indexOf(usuario._id), 1)
             }
-            if (rol.codigo === 'DTS') {
-                categoria.dts.push(usuario._id)
+            if (categoria.dts.indexOf(usuario._id) > -1) {
+                categoria.dts.splice(categoria.dts.indexOf(usuario._id), 1)
             }
-            if (rol.codigo === 'TES') {
-                categoria.tesoreros.push(usuario._id)
+            if (categoria.tesoreros.indexOf(usuario._id) > -1) {
+                categoria.tesoreros.splice(categoria.tesoreros.indexOf(usuario._id), 1)
             }
-            if (rol.codigo === 'JUG') {
-                categoria.jugadores.push(usuario._id)
+            if (categoria.jugadores.indexOf(usuario._id) > -1) {
+                categoria.jugadores.splice(categoria.jugadores.indexOf(usuario._id), 1)
             }
+
+
+
+            for (let rolId of perfil.roles) {
+                rol = await Rol.findOne({ '_id': rolId })
+
+                if (rol.codigo === 'DEL') {
+                    categoria.delegados.push(usuario._id)
+                }
+                if (rol.codigo === 'DTS') {
+                    categoria.dts.push(usuario._id)
+                }
+                if (rol.codigo === 'TES') {
+                    categoria.tesoreros.push(usuario._id)
+                }
+                if (rol.codigo === 'JUG') {
+                    categoria.jugadores.push(usuario._id)
+                }
+            }
+
+            await categoria.save()
         }
 
-        await categoria.save()
 
 
 
@@ -205,10 +192,11 @@ api.put('/usuarios/password', async (req, res) => {
 
 
 api.put('/usuarios/:id/push', async (req, res) => {
-   
+
     let _id = req.params.id;
     let platform = req.body.platform
     let token = req.body.token
+    
     try {
         let usuario = await Usuario.findOne({ _id })
         if (usuario) {
@@ -217,14 +205,44 @@ api.put('/usuarios/:id/push', async (req, res) => {
                 usuario = await usuario.save()
                 res.status(200).send(new ApiResponse({}, 'Se guardo token correctamente'))
             } else {
-                for (let obj of usuario.tokens){
-                    if(obj.access === platform){
+                for (let obj of usuario.tokens) {
+                    if (obj.access === platform) {
                         obj.token = token
                     }
                 }
                 usuario = await usuario.save()
                 res.status(200).send(new ApiResponse({}, 'Se guardo token correctamente'))
             }
+
+        } else {
+            res.status(404).send()
+        }
+    } catch (e) {
+        console.log(e)
+        res.status(400).send(new ApiResponse({}, 'Error'))
+    }
+})
+
+api.put('/usuarios/:id/unpush', async (req, res) => {
+
+    let _id = req.params.id;
+    let platform = req.body.platform
+
+    try {
+        let usuario = await Usuario.findOne({ _id })
+        if (usuario) {
+            let pos = -1
+            for (let i = 0; i < usuario.tokens.length; i++) {
+               
+                if (usuario.tokens[i].access === platform) {
+                    pos = i
+                }
+            }
+         
+            if (pos >= 0) { usuario.tokens.splice(pos, 1) }
+            usuario = await usuario.save()
+            res.status(200).send(new ApiResponse({}, 'Se quito token correctamente'))
+
 
         } else {
             res.status(404).send()
