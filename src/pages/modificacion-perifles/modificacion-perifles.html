@@ -21,6 +21,16 @@
                 Realice las modificaciones en los perfiles para el usuario.
               </strong>
             </p>
+            <p style="color:#000000;">
+              <strong>
+                Actualmente el usuario cuenta con éstos perfiles:
+              </strong>
+            </p>
+            <p style="color:#000000;" *ngFor="let perfil of usuario.perfiles">
+              <strong>
+                {{listarRol(perfil)}}
+              </strong>
+            </p>
           </div>
 
           <ion-list id="altaDeUsuario-list9">
@@ -43,9 +53,9 @@
                 <ion-label>
                   {{cat.nombre}}
                 </ion-label>
-                <ion-select okText="Ok" cancelText="Cancelar" multiple="true" required [(ngModel)]="perfiles[cat._id]" name="roles"
-                  [selectedText]="perfiles[cat._id].join(', ')">
-                  <ion-option *ngFor="let rol of roles" [disabled]="rol.id == 'DIN'" [id]="rol.id" [value]="rol.id">{{rol.value}}</ion-option>
+                <ion-select okText="Ok" cancelText="Cancelar" multiple="true"  [(ngModel)]="perfiles[cat._id]" name="roles" 
+                >
+                  <ion-option *ngFor="let rol of rolesBack" [disabled]="rol.codigo == 'DIN'" [id]="rol._id" [value]="rol._id">{{rol.nombre}}</ion-option>
                 </ion-select>
             </ion-item>
 

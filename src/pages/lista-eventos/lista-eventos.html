@@ -57,7 +57,7 @@
     <div class="spacer" style="width:300px;height:15px;" id="registro-spacer8"></div>
     <ion-row justify-content-center>
       <ion-col col-xl-2>
-        <button *ngIf="esDelegado()" type="submit" ion-button="" (click)="altaEvento()" block color="positive">
+        <button *ngIf="esDelegado() && puedeCrear()" type="submit" ion-button="" (click)="altaEvento()" block color="positive">
           Nuevo
         </button>
       </ion-col>

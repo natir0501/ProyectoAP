@@ -86,6 +86,10 @@ export class AltaDeUsuarioPage {
           this.usuario.email = ''
 
           this.usuario.categoriacuota = null
+          for (let cat of this.categorias) {
+            this.perfiles[cat._id] = []
+      
+          }
 
         },
         (err) => {
