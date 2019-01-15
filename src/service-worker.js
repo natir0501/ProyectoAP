@@ -36,7 +36,7 @@ self.toolbox.router.any('/*', self.toolbox.cacheFirst);
 
 // for any other requests go to the network, cache,
 // and then only use that cached resource if your user goes offline
-self.toolbox.router.default = self.toolbox.networkFirst;
+self.toolbox.router.default = self.toolbox.networkOnly;
 
 firebase.initializeApp({
   // get this from Firebase console, Cloud messaging section
