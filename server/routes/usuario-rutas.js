@@ -265,8 +265,8 @@ api.put('/usuarios/:id', async (req, res) => {
 
         let _id = req.params.id;
         
-        await Usuario.findOneAndUpdate({ _id }, { $set: req.body })
-        let usuario = await Usuario.findOne({_id})
+        let usuario = await Usuario.findOneAndUpdate({ _id }, { $set: req.body })
+         usuario = await Usuario.findOne({_id})
         if (!usuario) {
             res.status(401).send(new ApiResponse({}, 'Usuario inválido'))
         }

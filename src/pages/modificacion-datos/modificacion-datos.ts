@@ -58,7 +58,7 @@ export class ModificacionDatosPage {
   onSubmit() {
 
     if (this.validoUsuario()) {
-      delete this.usuario.password
+      this.usuario.password = 'n'
 
       this.usuarioServ.actualizarUsuario(this.usuario).subscribe((resp) => {
         this.util.dispararAlert('Éxito', "Actualizado correctamente")
