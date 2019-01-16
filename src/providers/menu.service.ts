@@ -49,7 +49,7 @@ export class MenuService {
         this.map.set('ModificarPasswordPage', ModificarPasswordPage)
         this.map.set('ListaCampeonatosPage', ListaCampeonatosPage)
         this.map.set('ListaEventosPage',ListaEventosPage)
-        this.map.set('ListaEventosPage',MantenimientoCampeonatosPage)
+        this.map.set('MantenimientoCampeonatosPage',MantenimientoCampeonatosPage)
 
 
     }

@@ -111,8 +111,7 @@ api.get('/campeonato/:_id', (req, res) => {
 
     Campeonato.findOne({
         _id: id
-    })
-        .populate('fechas')
+    }).populate('fechas')
         .then((campeonato) => {
             if (campeonato) {
                 res.status(200).send(new ApiResponse({ campeonato }))

@@ -14,12 +14,17 @@ export class CampeonatoService {
     consultarCampeonatoActual(categoria: Categoria): any {
 
         console.log("en la consulta de campeonato desde fixturee!!!");
+        console.log(categoria)
         
         let anioActual = new Date().getFullYear();
+        
+        
         for (let camp of categoria.campeonatos) {
+            console.log("Actual:",anioActual,"----Camp:",camp.anio);
             if (camp.anio === anioActual) {
                 let headers: HttpHeaders = new HttpHeaders().set("Content-Type", "application/json")
                 headers = headers.set('x-auth', this.usuarioServ.token)
+                console.log("Campeonato", camp);
                 return this.http.get(`${this.apiUrl}api/campeonato/${camp._id}`, { headers })
             }
         }

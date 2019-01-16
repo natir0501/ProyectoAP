@@ -31,6 +31,7 @@ export class MantenimientoCampeonatosPage {
   }
 
   async ionViewDidLoad() {
+    
     let camp: Campeonato = this.navParams.get('campeonato')
     this.categoria._id = this.usuServ.usuario.perfiles[0].categoria
     let dataUsuarios: any = await this.catService.obtenerCategoria(this.categoria._id).toPromise()
@@ -40,11 +41,12 @@ export class MantenimientoCampeonatosPage {
     if (camp) {
       this.campeonato = camp
       this.fechas = camp.fechas
-      console.log("Este soy yo",camp);
-      
     }else{
-      // traer el de la categoria que tengo en this categoria
-      this.campServ.consultarCampeonatoActual(this.categoria);
+      let datosCamp: any = await this.campServ.consultarCampeonatoActual(this.categoria).toPromise();
+      if(datosCamp){
+        this.campeonato=datosCamp.data.campeonato
+        this.fechas= this.campeonato.fechas
+      }      
     }
   }
 
@@ -115,12 +117,19 @@ export class MantenimientoCampeonatosPage {
 
   puedeEditar() : boolean{
     let usuario : Usuario = this.usuServ.usuario
-    if(usuario.delegadoInstitucional) return true
-    for (let usu of this.categoria.delegados){
-      if(usu._id === usuario._id){
-        return true
+    if(usuario){
+      if(usuario.delegadoInstitucional) return true
+      for (let usu of this.categoria.delegados){
+        if(usu._id === usuario._id){
+          return true
+        }
       }
     }
+  }
+
+  hayCampeonato():boolean{
+    let hayCamp=this.campeonato._id!=""
+    return hayCamp;
   }
 
 

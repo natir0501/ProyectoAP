@@ -44,11 +44,11 @@
               Datos básicos:
             </ion-item-divider>
             <ion-item>
-              <ion-icon name="add-circle"></ion-icon>
+              <ion-icon name="football"></ion-icon>
               <b>Nombre: </b><span item-end>{{campeonato.nombre}}</span>
             </ion-item>
             <ion-item>
-              <ion-icon name="add-circle"></ion-icon>
+              <ion-icon name="calendar"></ion-icon>
               <b>Año: </b><span item-end>{{campeonato.anio}}</span>
             </ion-item>
           </ng-container>
@@ -59,7 +59,7 @@
           <ion-item-divider color="light" id="altaCamp-list-item-divider3">
             Fechas:
 
-            <button *ngIf="puedeEditar()" ion-button item-end class="btn-mostrar" type="button" (click)="agregarFecha()">+</button>
+            <button *ngIf="puedeEditar()&& hayCampeonato()" ion-button item-end class="btn-mostrar" type="button" (click)="agregarFecha()">+</button>
           </ion-item-divider>
           <ion-list>
             <ion-item-sliding *ngFor="let fech of fechas">
