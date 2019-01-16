@@ -255,7 +255,7 @@ api.put('/usuarios/:id/unpush', async (req, res) => {
 
 api.put('/usuarios/:id', async (req, res) => {
     let token = req.header('x-auth')
-
+    
 
     try {
         let usuarioRequest = await Usuario.findByToken(token)
@@ -264,8 +264,9 @@ api.put('/usuarios/:id', async (req, res) => {
         }
 
         let _id = req.params.id;
-
-        let usuario = await Usuario.findOneAndUpdate({ _id }, { $set: req.body })
+        
+        await Usuario.findOneAndUpdate({ _id }, { $set: req.body })
+        let usuario = await Usuario.findOne({_id})
         if (!usuario) {
             res.status(401).send(new ApiResponse({}, 'Usuario inválido'))
         }

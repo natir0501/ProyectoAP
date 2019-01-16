@@ -33,4 +33,11 @@ export class UtilsServiceProvider {
 
     return `${year}-${mes}-${dia}T${hora}:${minutos}`
   }
+  fechaToText(tiempo: Date): string{
+    let year = tiempo.getFullYear()
+    let mes = tiempo.getMonth() +1  < 10 ? '0' + (tiempo.getMonth()+1) : (tiempo.getMonth() +1)
+    let dia = tiempo.getDate() < 10 ? '0' + tiempo.getDate() : tiempo.getDate()
+    
+    return `${year}-${mes}-${dia}`
+  }
 }

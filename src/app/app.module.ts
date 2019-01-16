@@ -1,3 +1,5 @@
+import { ConsultaModificacionDatosPage } from './../pages/consulta-modificacion-datos/consulta-modificacion-datos';
+import { ModificacionDatosPage } from './../pages/modificacion-datos/modificacion-datos';
 import { CampeonatoService } from './../providers/campeonato.service';
 import { ListaCampeonatosPage } from './../pages/common/lista-campeonatos/lista-campeonatos';
 import { ModificarEventoPage } from './../pages/modificar-evento/modificar-evento';
@@ -69,7 +71,9 @@ import { DetalleFechaPage } from '../pages/detalle-fecha/detalle-fecha';
     ListaEventosPage,
     ModificarEventoPage,
     DetallesEventoPage,
-    DetalleFechaPage
+    DetalleFechaPage,
+    ModificacionDatosPage,
+    ConsultaModificacionDatosPage
     
 
   ],
@@ -107,7 +111,10 @@ import { DetalleFechaPage } from '../pages/detalle-fecha/detalle-fecha';
     ListaEventosPage,
     ModificarEventoPage,
     DetallesEventoPage,
-    DetalleFechaPage
+    DetalleFechaPage,
+    ModificacionDatosPage,
+    ConsultaModificacionDatosPage
+    
     
   ],
   providers: [

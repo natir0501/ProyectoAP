@@ -54,7 +54,7 @@ export class ModificacionPeriflesPage {
     this.categoriasCuotas = categoriasData.data.categorias
 
     let resp2 = await this.categoriaServ.obtenerRoles().toPromise()
-    console.log(this.roles)
+ 
     this.rolesBack = resp2.data.roles
 
     await this.cargoPerfiles(categoriasData)
@@ -74,22 +74,25 @@ export class ModificacionPeriflesPage {
 
   armoPerfiles() {
     
-
+    let rolDelInst = this.rolesBack.filter((rol)=> rol.codigo ==='DIN')[0]
 
     let perfiles = []
     let keys = Object.keys(this.perfiles)
 
     for (let key of keys) {
       if (this.perfiles[key].length > 0) {
+        if(this.usuario.delegadoInstitucional){
+          this.perfiles[key].push(rolDelInst._id)
+        }
         perfiles.push({
           'categoria': key,
           'roles': this.perfiles[key]
         })
-
+        
       }
     }
     this.usuario.perfiles = perfiles
-    
+   
 
   }
 
@@ -147,7 +150,7 @@ export class ModificacionPeriflesPage {
         }
       }
     }
-    let stringRoles = roles.join(',')
+    let stringRoles = roles.join(', ')
 
     return `Categoría ${nombreCat}: ${stringRoles}.`
   }
