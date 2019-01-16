@@ -1,3 +1,5 @@
+import { ModificacionDatosPage } from './../pages/modificacion-datos/modificacion-datos';
+import { ConsultaModificacionDatosPage } from './../pages/consulta-modificacion-datos/consulta-modificacion-datos';
 import { MantenimientoCampeonatosPage } from './../pages/common/mantenimiento-campeonatos/mantenimiento-campeonatos';
 import { ListaCampeonatosPage } from './../pages/common/lista-campeonatos/lista-campeonatos';
 import { ListaEventosPage } from './../pages/lista-eventos/lista-eventos';
@@ -50,6 +52,8 @@ export class MenuService {
         this.map.set('ListaCampeonatosPage', ListaCampeonatosPage)
         this.map.set('ListaEventosPage',ListaEventosPage)
         this.map.set('MantenimientoCampeonatosPage',MantenimientoCampeonatosPage)
+        this.map.set('ConsultaModificacionDatosPage',ConsultaModificacionDatosPage)
+        this.map.set('ModificacionDatos',ModificacionDatosPage)
 
 
     }

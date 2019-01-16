@@ -4,7 +4,7 @@
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title>
-      Modificación Perfiles y Password
+      Modificación Datos de Usuario
     </ion-title>
   </ion-navbar>
 </ion-header>
@@ -17,8 +17,8 @@
             Estos son los usuarios de la categoría: <b>{{categoria.nombre}}</b>
             <br>
             Para modificar deslice el registro
-            hacia la izquierda y seleccione "Perfiles" o "Password".
-            La modificación de password solo estará presente en usuarios activos.
+            hacia la izquierda y seleccione "Editar".
+            La modificación solo estará presente en usuarios activos.
 
           </p>
         </div>
@@ -32,11 +32,8 @@
               {{mostrarUsuario(u)}}
             </ion-item>
             <ion-item-options side="right">
-              <button ion-button color="positive" (click)="modificarPerfil(u)">
-                Perfiles
-              </button>
-              <button *ngIf="u.activo" ion-button color="positive" (click)="modificarPassword(u)">
-                Password
+              <button *ngIf="u.activo" ion-button color="positive" (click)="modificar(u)">
+                Editar
               </button>
             </ion-item-options>
           </ion-item-sliding>

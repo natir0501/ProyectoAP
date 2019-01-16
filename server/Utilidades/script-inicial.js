@@ -34,7 +34,7 @@ const cargaPantallas = async () => {
         
         
         
-        await new Pantalla({ 'nombre': 'Datos de jugador', 'menu': 'Jugador', 'opcionMenu': 'Datos de jugador', 'componente': 'PlaceHolderPage', 'roles': [delegadoInst._id, jugador._id, dt._id,] }).save()
+        await new Pantalla({ 'nombre': 'Datos de jugador', 'menu': 'Jugador', 'opcionMenu': 'Datos de jugador', 'componente': 'ModificacionDatos', 'roles': [delegadoInst._id, jugador._id] }).save()
         await new Pantalla({ 'nombre': 'Informe de Pago', 'menu': 'Jugador', 'opcionMenu': 'Informe de Pago', 'componente': 'PlaceHolderPage', 'roles': [delegadoInst._id, jugador._id,] }).save()
         await new Pantalla({ 'nombre': 'Saldos y Movs.', 'menu': 'Jugador', 'opcionMenu': 'Saldos y Movs.', 'componente': 'PlaceHolderPage', 'roles': [delegadoInst._id, jugador._id,] }).save()
         await new Pantalla({ 'nombre': 'Datos deportivos', 'menu': 'Jugador', 'opcionMenu': 'Datos deportivos', 'componente': 'PlaceHolderPage', 'roles': [delegadoInst._id, jugador._id,] }).save()
@@ -54,16 +54,17 @@ const cargaPantallas = async () => {
         
         
         await new Pantalla({ 'nombre': 'Registro de datos', 'menu': 'Dirección Técnica', 'opcionMenu': 'Registro de datos', 'componente': 'PlaceHolderPage', 'roles': [delegadoInst._id, dt._id,] }).save()
-        await new Pantalla({ 'nombre': 'Consulta de datos', 'menu': 'Dirección Técnica', 'opcionMenu': 'Consulta de datos', 'componente': 'PlaceHolderPage', 'roles': [delegadoInst._id, jugador._id, dt._id,] }).save()
+        await new Pantalla({ 'nombre': 'Datos de usuario', 'menu': 'Dirección Técnica', 'opcionMenu': 'Datos de usuario', 'componente': 'ModificacionDatos', 'roles': [delegadoInst._id, dt._id] }).save()
         await new Pantalla({ 'nombre': 'Cambiar Password', 'menu': 'Dirección Técnica', 'opcionMenu': 'Cambiar Passowrd', 'componente': 'ModificarPasswordPage', 'roles': [dt._id,] }).save()
 
 
         
-        await new Pantalla({ 'nombre': 'Creación de Usuario', 'menu': 'Back Office', 'opcionMenu': 'Creación de Usuario', 'componente': 'AltaDeUsuarioPage', 'roles': [delegadoInst._id, delegado._id,] }).save()
         await new Pantalla({ 'nombre': 'Categorías', 'menu': 'Back Office', 'opcionMenu': 'Categorías', 'componente': 'ListaCategoriasPage', 'roles': [delegadoInst._id,] }).save()
-        await new Pantalla({ 'nombre': 'Tipo de Eventos', 'menu': 'Back Office', 'opcionMenu': 'Tipo de Eventos', 'componente': 'TipoEventosPage', 'roles': [delegadoInst._id, delegado._id,] }).save()
+        await new Pantalla({ 'nombre': 'Creación de Usuario', 'menu': 'Back Office', 'opcionMenu': 'Creación de Usuario', 'componente': 'AltaDeUsuarioPage', 'roles': [delegadoInst._id, delegado._id,] }).save()
+        await new Pantalla({ 'nombre': 'Datos Usuarios', 'menu': 'Back Office', 'opcionMenu': 'Datos Usuarios', 'componente': 'ConsultaModificacionDatosPage', 'roles': [delegadoInst._id, delegado._id,] }).save()
         await new Pantalla({ 'nombre': 'Mod perfiles y password', 'menu': 'Back Office', 'opcionMenu': 'Mod perfiles y password', 'componente': 'UsuariosEnCategoríaPage', 'roles': [delegadoInst._id, delegado._id,] }).save()
         await new Pantalla({ 'nombre': 'Campeonatos', 'menu': 'Back Office', 'opcionMenu': 'Campeonatos', 'componente': 'ListaCampeonatosPage', 'roles': [delegadoInst._id, delegado._id,] }).save()
+        await new Pantalla({ 'nombre': 'Tipo de Eventos', 'menu': 'Back Office', 'opcionMenu': 'Tipo de Eventos', 'componente': 'TipoEventosPage', 'roles': [delegadoInst._id, delegado._id,] }).save()
      
      
         
@@ -76,7 +77,7 @@ const cargaPantallas = async () => {
 const cargaDelegadosI = async () => {
     const usuarios = await Usuario.find()
     if(usuarios.length === 0){
-        let correos = ['gab.arpe@gmail.com','nati.r0501@gmail.com' ]
+        let correos = ['gab.arpe@gmail.com','nati.r0501@gmail.com','susana.abulafia@gmail.com','tomato23@gmail.com' ]
 
         for(let i = 0 ; i<correos.length; i++){
             let usuario = new Usuario({'email': correos[i], 'delegadoInstitucional': true})
