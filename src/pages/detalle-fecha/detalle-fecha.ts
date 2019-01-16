@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 import { Campeonato, Fecha, Partido, Lugar } from '../../models/campeonato.model';
 import { Ruedas } from '../../models/enum.models';
 import { CampeonatoService } from '../../providers/campeonato.service';
@@ -13,7 +13,6 @@ import { UsuarioService } from '../../providers/usuario.service';
  * Ionic pages and navigation.
  */
 
-@IonicPage()
 @Component({
   selector: 'page-detalle-fecha',
   templateUrl: 'detalle-fecha.html',
