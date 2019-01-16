@@ -16,6 +16,7 @@ importScripts('https://www.gstatic.com/firebasejs/4.9.0/firebase-messaging.js');
 self.toolbox.options.cache = {
   name: 'ionic-cache'
 };
+self.toolbox.options.networkTimeoutSeconds = 10;
 
 // pre-cache our key assets
 self.toolbox.precache(
@@ -24,6 +25,8 @@ self.toolbox.precache(
     './build/vendor.js',
     './build/main.css',
     './build/polyfills.js',
+    './assets/imgs/pitch.png',
+    './assets/imgs/logoxd.svg',	
     'index.html',
     'manifest.json'
   ]

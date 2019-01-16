@@ -77,7 +77,8 @@ import { DetalleFechaPage } from '../pages/detalle-fecha/detalle-fecha';
     BrowserModule,
     IonicModule.forRoot(MyApp,{scrollPadding: false,
       scrollAssist: true,
-      autoFocusAssist: false
+      autoFocusAssist: false,
+      backButtonText: ''
     }),
     CalendarModule,
     AngularFireModule.initializeApp(firebaseConfig),

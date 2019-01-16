@@ -7,7 +7,7 @@ import { TipoEvento } from './../../models/tipo.evento.models';
 import { NgForm } from '@angular/forms';
 import { Evento } from './../../models/evento.models';
 import { Component, ViewChild } from '@angular/core';
-import {  NavController, NavParams, LoadingController, Alert, AlertController } from 'ionic-angular';
+import { NavController, NavParams, LoadingController, Alert, AlertController, Platform } from 'ionic-angular';
 import { Usuario } from '../../models/usuario.model';
 import { UsuarioService } from '../../providers/usuario.service';
 import * as _ from 'lodash';
@@ -40,6 +40,7 @@ export class ModificarEventoPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private utilService: UtilsServiceProvider, private loader: LoadingController,
+    private platform : Platform,
     private eventoService: EventoService, private usuServ: UsuarioService, private catService: CategoriaService,
     private alertCont: AlertController) {
 
@@ -194,7 +195,7 @@ export class ModificarEventoPage {
   }
   descUsu(usu: Usuario) {
     if (usu.nombre) {
-      return usu.nombre
+      return usu.nombre + ' ' + usu.apellido
     }
     return usu.email
   }
@@ -252,6 +253,9 @@ export class ModificarEventoPage {
   goBack(){
     this.navCtrl.setRoot(ListaEventosPage)
      
+  }
+  mobile(): boolean{
+    return this.platform.is('mobile')
   }
 
 }

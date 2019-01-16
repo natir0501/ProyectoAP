@@ -13,11 +13,7 @@
     <ion-title>
       Mantenimiento Evento
     </ion-title>
-    <ion-buttons end>
-      <button ion-button icon-only (click)="goBack()">
-        <ion-icon name="exit"></ion-icon>
-      </button>
-    </ion-buttons>
+   
   </ion-navbar>
 
 </ion-header>
@@ -42,7 +38,7 @@
             <ion-label>
               Nombre
             </ion-label>
-            <ion-input text-right type="text" placeholder="Práctica Guille" name="nombre" [(ngModel)]="evento.nombre"
+            <ion-input text-right type="text" placeholder="Ej: Práctica Guille" name="nombre" [(ngModel)]="evento.nombre"
               #nombre="ngModel" required></ion-input>
           </ion-item>
           <ion-item id="altaDeUsuario-select9">
@@ -67,21 +63,21 @@
             <ion-label>
               Lugar
             </ion-label>
-            <ion-input text-right type="text" placeholder="En el Golf" name="lugar" required [(ngModel)]="evento.lugar.nombre"
+            <ion-input text-right type="text" placeholder="Ej: En el Golf" name="lugar" required [(ngModel)]="evento.lugar.nombre"
               #lugar="ngModel"></ion-input>
           </ion-item>
           <ion-item [ngClass]="{ 'ng-touched' : direccion.touched }" fixed id="registro-input15">
             <ion-label>
               Dirección
             </ion-label>
-            <ion-input text-right type="text" placeholder="Rambla y Bvar Artigas" required name="direccion" [(ngModel)]="evento.lugar.direccion"
+            <ion-input text-right type="text" placeholder="Ej: Rambla y Bvar Artigas" required name="direccion" [(ngModel)]="evento.lugar.direccion"
               #direccion="ngModel"></ion-input>
           </ion-item>
           <ion-item [ngClass]="{ 'ng-touched' : linkUbicacion.touched }" fixed id="registro-input15">
             <ion-label>
               Link Ubicación
             </ion-label>
-            <ion-input text-right type="text" required placeholder="https://goo.gl/maps/QEtNhiPCmas" name="linkUbicacion"
+            <ion-input text-right type="text" [required] = "!mobile()" placeholder="Ej: https://goo.gl/maps/QEtNhiPCmas" name="linkUbicacion"
               [(ngModel)]="evento.lugar.linkUbicacion" #linkUbicacion="ngModel"></ion-input>
           </ion-item>
           <ion-item *ngIf="evento._id !==''">
