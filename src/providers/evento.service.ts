@@ -22,6 +22,8 @@ export class EventoService {
     }
 
     altaEvento(evento : Evento): Observable<any>{
+        console.log("EVENTO", evento);
+        
         let headers: HttpHeaders = new HttpHeaders().set("Content-Type", "application/json")
         headers = headers.set('x-auth', this.usuarioServ.token)
         return this.http.post<any>(`${this.apiUrl}api/eventos`,evento, { headers })

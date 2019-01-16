@@ -13,6 +13,7 @@ const cors = require('cors')
 const cuentaRuta= require('./routes/cuenta-rutas');
 const pagosRuta= require('./routes/pagos-rutas');
 const eventoRuta= require('./routes/evento-rutas');
+const fixtureRuta= require('./routes/fixture-rutas');
 
 
 
@@ -32,6 +33,7 @@ app.use('/api', tipoEvento);
 app.use('/api', cuentaRuta);
 app.use('/api', pagosRuta);
 app.use('/api', eventoRuta);
+app.use('/api', fixtureRuta);
 
 let ruta = __dirname
 ruta = ruta.substring(0,ruta.length-6) + 'www'

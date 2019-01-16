@@ -42,9 +42,8 @@ const cargaPantallas = async () => {
         
         
         await new Pantalla({ 'nombre': 'Eventos', 'menu': 'Agenda', 'opcionMenu': 'Eventos', 'componente': 'ListaEventosPage', 'roles': [delegadoInst._id, jugador._id, delegado._id, dt._id,] }).save()
-        await new Pantalla({ 'nombre': 'Mant Fixture', 'menu': 'Agenda', 'opcionMenu': 'Mant Fixture', 'componente': 'PlaceHolderPage', 'roles': [delegadoInst._id, delegado._id,] }).save()
-        await new Pantalla({ 'nombre': 'Fixture', 'menu': 'Agenda', 'opcionMenu': 'Fixture', 'componente': 'PlaceHolderPage', 'roles': [delegadoInst._id, jugador._id, delegado._id, dt._id,] }).save()
-        
+        await new Pantalla({ 'nombre': 'Fixture', 'menu': 'Agenda', 'opcionMenu': 'Fixture', 'componente': 'MantenimientoCampeonatosPage', 'roles': [delegadoInst._id, delegado._id,jugador._id,dt._id] }).save()
+
 
         await new Pantalla({ 'nombre': 'Registro de Pago', 'menu': 'Tesorería', 'opcionMenu': 'Registro de Pago', 'componente': 'PlaceHolderPage', 'roles': [delegadoInst._id, tesorero._id,] }).save()
         await new Pantalla({ 'nombre': 'Conceptos de Caja', 'menu': 'Tesorería', 'opcionMenu': 'Conceptos de Caja', 'componente': 'ConceptosDeCajaPage', 'roles': [delegadoInst._id, tesorero._id,] }).save()
@@ -64,7 +63,7 @@ const cargaPantallas = async () => {
         await new Pantalla({ 'nombre': 'Categorías', 'menu': 'Back Office', 'opcionMenu': 'Categorías', 'componente': 'ListaCategoriasPage', 'roles': [delegadoInst._id,] }).save()
         await new Pantalla({ 'nombre': 'Tipo de Eventos', 'menu': 'Back Office', 'opcionMenu': 'Tipo de Eventos', 'componente': 'TipoEventosPage', 'roles': [delegadoInst._id, delegado._id,] }).save()
         await new Pantalla({ 'nombre': 'Mod perfiles y password', 'menu': 'Back Office', 'opcionMenu': 'Mod perfiles y password', 'componente': 'UsuariosEnCategoríaPage', 'roles': [delegadoInst._id, delegado._id,] }).save()
-      
+        await new Pantalla({ 'nombre': 'Campeonatos', 'menu': 'Back Office', 'opcionMenu': 'Campeonatos', 'componente': 'ListaCampeonatosPage', 'roles': [delegadoInst._id, delegado._id,] }).save()
      
      
         

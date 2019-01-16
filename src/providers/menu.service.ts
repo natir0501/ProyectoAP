@@ -1,3 +1,5 @@
+import { MantenimientoCampeonatosPage } from './../pages/common/mantenimiento-campeonatos/mantenimiento-campeonatos';
+import { ListaCampeonatosPage } from './../pages/common/lista-campeonatos/lista-campeonatos';
 import { ListaEventosPage } from './../pages/lista-eventos/lista-eventos';
 import { ModificarPasswordPage } from './../pages/modificar-password/modificar-password';
 import { UsuariosEnCategoriaPage } from './../pages/usuarios-en-categoria/usuarios-en-categoria';
@@ -45,7 +47,9 @@ export class MenuService {
         this.map.set('TipoEventosPage', TipoEventosPage)
         this.map.set('UsuariosEnCategoríaPage',UsuariosEnCategoriaPage)
         this.map.set('ModificarPasswordPage', ModificarPasswordPage)
+        this.map.set('ListaCampeonatosPage', ListaCampeonatosPage)
         this.map.set('ListaEventosPage',ListaEventosPage)
+        this.map.set('MantenimientoCampeonatosPage',MantenimientoCampeonatosPage)
 
 
     }

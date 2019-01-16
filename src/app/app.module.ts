@@ -1,3 +1,5 @@
+import { CampeonatoService } from './../providers/campeonato.service';
+import { ListaCampeonatosPage } from './../pages/common/lista-campeonatos/lista-campeonatos';
 import { ModificarEventoPage } from './../pages/modificar-evento/modificar-evento';
 import { HttpClientModule } from '@angular/common/http';
 import { ErrorHandler, NgModule } from '@angular/core';
@@ -32,9 +34,12 @@ import { MenuService } from './../providers/menu.service';
 import { TipoEventoService } from './../providers/tipoevento.service';
 import { UsuarioService } from './../providers/usuario.service';
 import { MyApp } from './app.component';
+import { MantenimientoCampeonatosPage } from '../pages/common/mantenimiento-campeonatos/mantenimiento-campeonatos';
+import { MantenimientoFechaPage } from '../pages/Backoffice/mantenimiento-fecha/mantenimiento-fecha';
 import { ListaEventosPage } from '../pages/lista-eventos/lista-eventos';
 import { EventoService } from '../providers/evento.service';
 import { DetallesEventoPage } from '../pages/detalles-evento/detalles-evento';
+import { DetalleFechaPage } from '../pages/detalle-fecha/detalle-fecha';
 
 
 
@@ -58,9 +63,13 @@ import { DetallesEventoPage } from '../pages/detalles-evento/detalles-evento';
     UsuariosEnCategoriaPage,
     ModificacionPeriflesPage,
     ModificarPasswordPage,
+    ListaCampeonatosPage,
+    MantenimientoCampeonatosPage,
+    MantenimientoFechaPage,
     ListaEventosPage,
     ModificarEventoPage,
-    DetallesEventoPage
+    DetallesEventoPage,
+    DetalleFechaPage
     
 
   ],
@@ -92,9 +101,13 @@ import { DetallesEventoPage } from '../pages/detalles-evento/detalles-evento';
     UsuariosEnCategoriaPage,
     ModificacionPeriflesPage,
     ModificarPasswordPage,
+    ListaCampeonatosPage,
+    MantenimientoCampeonatosPage,
+    MantenimientoFechaPage,
     ListaEventosPage,
     ModificarEventoPage,
-    DetallesEventoPage
+    DetallesEventoPage,
+    DetalleFechaPage
     
   ],
   providers: [
@@ -107,6 +120,7 @@ import { DetallesEventoPage } from '../pages/detalles-evento/detalles-evento';
     UtilsServiceProvider,
     TipoEventoService,
     MenuService,
+    CampeonatoService,
     EventoService,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
