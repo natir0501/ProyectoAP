@@ -43,7 +43,7 @@ export class ListaCampeonatosPage {
   }
 
   irAltaCamp(){
-    this.navCtrl.push(MantenimientoCampeonatosPage)
+    this.navCtrl.push(MantenimientoCampeonatosPage, {campeonato: new Campeonato()})
   }
 
 

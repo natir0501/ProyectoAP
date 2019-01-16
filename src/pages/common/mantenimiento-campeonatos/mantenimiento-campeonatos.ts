@@ -9,6 +9,7 @@ import { ListaCampeonatosPage } from '../lista-campeonatos/lista-campeonatos';
 import { MantenimientoFechaPage } from '../../Backoffice/mantenimiento-fecha/mantenimiento-fecha';
 import { Categoria } from '../../../models/categoria.models';
 import { DetalleFechaPage } from '../../detalle-fecha/detalle-fecha';
+import { Usuario } from '../../../models/usuario.model';
 
 
 @Component({
@@ -29,13 +30,21 @@ export class MantenimientoCampeonatosPage {
     public catService: CategoriaService) {
   }
 
-  ionViewDidLoad() {
+  async ionViewDidLoad() {
     let camp: Campeonato = this.navParams.get('campeonato')
+    this.categoria._id = this.usuServ.usuario.perfiles[0].categoria
+    let dataUsuarios: any = await this.catService.obtenerCategoria(this.categoria._id).toPromise()
+    if (dataUsuarios) {
+      this.categoria = dataUsuarios.data.categoria
+    }
     if (camp) {
       this.campeonato = camp
       this.fechas = camp.fechas
-      console.log(camp);
+      console.log("Este soy yo",camp);
       
+    }else{
+      // traer el de la categoria que tengo en this categoria
+      this.campServ.consultarCampeonatoActual(this.categoria);
     }
   }
 
@@ -61,7 +70,7 @@ export class MantenimientoCampeonatosPage {
         )
 
     } else {
-      /*TDB*/
+
       this.campServ.actualizarCampeonato(this.campeonato)
         .subscribe(
           (resp) => {
@@ -102,6 +111,16 @@ export class MantenimientoCampeonatosPage {
     this.navCtrl.push((MantenimientoFechaPage), { camp })
     console.log("agregarFecha en Mant page camp ", camp);
     
+  }
+
+  puedeEditar() : boolean{
+    let usuario : Usuario = this.usuServ.usuario
+    if(usuario.delegadoInstitucional) return true
+    for (let usu of this.categoria.delegados){
+      if(usu._id === usuario._id){
+        return true
+      }
+    }
   }
 
 

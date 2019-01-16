@@ -42,9 +42,8 @@ const cargaPantallas = async () => {
         
         
         await new Pantalla({ 'nombre': 'Eventos', 'menu': 'Agenda', 'opcionMenu': 'Eventos', 'componente': 'ListaEventosPage', 'roles': [delegadoInst._id, jugador._id, delegado._id, dt._id,] }).save()
-        await new Pantalla({ 'nombre': 'Mant Fixture', 'menu': 'Agenda', 'opcionMenu': 'Mant Fixture', 'componente': 'PlaceHolderPage', 'roles': [delegadoInst._id, delegado._id,] }).save()
-        await new Pantalla({ 'nombre': 'Fixture', 'menu': 'Agenda', 'opcionMenu': 'Fixture', 'componente': 'PlaceHolderPage', 'roles': [delegadoInst._id, jugador._id, delegado._id, dt._id,] }).save()
-        
+        await new Pantalla({ 'nombre': 'Fixture', 'menu': 'Agenda', 'opcionMenu': 'Fixture', 'componente': 'MantenimientoCampeonatosPage', 'roles': [delegadoInst._id, delegado._id,jugador._id,dt._id] }).save()
+
 
         await new Pantalla({ 'nombre': 'Registro de Pago', 'menu': 'Tesorería', 'opcionMenu': 'Registro de Pago', 'componente': 'PlaceHolderPage', 'roles': [delegadoInst._id, tesorero._id,] }).save()
         await new Pantalla({ 'nombre': 'Conceptos de Caja', 'menu': 'Tesorería', 'opcionMenu': 'Conceptos de Caja', 'componente': 'ConceptosDeCajaPage', 'roles': [delegadoInst._id, tesorero._id,] }).save()

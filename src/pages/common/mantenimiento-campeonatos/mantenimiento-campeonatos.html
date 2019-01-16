@@ -3,8 +3,8 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>
-      Mantenimiento de campeonatos
+    <ion-title >
+      {{puedeEditar()?'Mantenimiento de campeonatos':'Consulta de Fixture'}}
     </ion-title>
   </ion-navbar>
 </ion-header>
@@ -18,25 +18,40 @@
               Completar los siguientes datos para dar de alta/modificar un campeonato:
             </p>
           </div>
-          <ion-item-divider color="light" id="altaCamp-list-item-divider3">
-            Datos básicos:
-          </ion-item-divider>
-          <ion-item [ngClass]="{'ng-touched' : nombre.touched}" id="altaCamp-input13">
-            <ion-label>
-              Nombre:
-            </ion-label>
-            <ion-input text-right type="text" placeholder="Ej: Pre-Senior LUD 2019" name="nombre" nombre [(ngModel)]="campeonato.nombre"
-              #nombre="ngModel" required>
-            </ion-input>
-          </ion-item>
-          <ion-item [ngClass]="{'ng-touched' : anio.touched}" id="altaCamp-input14">
-            <ion-label>
-              Año:
-            </ion-label>
-            <ion-input text-right type="text" placeholder="Ej: 2019" name="anio" anio [(ngModel)]="campeonato.anio"
-              #anio="ngModel" required>
-            </ion-input>
-          </ion-item>
+          <ng-container *ngIf="puedeEditar()">
+            <ion-item-divider color="light" id="altaCamp-list-item-divider3">
+              Datos básicos:
+            </ion-item-divider>
+            <ion-item [ngClass]="{'ng-touched' : nombre.touched}" id="altaCamp-input13">
+              <ion-label>
+                Nombre:
+              </ion-label>
+              <ion-input text-right type="text" placeholder="Ej: Pre-Senior LUD 2019" name="nombre" nombre [(ngModel)]="campeonato.nombre"
+                #nombre="ngModel" required>
+              </ion-input>
+            </ion-item>
+            <ion-item [ngClass]="{'ng-touched' : anio.touched}" id="altaCamp-input14">
+              <ion-label>
+                Año:
+              </ion-label>
+              <ion-input text-right type="text" placeholder="Ej: 2019" name="anio" anio [(ngModel)]="campeonato.anio"
+                #anio="ngModel" required>
+              </ion-input>
+            </ion-item>
+          </ng-container>
+          <ng-container *ngIf="!puedeEditar()">
+            <ion-item-divider color="light" id="altaCamp-list-item-divider3">
+              Datos básicos:
+            </ion-item-divider>
+            <ion-item>
+              <ion-icon name="add-circle"></ion-icon>
+              <b>Nombre: </b><span item-end>{{campeonato.nombre}}</span>
+            </ion-item>
+            <ion-item>
+              <ion-icon name="add-circle"></ion-icon>
+              <b>Año: </b><span item-end>{{campeonato.anio}}</span>
+            </ion-item>
+          </ng-container>
         </ion-col>
       </ion-row>
       <ion-row justify-content-center>
@@ -44,7 +59,7 @@
           <ion-item-divider color="light" id="altaCamp-list-item-divider3">
             Fechas:
 
-            <button ion-button item-end class="btn-mostrar" type="button" (click)="agregarFecha()">+</button>
+            <button *ngIf="puedeEditar()" ion-button item-end class="btn-mostrar" type="button" (click)="agregarFecha()">+</button>
           </ion-item-divider>
           <ion-list>
             <ion-item-sliding *ngFor="let fech of fechas">
@@ -54,7 +69,7 @@
                 <b>Rival:</b> {{fech.partido.rival}} <br>
               </ion-item>
               <ion-item-options side="right">
-                <button type="button" ion-button color="positive" (click)="editarFecha(fech)">
+                <button *ngIf="puedeEditar()" type="button" ion-button color="positive" (click)="editarFecha(fech)">
                   Editar
                 </button>
                 <button type="button" ion-button color="positive" (click)="consultarFecha(fech)">
@@ -67,7 +82,7 @@
       </ion-row>
       <ion-row justify-content-center>
         <ion-col col-xl-2>
-          <button id="altaCamp-button4" type="submit" ion-button block color="positive" [disabled]="form.form.invalid">
+          <button *ngIf="puedeEditar()" id="altaCamp-button4" type="submit" ion-button block color="positive" [disabled]="form.form.invalid">
             Guardar
           </button>
         </ion-col>

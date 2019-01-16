@@ -16,6 +16,7 @@ api.get('/categorias', autenticacion, (req, res) => {
         .populate('jugadores')
         .populate('tesoreros')
         .populate('caja')
+        .populate('campeonatos')
         .then((categorias) => {
             res.status(200).send(new ApiResponse({ categorias }))
         }), (e) => {
@@ -137,6 +138,7 @@ api.get('/categorias/:_id', (req, res) => {
         .populate('tesoreros')
         .populate('jugadores')
         .populate('cuenta')
+        .populate('campeonatos')
         .then((categoria) => {
             if (categoria) {
                 res.status(200).send(new ApiResponse({ categoria }))
