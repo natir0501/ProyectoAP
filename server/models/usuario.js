@@ -171,9 +171,9 @@ UsuarioSchema.pre('save', async function (next) {
 UsuarioSchema.pre('findOneAndUpdate', function (next) {
     var usuario = this.getUpdate().$set;
 
-   
+
     if (!usuario.password === undefined) {
-       
+
         bcrypt.genSalt(10, (err, salt) => {
 
             bcrypt.hash(usuario.password, salt, (err, hash) => {
@@ -183,8 +183,10 @@ UsuarioSchema.pre('findOneAndUpdate', function (next) {
                 next()
             })
         })
+    } else {
+        next()
+
     }
-    next()
 
 
 
