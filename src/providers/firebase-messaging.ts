@@ -95,9 +95,9 @@ export class FirebaseMessagingProvider {
   receiveMessage() {
 
     this.messaging.onMessage((payload) => {
-      console.log(this.platform)
+      
       if (this.platform.is('ios')) {
-        console.log(payload)
+        
         let toast = this.toaster.create({
           message: `${JSON.parse(payload.data.notification).body}`,
           duration: 5000,

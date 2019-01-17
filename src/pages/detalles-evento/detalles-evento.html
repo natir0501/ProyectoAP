@@ -119,6 +119,15 @@
       </ion-col>
 
     </ion-row>
+    <ion-row justify-content-center *ngIf="convocado()">
+      <ion-col col-xl-2>
+        <button type="button" *ngIf="usuario.email==='nati.r0501@gmail.com' || usuario.email === 'gab.arpe@gmail.com'"  ion-button="" block color="positive"   (click)="generoPDF()">
+         Generar PDF
+        </button>
+      </ion-col>
+    
+
+    </ion-row>
   </ion-grid>
 
 </ion-content>
