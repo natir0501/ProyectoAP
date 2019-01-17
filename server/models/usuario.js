@@ -70,6 +70,10 @@ var UsuarioSchema = mongoose.Schema({
         type: String
 
     },
+    ultimoMesCobrado: {
+        type: Number,
+        default: new Date().getMonth()
+    },
     activo: {
         type: Boolean,
         default: false
