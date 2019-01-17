@@ -45,6 +45,7 @@
     "moment": "^2.23.0",
     "mongoose": "^5.3.6",
     "mongoose-unique-validator": "^2.0.2",
+    "node-cron": "^2.0.3",
     "nodemailer": "^4.6.8",
     "nodemon": "^1.18.8",
     "rxjs": "5.5.11",
