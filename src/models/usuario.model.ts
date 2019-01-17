@@ -26,6 +26,7 @@ export class Usuario{
     activo ?: boolean;
     perfiles:  Perfil[] = []
     categoriacuota ?: Categoria;
+    ultimoMesCobrado?: number
 
 
    

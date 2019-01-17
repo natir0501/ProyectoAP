@@ -6,6 +6,8 @@ import { Component } from '@angular/core';
 import { NavController, NavParams, LoadingController } from 'ionic-angular';
 import { Evento } from '../../models/evento.models';
 import { Usuario } from '../../models/usuario.model';
+import * as jsPDF from 'jspdf';
+import 'jspdf-autotable';
 
 /**
  * Generated class for the DetallesEventoPage page.
@@ -34,14 +36,14 @@ export class DetallesEventoPage {
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private loader: LoadingController, private usuServ: UsuarioService,
     private utilServ: UtilsServiceProvider, private eventServ: EventoService) {
-      this.evento = this.navParams.get('evento')
+    this.evento = this.navParams.get('evento')
   }
 
   async ionViewWillEnter() {
-    
+
     this.usuario = this.usuServ.usuario
     try {
-      
+
       let resp: any = await this.eventServ.getEvento(this.evento._id).toPromise()
       if (resp) {
         this.evento = resp.data.evento
@@ -92,26 +94,26 @@ export class DetallesEventoPage {
       this.verNoVan = !this.verNoVan
     }
   }
-  
+
   diayhora(): string {
     return new Date(this.evento.fecha).toLocaleString()
   }
 
-  puedoIr(){
-    if(this.evento.confirmados.find((u)=> u._id === this.usuario._id)) return false
-  
+  puedoIr() {
+    if (this.evento.confirmados.find((u) => u._id === this.usuario._id)) return false
+
     return true
   }
 
-  puedoNoIr(){
-    if(this.evento.noAsisten.find((u)=> u._id === this.usuario._id)) return false
-    
+  puedoNoIr() {
+    if (this.evento.noAsisten.find((u) => u._id === this.usuario._id)) return false
+
     return true
   }
-  convocado(){
-    if(this.evento.invitados.find((u)=>u._id === this.usuario._id)) return true
-    if(this.evento.confirmados.find((u)=>u._id === this.usuario._id)) return true
-    if(this.evento.noAsisten.find((u)=>u._id === this.usuario._id)) return true
+  convocado() {
+    if (this.evento.invitados.find((u) => u._id === this.usuario._id)) return true
+    if (this.evento.confirmados.find((u) => u._id === this.usuario._id)) return true
+    if (this.evento.noAsisten.find((u) => u._id === this.usuario._id)) return true
     return false
   }
 
@@ -134,5 +136,20 @@ export class DetallesEventoPage {
       console.log(err)
       this.utilServ.dispararAlert('Error', "No se ha podido completar la solicitud")
     })
+  }
+  generoPDF() {
+    var doc = new jsPDF();
+    doc.autoTable({
+      head: [['Nombre', 'Tipo Evento', 'Fecha','Lugar', 'Convocados', 'Van', 'No Van' ]],
+      body: [
+        //Una array de los de abajo por cada fila del pdf
+        [this.evento.nombre, this.evento.tipoEvento.nombre, new Date(this.evento.fecha).toLocaleDateString(), this.evento.lugar.nombre,this.evento.invitados.length
+          ,this.evento.confirmados.length, this.evento.noAsisten.length]
+        
+      ]
+    });
+
+    doc.save(`Evento ${this.evento.nombre.replace(' ','_')}.pdf`);
+
   }
 }
