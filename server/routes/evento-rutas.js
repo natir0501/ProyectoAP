@@ -23,12 +23,47 @@ api.get('/eventos', async (req, res) => {
                 'tipoEvento': ObjectID(req.query.tipoEvento)
             }
         }
-        let eventos = await Evento.find(filtro)
+        let eventos = await Evento.find(filtro).populate('tipoEvento')
         res.status(200).send(new ApiResponse({ eventos }))
     } catch (e) {
         res.status(400).send(new ApiResponse({}, `Error al obtener datos: ${e}`))
     }
 })
+
+api.get('/eventos/:id/registrosDT', async (req, res) => {
+    let idJugador = req.query.idUsuario;
+   
+    let idEvento = req.params.id;
+    
+    let comentario = ''
+    try {
+
+
+        
+        let evento = await Evento.findOne({ _id: idEvento })
+        
+        if(evento){
+            if (!evento.registrosDT) {
+                evento.registrosDT = []
+            }
+            for (let registro of evento.registrosDT) {
+                
+                if (registro.jugadorId.toString() === idJugador) {
+                    comentario = registro.comentario
+                }
+            }
+            res.send(new ApiResponse(comentario,''))
+
+        }else{
+            res.status(404).send(new ApiResponse({},'Evento no encontrado'))
+        }
+    } catch (e) {
+        console.log(e)
+        res.status(400).send(new ApiResponse({}, e))
+    }
+
+})
+
 
 api.get('/eventos/:id', async (req, res) => {
     var id = req.params.id;
@@ -40,20 +75,20 @@ api.get('/eventos/:id', async (req, res) => {
     Evento.findOne({
         _id: id
     }).populate('invitados')
-    .populate('noAsisten')
-    .populate('confirmados')
-    .populate('categoria')
-    .populate('tipoEvento')
-    .then((evento) => {
-        if (evento) {
-            res.status(200).send(new ApiResponse({ evento }, ''))
-        } else {
-            res.status(404).send(new ApiResponse({}, "No hay datos para mostrar."))
-        }
-    }).catch((e) => {
-        res.status(400).send(new ApiResponse({}, "Ocurrió un error"))
-        console.log(e);
-    })
+        .populate('noAsisten')
+        .populate('confirmados')
+        .populate('categoria')
+        .populate('tipoEvento')
+        .then((evento) => {
+            if (evento) {
+                res.status(200).send(new ApiResponse({ evento }, ''))
+            } else {
+                res.status(404).send(new ApiResponse({}, "No hay datos para mostrar."))
+            }
+        }).catch((e) => {
+            res.status(400).send(new ApiResponse({}, "Ocurrió un error"))
+            console.log(e);
+        })
 })
 
 api.post('/eventos', async (req, res) => {
@@ -63,9 +98,9 @@ api.post('/eventos', async (req, res) => {
             'rival', 'invitados', 'categoria']))
         await evento.save()
 
-        for (let id of evento.invitados){
-            let user = await Usuario.findOne({_id: id})
-            enviarNotificacion(user,evento)
+        for (let id of evento.invitados) {
+            let user = await Usuario.findOne({ _id: id })
+            enviarNotificacion(user, evento)
         }
         res.status(200).send(new ApiResponse({ evento }));
         console.log("agregado OK.");
@@ -78,6 +113,7 @@ api.post('/eventos', async (req, res) => {
 })
 api.put('/eventos/:id/confirmar', async (req, res) => {
     try {
+        
         let _id = req.params.id;
         let usuario = req.body.usuario
         let asiste = req.body.asiste
@@ -95,14 +131,14 @@ api.put('/eventos/:id/confirmar', async (req, res) => {
                 }
             } else {
                 if (asiste) {
-                    if(evento.confirmados.indexOf(usuario._id)<0){
+                    if (evento.confirmados.indexOf(usuario._id) < 0) {
                         evento.confirmados.push(usuario._id)
                         evento.noAsisten.splice(evento.noAsisten.indexOf(usuario._id), 1)
                     }
                 } else {
-                    if(evento.noAsisten.indexOf(usuario._id)<0){
-                    evento.noAsisten.push(usuario._id)
-                    evento.confirmados.splice(evento.confirmados.indexOf(usuario._id), 1)
+                    if (evento.noAsisten.indexOf(usuario._id) < 0) {
+                        evento.noAsisten.push(usuario._id)
+                        evento.confirmados.splice(evento.confirmados.indexOf(usuario._id), 1)
                     }
                 }
             }
@@ -113,6 +149,36 @@ api.put('/eventos/:id/confirmar', async (req, res) => {
     } catch (e) {
         console.log(e)
         res.status(400).send()
+    }
+})
+
+api.put('/eventos/:id/registrosDT', async (req, res) => {
+    try {
+        let idEvento = req.params.id;
+
+        let evento = await Evento.findOne({ _id: idEvento })
+
+
+        if (evento) {
+            if (!evento.registrosDT) { evento.registrosDT = [] }
+            let encontre = false
+            for (let ref of evento.registrosDT) {
+                if (ref.jugadorId.toString() === req.body.jugadorId) {
+                    ref.comentario = req.body.comentario
+                    encontre = true
+                }
+            }
+            if (!encontre) {
+                evento.registrosDT.push({ jugadorId: req.body.jugadorId, comentario: req.body.comentario })
+            }
+            evento = await evento.save()
+            res.send(new ApiResponse({}, 'Registro ingresado correctamente'))
+        } else {
+            res.status(404).send(new ApiResponse({}, 'Evento no encontrado'))
+        }
+    } catch (e) {
+        console.log(e)
+        res.status(400).send(new ApiResponse({}, 'Error al procesar registro'))
     }
 })
 
@@ -131,6 +197,8 @@ api.put('/eventos/:id', async (req, res) => {
         console.log(e);
     }
 })
+
+
 
 api.delete('/eventos/:id', async (req, res) => {
     try {

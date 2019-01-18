@@ -41,6 +41,15 @@ var EventoSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref:'Usuario'
     }],
+    registrosDT:[{
+        jugadorId:{
+            type: mongoose.Schema.Types.ObjectId,
+            ref:'Usuario'
+        },
+        comentario: {
+            type: String
+        }
+    }],
     categoria:{
         type: mongoose.Schema.Types.ObjectId,
         ref:'Categoria',
