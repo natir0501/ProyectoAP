@@ -1,6 +1,6 @@
 import { TipoEventosPage } from './../Backoffice/tipo-eventos/tipo-eventos';
 import { ConceptosDeCajaPage } from '../Backoffice/conceptos-de-caja/conceptos-de-caja';
-import { AltaDeUsuarioPage } from './../common/alta-usuario/alta-de-usuario';
+//import { AltaDeUsuarioPage } from '../Backoffice/alta-usuario';
 import { UtilsServiceProvider } from './../../providers/utils.service';
 import { Usuario } from './../../models/usuario.model';
 import { LoginPage } from './../common/login/login';

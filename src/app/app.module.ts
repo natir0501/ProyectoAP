@@ -120,7 +120,8 @@ import { DetalleFechaPage } from '../pages/detalle-fecha/detalle-fecha';
     DetallesEventoPage,
     DetalleFechaPage,
     ModificacionDatosPage,
-    ConsultaModificacionDatosPage
+    ConsultaModificacionDatosPage,
+    
     
     
   ],

@@ -3,7 +3,7 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Ingreso movimiento de caja</ion-title>
+    <ion-title>Movimientos de Caja</ion-title>
   </ion-navbar>
 </ion-header>
 <ion-content padding id="nuevosmovs">
@@ -13,29 +13,62 @@
         <ion-col col-xl-6>
           <ion-list id="lst-nuevomovim">
             <ion-item-divider color="light" id="sdomovscat1">
-              Ingreso de Movimiento de Caja
+              Registro de movimientos caja
             </ion-item-divider>
             <div id="divnuevosmovs">
               <p style="color:#000000;">
                 Seleccione un concepto de caja y el monto del movimiento para afectar el saldo de la categoría.
               </p>
+              <p>
+                Opcionalmente se puede ingresar un comentario. 
+              </p>
             </div>
             <ion-item>
               <ion-label>
-                Concepto del mov.:
+                Concepto:
               </ion-label>
-              <ion-select okText="Ok" cancelText="Cancelar" required [(ngModel)]="concepto.nombre" name="concepto">
-                <ion-option *ngFor="let c of conceptos" [id]="c._id" [value]="c._id">
-                  {{concepto.nombre}}
+              <ion-select okText="Ok" cancelText="Cancelar" required [(ngModel)]="concepto" name="concepto">
+                <ion-option *ngFor="let c of conceptos" [id]="c._id" [value]="c">
+                  {{c.nombre}}
                 </ion-option>
               </ion-select>
             </ion-item>
+            <ng-container *ngIf="cargueConcepto()">
+              <ion-item>
+                Afectación de saldo: <span item-end>{{concepto.tipo}}</span>
+              </ion-item>
+            </ng-container>
+            <ion-item>
+              <ion-label>¿Es transferencia a otra categoría?:</ion-label>
+              <ion-checkbox item-end [(ngModel)]="transferencia" name="transferencia"></ion-checkbox>
+            </ion-item>
+            <ng-container *ngIf="transferencia">
+              <p>
+                Seleccione la categoría a la cuál se transferirán los fondos. 
+              </p>
+                <ion-item>
+                  <ion-label>
+                    Categoría:
+                  </ion-label>
+                  <ion-select okText="Ok" cancelText="Cancelar" required [(ngModel)]="concepto" name="concepto">
+                      <ion-option *ngFor="let c of conceptos" [id]="c._id" [value]="c">
+                        {{c.nombre}}
+                      </ion-option>
+                    </ion-select>
+                </ion-item>
+            </ng-container>
             <ion-item>
               <ion-label>
                 Monto:
               </ion-label>
               <ion-input text-right type="text" placeholder="Ej: 500" name="monto">
               </ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label>
+                Comentario:
+              </ion-label>
+              <ion-textarea text-right #comentario="ngModel" ngModel name="comentario" rows=5 placeholder="Ej: Pago 1ra institucional (a media con mayor)"></ion-textarea>
             </ion-item>
           </ion-list>
         </ion-col>

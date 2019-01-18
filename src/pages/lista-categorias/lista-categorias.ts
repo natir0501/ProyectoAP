@@ -1,5 +1,5 @@
 import { SaldoMovimientosCategoriaPage } from './../Contabilidad/saldo-movimientos-categoria/saldo-movimientos-categoria';
-import { MantenimientoCategoriaPage } from './../mantenimiento-categoria/mantenimiento-categoria';
+import { MantenimientoCategoriaPage } from '../Backoffice/mantenimiento-categoria/mantenimiento-categoria';
 import { CategoriaService } from './../../providers/categoria.service';
 import { Component } from '@angular/core';
 import { NavController, NavParams, LoadingController } from 'ionic-angular';

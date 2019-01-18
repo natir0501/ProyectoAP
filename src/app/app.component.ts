@@ -7,7 +7,7 @@ import { AppModule } from './app.module';
 import { UsuarioService } from './../providers/usuario.service';
 import { Usuario } from './../models/usuario.model';
 import { CEILOGO } from './../providers/constant';
-import { MantenimientoCategoriaPage } from './../pages/Backoffice/mantenimiento-categoria/mantenimiento-categoria';
+//import { MantenimientoCategoriaPage } from './../pages/Backoffice/mantenimiento-categoria/mantenimiento-categoria';
 import { AltaDeUsuarioPage } from './../pages/Backoffice/alta-usuario/alta-de-usuario';
 import { UtilsServiceProvider } from './../providers/utils.service';
 import { HttpClient } from '@angular/common/http';
