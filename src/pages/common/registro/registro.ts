@@ -50,7 +50,7 @@ export class RegistroPage implements OnInit {
   }
   ionViewCanEnter() {
 
-      console.log('component')
+      
       let token = this.navParams.get('token')
       
       this.usuarioServ.token = token
@@ -62,14 +62,14 @@ export class RegistroPage implements OnInit {
           window.location.href = window.location.origin
         }
         this.usuario._id = resp.data.usuario._id
-        this.usuario.perfiles = resp.data.perfiles
+        
+        this.usuario.perfiles = resp.data.usuario.perfiles
         this.usuarioServ.usuario = resp.data.usuario
         
 
 
       }, (err) => {
-        console.log(err)
-        console.log(window.location)
+       
         window.location.href = window.location.origin
         this.navCtrl.goToRoot({})
       }

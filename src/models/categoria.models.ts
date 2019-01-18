@@ -1,3 +1,4 @@
+import { Campeonato } from './campeonato.model';
 import { Usuario } from "./usuario.model";
 
 export class Categoria{
@@ -13,6 +14,7 @@ export class Categoria{
     delegados?: Usuario[] = []
     tesoreros?: Usuario[] = []
     jugadores?: Usuario[] = []
+    campeonatos?: Campeonato[]=[]
 }
 
 export class Cuenta {

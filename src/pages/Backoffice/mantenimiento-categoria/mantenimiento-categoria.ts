@@ -4,7 +4,7 @@ import { CategoriaService } from './../../../providers/categoria.service';
 import { UtilsServiceProvider } from './../../../providers/utils.service';
 import { Categoria } from './../../../models/categoria.models';
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
+import {  NavController, NavParams, LoadingController } from 'ionic-angular';
 import { NgForm, Validators } from '@angular/forms';
 import { EMAIL_VALIDATOR, EmailValidator } from '@angular/forms/src/directives/validators';
 import { stringify } from '@angular/compiler/src/util';
@@ -16,7 +16,7 @@ import { stringify } from '@angular/compiler/src/util';
  * Ionic pages and navigation.
  */
 
-@IonicPage()
+
 @Component({
   selector: 'page-mantenimiento-categoria',
   templateUrl: 'mantenimiento-categoria.html',

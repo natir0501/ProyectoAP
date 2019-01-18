@@ -44,7 +44,10 @@ var CategoriaSchema = mongoose.Schema({
     }],
     cuenta:{
         type: mongoose.Schema.Types.ObjectId, ref: 'Cuenta'
-    }
+    },
+    campeonatos:[{
+        type: mongoose.Schema.Types.ObjectId, ref: 'Campeonato'
+    }],
 })
 
 CategoriaSchema.plugin(uniqueValidator);

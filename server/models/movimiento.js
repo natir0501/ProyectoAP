@@ -27,7 +27,7 @@ var MovimientoSchema = mongoose.Schema({
     },
     usuario:{
         type: mongoose.Schema.Types.ObjectId, ref: 'Usuario',
-        require: true
+        require: false
     }
 
 })

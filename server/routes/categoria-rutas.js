@@ -16,6 +16,7 @@ api.get('/categorias', autenticacion, (req, res) => {
         .populate('jugadores')
         .populate('tesoreros')
         .populate('caja')
+        .populate('campeonatos')
         .then((categorias) => {
             res.status(200).send(new ApiResponse({ categorias }))
         }), (e) => {
@@ -36,8 +37,6 @@ api.put('/categorias/:id', autenticacion, async (req, res) => {
     } catch (error) {
         res.status(400).send({}, error)
     }
-
-
 })
 
 api.post('/categorias', async (req, res) => {
@@ -97,8 +96,11 @@ api.post('/categorias', async (req, res) => {
         delegadosInstitucionales = await Usuario.find({ 'delegadoInstitucional': true })
         rolDelegadoInst = await Rol.findOne({ 'codigo': 'DIN' })
 
+        
+
         let cargue = false;
         for (let i = 0; i < delegadosInstitucionales.length; i++) {
+            categoria.delegados.push(delegadosInstitucionales[i]._id)
             for(let j = 0; j < delegadosInstitucionales[i].perfiles.length; j++){
                
                 if(delegadosInstitucionales[i].perfiles[j].categoria.toString() === categoria._id.toString()){
@@ -115,6 +117,7 @@ api.post('/categorias', async (req, res) => {
            
 
         }
+        categoria = await categoria.save()
         return res.status(200).send(new ApiResponse(categoria, ''));
 
 
@@ -135,6 +138,7 @@ api.get('/categorias/:_id', (req, res) => {
         .populate('tesoreros')
         .populate('jugadores')
         .populate('cuenta')
+        .populate('campeonatos')
         .then((categoria) => {
             if (categoria) {
                 res.status(200).send(new ApiResponse({ categoria }))

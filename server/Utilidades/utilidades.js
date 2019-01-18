@@ -4,6 +4,7 @@ const { ObjectID } = require('mongodb')
 const nodemailer = require('nodemailer');
 const { google } = require("googleapis");
 const OAuth2 = google.auth.OAuth2;
+const axios = require('axios')
 
 const validarTipo = async (arrayUsuarios, tipoUsuario) => {
     let usuariosInvalidos = []
@@ -18,6 +19,7 @@ const validarTipo = async (arrayUsuarios, tipoUsuario) => {
 
 
 }
+
 
 const validarId = async (arrayId) => {
     for (id of arrayId) {
@@ -47,12 +49,12 @@ const enviarCorreoAlta = async (usuario) => {
         service: 'gmail',
         auth: {
             type: "OAuth2",
-            user: "appcei.2018@gmail.com", 
+            user: "appcei.2018@gmail.com",
             clientId: "349297601621-s63gdr5v1ms3kb88ahe5r4glaqire5t0.apps.googleusercontent.com",
             clientSecret: "4k7UuEp__UAjcVfOsVJtZTe0",
             refreshToken: "1/1tC904dBJ2cw_-7KUdqe9qroSdRr4Zpz6maMeJEHmQY",
             accessToken: accessToken
-       }
+        }
     });
 
     let ambiente;
@@ -80,4 +82,37 @@ const enviarCorreoAlta = async (usuario) => {
     });
 }
 
-module.exports = { validarTipo, validarId, enviarCorreoAlta };
+const enviarNotificacion = async (usuario, evento) => {
+    var headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'key=AAAAOcMNI0o:APA91bHamReBWXoEEMRMwA5B7KS8K73DEIhMNJizbIzX1IJ6Eb_LIaBFYdbXhIUHzIEutsD-8sGL4RGB2vgn086rcWqSRsVOpwv4oNwOfffjc9JDc1O1l2wwPijXX89NEZ3TxcR53_3J'
+    }
+
+    for (let i = 1; i < usuario.tokens.length; i++) {
+        let mensaje = {
+            "to": usuario.tokens[i].token,
+            "data":{
+                "notification": {
+                    "title": `Nuevo evento: ${evento.nombre}`,
+                    "body": `Hola ${usuario.nombre}! Has sido invitado a un nuevo evento. Por favor, consultá los detalles y confirmá asistencia. Gracias!`
+                }
+
+            }
+            
+        }
+
+
+        axios.post('https://fcm.googleapis.com/fcm/send', mensaje, { headers })
+            .then((res) => {
+                console.log('Envió')
+            })
+            .catch((error) => {
+                console.log('Error')
+            })
+
+    }
+
+}
+
+
+module.exports = { validarTipo, validarId, enviarCorreoAlta, enviarNotificacion };

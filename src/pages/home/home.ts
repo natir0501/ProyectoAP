@@ -15,20 +15,21 @@ import { AltaConceptosDeCajaPage } from '../Backoffice/alta-conceptos-de-caja/al
   templateUrl: 'home.html'
 })
 export class HomePage {
-  
+
   usuario: Usuario = new Usuario()
-  constructor(public navCtrl: NavController, private alertCtrk: AlertController, 
-    private platform: Platform, public fmp:FirebaseMessagingProvider,
-    private userServ: UsuarioService, public util : UtilsServiceProvider) {
+  constructor(public navCtrl: NavController, private alertCtrk: AlertController,
+    private platform: Platform, public fmp: FirebaseMessagingProvider,
+    private userServ: UsuarioService, public util: UtilsServiceProvider) {
 
   }
   ionViewWillEnter() {
     
     
+
   }
-  showPlatform(){
+  showPlatform() {
     let text = '' + this.platform.platforms();
-    let alert= this.alertCtrk.create({
+    let alert = this.alertCtrk.create({
       title: 'My home',
       subTitle: text,
       buttons: ['OK']
@@ -37,9 +38,9 @@ export class HomePage {
 
   }
 
-  
 
 
-  
+
+
 
 }

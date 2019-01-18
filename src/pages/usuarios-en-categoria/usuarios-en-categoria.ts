@@ -1,15 +1,14 @@
-import { Categoria } from './../../models/categoria.models';
-import { UsuarioService } from './../../providers/usuario.service';
-import { PlaceHolderPage } from './../place-holder/place-holder';
-import { MenuService } from './../../providers/menu.service';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
+import {  LoadingController, NavController, NavParams } from 'ionic-angular';
+import * as _ from 'lodash';
+import { Usuario } from '../../models/usuario.model';
 import { CategoriaService } from '../../providers/categoria.service';
 import { UtilsServiceProvider } from '../../providers/utils.service';
-import { MantenimientoCategoriaPage } from '../mantenimiento-categoria/mantenimiento-categoria';
-import { Usuario } from '../../models/usuario.model';
-import * as _ from 'lodash';
 import { ModificacionPeriflesPage } from '../modificacion-perifles/modificacion-perifles';
+import { ModificarPasswordPage } from '../modificar-password/modificar-password';
+import { Categoria } from './../../models/categoria.models';
+import { MenuService } from './../../providers/menu.service';
+import { UsuarioService } from './../../providers/usuario.service';
 
 /**
  * Generated class for the UsuariosEnCategoriaPage page.
@@ -18,7 +17,7 @@ import { ModificacionPeriflesPage } from '../modificacion-perifles/modificacion-
  * Ionic pages and navigation.
  */
 
-@IonicPage()
+
 @Component({
   selector: 'page-usuarios-en-categoria',
   templateUrl: 'usuarios-en-categoria.html',
@@ -66,9 +65,13 @@ export class UsuariosEnCategoriaPage {
 
 
 
-  modificar(usuario: Usuario) {
+  modificarPerfil(usuario: Usuario) {
     
-    this.navCtrl.setRoot(ModificacionPeriflesPage, { usuario })
+    this.navCtrl.push(ModificacionPeriflesPage, { usuario })
+  }
+
+  modificarPassword(usuario: Usuario){
+    this.navCtrl.push(ModificarPasswordPage, { usuario })
   }
 
   mostrarUsuario(usuario: Usuario){

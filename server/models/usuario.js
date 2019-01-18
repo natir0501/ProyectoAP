@@ -31,6 +31,14 @@ var UsuarioSchema = mongoose.Schema({
         type: String,
 
     },
+    sociedad: {
+        type: String,
+
+    },
+    emergencia: {
+        type: String,
+
+    },
 
     fechaNacimiento: {
         type: Number
@@ -62,6 +70,10 @@ var UsuarioSchema = mongoose.Schema({
         type: String
 
     },
+    ultimoMesCobrado: {
+        type: Number,
+        default: new Date().getMonth()
+    },
     activo: {
         type: Boolean,
         default: false
@@ -77,9 +89,9 @@ var UsuarioSchema = mongoose.Schema({
         roles: [{
             type: mongoose.Schema.Types.ObjectId,
         }],
-        }
+    }
     ],
-    
+
     categoriacuota: {
         type: mongoose.Schema.Types.ObjectId, ref: 'Categoria'
     },
@@ -98,7 +110,7 @@ var UsuarioSchema = mongoose.Schema({
 
 UsuarioSchema.plugin(uniqueValidator);
 
-UsuarioSchema.methods.generateAuthToken = async function  () {
+UsuarioSchema.methods.generateAuthToken = async function () {
     var usuario = this;
     var access = 'auth'
     var token = jwt.sign({ _id: usuario._id.toHexString(), access }, process.env.JWT_SECRET).toString()
@@ -106,7 +118,7 @@ UsuarioSchema.methods.generateAuthToken = async function  () {
     usuario.tokens = usuario.tokens.concat([{ access, token }])
     await usuario.save()
     return token
-    
+
 }
 
 UsuarioSchema.methods.removeToken = function (token) {
@@ -148,6 +160,7 @@ UsuarioSchema.pre('save', async function (next) {
 
     if (usuario.isModified('password')) {
         bcrypt.genSalt(10, (err, salt) => {
+
             bcrypt.hash(usuario.password, salt, (err, hash) => {
                 usuario.password = hash
                 next()
@@ -162,17 +175,23 @@ UsuarioSchema.pre('save', async function (next) {
 UsuarioSchema.pre('findOneAndUpdate', function (next) {
     var usuario = this.getUpdate().$set;
 
+   
+    if (usuario.password !== 'n') {
+        
+        bcrypt.genSalt(10, (err, salt) => {
 
+            bcrypt.hash(usuario.password, salt, (err, hash) => {
 
-    bcrypt.genSalt(10, (err, salt) => {
+                usuario.password = hash
 
-        bcrypt.hash(usuario.password, salt, (err, hash) => {
-
-            usuario.password = hash
-
-            next()
+                next()
+            })
         })
-    })
+    } else {
+        
+        next()
+
+    }
 
 
 
@@ -186,11 +205,11 @@ UsuarioSchema.methods.enviarConfirmacionAlta = function () {
 UsuarioSchema.statics.findByCredentials = function (email, password) {
     Usuario = this
     return Usuario.findOne({ email }).exec().then((usuario) => {
-        
+
         if (!usuario) {
             return Promise.reject()
         }
-        
+
         return new Promise((resolve, reject) => {
             bcrypt.compare(password, usuario.password, (err, res) => {
                 if (!res) {

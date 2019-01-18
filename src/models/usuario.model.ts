@@ -16,7 +16,7 @@ export class Usuario{
     celular?: string;
     direccion?: string;
     fechaVtoCarneSalud: number = Date.now()
- 
+    delegadoInstitucional?: boolean 
     fechaNacimiento: number = Date.now()
     tokens?: any[]
     emergencia?: string;
@@ -26,6 +26,7 @@ export class Usuario{
     activo ?: boolean;
     perfiles:  Perfil[] = []
     categoriacuota ?: Categoria;
+    ultimoMesCobrado?: number
 
 
    

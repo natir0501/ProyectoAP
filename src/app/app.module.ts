@@ -13,25 +13,40 @@ import { TouchedWorkaroundDirective } from './../directives/touched-workaround.d
 import { UsuarioService } from './../providers/usuario.service';
 import { LoginPage } from './../pages/common/login/login';
 import { BrowserModule } from '@angular/platform-browser';
+import { ConsultaModificacionDatosPage } from './../pages/consulta-modificacion-datos/consulta-modificacion-datos';
+import { ModificacionDatosPage } from './../pages/modificacion-datos/modificacion-datos';
+import { CampeonatoService } from './../providers/campeonato.service';
+import { ListaCampeonatosPage } from './../pages/common/lista-campeonatos/lista-campeonatos';
+import { ModificarEventoPage } from './../pages/modificar-evento/modificar-evento';
+import { HttpClientModule } from '@angular/common/http';
 import { ErrorHandler, NgModule } from '@angular/core';
-import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
-import { AngularFireModule } from 'angularfire2';
-import 'firebase/messaging'; // only import firebase messaging or as needed;
-import { firebaseConfig } from '../enviroment'
-import { FirebaseMessagingProvider } from '../providers/firebase-messaging';
 import { IonicStorageModule } from '@ionic/storage';
-import { HttpClientModule } from '@angular/common/http' 
-import { UtilsServiceProvider } from '../providers/utils.service';
+import { AngularFireModule } from 'angularfire2';
+import { CalendarModule } from 'ionic3-calendar-en';
+import 'firebase/messaging'; // only import firebase messaging or as needed;
+import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
+import { firebaseConfig } from '../enviroment';
 import { ConceptosDeCajaPage } from '../pages/Backoffice/conceptos-de-caja/conceptos-de-caja';
 import { ListaCategoriasPage } from '../pages/lista-categorias/lista-categorias';
 import { SaldoMovimientosCategoriaPage } from '../pages/Contabilidad/saldo-movimientos-categoria/saldo-movimientos-categoria';
 import { PlaceHolderPage } from '../pages/place-holder/place-holder';
 import { RegistroMovCajaPage } from '../pages/Contabilidad/registro-mov-caja/registro-mov-caja';
 import { ModificacionPeriflesPage } from '../pages/modificacion-perifles/modificacion-perifles';
+import { FirebaseMessagingProvider } from '../providers/firebase-messaging';
+import { UtilsServiceProvider } from '../providers/utils.service';
+import { ModificarPasswordPage } from './../pages/modificar-password/modificar-password';
+import { MantenimientoCampeonatosPage } from '../pages/common/mantenimiento-campeonatos/mantenimiento-campeonatos';
+import { MantenimientoFechaPage } from '../pages/Backoffice/mantenimiento-fecha/mantenimiento-fecha';
+import { ListaEventosPage } from '../pages/lista-eventos/lista-eventos';
+import { EventoService } from '../providers/evento.service';
+import { DetallesEventoPage } from '../pages/detalles-evento/detalles-evento';
+import { DetalleFechaPage } from '../pages/detalle-fecha/detalle-fecha';
+
+
 
 
 
@@ -53,7 +68,17 @@ import { ModificacionPeriflesPage } from '../pages/modificacion-perifles/modific
     SaldoMovimientosCategoriaPage,
     RegistroMovCajaPage,
     UsuariosEnCategoriaPage,
-    ModificacionPeriflesPage
+    ModificacionPeriflesPage,
+    ModificarPasswordPage,
+    ListaCampeonatosPage,
+    MantenimientoCampeonatosPage,
+    MantenimientoFechaPage,
+    ListaEventosPage,
+    ModificarEventoPage,
+    DetallesEventoPage,
+    DetalleFechaPage,
+    ModificacionDatosPage,
+    ConsultaModificacionDatosPage
     
 
   ],
@@ -61,8 +86,10 @@ import { ModificacionPeriflesPage } from '../pages/modificacion-perifles/modific
     BrowserModule,
     IonicModule.forRoot(MyApp,{scrollPadding: false,
       scrollAssist: true,
-      autoFocusAssist: false
+      autoFocusAssist: false,
+      backButtonText: ''
     }),
+    CalendarModule,
     AngularFireModule.initializeApp(firebaseConfig),
     IonicStorageModule.forRoot(),
     HttpClientModule
@@ -83,7 +110,18 @@ import { ModificacionPeriflesPage } from '../pages/modificacion-perifles/modific
     SaldoMovimientosCategoriaPage,
     RegistroMovCajaPage,
     UsuariosEnCategoriaPage,
-    ModificacionPeriflesPage
+    ModificacionPeriflesPage,
+    ModificarPasswordPage,
+    ListaCampeonatosPage,
+    MantenimientoCampeonatosPage,
+    MantenimientoFechaPage,
+    ListaEventosPage,
+    ModificarEventoPage,
+    DetallesEventoPage,
+    DetalleFechaPage,
+    ModificacionDatosPage,
+    ConsultaModificacionDatosPage
+    
     
   ],
   providers: [
@@ -97,6 +135,8 @@ import { ModificacionPeriflesPage } from '../pages/modificacion-perifles/modific
     TipoEventoService,
     CuentaService,
     MenuService,
+    CampeonatoService,
+    EventoService,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

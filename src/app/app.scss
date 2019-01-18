@@ -210,4 +210,17 @@ ion-menu {
         }
         
     }
+    
+}
+.yourtoastclass {
+    .toast-wrapper {
+      background: #050e61;
+     
+      border-radius: 5px;
+      text-align: center;
+    }
+    .toast-message {
+      
+      color: white;
+    }
 }

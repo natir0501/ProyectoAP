@@ -1,12 +1,12 @@
 import { AltaConceptosDeCajaPage } from './../alta-conceptos-de-caja/alta-conceptos-de-caja';
 import { ConceptoCaja } from './../../../models/concepto.models';
 import { ConceptoService } from './../../../providers/concepto.service';
-import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
+import { NavController, NavParams, LoadingController } from 'ionic-angular';
 import { UtilsServiceProvider } from '../../../providers/utils.service';
 import { Component } from '@angular/core';
 
 
-@IonicPage()
+
 @Component({
   selector: 'page-conceptos-de-caja',
   templateUrl: 'conceptos-de-caja.html',
