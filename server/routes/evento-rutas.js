@@ -24,6 +24,21 @@ api.get('/eventos', async (req, res) => {
             }
         }
         let eventos = await Evento.find(filtro).populate('tipoEvento')
+        
+        if (req.query.userId) {
+            eventos = eventos.filter(e => {
+                if (e.registrosDT) {
+                    let registro = e.registrosDT.find(r => { 
+                        return r.jugadorId.toString() === req.query.userId})
+                    if(registro){
+                        e.registrosDT = [registro]
+
+                    }
+                    return !!registro
+                }
+            })
+        }
+
         res.status(200).send(new ApiResponse({ eventos }))
     } catch (e) {
         res.status(400).send(new ApiResponse({}, `Error al obtener datos: ${e}`))
@@ -32,30 +47,30 @@ api.get('/eventos', async (req, res) => {
 
 api.get('/eventos/:id/registrosDT', async (req, res) => {
     let idJugador = req.query.idUsuario;
-   
+
     let idEvento = req.params.id;
-    
+
     let comentario = ''
     try {
 
 
-        
+
         let evento = await Evento.findOne({ _id: idEvento })
-        
-        if(evento){
+
+        if (evento) {
             if (!evento.registrosDT) {
                 evento.registrosDT = []
             }
             for (let registro of evento.registrosDT) {
-                
+
                 if (registro.jugadorId.toString() === idJugador) {
                     comentario = registro.comentario
                 }
             }
-            res.send(new ApiResponse(comentario,''))
+            res.send(new ApiResponse(comentario, ''))
 
-        }else{
-            res.status(404).send(new ApiResponse({},'Evento no encontrado'))
+        } else {
+            res.status(404).send(new ApiResponse({}, 'Evento no encontrado'))
         }
     } catch (e) {
         console.log(e)
@@ -113,7 +128,7 @@ api.post('/eventos', async (req, res) => {
 })
 api.put('/eventos/:id/confirmar', async (req, res) => {
     try {
-        
+
         let _id = req.params.id;
         let usuario = req.body.usuario
         let asiste = req.body.asiste
