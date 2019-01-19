@@ -21,6 +21,7 @@ import { Observable } from 'rxjs/Observable';
 import { Usuario, Perfil } from '../models/usuario.model';
 import { AltaDeUsuarioPage } from '../pages/Backoffice/alta-usuario/alta-de-usuario';
 import { SaldoMovimientosCategoriaPage } from '../pages/Contabilidad/saldo-movimientos-categoria/saldo-movimientos-categoria';
+import { RegistroPagoCuotaPage } from '../pages/registro-pago-cuota/registro-pago-cuota';
 
 @Injectable()
 export class MenuService {
@@ -56,7 +57,8 @@ export class MenuService {
         this.map.set('ConsultaModificacionDatosPage',ConsultaModificacionDatosPage)
         this.map.set('ModificacionDatos',ModificacionDatosPage)
         this.map.set('RegistroMovCajaPage',RegistroMovCajaPage)
-        this.map.set('SaldoMovimientosCategoriaPage',SaldoMovimientosCategoriaPage)
+        this.map.set('SaldoMovimientosCategoriaPage',SaldoMovimientosCategoriaPage) 
+        this.map.set('RegistroPagoCuotaPage',RegistroPagoCuotaPage) 
 
 
     }

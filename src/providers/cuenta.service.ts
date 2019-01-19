@@ -25,4 +25,8 @@ export class CuentaService{
         return 
     }
 
+    registrarPagoCuota():Observable<any>{
+        return 
+    }
+
 }

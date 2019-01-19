@@ -1,3 +1,4 @@
+import { Usuario } from './../../../models/usuario.model';
 import { UtilsServiceProvider } from './../../../providers/utils.service';
 import { CuentaService } from './../../../providers/cuenta.service';
 import { Cuenta } from './../../../models/cuenta.models';
@@ -22,6 +23,7 @@ export class SaldoMovimientosCategoriaPage {
 
   cuenta: Cuenta = new Cuenta();
   categoria: Categoria = new Categoria()
+  usuarios: Usuario[] = [];
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
@@ -42,9 +44,7 @@ export class SaldoMovimientosCategoriaPage {
     if (dataUsuarios) {
       this.categoria = dataUsuarios.data.categoria
     }
-  console.log("Aca la categoría", this.categoria)
     this.cuenta= this.categoria.cuenta
-    console.log("Aca la cuenta", this.cuenta);
     
     this.cuentaServ.obtenerMovimientos(this.cuenta._id)
       .subscribe((resp) => {

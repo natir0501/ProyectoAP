@@ -1,3 +1,4 @@
+import { RegistroPagoCuotaPage } from './../pages/registro-pago-cuota/registro-pago-cuota';
 import { CuentaService } from './../providers/cuenta.service';
 import { UsuariosEnCategoriaPage } from './../pages/usuarios-en-categoria/usuarios-en-categoria';
 import { MenuService } from './../providers/menu.service';
@@ -78,7 +79,8 @@ import { DetalleFechaPage } from '../pages/detalle-fecha/detalle-fecha';
     DetallesEventoPage,
     DetalleFechaPage,
     ModificacionDatosPage,
-    ConsultaModificacionDatosPage
+    ConsultaModificacionDatosPage,
+    RegistroPagoCuotaPage
     
 
   ],
@@ -121,6 +123,7 @@ import { DetalleFechaPage } from '../pages/detalle-fecha/detalle-fecha';
     DetalleFechaPage,
     ModificacionDatosPage,
     ConsultaModificacionDatosPage,
+    RegistroPagoCuotaPage
     
     
     

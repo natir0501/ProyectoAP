@@ -60,7 +60,7 @@ const cargaPantallas = async () => {
         await new Pantalla({ 'nombre': 'Fixture', 'menu': 'Agenda', 'opcionMenu': 'Fixture', 'componente': 'MantenimientoCampeonatosPage', 'roles': [delegadoInst._id, delegado._id, jugador._id, dt._id] }).save()
 
 
-        await new Pantalla({ 'nombre': 'Registro de Pago', 'menu': 'Tesorería', 'opcionMenu': 'Registro de Pago', 'componente': 'PlaceHolderPage', 'roles': [delegadoInst._id, tesorero._id,] }).save()
+        await new Pantalla({ 'nombre': 'Registro de Pago', 'menu': 'Tesorería', 'opcionMenu': 'Registro de Pago', 'componente': 'RegistroPagoCuotaPage', 'roles': [delegadoInst._id, tesorero._id,] }).save()
         await new Pantalla({ 'nombre': 'Conceptos de Caja', 'menu': 'Tesorería', 'opcionMenu': 'Conceptos de Caja', 'componente': 'ConceptosDeCajaPage', 'roles': [delegadoInst._id, tesorero._id,] }).save()
         await new Pantalla({ 'nombre': 'Aprobación de Pago', 'menu': 'Tesorería', 'opcionMenu': 'Aprobación de Pago', 'componente': 'PlaceHolderPage', 'roles': [delegadoInst._id, tesorero._id,] }).save()
         await new Pantalla({ 'nombre': 'Ingreso Movimiento', 'menu': 'Tesorería', 'opcionMenu': 'Ingreso Movimiento', 'componente': 'RegistroMovCajaPage', 'roles': [delegadoInst._id, tesorero._id,] }).save()
