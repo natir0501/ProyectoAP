@@ -48,7 +48,6 @@ export class RegistroPagoCuotaPage {
       .subscribe((resp) => {
         let conceptos = resp.data.conceptosCaja;
         for(let c of conceptos){
-          console.log("log", c.nombre);
           if(c.nombre==="Pago de Cuota"){
             this.concepto=c
           }
@@ -64,7 +63,6 @@ export class RegistroPagoCuotaPage {
       this.navCtrl.setRoot(HomePage)
     }
     
-
   }
 
   onSubmit(){

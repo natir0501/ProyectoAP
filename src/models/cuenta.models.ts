@@ -18,5 +18,4 @@ export class Movimiento{
         confirmado?: boolean
         referencia?: string
         usuario?:Usuario
-    
 }

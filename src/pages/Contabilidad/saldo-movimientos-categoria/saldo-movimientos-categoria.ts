@@ -1,3 +1,4 @@
+import { DetalleMovimientoPage } from './../../detalle-movimiento/detalle-movimiento';
 import { Usuario } from './../../../models/usuario.model';
 import { UtilsServiceProvider } from './../../../providers/utils.service';
 import { CuentaService } from './../../../providers/cuenta.service';
@@ -49,6 +50,7 @@ export class SaldoMovimientosCategoriaPage {
     this.cuentaServ.obtenerMovimientos(this.cuenta._id)
       .subscribe((resp) => {
         this.cuenta.movimientos = resp.data.movimientos;
+        console.log(this.cuenta)
       },
         (err) => {
           console.log("Error obteniendo movimientos", err)
@@ -59,13 +61,10 @@ export class SaldoMovimientosCategoriaPage {
         })
   }
 
-  ingresarMovimiento() {
-    console.log("a nuevo mov");
-
-  }
-
   verDetalle(mov) {
-    console.log(mov);
+    console.log("Movimiento", mov);
+    
+    this.navCtrl.push((DetalleMovimientoPage), {mov})
   }
 
 }

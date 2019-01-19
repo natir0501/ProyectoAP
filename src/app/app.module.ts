@@ -46,6 +46,7 @@ import { ListaEventosPage } from '../pages/lista-eventos/lista-eventos';
 import { EventoService } from '../providers/evento.service';
 import { DetallesEventoPage } from '../pages/detalles-evento/detalles-evento';
 import { DetalleFechaPage } from '../pages/detalle-fecha/detalle-fecha';
+import { DetalleMovimientoPage } from '../pages/detalle-movimiento/detalle-movimiento';
 
 
 
@@ -80,7 +81,8 @@ import { DetalleFechaPage } from '../pages/detalle-fecha/detalle-fecha';
     DetalleFechaPage,
     ModificacionDatosPage,
     ConsultaModificacionDatosPage,
-    RegistroPagoCuotaPage
+    RegistroPagoCuotaPage, 
+    DetalleMovimientoPage
     
 
   ],
@@ -123,7 +125,8 @@ import { DetalleFechaPage } from '../pages/detalle-fecha/detalle-fecha';
     DetalleFechaPage,
     ModificacionDatosPage,
     ConsultaModificacionDatosPage,
-    RegistroPagoCuotaPage
+    RegistroPagoCuotaPage, 
+    DetalleMovimientoPage
     
     
     
