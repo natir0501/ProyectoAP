@@ -1,3 +1,4 @@
+import { DetalleComentarioPage } from './../pages/detalle-comentario/detalle-comentario';
 import { ModificarComentarioPage } from './../pages/modificar-comentario/modificar-comentario';
 import { ListaRegistroEventoPage } from './../pages/lista-registro-evento/lista-registro-evento';
 import { ConsultaModificacionDatosPage } from './../pages/consulta-modificacion-datos/consulta-modificacion-datos';
@@ -44,6 +45,7 @@ import { ListaEventosPage } from '../pages/lista-eventos/lista-eventos';
 import { EventoService } from '../providers/evento.service';
 import { DetallesEventoPage } from '../pages/detalles-evento/detalles-evento';
 import { DetalleFechaPage } from '../pages/detalle-fecha/detalle-fecha';
+import { DatosDeportivosListaPage } from '../pages/datos-deportivos-lista/datos-deportivos-lista';
 
 
 
@@ -77,7 +79,9 @@ import { DetalleFechaPage } from '../pages/detalle-fecha/detalle-fecha';
     ModificacionDatosPage,
     ConsultaModificacionDatosPage,
     ListaRegistroEventoPage,
-    ModificarComentarioPage
+    ModificarComentarioPage,
+    DatosDeportivosListaPage,
+    DetalleComentarioPage
     
 
   ],
@@ -119,7 +123,9 @@ import { DetalleFechaPage } from '../pages/detalle-fecha/detalle-fecha';
     ModificacionDatosPage,
     ConsultaModificacionDatosPage,
     ListaRegistroEventoPage,
-    ModificarComentarioPage
+    ModificarComentarioPage,
+    DatosDeportivosListaPage,
+    DetalleComentarioPage
     
     
   ],

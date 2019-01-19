@@ -106,7 +106,7 @@ export class ListaEventosPage {
   }
   registrosDT() {
     let rolDt = this.roles.filter((rol)=> rol.codigo === 'DTS')[0]
-    console.log(rolDt)
+    
     let usuario: Usuario = this.usuServ.usuario
     for(let rol of usuario.perfiles[0].roles){
       if(rol === rolDt._id && this.fechaSeleccionada.valueOf()<Date.now()){

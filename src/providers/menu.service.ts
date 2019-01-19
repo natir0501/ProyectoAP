@@ -20,6 +20,7 @@ import { ConceptosDeCajaPage } from '../pages/Backoffice/conceptos-de-caja/conce
 import { TipoEventosPage } from '../pages/Backoffice/tipo-eventos/tipo-eventos';
 import { Observable } from 'rxjs/Observable';
 import { Usuario, Perfil } from '../models/usuario.model';
+import { DatosDeportivosListaPage } from '../pages/datos-deportivos-lista/datos-deportivos-lista';
 
 @Injectable()
 export class MenuService {
@@ -54,6 +55,7 @@ export class MenuService {
         this.map.set('MantenimientoCampeonatosPage',MantenimientoCampeonatosPage)
         this.map.set('ConsultaModificacionDatosPage',ConsultaModificacionDatosPage)
         this.map.set('ModificacionDatos',ModificacionDatosPage)
+        this.map.set('DatosDeportivosListaPage',DatosDeportivosListaPage)
 
 
     }
