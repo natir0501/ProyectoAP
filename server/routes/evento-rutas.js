@@ -115,7 +115,9 @@ api.post('/eventos', async (req, res) => {
 
         for (let id of evento.invitados) {
             let user = await Usuario.findOne({ _id: id })
-            enviarNotificacion(user, evento)
+            tituloNot = `Nuevo evento: ${evento.nombre}`,
+            bodyNot = `Hola ${user.nombre}! Has sido invitado a un nuevo evento. Por favor, consultá los detalles y confirmá asistencia. Gracias!`
+            enviarNotificacion(user,tituloNot,bodyNot )
         }
         res.status(200).send(new ApiResponse({ evento }));
         console.log("agregado OK.");
