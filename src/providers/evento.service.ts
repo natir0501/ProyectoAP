@@ -28,11 +28,14 @@ export class EventoService {
         return this.http.post<any>(`${this.apiUrl}api/eventos`,evento, { headers })
     }
 
-    obtenerEventos(fechaInicio: number, fechaFin: number): Observable<any>{
+    obtenerEventos(fechaInicio: number, fechaFin: number, usuarioId ?: string): Observable<any>{
         let headers: HttpHeaders = new HttpHeaders().set("Content-Type", "application/json")
         headers = headers.set('x-auth', this.usuarioServ.token)
         let params : HttpParams = new HttpParams().set('fechaInicio', fechaInicio.toString());
         params = params.set('fechaFin', fechaFin.toString());
+        if(usuarioId){
+            params = params.set('userId',usuarioId)
+        }
         return this.http.get<any>(`${this.apiUrl}api/eventos`, { headers, params })
     }
 
@@ -59,5 +62,17 @@ export class EventoService {
         let headers: HttpHeaders = new HttpHeaders().set("Content-Type", "application/json")
         headers = headers.set('x-auth', this.usuarioServ.token)
         return this.http.put<any>(`${this.apiUrl}api/eventos/${idEvento}/confirmar`,{usuario, asiste}, { headers})
+    }
+    obtenerComentario(idUsuario: string, idEvento: string): Observable<any>{
+        let headers: HttpHeaders = new HttpHeaders().set("Content-Type", "application/json")
+        headers = headers.set('x-auth', this.usuarioServ.token)
+        let params : HttpParams = new HttpParams().set('idUsuario', idUsuario);
+        return this.http.get<any>(`${this.apiUrl}api/eventos/${idEvento}/registrosDT`, { headers,params})
+    }
+    guardarComentario(idUsuario: string, idEvento: string, comentario:string): Observable<any>{
+        let headers: HttpHeaders = new HttpHeaders().set("Content-Type", "application/json")
+        headers = headers.set('x-auth', this.usuarioServ.token)
+        
+        return this.http.put<any>(`${this.apiUrl}api/eventos/${idEvento}/registrosDT`,{jugadorId: idUsuario, comentario}, { headers})
     }
 }

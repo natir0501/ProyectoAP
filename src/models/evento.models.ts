@@ -11,6 +11,7 @@ export class Evento {
     invitados : Usuario[] = []
     confirmados : Usuario[] = []
     noAsisten : Usuario[] = []
+    registrosDT: any[] = []
     categoria: Categoria
 
 }

@@ -7,6 +7,11 @@ var TipoEventoSchema = mongoose.Schema({
         required: true,
         trim: true,
         unique: true
+    },
+    datosDeportivos: {
+        type: Boolean,
+        default: false,
+        
     }
 })
 

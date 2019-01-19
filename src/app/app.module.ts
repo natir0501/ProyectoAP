@@ -14,6 +14,9 @@ import { TouchedWorkaroundDirective } from './../directives/touched-workaround.d
 import { UsuarioService } from './../providers/usuario.service';
 import { LoginPage } from './../pages/common/login/login';
 import { BrowserModule } from '@angular/platform-browser';
+import { DetalleComentarioPage } from './../pages/detalle-comentario/detalle-comentario';
+import { ModificarComentarioPage } from './../pages/modificar-comentario/modificar-comentario';
+import { ListaRegistroEventoPage } from './../pages/lista-registro-evento/lista-registro-evento';
 import { ConsultaModificacionDatosPage } from './../pages/consulta-modificacion-datos/consulta-modificacion-datos';
 import { ModificacionDatosPage } from './../pages/modificacion-datos/modificacion-datos';
 import { CampeonatoService } from './../providers/campeonato.service';
@@ -47,6 +50,7 @@ import { EventoService } from '../providers/evento.service';
 import { DetallesEventoPage } from '../pages/detalles-evento/detalles-evento';
 import { DetalleFechaPage } from '../pages/detalle-fecha/detalle-fecha';
 import { DetalleMovimientoPage } from '../pages/detalle-movimiento/detalle-movimiento';
+import { DatosDeportivosListaPage } from '../pages/datos-deportivos-lista/datos-deportivos-lista';
 
 
 
@@ -82,7 +86,11 @@ import { DetalleMovimientoPage } from '../pages/detalle-movimiento/detalle-movim
     ModificacionDatosPage,
     ConsultaModificacionDatosPage,
     RegistroPagoCuotaPage, 
-    DetalleMovimientoPage
+    DetalleMovimientoPage,
+    ListaRegistroEventoPage,
+    ModificarComentarioPage,
+    DatosDeportivosListaPage,
+    DetalleComentarioPage
     
 
   ],
@@ -126,8 +134,11 @@ import { DetalleMovimientoPage } from '../pages/detalle-movimiento/detalle-movim
     ModificacionDatosPage,
     ConsultaModificacionDatosPage,
     RegistroPagoCuotaPage, 
-    DetalleMovimientoPage
-    
+    DetalleMovimientoPage,
+    ListaRegistroEventoPage,
+    ModificarComentarioPage,
+    DatosDeportivosListaPage,
+    DetalleComentarioPage
     
     
   ],

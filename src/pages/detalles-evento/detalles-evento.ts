@@ -60,7 +60,7 @@ export class DetallesEventoPage {
   }
   descUsu(usu: Usuario) {
     if (usu.nombre) {
-      return usu.nombre
+      return usu.nombre + ' ' + usu.apellido
     }
     return usu.email
   }

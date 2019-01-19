@@ -18,7 +18,7 @@ api.get('/tipoeventos',(req, res)=>{
 api.post('/tipoeventos', async (req,res) =>{
     
     try{
-        var tipoEvento = new TipoEvento(_.pick(req.body,['nombre']))
+        var tipoEvento = new TipoEvento(_.pick(req.body,['nombre','datosDeportivos']))
         await tipoEvento.save()
        
         res.status(200).send(new ApiResponse({tipoEvento},'Agregado Ok'));
@@ -50,7 +50,7 @@ api.get('/tipoeventos/:id', async (req,res)=>{
 
 api.put('/tipoeventos/:id', (req, res) => {
     var id = req.params.id;
-    var body = _.pick(req.body, ['nombre']);
+    var body = _.pick(req.body, ['nombre','datosDeportivos']);
 
     TipoEvento.findOneAndUpdate({
         _id: id
