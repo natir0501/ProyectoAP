@@ -30,7 +30,7 @@
               <ion-label>
                 Jugador:
               </ion-label>
-              <ion-select okText="Ok" cancelText="Cancelar" required [(ngModel)]="usuario" name="usuario">
+              <ion-select okText="Ok" cancelText="Cancelar" required [(ngModel)]="movimiento.jugador" name="usuario">
                 <ion-option *ngFor="let u of usuarios" [id]="u._id" [value]="u">
                   {{u.nombre}} {{u.apellido}} 
                 </ion-option>
@@ -40,14 +40,14 @@
               <ion-label>
                 Monto:
               </ion-label>
-              <ion-input text-right type="text" placeholder="Ej: 800" name="monto" required>
+              <ion-input text-right type="text" required [(ngModel)]="movimiento.monto" placeholder="Ej: 800" name="monto" required>
               </ion-input>
             </ion-item>
             <ion-item>
               <ion-label>
                 Comentario:
               </ion-label>
-              <ion-textarea text-right #comentario="ngModel" ngModel name="comentario" rows=5 placeholder="Ej: Pagó mediante transferencia a mi cuenta bancaria"></ion-textarea>
+              <ion-textarea text-right [(ngModel)]="movimiento.comentario" #movimiento.comentario="ngModel" ngModel name="comentario" rows=5 placeholder="Ej: Pagó mediante transferencia a mi cuenta bancaria"></ion-textarea>
             </ion-item>
           </ion-list>
         </ion-col>

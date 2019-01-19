@@ -1,3 +1,4 @@
+import { Movimiento } from './../../models/cuenta.models';
 import { ConceptoService } from './../../providers/concepto.service';
 import { Usuario } from './../../models/usuario.model';
 import { Cuenta, Concepto } from './../../models/categoria.models';
@@ -23,6 +24,7 @@ export class RegistroPagoCuotaPage {
   usuario: Usuario=new Usuario()
   usuarios: Usuario[] = [];
   concepto: Concepto= new Concepto()
+  movimiento: Movimiento=new Movimiento()
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public cuentaServ: CuentaService, public loadingCtrl: LoadingController,
@@ -62,12 +64,19 @@ export class RegistroPagoCuotaPage {
       loading.dismiss();
       this.navCtrl.setRoot(HomePage)
     }
-    
   }
 
   onSubmit(){
-    
-    
+    this.movimiento.usuario=this.usuServ.usuario
+    this.movimiento.concepto=this.concepto
+    this.cuentaServ.registrarPagoCuota(this.movimiento)
+    .subscribe((resp) =>{
+      console.log(resp);
+      
+    },(err)=>{
+      console.log(err);
+      
+    })
   }
   
 

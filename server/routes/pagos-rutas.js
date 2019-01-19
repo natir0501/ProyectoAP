@@ -33,30 +33,34 @@ api.post('/pagos', autenticacion, async (req, res) => {
             usuario: req.usuario,
             referencia: null
         };
-
-        jugador.cuenta.saldo = jugador.cuenta.saldo + mov.monto
-
+        
         /*Si el que ingresa el movimiento y el usuario al que registro el pago son distintos
         asumo que el registro de pago lo hace el tesorero, entonces confirmado=true y cambio saldo 
         de la categoría
          */
+        let cuentacategoria= await Cuenta.findById(categoria.cuenta._id).populate('movimientos')
         if (jugador._id.toString()!==req.usuario._id.toString()) {
             mov.confirmado = true;
             conf=true
-            categoria.cuenta.saldo = categoria.cuenta.saldo + mov.monto
+            cuentacategoria.saldo = parseInt(cuentacategoria.saldo) + parseInt(mov.monto)
         }
-        jugador.cuenta.movimientos.push(mov);
-        jugador = await jugador.save()
+
+        let cuentajugador = await Cuenta.findById(jugador.cuenta._id).populate('movimientos')
+        cuentajugador.movimientos.push(mov);
+        cuentajugador.saldo=parseInt(cuentajugador.saldo) + parseInt(mov.monto)
+        await cuentajugador.save()
 
         /*Si el movimiento no está confirmado, guardo la referencia al mov del jugador en el movimiento 
         que voy a guardar en la categoría.  
         */
         if (conf === false) {
+            console.log("Queda Pendiente");
+            
             mov.referencia = jugador.cuenta.movimientos[jugador.cuenta.movimientos.length - 1]._id;
         }
 
-        categoria.cuenta.movimientos.push(mov);
-        await categoria.cuenta.save()
+        cuentacategoria.movimientos.push(mov);
+        await cuentacategoria.save()
 
         res.status(200).send(new ApiResponse({ mov }))
 

@@ -27,14 +27,10 @@
         <ion-item>
           Monto: <span item-end>{{movimiento.monto}}</span>
         </ion-item>
-        <ion-item>
-          <ion-label>
+        <ion-item color="none" id="conc._id" icon-end>
+            <ion-icon [name]="movimiento.confirmado?'checkmark-circle':'close-circle'" item-right></ion-icon>
             Confirmado:
-          </ion-label>
-          <span item-end>
-            <ion-checkbox disabled="true" item-end name="conf" [(ngModel)]="movimiento.confirmado"></ion-checkbox>
-          </span>
-        </ion-item>
+          </ion-item>
         <ion-item>
           <ion-label>
             Comentario:
