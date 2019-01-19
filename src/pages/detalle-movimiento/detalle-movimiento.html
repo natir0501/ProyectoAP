@@ -27,10 +27,13 @@
         <ion-item>
           Monto: <span item-end>{{movimiento.monto}}</span>
         </ion-item>
+        <ion-item>
+          Estado: <span item-end>{{movimiento.estado}}</span>
+        </ion-item>
         <ion-item color="none" id="conc._id" icon-end>
-            <ion-icon [name]="movimiento.confirmado?'checkmark-circle':'close-circle'" item-right></ion-icon>
-            Confirmado:
-          </ion-item>
+          <ion-icon [name]="movimiento.confirmado?'checkmark-circle':'close-circle'" item-right></ion-icon>
+          Confirmado:
+        </ion-item>
         <ion-item>
           <ion-label>
             Comentario:

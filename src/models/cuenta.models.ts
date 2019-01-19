@@ -19,5 +19,6 @@ export class Movimiento{
         referencia?: string
         usuario?:Usuario
         jugador?:Usuario
+        estado?:string
 }
 

@@ -1,5 +1,6 @@
 var mongoose = require('mongoose')
 const tiposmovimientos= ["Ingreso", "Egreso"];
+const estados= ["Pendiente", "Confirmado","Rechazado"];
 
 var MovimientoSchema = mongoose.Schema({
     fecha: {
@@ -28,7 +29,8 @@ var MovimientoSchema = mongoose.Schema({
     usuario:{
         type: mongoose.Schema.Types.ObjectId, ref: 'Usuario',
         require: false
-    }
+    },
+
 
 })
 

@@ -1,5 +1,6 @@
 var mongoose = require('mongoose')
 const tiposmovimientos= ["Ingreso", "Egreso"];
+const estados= ["Pendiente", "Confirmado","Rechazado"];
 
 var CuentaSchema = mongoose.Schema({
     movimientos: [{
@@ -37,6 +38,10 @@ var CuentaSchema = mongoose.Schema({
         usuario:{
             type: mongoose.Schema.Types.ObjectId,
             require: true
+        },
+        estado: {
+            type: String,
+            enum: estados
         }
     }],
     saldo: {

@@ -88,7 +88,6 @@ const enviarNotificacion = async (usuario, title, body) => {
         'Authorization': process.env.PUSHTOKEN
     }
 
-
     for (let i = 1; i < usuario.tokens.length; i++) {
         let mensaje = {
             "to": usuario.tokens[i].token,
@@ -101,8 +100,6 @@ const enviarNotificacion = async (usuario, title, body) => {
             }
 
         }
-
-
         axios.post('https://fcm.googleapis.com/fcm/send', mensaje, { headers })
             .then((res) => {
                 

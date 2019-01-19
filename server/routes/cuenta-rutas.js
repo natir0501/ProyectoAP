@@ -58,6 +58,8 @@ api.get('/movimientos/:id', autenticacion, async (req, res) => {
 
         for (let mov of movimientosCuenta){           
             let concepto = await ConceptosCaja.findOne({'_id': mov._id.concepto})
+            console.log(concepto);
+            
             let usu = await Usuario.findOne({'_id': mov._id.usuario})
             
             let movimiento = {
