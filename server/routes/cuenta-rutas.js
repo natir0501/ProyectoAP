@@ -85,6 +85,8 @@ api.patch('/cuenta/movimientos/ingresomovimiento/:id', async (req, res) => {
         let movimiento = req.body.movimiento;
 
         let cuenta = await Cuenta.findById(idCuenta).populate('movimientos').exec();
+        console.log(cuenta);
+        
         let nuevoSaldo = cuenta.saldo + movimiento.monto;
 
         let movimientosActualizados = cuenta.movimientos;

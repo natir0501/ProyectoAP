@@ -46,8 +46,6 @@ export class RegistroMovCajaPage {
   onSubmit() { }
 
   cargueConcepto(): boolean{
-    console.log("Mi conce",this.concepto);
-    
     return (this.concepto._id!="")
   }
 

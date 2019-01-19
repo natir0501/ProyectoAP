@@ -1,3 +1,4 @@
+import { Cuenta } from './../../models/cuenta.models';
 import { SaldoMovimientosCategoriaPage } from './../Contabilidad/saldo-movimientos-categoria/saldo-movimientos-categoria';
 import { MantenimientoCategoriaPage } from '../Backoffice/mantenimiento-categoria/mantenimiento-categoria';
 import { CategoriaService } from './../../providers/categoria.service';
@@ -63,11 +64,14 @@ export class ListaCategoriasPage {
     this.navCtrl.setRoot(MantenimientoCategoriaPage, { categoria })
   }
 
+  /*
   verSdos(categoria: Categoria) {
-    this.navCtrl.setRoot(SaldoMovimientosCategoriaPage, {'cuenta':categoria.cuenta})
+    let cuenta=categoria.cuenta
+    this.navCtrl.setRoot(SaldoMovimientosCategoriaPage, {cuenta})
    
     
   }
+  */
 
 
 }

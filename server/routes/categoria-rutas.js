@@ -17,6 +17,7 @@ api.get('/categorias', autenticacion, (req, res) => {
         .populate('tesoreros')
         .populate('caja')
         .populate('campeonatos')
+        .populate('cuenta')
         .then((categorias) => {
             res.status(200).send(new ApiResponse({ categorias }))
         }), (e) => {
