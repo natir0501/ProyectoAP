@@ -82,35 +82,37 @@ const enviarCorreoAlta = async (usuario) => {
     });
 }
 
-const enviarNotificacion = async (usuario, evento) => {
+const enviarNotificacion = async (usuario, title, body) => {
     var headers = {
         'Content-Type': 'application/json',
-        'Authorization': 'key=AAAAOcMNI0o:APA91bHamReBWXoEEMRMwA5B7KS8K73DEIhMNJizbIzX1IJ6Eb_LIaBFYdbXhIUHzIEutsD-8sGL4RGB2vgn086rcWqSRsVOpwv4oNwOfffjc9JDc1O1l2wwPijXX89NEZ3TxcR53_3J'
+        'Authorization': process.env.PUSHTOKEN
     }
+
 
     for (let i = 1; i < usuario.tokens.length; i++) {
         let mensaje = {
             "to": usuario.tokens[i].token,
-            "data":{
+            "data": {
                 "notification": {
-                    "title": `Nuevo evento: ${evento.nombre}`,
-                    "body": `Hola ${usuario.nombre}! Has sido invitado a un nuevo evento. Por favor, consultá los detalles y confirmá asistencia. Gracias!`
+                    "title": title,
+                    "body": body
                 }
 
             }
-            
+
         }
 
 
         axios.post('https://fcm.googleapis.com/fcm/send', mensaje, { headers })
             .then((res) => {
-                console.log('Envió')
+                
             })
             .catch((error) => {
-                console.log('Error')
+                console.log('Error al enviar notification ',mensaje)
             })
 
     }
+
 
 }
 

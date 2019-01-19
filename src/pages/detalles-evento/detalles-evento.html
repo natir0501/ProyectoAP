@@ -69,6 +69,10 @@
 
         <ion-item-divider color="light">
           Pendientes{{' ('+ evento.invitados.length + ')'}}
+          <button ion-button item-end class="btn-print" type="button" (click)="generoPDF()" icon-only
+          *ngIf="usuario.email==='nati.r0501@gmail.com' || usuario.email === 'gab.arpe@gmail.com'">
+            <ion-icon name="print"></ion-icon>
+          </button>
           <button ion-button item-end class="btn-mostrar" type="button" (click)="toggle('convocados')">{{btnConvocados}}</button>
 
         </ion-item-divider>
@@ -120,13 +124,6 @@
 
     </ion-row>
     <ion-row justify-content-center *ngIf="convocado()">
-      <ion-col col-xl-2>
-        <button type="button" *ngIf="usuario.email==='nati.r0501@gmail.com' || usuario.email === 'gab.arpe@gmail.com'"  ion-button="" block color="positive"   (click)="generoPDF()">
-         Generar PDF
-        </button>
-      </ion-col>
-    
-
     </ion-row>
   </ion-grid>
 
