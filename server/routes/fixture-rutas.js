@@ -49,9 +49,15 @@ api.post('/campeonato/evento', async (req, res) => {
             ...categoria.tesoreros,
             ...categoria.dts
         ]
-        invitados = _.uniqBy(invitados, '_id')
+    
+        evento.invitados = []
+        for( let invitado of invitados){
+            if (evento.invitados.indexOf(invitado)< 0){
+                evento.invitados.push(invitado)
+            }
+        }
+      
         
-        evento.invitados = [...invitados]
        
         evento = await evento.save()
   

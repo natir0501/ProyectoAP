@@ -205,22 +205,23 @@ api.put('/eventos/:id', async (req, res) => {
         let _id = req.params.id;
         let notificar = req.query.notificar
         let evento = await Evento.findOneAndUpdate({ _id }, { $set: req.body })
-            .populate('confirmados')
-            .populate('invitados')
-            .populate('noAsisten')
 
-        let invitados = [
-            ...evento.confirmados,
-            ...evento.invitados,
-            ...evento.noAsisten
-        ]
-        
-       
+
         if (!evento) {
             res.status(401).send(new ApiResponse({}, 'No fue posible actualizar el evento'))
         }
-        if (notificar==='true') {
-            evento = await Evento.findOne({_id})
+        if (notificar === 'true') {
+            evento = await Evento.findOne({ _id })
+                .populate('confirmados')
+                .populate('invitados')
+                .populate('noAsisten')
+
+            let invitados = [
+                ...evento.confirmados,
+                ...evento.invitados,
+                ...evento.noAsisten
+            ]
+
             for (let invitado of invitados) {
                 tituloNot = `Modificación de evento: ${evento.nombre}`,
                     bodyNot = `Hola ${invitado.nombre}! Un evento al que fuiste invitado ha sido modificado, consultá los detalles y confirmá asistencia. Gracias!`
@@ -229,7 +230,7 @@ api.put('/eventos/:id', async (req, res) => {
         }
 
         res.status(200).send(new ApiResponse(evento))
-      
+
     }
     catch (e) {
         res.status(400).send(new ApiResponse({}, "Ocurrió un error al intentar actualizar"))
@@ -247,7 +248,7 @@ api.delete('/eventos/:id', async (req, res) => {
             res.status(401).send(new ApiResponse({}, 'No fue posible borrar el evento'))
         }
         res.status(200).send(new ApiResponse(evento))
-       
+
     }
     catch (e) {
         res.status(400).send(new ApiResponse({}, "Ocurrió un error al intentar borrar"))
