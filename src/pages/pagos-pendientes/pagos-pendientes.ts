@@ -1,8 +1,8 @@
 import { CategoriaService } from './../../providers/categoria.service';
 import { UsuarioService } from './../../providers/usuario.service';
 import { CuentaService } from './../../providers/cuenta.service';
-import { Cuenta } from './../../models/cuenta.models';
-import { Movimiento, Categoria } from './../../models/categoria.models';
+import { Cuenta, Movimiento } from './../../models/cuenta.models';
+import { Categoria } from './../../models/categoria.models';
 import { Component } from '@angular/core';
 import { NavController, NavParams, LoadingController } from 'ionic-angular';
 import { UtilsServiceProvider } from '../../providers/utils.service';
@@ -48,6 +48,8 @@ export class PagosPendientesPage {
     this.cuentaServ.obtenerMovimientosPendientes(this.cuenta._id)
     .subscribe((resp) => {
       this.movimientos = resp.data.movimientos;
+      console.log(this.movimientos);
+      
       if(this.movimientos.length==0){
         this.utilServ.dispararAlert("Estás al día", "Parece que no hay movimientos para aprobar :)")
       }
@@ -58,6 +60,10 @@ export class PagosPendientesPage {
       },()=>{
         loading.dismiss();
       })
+  }
+
+  consultar(mov:Movimiento){
+
   }
 
 }

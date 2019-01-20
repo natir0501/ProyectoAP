@@ -8,8 +8,7 @@ const { ObjectID } = require('mongodb')
 const { ApiResponse } = require('../models/api-response')
 const { autenticacion } = require('../middlewares/autenticacion')
 
-
-api.get('/cuenta/:_id', (req, res) => {
+api.get('/cuenta/:_id', async (req, res) => {
     let id = req.params._id;
 
     Cuenta.findOne({
@@ -33,10 +32,12 @@ api.get('/movimientospendientes/:id', async (req, res) => {
     Cuenta.findOne({
         _id: id
     })
-        .then((cuenta) => {
+        .then(async (cuenta) => {
             if (cuenta) {
                 for(let mov of cuenta.movimientos){
                     if(mov.confirmado==false){
+                        let usuario = await Usuario.findById(mov.usuario)
+                        mov.usuario=usuario
                         movimientos.push(mov);
                         console.log(movimientos);
                     }
@@ -112,8 +113,7 @@ api.patch('/cuenta/movimientos/ingresomovimiento/:id', async (req, res) => {
         let movimiento = req.body.movimiento;
 
         let cuenta = await Cuenta.findById(idCuenta).populate('movimientos').exec();
-        console.log(cuenta);
-        
+
         let nuevoSaldo = cuenta.saldo + movimiento.monto;
 
         let movimientosActualizados = cuenta.movimientos;

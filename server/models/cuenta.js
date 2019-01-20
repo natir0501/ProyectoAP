@@ -36,7 +36,7 @@ var CuentaSchema = mongoose.Schema({
             default: null
         },
         usuario:{
-            type: mongoose.Schema.Types.ObjectId,
+            type: mongoose.Schema.Types.ObjectId, ref: 'Usuario',
             require: true
         },
         estado: {
