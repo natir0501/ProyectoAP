@@ -23,6 +23,7 @@ import { AltaDeUsuarioPage } from '../pages/Backoffice/alta-usuario/alta-de-usua
 import { SaldoMovimientosCategoriaPage } from '../pages/Contabilidad/saldo-movimientos-categoria/saldo-movimientos-categoria';
 import { RegistroPagoCuotaPage } from '../pages/registro-pago-cuota/registro-pago-cuota';
 import { DatosDeportivosListaPage } from '../pages/datos-deportivos-lista/datos-deportivos-lista';
+import { PagosPendientesPage } from '../pages/pagos-pendientes/pagos-pendientes';
 
 @Injectable()
 export class MenuService {
@@ -61,7 +62,7 @@ export class MenuService {
         this.map.set('SaldoMovimientosCategoriaPage',SaldoMovimientosCategoriaPage) 
         this.map.set('RegistroPagoCuotaPage',RegistroPagoCuotaPage)  
         this.map.set('DatosDeportivosListaPage',DatosDeportivosListaPage)
-
+        this.map.set('PagosPendientesPage',PagosPendientesPage)
 
     }
 

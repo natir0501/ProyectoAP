@@ -51,6 +51,7 @@ import { DetallesEventoPage } from '../pages/detalles-evento/detalles-evento';
 import { DetalleFechaPage } from '../pages/detalle-fecha/detalle-fecha';
 import { DetalleMovimientoPage } from '../pages/detalle-movimiento/detalle-movimiento';
 import { DatosDeportivosListaPage } from '../pages/datos-deportivos-lista/datos-deportivos-lista';
+import { PagosPendientesPage } from '../pages/pagos-pendientes/pagos-pendientes';
 
 
 
@@ -90,7 +91,8 @@ import { DatosDeportivosListaPage } from '../pages/datos-deportivos-lista/datos-
     ListaRegistroEventoPage,
     ModificarComentarioPage,
     DatosDeportivosListaPage,
-    DetalleComentarioPage
+    DetalleComentarioPage,
+    PagosPendientesPage
     
 
   ],
@@ -138,7 +140,8 @@ import { DatosDeportivosListaPage } from '../pages/datos-deportivos-lista/datos-
     ListaRegistroEventoPage,
     ModificarComentarioPage,
     DatosDeportivosListaPage,
-    DetalleComentarioPage
+    DetalleComentarioPage,
+    PagosPendientesPage
     
     
   ],

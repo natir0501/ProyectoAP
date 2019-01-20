@@ -26,6 +26,31 @@ api.get('/cuenta/:_id', (req, res) => {
         })
 })
 
+api.get('/movimientospendientes/:id', async (req, res) => {
+    let id = req.params.id;
+    movimientos = []
+
+    Cuenta.findOne({
+        _id: id
+    })
+        .then((cuenta) => {
+            if (cuenta) {
+                for(let mov of cuenta.movimientos){
+                    if(mov.confirmado==false){
+                        movimientos.push(mov);
+                        console.log(movimientos);
+                    }
+                }
+                res.status(200).send(new ApiResponse({ movimientos }))
+            } else {
+                res.status(404).send(new ApiResponse({}, "No hay datos para mostrar"));
+            }
+        }).catch((e) => {
+            res.status(400).send(new ApiResponse({}, `Mensaje: ${e}`))
+        })
+
+})
+
 api.get('/movimientos/:id', autenticacion, async (req, res) => {
 
     try {

@@ -8,6 +8,12 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class CuentaService {
 
+    obtenerMovimientosPendientes(_id: string): Observable<any> {
+        let headers: HttpHeaders = new HttpHeaders().set("Content-Type", "application/json")
+        headers = headers.set('x-auth', this.usuarioServ.token)
+        return this.http.get(`${this.apiUrl}api/movimientospendientes/${_id}`, { headers })
+    }
+
     apiUrl: string = ''
 
     constructor(public http: HttpClient, private utils: UtilsServiceProvider,
@@ -28,7 +34,7 @@ export class CuentaService {
 
     registrarPagoCuota(movimiento: Movimiento): Observable<any> {
         let pago = {
-            jugadorid:movimiento.jugador._id ,
+            jugadorid: movimiento.jugador._id,
             usuarioid: movimiento.usuario._id,
             concepto: movimiento.concepto._id,
             monto: movimiento.monto,
@@ -36,7 +42,7 @@ export class CuentaService {
         }
         let headers: HttpHeaders = new HttpHeaders().set("Content-Type", "application/json")
         headers = headers.set('x-auth', this.usuarioServ.token)
-        return this.http.post(`${this.apiUrl}api/pagos`,pago,{headers})
+        return this.http.post(`${this.apiUrl}api/pagos`, pago, { headers })
     }
 }
 
