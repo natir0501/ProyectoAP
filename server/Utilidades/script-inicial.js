@@ -79,16 +79,18 @@ const cargaPantallas = async () => {
 
         await new Pantalla({ 'nombre': 'Registro de datos', 'menu': 'Dirección Técnica', 'opcionMenu': 'Registro de datos', 'componente': 'ListaEventosPage', 'roles': [delegadoInst._id, dt._id,] }).save()
         await new Pantalla({ 'nombre': 'Datos de usuario', 'menu': 'Dirección Técnica', 'opcionMenu': 'Datos de usuario', 'componente': 'ModificacionDatos', 'roles': [delegadoInst._id, dt._id] }).save()
-        await new Pantalla({ 'nombre': 'Cambiar Password', 'menu': 'Dirección Técnica', 'opcionMenu': 'Cambiar Passowrd', 'componente': 'ModificarPasswordPage', 'roles': [dt._id,] }).save()
+        await new Pantalla({ 'nombre': 'Cambiar Password', 'menu': 'Dirección Técnica', 'opcionMenu': 'Cambiar Passowrd', 'componente': 'ModificarPasswordPage', 'roles': [dt._id] }).save()
+        await new Pantalla({ 'nombre': 'Plantel', 'menu': 'Dirección Técnica', 'opcionMenu': 'Plantel', 'componente': 'PlantelPage', 'roles': [delegadoInst._id,dt._id] }).save()
 
 
 
-        await new Pantalla({ 'nombre': 'Categorías', 'menu': 'Back Office', 'opcionMenu': 'Categorías', 'componente': 'ListaCategoriasPage', 'roles': [delegadoInst._id,] }).save()
-        await new Pantalla({ 'nombre': 'Creación de Usuario', 'menu': 'Back Office', 'opcionMenu': 'Creación de Usuario', 'componente': 'AltaDeUsuarioPage', 'roles': [delegadoInst._id, delegado._id,] }).save()
-        await new Pantalla({ 'nombre': 'Datos Usuarios', 'menu': 'Back Office', 'opcionMenu': 'Datos Usuarios', 'componente': 'ConsultaModificacionDatosPage', 'roles': [delegadoInst._id, delegado._id,] }).save()
-        await new Pantalla({ 'nombre': 'Mod perfiles y password', 'menu': 'Back Office', 'opcionMenu': 'Mod perfiles y password', 'componente': 'UsuariosEnCategoríaPage', 'roles': [delegadoInst._id, delegado._id,] }).save()
-        await new Pantalla({ 'nombre': 'Campeonatos', 'menu': 'Back Office', 'opcionMenu': 'Campeonatos', 'componente': 'ListaCampeonatosPage', 'roles': [delegadoInst._id, delegado._id,] }).save()
-        await new Pantalla({ 'nombre': 'Tipo de Eventos', 'menu': 'Back Office', 'opcionMenu': 'Tipo de Eventos', 'componente': 'TipoEventosPage', 'roles': [delegadoInst._id, delegado._id,] }).save()
+        await new Pantalla({ 'nombre': 'Categorías', 'menu': 'Delegado', 'opcionMenu': 'Categorías', 'componente': 'ListaCategoriasPage', 'roles': [delegadoInst._id,] }).save()
+        await new Pantalla({ 'nombre': 'Plantel', 'menu': 'Delegado', 'opcionMenu': 'Plantel', 'componente': 'PlantelPage', 'roles': [delegadoInst._id, delegado._id,] }).save()
+        await new Pantalla({ 'nombre': 'Creación de Usuario', 'menu': 'Delegado', 'opcionMenu': 'Creación de Usuario', 'componente': 'AltaDeUsuarioPage', 'roles': [delegadoInst._id, delegado._id,] }).save()
+        await new Pantalla({ 'nombre': 'Datos Usuarios', 'menu': 'Delegado', 'opcionMenu': 'Datos Usuarios', 'componente': 'ConsultaModificacionDatosPage', 'roles': [delegadoInst._id, delegado._id,] }).save()
+        await new Pantalla({ 'nombre': 'Mod perfiles y password', 'menu': 'Delegado', 'opcionMenu': 'Mod perfiles y password', 'componente': 'UsuariosEnCategoríaPage', 'roles': [delegadoInst._id, delegado._id,] }).save()
+        await new Pantalla({ 'nombre': 'Campeonatos', 'menu': 'Delegado', 'opcionMenu': 'Campeonatos', 'componente': 'ListaCampeonatosPage', 'roles': [delegadoInst._id, delegado._id,] }).save()
+        await new Pantalla({ 'nombre': 'Tipo de Eventos', 'menu': 'Delegado', 'opcionMenu': 'Tipo de Eventos', 'componente': 'TipoEventosPage', 'roles': [delegadoInst._id, delegado._id,] }).save()
 
 
 

@@ -74,6 +74,10 @@
             <ion-input text-right type="text" placeholder="Ej: 10000" name="saldoInicial" pattern="^[0-9]{1,9}$"
               [(ngModel)]="categoria.saldoInicial" #saldoInicial="ngModel" required></ion-input>
           </ion-item>
+          <ion-item>
+            <ion-label>Requiere escolaridad:</ion-label>
+            <ion-checkbox item-end name="requiereEscolaridad" requiereEscolaridad [(ngModel)]="categoria.requiereEscolaridad"></ion-checkbox>
+          </ion-item>
           <div class="spacer" style="width:300px;height:15px;" id="registro-spacer8"></div>
 
           <ng-container *ngIf="categoria._id!==undefined">
@@ -98,7 +102,7 @@
             </ng-container>
             <ion-item-divider color="light">
               Dts
-              <button ion-button item-end type="button"  class="btn-mostrar" (click)="mostrar('dts',!verDts)">{{btnDts}}</button>
+              <button ion-button item-end type="button" class="btn-mostrar" (click)="mostrar('dts',!verDts)">{{btnDts}}</button>
             </ion-item-divider>
             <ng-container *ngIf="verDts">
               <ion-item *ngFor="let usu of categoria.dts" fixed>

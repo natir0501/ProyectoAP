@@ -46,6 +46,16 @@ var UsuarioSchema = mongoose.Schema({
     fechaVtoCarneSalud: {
         type: Number
     },
+    fechaUltimoExamen:{
+        type: Number,
+        default: Date.now(),
+        required: true
+    },
+    requiereExamen:{
+        type: Boolean,
+        default: true,
+        required: true
+    },
     email: {
         type: String,
         required: true,
@@ -189,9 +199,9 @@ UsuarioSchema.pre('findOneAndUpdate', function (next) {
         })
     } else {
         Usuario.findOne({_id: usuario._id}).then((usu)=>{
-            console.log(usuario.password)
+           
             usuario.password = usu.password
-            console.log(usuario.password)
+           
             next()
         })
         
