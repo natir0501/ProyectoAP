@@ -188,8 +188,13 @@ UsuarioSchema.pre('findOneAndUpdate', function (next) {
             })
         })
     } else {
+        Usuario.findOne({_id: usuario._id}).then((usu)=>{
+            console.log(usuario.password)
+            usuario.password = usu.password
+            console.log(usuario.password)
+            next()
+        })
         
-        next()
 
     }
 
