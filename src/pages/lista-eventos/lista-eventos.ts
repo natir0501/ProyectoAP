@@ -1,3 +1,4 @@
+import { UtilsServiceProvider } from './../../providers/utils.service';
 import { ListaRegistroEventoPage } from './../lista-registro-evento/lista-registro-evento';
 import { CategoriaService } from './../../providers/categoria.service';
 import { Usuario } from './../../models/usuario.model';
@@ -32,17 +33,28 @@ export class ListaEventosPage {
   roles  = []
   
   constructor(public navCtrl: NavController, public navParams: NavParams, private eventoServ: EventoService
-    , private usuServ: UsuarioService, private categoriaServ : CategoriaService) {
+    , private usuServ: UsuarioService, private categoriaServ : CategoriaService, private utilServ : UtilsServiceProvider) {
     this.categoria._id = this.usuServ.usuario.perfiles[0].categoria
+    
     
   }
 
   async ionViewDidLoad() {
-    await this.cargarEventos(new Date().getFullYear(), new Date().getMonth())
-    let resp2 = await this.categoriaServ.obtenerRoles().toPromise()
- 
-    this.roles = resp2.data.roles
-    this.eventosDelDia = this.eventos.filter((evt) => new Date(evt.fecha).getDate() === new Date().getDate())
+    try{
+      await this.cargarEventos(new Date().getFullYear(), new Date().getMonth())
+      let resp2 = await this.categoriaServ.obtenerRoles().toPromise()
+      let dataUsuarios: any = await this.categoriaServ.obtenerCategoria(this.categoria._id).toPromise()
+      if (dataUsuarios) {
+        this.categoria = dataUsuarios.data.categoria
+      }
+      
+      this.roles = resp2.data.roles
+      this.eventosDelDia = this.eventos.filter((evt) => new Date(evt.fecha).getDate() === new Date().getDate())
+    }catch(e){
+      console.log(e)
+      this.utilServ.dispararAlert('Error', 'Error al consultar eventos')
+    }
+    
   }
 
   altaEvento() {

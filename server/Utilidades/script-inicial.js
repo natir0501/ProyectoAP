@@ -5,6 +5,7 @@ const { Categoria } = require('../models/categoria')
 const { ConceptosCaja } = require('../models/conceptosCaja')
 const { Cuenta } = require('../models/cuenta')
 const { Movimiento } = require('../models/movimiento')
+const {TipoEvento}=require('../models/tipoEvento')
 var cron = require('node-cron');
 
 const scriptInicial = async () => {
@@ -13,6 +14,7 @@ const scriptInicial = async () => {
     await cargaDelegadosI()
     await cargaConcepto()
     await batch()
+    await cargaTipoEvento()
 }
 
 const cargaRoles = async () => {
@@ -27,6 +29,13 @@ const cargaRoles = async () => {
 
 
 
+}
+
+const cargaTipoEvento = async () =>{
+    const tiposEvento = await TipoEvento.find()
+    if(tiposEvento.length===0){
+        await new TipoEvento({nombre: 'Partido Oficial', datosDeportivos: true}).save()
+    }
 }
 
 const cargaConcepto = async () => {

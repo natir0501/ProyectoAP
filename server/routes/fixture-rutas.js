@@ -1,11 +1,15 @@
 var express = require('express');
 var api = express.Router();
 const { Campeonato } = require('../models/campeonato')
+const { Evento } = require('../models/evento')
 const { Categoria } = require('../models/categoria')
+const { Usuario } = require('../models/usuario')
+const {TipoEvento}=require('../models/tipoEvento')
 const { Fecha } = require('../models/fecha')
 const _ = require('lodash')
 const { ApiResponse } = require('../models/api-response')
 const { ObjectID } = require('mongodb')
+var { enviarNotificacion } = require('../Utilidades/utilidades')
 
 api.get('/campeonatos', (req, res) => {
     Campeonato.find()
@@ -16,6 +20,60 @@ api.get('/campeonatos', (req, res) => {
         }), (e) => {
             res.status(400).send(new ApiResponse({}, `Mensaje: ${e}`))
         }
+})
+
+api.post('/campeonato/evento', async (req, res) => {
+    try {
+      
+        let fecha = req.body.fecha
+        let categoriaId = req.body.categoriaId
+        let evento = new Evento()
+        if (fecha.partido.local === true) {
+            evento.nombre = `Fecha ${fecha.numeroFecha} CEI vs ${fecha.partido.rival}`
+        } else {
+            evento.nombre = `Fecha ${fecha.numeroFecha} ${fecha.partido.rival} vs CEI`
+        }
+
+        evento.fecha = fecha.fechaEncuentro
+        evento.rival = fecha.partido.rival
+        evento.lugar = fecha.partido.lugar
+
+        let tipoEvento = await TipoEvento.findOne({ nombre: "Partido Oficial" })
+        evento.tipoEvento = tipoEvento
+        let categoria = await Categoria.findOne({ _id: categoriaId })
+        evento.categoria = categoria._id
+
+        let invitados = [
+            ...categoria.delegados,
+            ...categoria.jugadores,
+            ...categoria.tesoreros,
+            ...categoria.dts
+        ]
+        invitados = _.uniqBy(invitados, '_id')
+        
+        evento.invitados = [...invitados]
+       
+        evento = await evento.save()
+  
+        if (evento) {
+            
+            for (let invitado of evento.invitados) {
+                let user = await Usuario.findOne({ _id: invitado })
+                tituloNot = `Nuevo evento: ${evento.nombre}`,
+                bodyNot = `Hola ${user.nombre}! Has sido invitado a un nuevo evento. Por favor, consultá los detalles y confirmá asistencia. Gracias!`
+                enviarNotificacion(user, tituloNot, bodyNot)
+            }
+            res.send(new ApiResponse({}, ''))
+        }else{
+            res.status(400).send(new ApiResponse({}, 'Error al crear el evento'))
+        }
+
+
+        
+    }catch(e){
+        console.log(e)
+        res.status(400).send(new ApiResponse({}, 'Error al crear el evento'))
+    }
 })
 
 api.post('/campeonato/:id/agregarfecha', async (req, res) => {
