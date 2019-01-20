@@ -247,7 +247,7 @@ api.delete('/eventos/:id', async (req, res) => {
             res.status(401).send(new ApiResponse({}, 'No fue posible borrar el evento'))
         }
         res.status(200).send(new ApiResponse(evento))
-        console.log("Borrado ok");
+       
     }
     catch (e) {
         res.status(400).send(new ApiResponse({}, "Ocurrió un error al intentar borrar"))

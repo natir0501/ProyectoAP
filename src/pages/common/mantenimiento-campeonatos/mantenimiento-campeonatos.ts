@@ -100,9 +100,7 @@ export class MantenimientoCampeonatosPage {
   consultarFecha(fech: Fecha) {
     let fecha=fech
     this.navCtrl.push((DetalleFechaPage), {fecha})
-    console.log("Mi fecha", fecha);
-    
-    console.log("Consultar fecha");
+  
 
   }
 
