@@ -6,6 +6,7 @@ import { Categoria } from './../../models/categoria.models';
 import { Component } from '@angular/core';
 import { NavController, NavParams, LoadingController } from 'ionic-angular';
 import { UtilsServiceProvider } from '../../providers/utils.service';
+import { DetallePagoPage } from '../detalle-pago/detalle-pago';
 
 /**
  * Generated class for the PagosPendientesPage page.
@@ -63,7 +64,8 @@ export class PagosPendientesPage {
   }
 
   consultar(mov:Movimiento){
-
+    console.log("Movimiento", mov);
+    this.navCtrl.push((DetallePagoPage), {mov})
   }
 
 }

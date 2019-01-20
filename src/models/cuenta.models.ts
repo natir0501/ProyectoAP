@@ -13,12 +13,12 @@ export class Movimiento{
         fecha?: number
         monto?: number
         tipo?: string 
-        concepto?: ConceptoCaja
+        concepto?: ConceptoCaja=new ConceptoCaja()
         comentario?:string
         confirmado?: boolean
         referencia?: string
-        usuario?:Usuario
-        jugador?:Usuario
+        usuario?:Usuario=new Usuario()
+        jugador?:Usuario= new Usuario()
         estado?:string
 }
 

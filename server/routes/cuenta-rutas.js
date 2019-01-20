@@ -39,7 +39,7 @@ api.get('/movimientospendientes/:id', async (req, res) => {
                         let usuario = await Usuario.findById(mov.usuario)
                         mov.usuario=usuario
                         movimientos.push(mov);
-                        console.log(movimientos);
+                        console.log(movimientos)
                     }
                 }
                 res.status(200).send(new ApiResponse({ movimientos }))

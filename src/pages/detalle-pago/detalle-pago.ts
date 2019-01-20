@@ -1,5 +1,7 @@
+import { UtilsServiceProvider } from './../../providers/utils.service';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
+import { Movimiento } from '../../models/cuenta.models';
 
 /**
  * Generated class for the DetallePagoPage page.
@@ -8,18 +10,29 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
  * Ionic pages and navigation.
  */
 
-@IonicPage()
 @Component({
   selector: 'page-detalle-pago',
   templateUrl: 'detalle-pago.html',
 })
 export class DetallePagoPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  movimiento : Movimiento=new Movimiento()
+
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+    public utilServ: UtilsServiceProvider) {
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad DetallePagoPage');
+  ionViewDidLoad(){
+  
+    let mov: Movimiento = this.navParams.get('mov')
+    if(mov){
+      this.movimiento=mov
+      console.log(this.movimiento.usuario.nombre);
+      console.log(this.movimiento.usuario.apellido);
+      
+    }else{
+      this.utilServ.dispararAlert("Upss!", "Ocurrió un error al cargar el movimiento")
+    }
   }
 
 }

@@ -62,8 +62,6 @@ export class SaldoMovimientosCategoriaPage {
   }
 
   verDetalle(mov) {
-    console.log("Movimiento", mov);
-    
     this.navCtrl.push((DetalleMovimientoPage), {mov})
   }
 
