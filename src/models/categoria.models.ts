@@ -10,6 +10,7 @@ export class Categoria{
     cantidadCuotasAnuales?: number
     saldoInicial: number
     cuenta?: Cuenta
+    requiereEscolaridad?: boolean = false
     dts?: Usuario[] = []
     delegados?: Usuario[] = []
     tesoreros?: Usuario[] = []

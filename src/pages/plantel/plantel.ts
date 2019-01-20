@@ -1,16 +1,14 @@
-import { ModificacionDatosPage } from './../modificacion-datos/modificacion-datos';
 import { Component } from '@angular/core';
-import {  NavController, NavParams, LoadingController } from 'ionic-angular';
+import {  LoadingController, NavController, NavParams } from 'ionic-angular';
 import { Categoria } from '../../models/categoria.models';
-import { Usuario } from '../../models/usuario.model';
 import { CategoriaService } from '../../providers/categoria.service';
-import { MenuService } from '../../providers/menu.service';
 import { UtilsServiceProvider } from '../../providers/utils.service';
 import { UsuarioService } from '../../providers/usuario.service';
-import * as _ from 'lodash';
+import { Usuario } from '../../models/usuario.model';
+
 
 /**
- * Generated class for the ConsultaModificacionDatosPage page.
+ * Generated class for the PlantelPage page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
@@ -18,10 +16,10 @@ import * as _ from 'lodash';
 
 
 @Component({
-  selector: 'page-consulta-modificacion-datos',
-  templateUrl: 'consulta-modificacion-datos.html',
+  selector: 'page-plantel',
+  templateUrl: 'plantel.html',
 })
-export class ConsultaModificacionDatosPage {
+export class PlantelPage {
 
   categoria: Categoria =  new Categoria();
   usuarios: Usuario[] = []
@@ -43,12 +41,7 @@ export class ConsultaModificacionDatosPage {
     this.catService.obtenerCategoria(this.categoria._id)
       .subscribe((resp) => {
 
-        this.usuarios = _.uniqBy( [...resp.data.categoria.delegados,
-          ...resp.data.categoria.tesoreros,
-          ...resp.data.categoria.dts,
-          ...resp.data.categoria.jugadores,
-        ], '_id')
-        this.usuarios = this.usuarios.filter((u)=> u._id !== this.usuServ.usuario._id)
+        this.usuarios = resp.data.categoria.jugadores
         this.categoria = resp.data.categoria
 
 
@@ -65,19 +58,38 @@ export class ConsultaModificacionDatosPage {
 
 
 
-  modificar(usuario: Usuario) {
-    
-    this.navCtrl.push(ModificacionDatosPage, { usuario, delegado: true })
-  }
-
-  
 
   mostrarUsuario(usuario: Usuario){
     let etiqueta: String = ''
     etiqueta = usuario.nombre ? etiqueta +' ' + usuario.nombre : etiqueta
     etiqueta = usuario.apellido ? etiqueta + ' ' +usuario.apellido : etiqueta 
     etiqueta = etiqueta ==='' ? ` (${usuario.email})` : etiqueta
+    
     return etiqueta
+  }
+  habilitado(usuario: Usuario){
+    return ! (this.debeEscolaridad(usuario) || this.debeFmedica(usuario) )
+  }
+  debeEscolaridad(usuario: Usuario){
+    if(!this.categoria.requiereEscolaridad){
+      return false;
+    }
+    if(!usuario.requiereExamen){
+      return false
+    }
+    let anioUltExamen = usuario.fechaUltimoExamen? new Date(usuario.fechaUltimoExamen).getFullYear() : 0
+    
+    if(anioUltExamen + 1 >= new Date().getFullYear()){
+      return false
+    }
+    return true
+  }
+  debeFmedica(usuario: Usuario){
+   
+    if(usuario.fechaVtoCarneSalud  >= Date.now() + (86400000 * 7)){
+      return false
+    }
+    return true
   }
 
 

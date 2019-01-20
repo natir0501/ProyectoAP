@@ -21,6 +21,7 @@ import { TipoEventosPage } from '../pages/Backoffice/tipo-eventos/tipo-eventos';
 import { Observable } from 'rxjs/Observable';
 import { Usuario, Perfil } from '../models/usuario.model';
 import { DatosDeportivosListaPage } from '../pages/datos-deportivos-lista/datos-deportivos-lista';
+import { PlantelPage } from '../pages/plantel/plantel';
 
 @Injectable()
 export class MenuService {
@@ -35,7 +36,7 @@ export class MenuService {
         new Menu('Agenda', 'calendar', 'add'),
         new Menu('Tesorería', 'cash', 'add'),
         new Menu('Dirección Técnica', 'person', 'add'),
-        new Menu('Back Office', 'build', 'add')
+        new Menu('Delegado', 'clipboard', 'add')
     ]
 
 
@@ -56,7 +57,7 @@ export class MenuService {
         this.map.set('ConsultaModificacionDatosPage',ConsultaModificacionDatosPage)
         this.map.set('ModificacionDatos',ModificacionDatosPage)
         this.map.set('DatosDeportivosListaPage',DatosDeportivosListaPage)
-
+        this.map.set('PlantelPage',PlantelPage)
 
     }
 
@@ -85,7 +86,7 @@ export class MenuService {
                     this.menus[3].sub.push(new MenuItem(pantallas[i].nombre, this.getPantalla(pantallas[i].componente)))
                     break;
                 }
-                case 'Back Office': {
+                case 'Delegado': {
                     this.menus[4].sub.push(new MenuItem(pantallas[i].nombre, this.getPantalla(pantallas[i].componente)))
                     break;
                 }
@@ -103,7 +104,7 @@ export class MenuService {
     }
 
     async menuDelegadoInstitucional(usuario: Usuario){
-        let bo = new Menu('Back Office','build', 'add')
+        let bo = new Menu('Delegado','clipboard', 'add')
         bo.sub.push(new MenuItem('Categorías', ListaCategoriasPage))
         return [bo]
        

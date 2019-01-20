@@ -101,16 +101,17 @@ export class RegistroPage implements OnInit {
   validoUsuario(): boolean {
 
 
-    this.usuario.fechaNacimiento = Date.parse(this.fechaNacTxt)
+    this.usuario.fechaNacimiento = Date.parse(this.fechaNacTxt) + 86400000
     if (this.usuario.fechaNacimiento >= Date.now()) {
       this.util.dispararAlert('Fecha de Nacimiento', "Fecha de nacimiento inválida")
       return false
     }
+    
     if (this.fmedicaVigente && Date.parse(this.fechaVtoTxt) <= Date.now()) {
       this.util.dispararAlert('F/Médica - C/ Salud', "Fecha de vencimiento inválida")
       return false
     }
-    this.usuario.fechaVtoCarneSalud = Date.parse(this.fechaVtoTxt)
+    this.usuario.fechaVtoCarneSalud = Date.parse(this.fechaVtoTxt) + 86400000
     return true
   }
 

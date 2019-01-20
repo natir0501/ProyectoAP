@@ -25,6 +25,10 @@ var CategoriaSchema = mongoose.Schema({
         required: true,
         trim: true
     },
+    requiereEscolaridad:{
+        type: Boolean,
+        default: false
+    },
     cantidadCuotasAnuales: {
         type: Number,
         required: true,
