@@ -10,6 +10,7 @@ import { UtilsServiceProvider } from '../../providers/utils.service';
 import { CategoriaService } from '../../providers/categoria.service';
 import { Categoria } from '../../models/categoria.models';
 import { HomePage } from '../home/home';
+import { empty } from 'rxjs/Observer';
 
 
 @Component({
@@ -40,6 +41,7 @@ export class RegistroPagoCuotaPage {
     });
     loading.present()
 
+    this.usuario=this.usuServ.usuario
     this.categoria._id = this.usuServ.usuario.perfiles[0].categoria
     let dataUsuarios: any = await this.catService.obtenerCategoria(this.categoria._id).toPromise()
     if (dataUsuarios) {
@@ -69,14 +71,31 @@ export class RegistroPagoCuotaPage {
   onSubmit(){
     this.movimiento.usuario=this.usuServ.usuario
     this.movimiento.concepto=this.concepto
+    this.movimiento.jugador= !this.registraPagosDeTerceros()?this.usuario:this.movimiento.jugador
     this.cuentaServ.registrarPagoCuota(this.movimiento)
     .subscribe((resp) =>{
-      console.log(resp);
+      this.utilServ.dispararAlert("Listo!", "Pago registrado correctamente.")
+      this.movimiento.comentario=""
+      this.movimiento.monto=0
+      this.movimiento.jugador=null
+
       
     },(err)=>{
       console.log(err);
       
     })
+  }
+
+  registraPagosDeTerceros(){
+    let usuario : Usuario = this.usuServ.usuario
+    if(usuario){
+      if(usuario.delegadoInstitucional) return true
+      for (let usu of this.categoria.tesoreros){
+        if(usu._id === usuario._id){
+          return true
+        }
+      }
+    }
   }
   
 

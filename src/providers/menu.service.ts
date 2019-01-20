@@ -59,7 +59,7 @@ export class MenuService {
         this.map.set('ModificacionDatos',ModificacionDatosPage)
         this.map.set('RegistroMovCajaPage',RegistroMovCajaPage)
         this.map.set('SaldoMovimientosCategoriaPage',SaldoMovimientosCategoriaPage) 
-        this.map.set('RegistroPagoCuotaPage',RegistroPagoCuotaPage) 
+        this.map.set('RegistroPagoCuotaPage',RegistroPagoCuotaPage)  
         this.map.set('DatosDeportivosListaPage',DatosDeportivosListaPage)
 
 

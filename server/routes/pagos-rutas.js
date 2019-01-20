@@ -41,12 +41,12 @@ api.post('/pagos', autenticacion, async (req, res) => {
         asumo que el registro de pago lo hace el tesorero, entonces confirmado=true y cambio saldo 
         de la categoría
          */
-        let cuentacategoria= await Cuenta.findById(categoria.cuenta._id).populate('movimientos')
-        if (jugador._id.toString()!==req.usuario._id.toString()) {
+        let cuentacategoria = await Cuenta.findById(categoria.cuenta._id).populate('movimientos')
+        if (jugador._id.toString() !== req.usuario._id.toString()) {
             mov.confirmado = true;
-            conf=true
+            conf = true
             cuentacategoria.saldo = parseInt(cuentacategoria.saldo) + parseInt(mov.monto)
-            mov.estado="Confirmado"
+            mov.estado = "Confirmado"
         }
 
         let cuentajugador = await Cuenta.findById(jugador.cuenta._id).populate('movimientos')
@@ -57,21 +57,21 @@ api.post('/pagos', autenticacion, async (req, res) => {
         que voy a guardar en la categoría.  
         */
         if (conf === false) {
-            
-            mov.referencia = cuentajugador.movimientos[cuentajugador.movimientos.length-1]._id;
+
+            mov.referencia = cuentajugador.movimientos[cuentajugador.movimientos.length - 1]._id;
             for (let t of categoria.tesoreros) {
                 tituloNot = `Aviso de Pago`,
-                bodyNot = `Hola ${t.nombre}! ${jugador.nombre} ${jugador.apellido} ha realizado una solicitud de pago. Ingresá a la App para confirmarlo`
-                enviarNotificacion(t,tituloNot,bodyNot )
+                    bodyNot = `Hola ${t.nombre}! ${jugador.nombre} ${jugador.apellido} ha realizado una solicitud de pago. Ingresá a la App para confirmarlo`
+                enviarNotificacion(t, tituloNot, bodyNot)
             }
-        }else{
-            cuentajugador.saldo=parseInt(cuentajugador.saldo) + parseInt(mov.monto)
+        } else {
+            cuentajugador.saldo = parseInt(cuentajugador.saldo) + parseInt(mov.monto)
             await cuentajugador.save()
         }
 
         cuentacategoria.movimientos.push(mov);
         console.log(mov);
-        
+
         await cuentacategoria.save()
 
         res.status(200).send(new ApiResponse({ mov }))
@@ -115,11 +115,11 @@ api.patch('/pagos/confirmacion/:id', autenticacion, async (req, res) => {
                     if (movim.monto === req.body.monto) {
                         movim.confirmado = true;
                         movim.referencia = null;
-                        movim.comentario = movim.comentario + " " 
-                        + "Comentario al confirmar" 
-                        + "Pago Confirmado"
-                        movim.estado="Confirmado"
-                    }else{
+                        movim.comentario = movim.comentario + " "
+                            + "Comentario al confirmar"
+                            + "Pago Confirmado"
+                        movim.estado = "Confirmado"
+                    } else {
                         res.status(404).send(new ApiResponse({},
                             "El monto del movimiento a confirmar en la cuenta de la categoria no coincide con el monto del movimiento pendiente."))
                     }
@@ -130,15 +130,15 @@ api.patch('/pagos/confirmacion/:id', autenticacion, async (req, res) => {
         let movsActualizadosJug = jugador.cuenta.movimientos
         for (mov of movsActualizadosJug) {
             if (mov._id.toString() === req.body.referencia) {
-                if(mov.monto === req.body.monto){
+                if (mov.monto === req.body.monto) {
                     mov.confirmado = true
-                    mov.comentario = mov.comentario + " " 
-                    + "Comentario al confirmar" 
-                    + "Pago Confirmado"
-                    mov.estado="Confirmado"
-                }else{
+                    mov.comentario = mov.comentario + " "
+                        + "Comentario al confirmar"
+                        + "Pago Confirmado"
+                    mov.estado = "Confirmado"
+                } else {
                     res.status(404).send(new ApiResponse({},
-                    "El monto del movimiento a confirmar en la cuenta del jugador no coincide con el monto del movimiento pendiente."))
+                        "El monto del movimiento a confirmar en la cuenta del jugador no coincide con el monto del movimiento pendiente."))
                 }
 
             }
@@ -169,11 +169,12 @@ api.patch('/pagos/rechazo/:id', autenticacion, async (req, res) => {
 
     /*
     En la URL viene el id de la cuenta de la categoria.
-    En el Body: viene pago{
+    En el Body viene:
+     pago{
         jugadorid:id del jugador 
-        id:idmovimientoCat
         monto:monto
         referencia: idmovimientoCtaJugador
+        comentario: idmovimientoCtaJugador
     }
     */
 
@@ -182,72 +183,50 @@ api.patch('/pagos/rechazo/:id', autenticacion, async (req, res) => {
         let jugador = await Usuario.findById(req.body.jugadorid)
             .populate('cuenta')
             .exec();
-            console.log("++++++++++++++++++Jugador++++++++++++++++++++++++++++");
-            
-            console.log(jugador);
-            
 
-        let cuentaCat= await Cuenta.findById(req.params.id).populate('movimientos').exec();
-        console.log("++++++++++++++++++Cuenta CAT++++++++++++++++++++++++++++");
-        console.log(cuentaCat); 
-        res.status(200).send(new ApiResponse({}, 'Ok'))
-        
-    }catch (e){
-        console.log(e);
-        
-    }
+        let cuentaJugador = await Cuenta.findById(jugador.cuenta._id)
+            .populate('movimientos')
+            .exec()
 
-    
-    
+        let cuentaCat = await Cuenta.findById(req.params.id)
+            .populate('movimientos')
+            .exec()
 
-/*
-        for (movim of movsActualizadosCat) {
-            if (movim.referencia !== null) {
-                if (movim.referencia.toString() === req.body.referencia) {
-                    if (movim.monto === req.body.monto) {
-                        movim.confirmado = true;
-                        movim.referencia = null;
-                        movim.comentario = "Pago Confirmado"
-                    }else{
-                        res.status(404).send(new ApiResponse({},
-                            "El monto del movimiento a confirmar en la cuenta de la categoria no coincide con el monto del movimiento pendiente."))
-                    }
+        let movJugadorEncontrado;
+        let movCategoriaEncontrado;
 
-                }
+        //En la cuenta del usuario dejo el mov en estado rechazado (valido por id y por monto)
+        for (let movimiento of cuentaJugador.movimientos) {
+            if (movimiento._id.toString() === req.body.referencia &&
+                movimiento.monto === req.body.monto) {
+                movJugadorEncontrado = true
+                movimiento.estado = "Rechazado"
+                movimiento.comentario = req.body.comentario
+                await cuentaJugador.save()
             }
         }
-        let movsActualizadosJug = jugador.cuenta.movimientos
-        for (mov of movsActualizadosJug) {
-            if (mov._id.toString() === req.body.referencia) {
-                if(mov.monto === req.body.monto){
-                    mov.confirmado = true
-                    mov.comentario = "Pago Confirmado"
-                }else{
-                    res.status(404).send(new ApiResponse({},
-                    "El monto del movimiento a confirmar en la cuenta del jugador no coincide con el monto del movimiento pendiente."))
+        //En la cuenta de la categoría, borro el movimiento
+        for (let i = 0; i < cuentaCat.movimientos.length; i++) {
+            if (cuentaCat.movimientos[i].referencia !== null) {
+                movCategoriaEncontrado = true
+                if (cuentaCat.movimientos[i].referencia.toString() === req.body.referencia
+                    && cuentaCat.movimientos[i].monto === req.body.monto) {
+                    cuentaCat.movimientos.splice(i, 1)
+                    await cuentaCat.save()
                 }
-
             }
+
         }
-        await Cuenta.findOneAndUpdate({
-            _id: categoria.cuenta._id
-        }, {
-                $set: { saldo: nuevoSaldoCat, movimientos: movsActualizadosCat }
-            }, {
-                new: true
-            })
-        await Cuenta.findOneAndUpdate({
-            _id: jugador.cuenta._id
-        }, {
-                $set: { movimientos: movsActualizadosJug }
-            }, {
-                new: true
-            })
-        res.status(200).send(new ApiResponse({}, 'Pago confirmado correctamente.'))
+        if (movJugadorEncontrado && movCategoriaEncontrado) {
+            res.status(200).send(new ApiResponse({}, 'Ok'))
+        } else {
+            res.status(404).send(new ApiResponse({}, 'Ocurrió un error al rechazar el movimiento.'))
+        }
+
 
     } catch (e) {
-        res.status(400).send(new ApiResponse({}, `Mensaje: ${e}`))
-    }*/
+        console.log(e);
+    }
 })
 
 module.exports = api;
