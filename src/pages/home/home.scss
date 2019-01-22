@@ -15,6 +15,9 @@ page-home{
 
     }
     ion-card{
+        button{
+            font-size: 1.2rem !important;
+        }
         ion-item{
             cursor: pointer;
 
@@ -22,17 +25,18 @@ page-home{
         .nombre-evento{
             color: #030303;
           
-            font-size: 21px;
+            font-size: 16px;
             font-weight: 500;
             padding-left: 17px;
         }
         .fecha-evento{
             padding-left: 15px;
             font-weight: 300;
+            font-size: 12px;
         }
         .listas{
             color: #666666;	
-            font-size: 16px;	
+            font-size: 13px;	
           
         }
     }
