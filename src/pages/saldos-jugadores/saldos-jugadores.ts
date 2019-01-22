@@ -15,8 +15,8 @@ import { HomePage } from '../home/home';
 export class SaldosJugadoresPage {
 
   categoria: Categoria = new Categoria()
-  cuentaJugador: Cuenta = new Cuenta()
   jugador : Usuario=new Usuario()
+  cuentaJugador: Cuenta = new Cuenta()
   usuarios: Usuario[] = [];
   movimiento: Movimiento=new Movimiento()
   movimientos: Movimiento[] = [];
