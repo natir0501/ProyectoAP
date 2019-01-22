@@ -46,6 +46,40 @@ api.get('/eventos', async (req, res) => {
     }
 })
 
+api.get('/eventos/home', async (req, res) => {
+    try {
+        let usuarioId = req.query.usuarioId
+        let filtro = {}
+        let fechafin = new Date().setDate(new Date().getDate() + 15)
+        let fecha = { $gt: Date.now(), $lt: fechafin.valueOf() }
+       
+        filtro = { fecha }
+
+
+        let eventos = await Evento.find(filtro).populate('tipoEvento').sort({fecha: 1})
+        eventos = eventos.filter((evt) => {
+            if (evt.invitados.indexOf(usuarioId) >= 0) {
+                return true
+            }
+            if (evt.confirmados.indexOf(usuarioId) >= 0) {
+                return true
+            }
+            if (evt.noAsisten.indexOf(usuarioId) >= 0) {
+                return true
+            }
+            return false
+        })
+
+        res.send(new ApiResponse({ eventos }, ''))
+
+
+
+
+    } catch (e) {
+        console.log(e)
+        res.status(400).send(new ApiResponse({}, ''))
+    }
+})
 api.get('/eventos/:id/registrosDT', async (req, res) => {
     let idJugador = req.query.idUsuario;
 

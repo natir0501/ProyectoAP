@@ -22,7 +22,7 @@ api.get('/usuarios/:token', async (req, res) => {
         
         let token = req.params.token;
 
-        usuario = await Usuario.findByToken(token);
+        usuario = await Usuario.findByToken(token).populate('cuenta');
         if (usuario) {
 
             res.header('x-auth', token).status(200).send(new ApiResponse({ usuario }))
@@ -85,7 +85,7 @@ api.post('/usuarios', async (req, res) => {
 api.post('/usuarios/login', async (req, res) => {
 
     try {
-        let usuario = await Usuario.findByCredentials(req.body.email, req.body.password)
+        let usuario = await Usuario.findByCredentials(req.body.email, req.body.password).populate('cuenta')
 
         if (usuario) {
 
