@@ -4,9 +4,41 @@ import { UtilsServiceProvider } from "./utils.service";
 import { UsuarioService } from "./usuario.service";
 import { Observable } from "rxjs/Observable";
 import { Injectable } from '@angular/core';
+import { Usuario } from '../models/usuario.model';
 
 @Injectable()
 export class CuentaService {
+    
+  rechazarPago(movimiento: Movimiento, _id: string): any {
+
+    let pago = {
+        jugadorid: movimiento.usuario._id,
+        idmov: movimiento._id,
+        monto: movimiento.monto,
+        referencia : movimiento.referencia,
+        comentario: movimiento.comentario_tes
+    }    
+    let headers: HttpHeaders = new HttpHeaders().set("Content-Type", "application/json")
+    headers = headers.set('x-auth', this.usuarioServ.token)
+    return this.http.patch(`${this.apiUrl}api/pagos/rechazo/${_id}`, pago, { headers })
+    
+  
+}
+
+
+  confirmarPago(movimiento: Movimiento, _id: string): any {
+
+    let pago = {
+        jugadorid: movimiento.usuario._id,
+        idmov: movimiento._id,
+        monto: movimiento.monto,
+        referencia : movimiento.referencia,
+        comentario: movimiento.comentario_tes
+    }    
+    let headers: HttpHeaders = new HttpHeaders().set("Content-Type", "application/json")
+    headers = headers.set('x-auth', this.usuarioServ.token)
+    return this.http.patch(`${this.apiUrl}api/pagos/confirmacion/${_id}`, pago, { headers })
+  }
 
     obtenerMovimientosPendientes(_id: string): Observable<any> {
         let headers: HttpHeaders = new HttpHeaders().set("Content-Type", "application/json")

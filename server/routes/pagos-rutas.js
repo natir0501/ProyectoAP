@@ -84,16 +84,6 @@ api.post('/pagos', autenticacion, async (req, res) => {
 
 api.patch('/pagos/confirmacion/:id', autenticacion, async (req, res) => {
 
-    /*
-    En la URL viene el id de la cuenta de la categoria. (no,viene ID de la categoria)
-    En el Body: viene pago{
-        jugadorid:id del jugador 
-        id:idmovimientoCat
-        monto:monto
-        referencia: idmovimientoCtaJugador
-    }
-    */
-
     try {
 
         let categoria = await Categoria.findById(req.params.id)
@@ -107,6 +97,7 @@ api.patch('/pagos/confirmacion/:id', autenticacion, async (req, res) => {
             .exec();
 
         let nuevoSaldoCat = categoria.cuenta.saldo + req.body.monto
+        let nuevoSaldoJugador= jugador.cuenta.saldo + req.body.monto
         let movsActualizadosCat = categoria.cuenta.movimientos
 
         for (movim of movsActualizadosCat) {
@@ -115,9 +106,7 @@ api.patch('/pagos/confirmacion/:id', autenticacion, async (req, res) => {
                     if (movim.monto === req.body.monto) {
                         movim.confirmado = true;
                         movim.referencia = null;
-                        movim.comentario = movim.comentario + " "
-                            + "Comentario al confirmar"
-                            + "Pago Confirmado"
+                        movim.comentario = movim.comentario + " " + " | Comentario al confirmar: "+ req.body.comentario 
                         movim.estado = "Confirmado"
                     } else {
                         res.status(404).send(new ApiResponse({},
@@ -132,9 +121,7 @@ api.patch('/pagos/confirmacion/:id', autenticacion, async (req, res) => {
             if (mov._id.toString() === req.body.referencia) {
                 if (mov.monto === req.body.monto) {
                     mov.confirmado = true
-                    mov.comentario = mov.comentario + " "
-                        + "Comentario al confirmar"
-                        + "Pago Confirmado"
+                    mov.comentario = mov.comentario + " " + " | Comentario al confirmar: "+ req.body.comentario 
                     mov.estado = "Confirmado"
                 } else {
                     res.status(404).send(new ApiResponse({},
@@ -153,11 +140,12 @@ api.patch('/pagos/confirmacion/:id', autenticacion, async (req, res) => {
         await Cuenta.findOneAndUpdate({
             _id: jugador.cuenta._id
         }, {
-                $set: { movimientos: movsActualizadosJug }
+                $set: { saldo: nuevoSaldoJugador,   movimientos: movsActualizadosJug }
             }, {
                 new: true
             })
-        res.status(200).send(new ApiResponse({}, 'Pago confirmado correctamente.'))
+            let confirmado
+        res.status(200).send(new ApiResponse({confirmado: true}, 'Pago confirmado correctamente.'))
 
     } catch (e) {
         res.status(400).send(new ApiResponse({}, `Mensaje: ${e}`))
@@ -166,17 +154,6 @@ api.patch('/pagos/confirmacion/:id', autenticacion, async (req, res) => {
 
 
 api.patch('/pagos/rechazo/:id', autenticacion, async (req, res) => {
-
-    /*
-    En la URL viene el id de la cuenta de la categoria.
-    En el Body viene:
-     pago{
-        jugadorid:id del jugador 
-        monto:monto
-        referencia: idmovimientoCtaJugador
-        comentario: idmovimientoCtaJugador
-    }
-    */
 
     try {
 
@@ -218,7 +195,8 @@ api.patch('/pagos/rechazo/:id', autenticacion, async (req, res) => {
 
         }
         if (movJugadorEncontrado && movCategoriaEncontrado) {
-            res.status(200).send(new ApiResponse({}, 'Ok'))
+            let movimiento= movCategoriaEncontrado
+            res.status(200).send(new ApiResponse({movimiento}, 'Ok'))
         } else {
             res.status(404).send(new ApiResponse({}, 'Ocurrió un error al rechazar el movimiento.'))
         }

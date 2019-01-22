@@ -1,7 +1,12 @@
+import { CategoriaService } from './../../providers/categoria.service';
+import { Categoria } from './../../models/categoria.models';
+import { PagosPendientesPage } from './../pagos-pendientes/pagos-pendientes';
+import { UsuarioService } from './../../providers/usuario.service';
 import { UtilsServiceProvider } from './../../providers/utils.service';
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
-import { Movimiento } from '../../models/cuenta.models';
+import { NavController, NavParams, LoadingController } from 'ionic-angular';
+import { Movimiento, Cuenta } from '../../models/cuenta.models';
+import { CuentaService } from '../../providers/cuenta.service';
 
 /**
  * Generated class for the DetallePagoPage page.
@@ -17,22 +22,75 @@ import { Movimiento } from '../../models/cuenta.models';
 export class DetallePagoPage {
 
   movimiento : Movimiento=new Movimiento()
+  cuenta: Cuenta = new Cuenta();
+  categoria: Categoria= new Categoria();
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-    public utilServ: UtilsServiceProvider) {
+    public utilServ: UtilsServiceProvider, public usuServ: UsuarioService,
+    private loader: LoadingController, public cuentaServ: CuentaService,
+     public catService : CategoriaService) {
   }
 
-  ionViewDidLoad(){
+  async ionViewDidLoad(){
   
     let mov: Movimiento = this.navParams.get('mov')
+    this.categoria._id = this.usuServ.usuario.perfiles[0].categoria
+    let dataUsuarios: any = await this.catService.obtenerCategoria(this.categoria._id).toPromise()
+    if (dataUsuarios) {
+      this.categoria = dataUsuarios.data.categoria
+    }
+    this.cuenta= this.categoria.cuenta
+
     if(mov){
       this.movimiento=mov
-      console.log(this.movimiento.usuario.nombre);
-      console.log(this.movimiento.usuario.apellido);
       
     }else{
       this.utilServ.dispararAlert("Upss!", "Ocurrió un error al cargar el movimiento")
     }
+  }
+
+  confirmar(){
+    let loader = this.loader.create({
+      content: 'Cargando...',
+      spinner: 'circles'
+
+    })
+    loader.present()
+
+    this.cuentaServ.confirmarPago(this.movimiento, this.categoria._id)
+    .subscribe((resp) => {
+      loader.dismiss()
+      if(resp.data.confirmado){
+        this.utilServ.dispararAlert('Ok', "El pagó se confirmó correctamente.")
+        this.navCtrl.setRoot(PagosPendientesPage)
+      }
+    }, (err) => {
+      console.log(err)
+      loader.dismiss()
+      this.utilServ.dispararAlert('Upss', "Ocurrió un error al confirmar la transacción. Intentá de nuevo en unos minutos")
+    })
+  }
+  
+  rechazar(){
+    let loader = this.loader.create({
+      content: 'Cargando...',
+      spinner: 'circles'
+
+    })
+    loader.present()
+
+    this.cuentaServ.rechazarPago(this.movimiento, this.cuenta._id)
+    .subscribe((resp) => {
+      loader.dismiss()
+      if(resp.data.movimiento){
+        this.utilServ.dispararAlert('Ok', "El pagó se rechazó correctamente.")
+        this.navCtrl.setRoot(PagosPendientesPage)
+      }
+    }, (err) => {
+      console.log(err)
+      loader.dismiss()
+      this.utilServ.dispararAlert('Upss', "Ocurrió un error al rechazar el pago. Intentá de nuevo en unos minutos")
+    })
   }
 
 }

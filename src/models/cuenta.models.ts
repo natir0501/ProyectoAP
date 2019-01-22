@@ -20,5 +20,6 @@ export class Movimiento{
         usuario?:Usuario=new Usuario()
         jugador?:Usuario= new Usuario()
         estado?:string
+        comentario_tes?:string
 }
 
