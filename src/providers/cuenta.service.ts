@@ -8,7 +8,7 @@ import { Usuario } from '../models/usuario.model';
 
 @Injectable()
 export class CuentaService {
-    
+
   rechazarPago(movimiento: Movimiento, _id: string): any {
 
     let pago = {

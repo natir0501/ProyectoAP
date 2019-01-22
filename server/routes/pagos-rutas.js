@@ -97,7 +97,7 @@ api.patch('/pagos/confirmacion/:id', autenticacion, async (req, res) => {
             .exec();
 
         let nuevoSaldoCat = categoria.cuenta.saldo + req.body.monto
-        let nuevoSaldoJugador= jugador.cuenta.saldo + req.body.monto
+        let nuevoSaldoJugador = jugador.cuenta.saldo + req.body.monto
         let movsActualizadosCat = categoria.cuenta.movimientos
 
         for (movim of movsActualizadosCat) {
@@ -106,7 +106,7 @@ api.patch('/pagos/confirmacion/:id', autenticacion, async (req, res) => {
                     if (movim.monto === req.body.monto) {
                         movim.confirmado = true;
                         movim.referencia = null;
-                        movim.comentario = movim.comentario + " " + " | Comentario al confirmar: "+ req.body.comentario 
+                        movim.comentario = movim.comentario + " " + " | Comentario al confirmar: " + req.body.comentario
                         movim.estado = "Confirmado"
                     } else {
                         res.status(404).send(new ApiResponse({},
@@ -121,7 +121,7 @@ api.patch('/pagos/confirmacion/:id', autenticacion, async (req, res) => {
             if (mov._id.toString() === req.body.referencia) {
                 if (mov.monto === req.body.monto) {
                     mov.confirmado = true
-                    mov.comentario = mov.comentario + " " + " | Comentario al confirmar: "+ req.body.comentario 
+                    mov.comentario = mov.comentario + " " + " | Comentario al confirmar: " + req.body.comentario
                     mov.estado = "Confirmado"
                 } else {
                     res.status(404).send(new ApiResponse({},
@@ -140,12 +140,14 @@ api.patch('/pagos/confirmacion/:id', autenticacion, async (req, res) => {
         await Cuenta.findOneAndUpdate({
             _id: jugador.cuenta._id
         }, {
-                $set: { saldo: nuevoSaldoJugador,   movimientos: movsActualizadosJug }
+                $set: { saldo: nuevoSaldoJugador, movimientos: movsActualizadosJug }
             }, {
                 new: true
             })
-            let confirmado
-        res.status(200).send(new ApiResponse({confirmado: true}, 'Pago confirmado correctamente.'))
+        tituloNot = `Confirmación de Pago`,
+            bodyNot = `Hola ${jugador.nombre}! Tu solicitud de pago fue confirmada `
+        enviarNotificacion(jugador, tituloNot, bodyNot)
+        res.status(200).send(new ApiResponse({ confirmado: true }, 'Pago confirmado correctamente.'))
 
     } catch (e) {
         res.status(400).send(new ApiResponse({}, `Mensaje: ${e}`))
@@ -195,8 +197,11 @@ api.patch('/pagos/rechazo/:id', autenticacion, async (req, res) => {
 
         }
         if (movJugadorEncontrado && movCategoriaEncontrado) {
-            let movimiento= movCategoriaEncontrado
-            res.status(200).send(new ApiResponse({movimiento}, 'Ok'))
+            let movimiento = movCategoriaEncontrado
+            tituloNot = `Rechazo de Pago`,
+            bodyNot = `Hola ${jugador.nombre}! Tu solicitud de pago fue rechazada. Consultá con el tesorero o delegado de tu categoría `
+            enviarNotificacion(jugador, tituloNot, bodyNot)
+            res.status(200).send(new ApiResponse({ movimiento }, 'Ok'))
         } else {
             res.status(404).send(new ApiResponse({}, 'Ocurrió un error al rechazar el movimiento.'))
         }

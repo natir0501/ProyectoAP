@@ -1,0 +1,45 @@
+<ion-header>
+  <ion-navbar text-center color="primary">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Saldos y Movimientos por jugador</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content padding>
+  <form id='form' #form="ngForm">
+    <ion-grid>
+      <ion-row justify-content-center>
+        <ion-col col-xl-6>
+          <ion-list>
+            <div>
+              <p>
+                Seleccione un jugador para consultar su saldo y movimientos registrados en el sistema.
+              </p>
+            </div>
+            <ion-item>
+              <ion-label>
+                Jugador:
+              </ion-label>
+              <ion-select okText="Ok" cancelText="Cancelar" required [(ngModel)]="jugador" name="jugador">
+                <ion-option *ngFor="let u of usuarios" [id]="u._id" [value]="u">
+                  {{u.nombre}} {{u.apellido}}
+                </ion-option>
+              </ion-select>
+            </ion-item>
+
+            <ion-item>
+            </ion-item>
+          </ion-list>
+        </ion-col>
+      </ion-row>
+      <ion-row justify-content-center>
+        <ion-col col-xl-2>
+          <button id="consultarsdo" type="submit" ion-button block color="positive">
+            Consultar
+          </button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+</ion-content>

@@ -53,6 +53,7 @@ import { DetalleMovimientoPage } from '../pages/detalle-movimiento/detalle-movim
 import { DatosDeportivosListaPage } from '../pages/datos-deportivos-lista/datos-deportivos-lista';
 import { PagosPendientesPage } from '../pages/pagos-pendientes/pagos-pendientes';
 import { DetallePagoPage } from '../pages/detalle-pago/detalle-pago';
+import { SaldosJugadoresPage } from '../pages/saldos-jugadores/saldos-jugadores';
 
 
 
@@ -94,7 +95,8 @@ import { DetallePagoPage } from '../pages/detalle-pago/detalle-pago';
     DatosDeportivosListaPage,
     DetalleComentarioPage,
     PagosPendientesPage,
-    DetallePagoPage
+    DetallePagoPage,
+    SaldosJugadoresPage
     
 
   ],
@@ -145,6 +147,7 @@ import { DetallePagoPage } from '../pages/detalle-pago/detalle-pago';
     DetalleComentarioPage,
     PagosPendientesPage,
     DetallePagoPage,
+    SaldosJugadoresPage
     
     
   ],

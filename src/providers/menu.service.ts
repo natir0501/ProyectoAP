@@ -24,6 +24,7 @@ import { SaldoMovimientosCategoriaPage } from '../pages/Contabilidad/saldo-movim
 import { RegistroPagoCuotaPage } from '../pages/registro-pago-cuota/registro-pago-cuota';
 import { DatosDeportivosListaPage } from '../pages/datos-deportivos-lista/datos-deportivos-lista';
 import { PagosPendientesPage } from '../pages/pagos-pendientes/pagos-pendientes';
+import { SaldosJugadoresPage } from '../pages/saldos-jugadores/saldos-jugadores';
 
 @Injectable()
 export class MenuService {
@@ -63,6 +64,8 @@ export class MenuService {
         this.map.set('RegistroPagoCuotaPage',RegistroPagoCuotaPage)  
         this.map.set('DatosDeportivosListaPage',DatosDeportivosListaPage)
         this.map.set('PagosPendientesPage',PagosPendientesPage)
+        this.map.set('SaldosJugadoresPage',SaldosJugadoresPage)
+        
 
     }
 
