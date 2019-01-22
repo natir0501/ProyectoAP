@@ -15,6 +15,9 @@ page-home{
 
     }
     ion-card{
+        .card-footer{
+            border-top: 1px #acacac4f solid;
+        }
         button{
             font-size: 1.2rem !important;
         }

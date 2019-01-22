@@ -23,7 +23,7 @@
           <p>El saldo de tu cuenta es: <span>{{'$ '+usuario.cuenta.saldo}}</span></p>
           <p>Próximo vencimiento de cuota: <span>{{fechaCuota}}</span></p>
         </div>
-        <div class="spacer" style="width:300px;height:15px;" id="registro-spacer8"></div>
+       
       </ion-col>
     </ion-row>
     <ng-container *ngIf="eventos.length >0">
@@ -53,7 +53,7 @@
                   <p class="listas">No van ({{evento.noAsisten.length}})</p>
                 </ion-card-content>
 
-                <ion-row>
+                <ion-row class="card-footer">
                   <ion-col item-right>
                     <button ion-button clear (click)="confirmar(true,evento)">
 
