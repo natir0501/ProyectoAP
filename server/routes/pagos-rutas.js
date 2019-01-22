@@ -178,7 +178,7 @@ api.patch('/pagos/rechazo/:id', autenticacion, async (req, res) => {
                 movimiento.monto === req.body.monto) {
                 movJugadorEncontrado = true
                 movimiento.estado = "Rechazado"
-                movimiento.comentario = req.body.comentario
+                movimiento.comentario = movimiento.comentario + "| Comentario al rechazar: " + req.body.comentario
                 await cuentaJugador.save()
             }
         }
