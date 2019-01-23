@@ -27,17 +27,45 @@
                 </ion-option>
               </ion-select>
             </ion-item>
-
-            <ion-item>
-            </ion-item>
           </ion-list>
         </ion-col>
       </ion-row>
       <ion-row justify-content-center>
         <ion-col col-xl-2>
-          <button id="consultarsdo" type="submit" ion-button block color="positive">
+          <button id="consultarsdo" ion-button block color="positive" (click)="consultar(jugador.cuenta)">
             Consultar
           </button>
+        </ion-col>
+      </ion-row>
+      <ion-row justify-content-center>
+        <ion-col col-xl-6>
+          <ion-list>
+            <ng-container *ngIf="cuentaJugador!=null">
+              <ion-item-divider color="light" id="sdomovscat1">
+                Cuenta de {{jugador.nombre}} {{jugador.apellido}}
+              </ion-item-divider>
+              <ion-item>
+                Saldo: <span item-end> $ {{cuentaJugador.saldo}}</span>
+              </ion-item>
+              <ion-item-divider color="light" id="sdomovscat2">
+                Movimientos:
+              </ion-item-divider>
+              <ion-list>
+                <ion-item-sliding *ngFor="let mov of cuentaJugador.movimientos">
+                  <ion-item color="none" id="mov._id" icon-start>
+                    <ion-icon name="calculator" item-left></ion-icon>
+                    <label><b>Fecha:</b></label> {{mov.fecha | date:'dd-MM-yyyy'}} <br>
+                    <label><b>Monto:</b></label> $ {{mov.monto}}<br>
+                  </ion-item>
+                  <ion-item-options side="right">
+                    <button ion-button color="positive" (click)="verDetalle(mov)">
+                      Ver Detalle
+                    </button>
+                  </ion-item-options>
+                </ion-item-sliding>
+              </ion-list>
+            </ng-container>
+          </ion-list>
         </ion-col>
       </ion-row>
     </ion-grid>

@@ -1,3 +1,4 @@
+import { Cuenta } from './cuenta.models';
 import { Posiciones, Roles } from './enum.models';
 import { Categoria } from './categoria.models';
 
@@ -26,7 +27,8 @@ export class Usuario{
     activo ?: boolean;
     perfiles:  Perfil[] = []
     categoriacuota ?: Categoria;
-    ultimoMesCobrado?: number
+    ultimoMesCobrado?: number;
+    cuenta?: Cuenta;
 
 
    
