@@ -19,7 +19,7 @@ api.get('/usuarios/cuenta/:id',async (req,res)=>{
     try{
         let _id = req.params.id
         let usuario = await Usuario.findOne({_id}).populate('cuenta').exec()
-        console.log(usuario)
+      
         let cuenta = usuario.cuenta
         if(usuario){
             res.send(new ApiResponse({cuenta},'Ok'))
@@ -282,9 +282,9 @@ api.put('/usuarios/:id', async (req, res) => {
         let usu = await Usuario.findOne({_id})
         
         req.body.perfiles = usu.perfiles
-        console.log(req.body)
+       
         let usuario = await Usuario.findOneAndUpdate({ _id }, { $set: req.body })
-        console.log('guarde usuario', usuario)
+      
          usuario = await Usuario.findOne({_id})
         if (!usuario) {
             res.status(401).send(new ApiResponse({}, 'Usuario inválido'))

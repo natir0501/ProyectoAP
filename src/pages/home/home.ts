@@ -77,7 +77,7 @@ export class HomePage {
       let resp = await this.eventServ.obtenerEventosHome(this.usuario._id).toPromise()
       if (resp) {
         this.eventos = resp.data.eventos
-        console.log(this.eventos)
+      
       }
 
     } catch (e) {
