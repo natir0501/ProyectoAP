@@ -103,7 +103,7 @@ const cargaPantallas = async () => {
 const cargaDelegadosI = async () => {
     const usuarios = await Usuario.find()
     if (usuarios.length === 0) {
-        let correos = ['gab.arpe@gmail.com', 'nati.r0501@gmail.com','tomato23@gmail.com']
+        let correos = ['gab.arpe@gmail.com', 'nati.r0501@gmail.com']
 
         for (let i = 0; i < correos.length; i++) {
             let usuario = new Usuario({ 'email': correos[i], 'delegadoInstitucional': true })

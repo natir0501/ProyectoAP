@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { AlertController, NavController, Platform, LoadingController } from 'ionic-angular';
 import { Evento } from '../../models/evento.models';
 import { EventoService } from '../../providers/evento.service';
-import { Categoria } from './../../models/categoria.models';
+import { Categoria, Cuenta } from './../../models/categoria.models';
 import { Usuario } from './../../models/usuario.model';
 import { CategoriaService } from './../../providers/categoria.service';
 import { FirebaseMessagingProvider } from './../../providers/firebase-messaging';
@@ -20,6 +20,7 @@ export class HomePage {
   eventos: Evento[] = []
   categoria: Categoria = new Categoria()
   habilitoHome: boolean = false;
+  cuenta : Cuenta = new Cuenta()
 
   constructor(public navCtrl: NavController, private alertCtrk: AlertController,
     private platform: Platform, public fmp: FirebaseMessagingProvider
@@ -31,15 +32,18 @@ export class HomePage {
   async ionViewWillEnter() {
     try {
 
-      if (this.userServ.usuario && this.userServ.usuario.perfiles.length < 2) {
+      if (this.userServ.usuario && this.userServ.usuario.perfiles.length === 1) {
         this.usuario = this.userServ.usuario
         let resp: any = await this.catServ.obtenerCategoria(this.usuario.perfiles[0].categoria).toPromise()
         if (resp) {
 
           this.categoria = resp.data.categoria
           this.obtenerEventos()
-          console.log(this.usuario)
-          this.habilitoHome = true;
+          let resp2 = await this.userServ.getCuenta(this.usuario._id).toPromise()
+          if(resp2){
+            this.cuenta = resp2.data.cuenta
+            this.habilitoHome = true;
+          }
         }
       }
     } catch (e) {
@@ -73,7 +77,7 @@ export class HomePage {
       let resp = await this.eventServ.obtenerEventosHome(this.usuario._id).toPromise()
       if (resp) {
         this.eventos = resp.data.eventos
-        console.log(this.eventos)
+      
       }
 
     } catch (e) {
