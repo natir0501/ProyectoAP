@@ -29,7 +29,7 @@ export class Usuario{
     perfiles:  Perfil[] = []
     categoriacuota ?: Categoria;
     ultimoMesCobrado?: number
-    cuenta?: Cuenta = new Cuenta()
+    cuenta?: Cuenta;
 
 
    
