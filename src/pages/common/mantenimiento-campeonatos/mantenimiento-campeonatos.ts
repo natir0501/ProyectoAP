@@ -100,18 +100,14 @@ export class MantenimientoCampeonatosPage {
   consultarFecha(fech: Fecha) {
     let fecha=fech
     this.navCtrl.push((DetalleFechaPage), {fecha})
-    console.log("Mi fecha", fecha);
-    
-    console.log("Consultar fecha");
+  
 
   }
 
 
   agregarFecha() {
     let camp = this.campeonato;
-    console.log("agregarFecha en Mant page", this.campeonato);
     this.navCtrl.push((MantenimientoFechaPage), { camp })
-    console.log("agregarFecha en Mant page camp ", camp);
     
   }
 

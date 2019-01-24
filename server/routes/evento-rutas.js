@@ -24,13 +24,14 @@ api.get('/eventos', async (req, res) => {
             }
         }
         let eventos = await Evento.find(filtro).populate('tipoEvento')
-        
+
         if (req.query.userId) {
             eventos = eventos.filter(e => {
                 if (e.registrosDT) {
-                    let registro = e.registrosDT.find(r => { 
-                        return r.jugadorId.toString() === req.query.userId})
-                    if(registro){
+                    let registro = e.registrosDT.find(r => {
+                        return r.jugadorId.toString() === req.query.userId
+                    })
+                    if (registro) {
                         e.registrosDT = [registro]
 
                     }
@@ -45,6 +46,40 @@ api.get('/eventos', async (req, res) => {
     }
 })
 
+api.get('/eventos/home', async (req, res) => {
+    try {
+        let usuarioId = req.query.usuarioId
+        let filtro = {}
+        let fechafin = new Date().setDate(new Date().getDate() + 15)
+        let fecha = { $gt: Date.now(), $lt: fechafin.valueOf() }
+       
+        filtro = { fecha }
+
+
+        let eventos = await Evento.find(filtro).populate('tipoEvento').sort({fecha: 1})
+        eventos = eventos.filter((evt) => {
+            if (evt.invitados.indexOf(usuarioId) >= 0) {
+                return true
+            }
+            if (evt.confirmados.indexOf(usuarioId) >= 0) {
+                return true
+            }
+            if (evt.noAsisten.indexOf(usuarioId) >= 0) {
+                return true
+            }
+            return false
+        })
+
+        res.send(new ApiResponse({ eventos }, ''))
+
+
+
+
+    } catch (e) {
+        console.log(e)
+        res.status(400).send(new ApiResponse({}, ''))
+    }
+})
 api.get('/eventos/:id/registrosDT', async (req, res) => {
     let idJugador = req.query.idUsuario;
 
@@ -116,11 +151,11 @@ api.post('/eventos', async (req, res) => {
         for (let id of evento.invitados) {
             let user = await Usuario.findOne({ _id: id })
             tituloNot = `Nuevo evento: ${evento.nombre}`,
-            bodyNot = `Hola ${user.nombre}! Has sido invitado a un nuevo evento. Por favor, consultá los detalles y confirmá asistencia. Gracias!`
-            enviarNotificacion(user,tituloNot,bodyNot )
+                bodyNot = `Hola ${user.nombre}! Has sido invitado a un nuevo evento. Por favor, consultá los detalles y confirmá asistencia. Gracias!`
+            enviarNotificacion(user, tituloNot, bodyNot)
         }
         res.status(200).send(new ApiResponse({ evento }));
-        console.log("agregado OK.");
+
 
     } catch (e) {
         res.status(400).send(new ApiResponse({}, "No se pudo agregar el evento."))
@@ -202,12 +237,34 @@ api.put('/eventos/:id/registrosDT', async (req, res) => {
 api.put('/eventos/:id', async (req, res) => {
     try {
         let _id = req.params.id;
+        let notificar = req.query.notificar
         let evento = await Evento.findOneAndUpdate({ _id }, { $set: req.body })
+
+
         if (!evento) {
             res.status(401).send(new ApiResponse({}, 'No fue posible actualizar el evento'))
         }
+        if (notificar === 'true') {
+            evento = await Evento.findOne({ _id })
+                .populate('confirmados')
+                .populate('invitados')
+                .populate('noAsisten')
+
+            let invitados = [
+                ...evento.confirmados,
+                ...evento.invitados,
+                ...evento.noAsisten
+            ]
+
+            for (let invitado of invitados) {
+                tituloNot = `Modificación de evento: ${evento.nombre}`,
+                    bodyNot = `Hola ${invitado.nombre}! Un evento al que fuiste invitado ha sido modificado, consultá los detalles y confirmá asistencia. Gracias!`
+                enviarNotificacion(invitado, tituloNot, bodyNot)
+            }
+        }
+
         res.status(200).send(new ApiResponse(evento))
-        console.log("Actualizado ok");
+
     }
     catch (e) {
         res.status(400).send(new ApiResponse({}, "Ocurrió un error al intentar actualizar"))
@@ -225,7 +282,7 @@ api.delete('/eventos/:id', async (req, res) => {
             res.status(401).send(new ApiResponse({}, 'No fue posible borrar el evento'))
         }
         res.status(200).send(new ApiResponse(evento))
-        console.log("Borrado ok");
+
     }
     catch (e) {
         res.status(400).send(new ApiResponse({}, "Ocurrió un error al intentar borrar"))

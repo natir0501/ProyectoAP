@@ -6,8 +6,7 @@ import { Component } from '@angular/core';
 import { NavController, NavParams, LoadingController } from 'ionic-angular';
 import { Evento } from '../../models/evento.models';
 import { Usuario } from '../../models/usuario.model';
-import * as jsPDF from 'jspdf';
-import 'jspdf-autotable';
+
 
 /**
  * Generated class for the DetallesEventoPage page.
@@ -138,18 +137,23 @@ export class DetallesEventoPage {
     })
   }
   generoPDF() {
-    var doc = new jsPDF();
-    doc.autoTable({
-      head: [['Nombre', 'Tipo Evento', 'Fecha','Lugar', 'Convocados', 'Van', 'No Van' ]],
-      body: [
-        //Una array de los de abajo por cada fila del pdf
-        [this.evento.nombre, this.evento.tipoEvento.nombre, new Date(this.evento.fecha).toLocaleDateString(), this.evento.lugar.nombre,this.evento.invitados.length
-          ,this.evento.confirmados.length, this.evento.noAsisten.length]
-        
-      ]
-    });
 
-    doc.save(`Evento ${this.evento.nombre.replace(' ','_')}.pdf`);
+    //Un array de columnas
+    let columnas = ['Nombre', 'Tipo Evento', 'Fecha', 'Lugar', 'Convocados', 'Van', 'No Van']
+
+    //ESTO ES UN ARRAY DE FILAS
+    let contenidoFilas = []
+
+    //CADA FILA ES UNA ARRAY QUE LE VOY TIRANDO LOS DATOS
+    let fila = [this.evento.nombre, this.evento.tipoEvento.nombre, new Date(this.evento.fecha).toLocaleDateString(), this.evento.lugar.nombre, this.evento.invitados.length
+      , this.evento.confirmados.length, this.evento.noAsisten.length]
+
+    //AGREGO LA FILA AL ARRAY DE FILAS
+    contenidoFilas.push(fila)
+    
+      //LLAMO AL METODO PARA GENAR EL PDF, PASO COLUMNAS, FILAS, NOMBRE DE ARCHIVO
+      //Y SI LO QUIERO APAISADO LE PASO UN 'h' sino el cuarto parámetro no va
+    this.utilServ.generarPDF(columnas, contenidoFilas, `Evento ${this.evento.nombre}`,'h')
 
   }
 }

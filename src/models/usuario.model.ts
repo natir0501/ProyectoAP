@@ -1,6 +1,5 @@
-import { Cuenta } from './cuenta.models';
-import { Posiciones, Roles } from './enum.models';
 import { Categoria } from './categoria.models';
+import { Cuenta } from './cuenta.models';
 
 function getDate() : string {
     let date = new Date()
@@ -19,6 +18,8 @@ export class Usuario{
     fechaVtoCarneSalud: number = Date.now()
     delegadoInstitucional?: boolean 
     fechaNacimiento: number = Date.now()
+    fechaUltimoExamen: number = Date.now()
+    requiereExamen: boolean = true
     tokens?: any[]
     emergencia?: string;
     sociedad?: string;

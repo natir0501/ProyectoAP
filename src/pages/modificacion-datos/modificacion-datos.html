@@ -77,6 +77,20 @@
             <ion-input text-right type="date" placeholder="" #fnacimiento="ngModel" name="fnacmiento" [(ngModel)]="fechaNacTxt"
               required></ion-input>
           </ion-item>
+          <ng-container *ngIf="delegado && requiereCategoria" >
+
+            <ion-item>
+              <ion-label>Requiere examen:</ion-label>
+              <ion-checkbox item-end name="requiereExamen" requiereEscolaridad [(ngModel)]="usuario.requiereExamen"></ion-checkbox>
+            </ion-item>
+            <ion-item [ngClass]="{ 'ng-touched' : fexamen.touched }" id="registro-input21">
+              <ion-label>
+                Fec Examen/Curso Aprob.:
+              </ion-label>
+              <ion-input text-right type="date" placeholder="" #fexamen="ngModel" name="fexamen" [(ngModel)]="fexamenTxt"
+                required></ion-input>
+            </ion-item>
+          </ng-container>
           <ion-item [ngClass]="{ 'ng-touched' : tieneFmCs.touched }" id="registro-toggle3">
             <ion-label>
               C/Salud o F/Médica Vigente

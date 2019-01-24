@@ -54,6 +54,7 @@ api.post('/categorias', async (req, res) => {
         let valorCuota = req.body.valorCuota;
         let diaGeneracionCuota = req.body.diaGeneracionCuota;
         let diaVtoCuota = req.body.diaVtoCuota;
+        let requiereEscolaridad = req.body.requiereEscolaridad
 
         let cantidadCuotasAnuales = parseInt(req.body.cantidadCuotasAnuales)
         //En el body de la categoría, recibo saldo inicial
@@ -65,7 +66,7 @@ api.post('/categorias', async (req, res) => {
 
         let categoria = new Categoria({
             nombre, valorCuota, diaGeneracionCuota,
-            diaVtoCuota, cantidadCuotasAnuales, dts, tesoreros, delegados, jugadores, cuenta
+            diaVtoCuota, cantidadCuotasAnuales, dts, tesoreros, delegados, jugadores, cuenta, requiereEscolaridad
         })
 
         categoria = await categoria.save();

@@ -15,14 +15,29 @@ api.get('/usuarios', (req, res) => {
         .catch((e) => res.status(400).send(new ApiResponse({}, `Mensaje: ${e}`)))
 })
 
-
+api.get('/usuarios/cuenta/:id',async (req,res)=>{
+    try{
+        let _id = req.params.id
+        let usuario = await Usuario.findOne({_id}).populate('cuenta').exec()
+      
+        let cuenta = usuario.cuenta
+        if(usuario){
+            res.send(new ApiResponse({cuenta},'Ok'))
+        }else{
+            res.status(404).send(new ApiResponse({},'Usuario no encontrado'))
+        }
+    }catch(e){
+        console.log(e)
+        res.status(400).send(new ApiResponse({},''))
+    }
+})
 
 api.get('/usuarios/:token', async (req, res) => {
     try {
         
         let token = req.params.token;
 
-        usuario = await Usuario.findByToken(token);
+        usuario = await Usuario.findByToken(token)
         if (usuario) {
 
             res.header('x-auth', token).status(200).send(new ApiResponse({ usuario }))
@@ -264,8 +279,12 @@ api.put('/usuarios/:id', async (req, res) => {
         }
 
         let _id = req.params.id;
+        let usu = await Usuario.findOne({_id})
         
+        req.body.perfiles = usu.perfiles
+       
         let usuario = await Usuario.findOneAndUpdate({ _id }, { $set: req.body })
+      
          usuario = await Usuario.findOne({_id})
         if (!usuario) {
             res.status(401).send(new ApiResponse({}, 'Usuario inválido'))
@@ -274,7 +293,7 @@ api.put('/usuarios/:id', async (req, res) => {
         res.status(200).send(new ApiResponse(usuario))
     }
     catch (err) {
-
+        console.log(err)
         res.status(400).send(new ApiResponse({}, err))
     }
 

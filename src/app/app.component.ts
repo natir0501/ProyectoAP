@@ -1,15 +1,3 @@
-import { Categoria } from './../models/categoria.models';
-import { MenuService } from './../providers/menu.service';
-//import { Pantallas } from './../config/pantallas';
-import { PlaceHolderPage } from './../pages/place-holder/place-holder';
-import { ListaCategoriasPage } from './../pages/lista-categorias/lista-categorias';
-import { AppModule } from './app.module';
-import { UsuarioService } from './../providers/usuario.service';
-import { Usuario } from './../models/usuario.model';
-import { CEILOGO } from './../providers/constant';
-//import { MantenimientoCategoriaPage } from './../pages/Backoffice/mantenimiento-categoria/mantenimiento-categoria';
-import { AltaDeUsuarioPage } from './../pages/Backoffice/alta-usuario/alta-de-usuario';
-import { UtilsServiceProvider } from './../providers/utils.service';
 import { HttpClient } from '@angular/common/http';
 import { Component, ViewChild } from '@angular/core';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -18,6 +6,12 @@ import { MenuController, Nav, NavController, Platform } from 'ionic-angular';
 import { LoginPage } from '../pages/common/login/login';
 import { HomePage } from '../pages/home/home';
 import { FirebaseMessagingProvider } from '../providers/firebase-messaging';
+import { Usuario } from './../models/usuario.model';
+import { CEILOGO } from './../providers/constant';
+import { EventoService } from './../providers/evento.service';
+import { MenuService } from './../providers/menu.service';
+import { UsuarioService } from './../providers/usuario.service';
+import { UtilsServiceProvider } from './../providers/utils.service';
 
 
 
@@ -40,7 +34,7 @@ export class MyApp {
   @ViewChild(Nav) nav: NavController;
 
   constructor(private platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen,
-    public usuarioServ: UsuarioService, public menuServ: MenuService,
+    public usuarioServ: UsuarioService, public menuServ: MenuService, private eventServ : EventoService,
     private fcmService: FirebaseMessagingProvider, private http: HttpClient, private menu: MenuController, private utils: UtilsServiceProvider) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
@@ -52,6 +46,7 @@ export class MyApp {
       if (window.location.host === 'localhost:8100') {
         this.utils.apiUrl = 'http://localhost:3000/'
         this.usuarioServ.apiUrl = this.utils.apiUrl
+        this.eventServ.apiUrl = this.utils.apiUrl
       }
     });
 
@@ -74,7 +69,7 @@ export class MyApp {
       this.usuarioServ.usuConectado.subscribe(async (usu: Usuario) => {
         
         if (usu) {
-          
+          this.nav.setRoot(HomePage)
           if (this.usuarioServ.usuario && this.fcmService.token) {
             if (this.platform.platforms().indexOf('mobile') >= 0) {
               this.usuarioServ.registrarPush({ platform: 'mobile', token: this.fcmService.token }).subscribe((resp)=>{
