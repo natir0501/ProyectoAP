@@ -174,7 +174,7 @@ api.patch('/cuenta/transferencia/:id', async (req, res) => {
 
             for (let t of categoriaDestino.tesoreros) {
                 tituloNot = `Transferencia entre categorías`,
-                    bodyNot = `Hola ${t.nombre}! Se registró una trasnferencia a la categoria ${categoriaDestino.nombre}. Consultá la cuenta para chequearlo.`
+                    bodyNot = `Hola ${t.nombre}! Se registró una trasnferencia a la categoria ${categoriaDestino.nombre}. Ingresá a la App para visualizar el movimiento.`
                 enviarNotificacion(t, tituloNot, bodyNot)
             }
             res.status(200).send(new ApiResponse({cuentaOrigen}));
