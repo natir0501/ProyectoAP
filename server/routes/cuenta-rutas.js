@@ -3,10 +3,12 @@ var api = express.Router();
 const { Cuenta } = require('../models/cuenta')
 const { Usuario } = require('../models/usuario')
 const { ConceptosCaja } = require('../models/conceptosCaja')
+const { Categoria } = require('../models/categoria')
 const _ = require('lodash')
 const { ObjectID } = require('mongodb')
 const { ApiResponse } = require('../models/api-response')
 const { autenticacion } = require('../middlewares/autenticacion')
+var { enviarNotificacion } = require('../Utilidades/utilidades')
 
 api.get('/cuenta/:_id', async (req, res) => {
     let id = req.params._id;
@@ -104,8 +106,6 @@ api.get('/movimientos/:id', autenticacion, async (req, res) => {
 })
 
 
-
-
 api.patch('/cuenta/movimientos/ingresomovimiento/:id', async (req, res) => {
 
     try {
@@ -139,6 +139,49 @@ api.patch('/cuenta/movimientos/ingresomovimiento/:id', async (req, res) => {
     }
 })
 
+api.patch('/cuenta/transferencia/:id', async (req, res) => {
+// en el body viene el movimiento, idCuenta (destino), IdCategoria
+    try {
+        let cuentaOrigen = await Cuenta.findById(req.params.id).populate('movimientos').exec()
+        let cuentaDestino= await Cuenta.findById(req.body.idcuenta).populate('movimientos').exec();
+        let movimiento = req.body.movimiento;
+        let categoriaDestino= await Categoria.findById(req.body.idcategoria).populate('tesoreros').exec()
+
+        let nuevoSaldoCtaOrigen = cuentaOrigen.saldo - movimiento.monto;
+        let nuevoSaldoCtaDestino = cuentaDestino.saldo + movimiento.monto;
+
+        let movsCtaOrigen = cuentaOrigen.movimientos;
+        movsCtaOrigen.push(movimiento);
+
+        let movsCtaDestino = cuentaDestino.movimientos;
+        movsCtaDestino.push(movimiento);
+
+
+        await Cuenta.findOneAndUpdate({
+            _id: cuentaOrigen._id
+        }, {
+                $set: { saldo: nuevoSaldoCtaOrigen, movimientos: movsCtaOrigen }
+            }, {
+                new: true
+            })
+        await Cuenta.findOneAndUpdate({
+            _id: cuentaDestino._id
+        }, {
+                $set: { saldo: nuevoSaldoCtaDestino, movimientos: movsCtaDestino }
+            }, {
+                new: true
+            })
+
+            for (let t of categoriaDestino.tesoreros) {
+                tituloNot = `Transferencia entre categorías`,
+                    bodyNot = `Hola ${t.nombre}! Se registró una trasnferencia a la categoria ${categoriaDestino.nombre}. Consultá la cuenta para chequearlo.`
+                enviarNotificacion(t, tituloNot, bodyNot)
+            }
+            res.status(200).send(new ApiResponse({cuentaOrigen}));
+    } catch (e) {
+        res.status(400).send(new ApiResponse({}, `Mensaje: ${e}`))
+    }
+})
 
 
 module.exports = api;

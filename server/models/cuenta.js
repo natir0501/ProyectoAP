@@ -1,5 +1,5 @@
 var mongoose = require('mongoose')
-const tiposmovimientos= ["Ingreso", "Egreso"];
+const tiposmovimientos= ["Ingreso", "Egreso", "Transferencia"];
 const estados= ["Pendiente", "Confirmado","Rechazado"];
 
 var CuentaSchema = mongoose.Schema({
