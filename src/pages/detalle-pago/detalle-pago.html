@@ -41,9 +41,9 @@
           <ion-label>
             Comentario:
           </ion-label>
-          <span item-end>
+        </ion-item>
+        <ion-item>
             <ion-textarea disabled="true" [(ngModel)]="movimiento.comentario" rows=2> </ion-textarea>
-          </span>
         </ion-item>
         <ion-item>
           Registrado por: <span item-end>{{movimiento.usuario.nombre}} {{movimiento.usuario.apellido}}</span>
@@ -56,9 +56,9 @@
           <ion-label>
             Comentarios Tesorero:
           </ion-label>
-          <span item-end>
+        </ion-item>
+        <ion-item>
             <ion-textarea [(ngModel)]="movimiento.comentario_tes" rows=3 placeholder="Ej: Recibí correctamente el dinero | No fue acreditado el pago"> </ion-textarea>
-          </span>
         </ion-item>
       </ion-col>
     </ion-row>

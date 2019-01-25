@@ -22,7 +22,7 @@
                 Jugador:
               </ion-label>
               <ion-select okText="Ok" cancelText="Cancelar" required [(ngModel)]="jugador" name="jugador">
-                <ion-option *ngFor="let u of usuarios" [id]="u._id" [value]="u">
+                <ion-option *ngFor="let u of usuarios" (ionSelect)="seleccionado($event)" [id]="u._id" [value]="u">
                   {{u.nombre}} {{u.apellido}}
                 </ion-option>
               </ion-select>

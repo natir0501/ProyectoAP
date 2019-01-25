@@ -9,36 +9,43 @@ import { Usuario } from '../models/usuario.model';
 @Injectable()
 export class CuentaService {
 
-  rechazarPago(movimiento: Movimiento, _id: string): any {
+    transferenciaSaldo(payload: any, id: string): Observable <any> {
+        let headers: HttpHeaders = new HttpHeaders().set("Content-Type", "application/json")
+        headers = headers.set('x-auth', this.usuarioServ.token)
+        return this.http.patch(`${this.apiUrl}api/cuenta/transferencia/${id}`, payload, { headers })
 
-    let pago = {
-        jugadorid: movimiento.usuario._id,
-        idmov: movimiento._id,
-        monto: movimiento.monto,
-        referencia : movimiento.referencia,
-        comentario: movimiento.comentario_tes
-    }    
-    let headers: HttpHeaders = new HttpHeaders().set("Content-Type", "application/json")
-    headers = headers.set('x-auth', this.usuarioServ.token)
-    return this.http.patch(`${this.apiUrl}api/pagos/rechazo/${_id}`, pago, { headers })
-    
-  
-}
+    }
+
+    rechazarPago(movimiento: Movimiento, _id: string): Observable <any> {
+
+        let pago = {
+            jugadorid: movimiento.usuario._id,
+            idmov: movimiento._id,
+            monto: movimiento.monto,
+            referencia: movimiento.referencia,
+            comentario: movimiento.comentario_tes
+        }
+        let headers: HttpHeaders = new HttpHeaders().set("Content-Type", "application/json")
+        headers = headers.set('x-auth', this.usuarioServ.token)
+        return this.http.patch(`${this.apiUrl}api/pagos/rechazo/${_id}`, pago, { headers })
 
 
-  confirmarPago(movimiento: Movimiento, _id: string): any {
+    }
 
-    let pago = {
-        jugadorid: movimiento.usuario._id,
-        idmov: movimiento._id,
-        monto: movimiento.monto,
-        referencia : movimiento.referencia,
-        comentario: movimiento.comentario_tes
-    }    
-    let headers: HttpHeaders = new HttpHeaders().set("Content-Type", "application/json")
-    headers = headers.set('x-auth', this.usuarioServ.token)
-    return this.http.patch(`${this.apiUrl}api/pagos/confirmacion/${_id}`, pago, { headers })
-  }
+
+    confirmarPago(movimiento: Movimiento, _id: string): Observable <any> {
+
+        let pago = {
+            jugadorid: movimiento.usuario._id,
+            idmov: movimiento._id,
+            monto: movimiento.monto,
+            referencia: movimiento.referencia,
+            comentario: movimiento.comentario_tes
+        }
+        let headers: HttpHeaders = new HttpHeaders().set("Content-Type", "application/json")
+        headers = headers.set('x-auth', this.usuarioServ.token)
+        return this.http.patch(`${this.apiUrl}api/pagos/confirmacion/${_id}`, pago, { headers })
+    }
 
     obtenerMovimientosPendientes(_id: string): Observable<any> {
         let headers: HttpHeaders = new HttpHeaders().set("Content-Type", "application/json")
@@ -60,8 +67,10 @@ export class CuentaService {
         return this.http.get(`${this.apiUrl}api/movimientos/${_id}`, { headers })
     }
 
-    ingresarMovimiento(): Observable<any> {
-        return
+    ingresarMovimiento(payload: any, id: string): Observable<any> {
+        let headers: HttpHeaders = new HttpHeaders().set("Content-Type", "application/json")
+        headers = headers.set('x-auth', this.usuarioServ.token)
+        return this.http.patch(`${this.apiUrl}api/cuenta/movimientos/ingresomovimiento/${id}`, payload, { headers })
     }
 
     registrarPagoCuota(movimiento: Movimiento): Observable<any> {
@@ -77,10 +86,10 @@ export class CuentaService {
         return this.http.post(`${this.apiUrl}api/pagos`, pago, { headers })
     }
 
-    obtenerCuenta(_id: string): Observable<any>{
+    obtenerCuenta(_id: string): Observable<any> {
         let headers: HttpHeaders = new HttpHeaders().set("Content-Type", "application/json")
         headers = headers.set('x-auth', this.usuarioServ.token)
-        return this.http.get<any>(`${this.utils.apiUrl}api/cuenta/${_id}`,{ headers })
+        return this.http.get<any>(`${this.utils.apiUrl}api/cuenta/${_id}`, { headers })
     }
 
 

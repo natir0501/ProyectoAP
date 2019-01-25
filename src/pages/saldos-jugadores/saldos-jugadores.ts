@@ -50,33 +50,37 @@ export class SaldosJugadoresPage {
   }
 
   async consultar(_id: string) {
-    if (_id != null) {
-      console.log("estoy aca,", _id);
-
-      let cuenta = await this.cuentaServ.obtenerCuenta(_id).toPromise()
-      if (cuenta) {
-        this.cuentaJugador = cuenta.data.cuenta
-        this.cuentaServ.obtenerMovimientos(this.cuentaJugador._id)
-          .subscribe((resp) => {
-            this.cuentaJugador.movimientos = resp.data.movimientos;
-            console.log("Con Movimientos",this.cuentaJugador)
-          },
-            (err) => {
-              console.log("Error obteniendo movimientos", err)
-              this.utilServ.dispararAlert("Error", "Ocurrió un error al obtener los movimientos")
-            }, () => {
-              console.log("Error.");
-              
-            })
+    try {
+      if (_id != null) {
+        let cuenta = await this.cuentaServ.obtenerCuenta(_id).toPromise()
+        if (cuenta) {
+          this.cuentaJugador = cuenta.data.cuenta
+          this.cuentaServ.obtenerMovimientos(this.cuentaJugador._id)
+            .subscribe((resp) => {
+              this.cuentaJugador.movimientos = resp.data.movimientos;
+            },
+              (err) => {
+                console.log("Error obteniendo movimientos", err)
+                this.utilServ.dispararAlert("Error", "Ocurrió un error al obtener los movimientos")
+              })
+        } else {
+          this.utilServ.dispararAlert("Upss! :(", "Ocurrió un error al obtener los datos de la cuenta.")
+        }
       } else {
-        this.utilServ.dispararAlert("Upss! :(", "Ocurrió un error al obtener los datos de la cuenta.")
+        this.utilServ.dispararAlert("Upss! :(", "Seleccioná un jugador para consultar.")
       }
-    } else {
-      this.utilServ.dispararAlert("Upss! :(", "Seleccioná un jugador para consultar.")
+    }catch(e){
+      console.log("Error: ", e);
+      this.utilServ.dispararAlert("Upss! :(", "Ocurrió un error al obtener los datos de la cuenta.")
     }
+    
   }
 
   verDetalle(mov) {
     this.navCtrl.push((DetalleMovimientoPage), { mov })
+  }
+
+  seleccionado(data) {
+    this.consultar(data.cuenta)
   }
 }

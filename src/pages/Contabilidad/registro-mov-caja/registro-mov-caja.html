@@ -7,7 +7,7 @@
   </ion-navbar>
 </ion-header>
 <ion-content padding id="nuevosmovs">
-  <form id='formnuevomov' (ngSubmit)="onSubmit()" #form="ngForm">
+  <form id='form' (ngSubmit)="onSubmit()" #form="ngForm">
     <ion-grid>
       <ion-row justify-content-center>
         <ion-col col-xl-6>
@@ -27,7 +27,7 @@
               <ion-label>
                 Concepto:
               </ion-label>
-              <ion-select okText="Ok" cancelText="Cancelar" required [(ngModel)]="concepto" name="concepto">
+              <ion-select required okText="Ok" cancelText="Cancelar" required [(ngModel)]="concepto" name="concepto">
                 <ion-option *ngFor="let c of conceptos" [id]="c._id" [value]="c">
                   {{c.nombre}}
                 </ion-option>
@@ -37,12 +37,7 @@
               <ion-item>
                 Afectación de saldo: <span item-end>{{concepto.tipo}}</span>
               </ion-item>
-            </ng-container>
-            <ion-item>
-              <ion-label>¿Es transferencia a otra categoría?:</ion-label>
-              <ion-checkbox item-end [(ngModel)]="transferencia" name="transferencia"></ion-checkbox>
-            </ion-item>
-            <ng-container *ngIf="transferencia">
+            <ng-container *ngIf="concepto.nombre==='Transferencia de Saldos'">
               <p>
                 Seleccione la categoría a la cuál se transferirán los fondos. 
               </p>
@@ -50,25 +45,28 @@
                   <ion-label>
                     Categoría:
                   </ion-label>
-                  <ion-select okText="Ok" cancelText="Cancelar" required [(ngModel)]="concepto" name="concepto">
-                      <ion-option *ngFor="let c of conceptos" [id]="c._id" [value]="c">
-                        {{c.nombre}}
+                  <ion-select required okText="Ok" cancelText="Cancelar" required [(ngModel)]="categoriaDestino" name="categoria">
+                      <ion-option *ngFor="let cat of categorias" [id]="cat._id" [value]="cat">
+                        {{cat.nombre}}
                       </ion-option>
                     </ion-select>
                 </ion-item>
+              </ng-container>
             </ng-container>
             <ion-item>
               <ion-label>
                 Monto:
               </ion-label>
-              <ion-input text-right type="text" placeholder="Ej: 500" name="monto">
+              <ion-input #monto="ngModel" ngModel required text-right type="text" placeholder="Ej: 500" name="monto">
               </ion-input>
             </ion-item>
             <ion-item>
               <ion-label>
                 Comentario:
               </ion-label>
-              <ion-textarea text-right #comentario="ngModel" ngModel name="comentario" rows=5 placeholder="Ej: Pago 1ra institucional (a media con mayor)"></ion-textarea>
+            </ion-item>
+            <ion-item>
+              <ion-textarea #comentario="ngModel" ngModel name="comentario" rows=5 placeholder="Ej: Pago 1ra institucional (a media con mayor)"></ion-textarea>
             </ion-item>
           </ion-list>
         </ion-col>
