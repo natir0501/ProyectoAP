@@ -42,7 +42,8 @@ const cargaConcepto = async () => {
     const conceptosCaja = await ConceptosCaja.find()
     if (conceptosCaja.length === 0) {
         await new ConceptosCaja({ nombre: 'Cobro de couta', tipo: 'Egreso' }).save()
-
+        await new ConceptosCaja({ nombre: 'Pago de Cuota', tipo: 'Ingreso' }).save()
+        await new ConceptosCaja({ nombre: 'Transferencia de Saldos', tipo: 'Ingreso' }).save()
     }
 }
 
@@ -59,8 +60,8 @@ const cargaPantallas = async () => {
 
 
         await new Pantalla({ 'nombre': 'Datos de jugador', 'menu': 'Jugador', 'opcionMenu': 'Datos de jugador', 'componente': 'ModificacionDatos', 'roles': [delegadoInst._id, jugador._id] }).save()
-        await new Pantalla({ 'nombre': 'Informe de Pago', 'menu': 'Jugador', 'opcionMenu': 'Informe de Pago', 'componente': 'PlaceHolderPage', 'roles': [delegadoInst._id, jugador._id,] }).save()
-        await new Pantalla({ 'nombre': 'Saldos y Movs.', 'menu': 'Jugador', 'opcionMenu': 'Saldos y Movs.', 'componente': 'PlaceHolderPage', 'roles': [delegadoInst._id, jugador._id,] }).save()
+        await new Pantalla({ 'nombre': 'Informe de Pago', 'menu': 'Jugador', 'opcionMenu': 'Solicitud de Pago', 'componente': 'RegistroPagoCuotaPage', 'roles': [delegadoInst._id, jugador._id,] }).save()
+        //await new Pantalla({ 'nombre': 'Saldos y Movs.', 'menu': 'Jugador', 'opcionMenu': 'Saldos y Movs.', 'componente': 'SaldosJugadoresPage', 'roles': [delegadoInst._id, jugador._id,tesorero._id,] }).save()
         await new Pantalla({ 'nombre': 'Datos deportivos', 'menu': 'Jugador', 'opcionMenu': 'Datos deportivos', 'componente': 'DatosDeportivosListaPage', 'roles': [delegadoInst._id, jugador._id,] }).save()
         await new Pantalla({ 'nombre': 'Cambiar Password', 'menu': 'Jugador', 'opcionMenu': 'Cambiar Passowrd', 'componente': 'ModificarPasswordPage', 'roles': [jugador._id, delegadoInst._id, delegado._id,] }).save()
 
@@ -69,12 +70,12 @@ const cargaPantallas = async () => {
         await new Pantalla({ 'nombre': 'Fixture', 'menu': 'Agenda', 'opcionMenu': 'Fixture', 'componente': 'MantenimientoCampeonatosPage', 'roles': [delegadoInst._id, delegado._id, jugador._id, dt._id] }).save()
 
 
-        await new Pantalla({ 'nombre': 'Registro de Pago', 'menu': 'Tesorería', 'opcionMenu': 'Registro de Pago', 'componente': 'PlaceHolderPage', 'roles': [delegadoInst._id, tesorero._id,] }).save()
+        await new Pantalla({ 'nombre': 'Registro de Pago', 'menu': 'Tesorería', 'opcionMenu': 'Registro de Pago', 'componente': 'RegistroPagoCuotaPage', 'roles': [delegadoInst._id, tesorero._id,] }).save()
         await new Pantalla({ 'nombre': 'Conceptos de Caja', 'menu': 'Tesorería', 'opcionMenu': 'Conceptos de Caja', 'componente': 'ConceptosDeCajaPage', 'roles': [delegadoInst._id, tesorero._id,] }).save()
-        await new Pantalla({ 'nombre': 'Aprobación de Pago', 'menu': 'Tesorería', 'opcionMenu': 'Aprobación de Pago', 'componente': 'PlaceHolderPage', 'roles': [delegadoInst._id, tesorero._id,] }).save()
-        await new Pantalla({ 'nombre': 'Ingreso Movimiento', 'menu': 'Tesorería', 'opcionMenu': 'Ingreso Movimiento', 'componente': 'PlaceHolderPage', 'roles': [delegadoInst._id, tesorero._id,] }).save()
-        await new Pantalla({ 'nombre': 'Cons. Movimientos', 'menu': 'Tesorería', 'opcionMenu': 'Cons. Movimientos', 'componente': 'PlaceHolderPage', 'roles': [delegadoInst._id, delegado._id, tesorero._id,] }).save()
-        await new Pantalla({ 'nombre': 'Cons. Mov y Sdo por Jugador', 'menu': 'Tesorería', 'opcionMenu': 'Cons. Mov y Sdo por Jugador', 'componente': 'PlaceHolderPage', 'roles': [delegadoInst._id, jugador._id, tesorero._id,] }).save()
+        await new Pantalla({ 'nombre': 'Pagos Pendientes', 'menu': 'Tesorería', 'opcionMenu': 'Pagos Pendientes', 'componente': 'PagosPendientesPage', 'roles': [delegadoInst._id, tesorero._id,] }).save()
+        await new Pantalla({ 'nombre': 'Ingreso Movimiento', 'menu': 'Tesorería', 'opcionMenu': 'Ingreso Movimiento', 'componente': 'RegistroMovCajaPage', 'roles': [delegadoInst._id, tesorero._id,] }).save()
+        await new Pantalla({ 'nombre': 'Cons. Movimientos', 'menu': 'Tesorería', 'opcionMenu': 'Cons. Movimientos', 'componente': 'SaldoMovimientosCategoriaPage', 'roles': [delegadoInst._id, delegado._id, tesorero._id,] }).save()
+        await new Pantalla({ 'nombre': 'Cons. Mov y Sdo por Jugador', 'menu': 'Tesorería', 'opcionMenu': 'Cons. Mov y Sdo por Jugador', 'componente': 'SaldosJugadoresPage', 'roles': [delegadoInst._id, delegado._id, jugador._id, tesorero._id,] }).save()
 
 
         await new Pantalla({ 'nombre': 'Registro de datos', 'menu': 'Dirección Técnica', 'opcionMenu': 'Registro de datos', 'componente': 'ListaEventosPage', 'roles': [delegadoInst._id, dt._id,] }).save()

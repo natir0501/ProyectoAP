@@ -1,4 +1,3 @@
-import { EventoService } from './../providers/evento.service';
 import { HttpClient } from '@angular/common/http';
 import { Component, ViewChild } from '@angular/core';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -9,9 +8,11 @@ import { HomePage } from '../pages/home/home';
 import { FirebaseMessagingProvider } from '../providers/firebase-messaging';
 import { Usuario } from './../models/usuario.model';
 import { CEILOGO } from './../providers/constant';
+import { EventoService } from './../providers/evento.service';
 import { MenuService } from './../providers/menu.service';
 import { UsuarioService } from './../providers/usuario.service';
 import { UtilsServiceProvider } from './../providers/utils.service';
+
 
 
 

@@ -1,14 +1,15 @@
 import { Component } from '@angular/core';
-import { AlertController, NavController, Platform, LoadingController } from 'ionic-angular';
+import { AlertController, LoadingController, NavController, Platform } from 'ionic-angular';
 import { Evento } from '../../models/evento.models';
 import { EventoService } from '../../providers/evento.service';
+import { DetallesEventoPage } from '../detalles-evento/detalles-evento';
 import { Categoria, Cuenta } from './../../models/categoria.models';
 import { Usuario } from './../../models/usuario.model';
 import { CategoriaService } from './../../providers/categoria.service';
 import { FirebaseMessagingProvider } from './../../providers/firebase-messaging';
 import { UsuarioService } from './../../providers/usuario.service';
+//import { AltaDeUsuarioPage } from '../Backoffice/alta-usuario';
 import { UtilsServiceProvider } from './../../providers/utils.service';
-import { DetallesEventoPage } from '../detalles-evento/detalles-evento';
 
 @Component({
   selector: 'page-home',

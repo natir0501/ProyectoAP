@@ -1,8 +1,8 @@
-import { Usuario } from './../../models/usuario.model';
-import { ListaCategoriasPage } from './../lista-categorias/lista-categorias';
-import { CategoriaService } from './../../providers/categoria.service';
-import { UtilsServiceProvider } from './../../providers/utils.service';
-import { Categoria } from './../../models/categoria.models';
+import { Usuario } from './../../../models/usuario.model';
+import { ListaCategoriasPage } from './../../lista-categorias/lista-categorias';
+import { CategoriaService } from './../../../providers/categoria.service';
+import { UtilsServiceProvider } from './../../../providers/utils.service';
+import { Categoria } from './../../../models/categoria.models';
 import { Component, ViewChild } from '@angular/core';
 import {  NavController, NavParams, LoadingController } from 'ionic-angular';
 import { NgForm, Validators } from '@angular/forms';

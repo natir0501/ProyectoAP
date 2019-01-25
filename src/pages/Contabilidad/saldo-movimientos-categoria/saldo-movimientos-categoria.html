@@ -1,0 +1,45 @@
+<ion-header>
+  <ion-navbar text-center color="primary">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Saldo y Movimientos</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content padding id="sdomovscat">
+  <ion-grid>
+    <ion-row justify-content-center>
+      <ion-col col-xl-6>
+
+        <ion-item-divider color="light" id="sdomovscat1">
+          Saldo:
+        </ion-item-divider>
+        <div>
+          <ion-item color="none" icon-start>
+            <ion-icon name="cash" item-left></ion-icon>
+            $ {{cuenta.saldo}}
+          </ion-item>
+        </div>
+        <ion-item-divider color="light" id="sdomovscat2">
+          Movimientos:
+        </ion-item-divider>
+        <ion-list>
+        <ion-item-sliding *ngFor="let mov of cuenta.movimientos">
+          <ion-item color="none" id="mov._id" icon-start>
+            <ion-icon name="calculator" item-left></ion-icon>
+            <label><b>Fecha:</b></label> {{mov.fecha | date:'dd-MM-yyyy'}} <br>
+            <label><b>Concepto:</b></label> {{mov.concepto}} <br>
+            <label><b>Monto:</b></label> $ {{mov.monto}}<br>
+            <label><b>Usuario:</b></label> {{mov.usuario}}<br>
+          </ion-item>
+          <ion-item-options side="right">
+            <button ion-button color="positive" (click)="verDetalle(mov)">
+              Ver Detalle
+            </button>
+          </ion-item-options>
+        </ion-item-sliding>
+      </ion-list>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

@@ -1,5 +1,5 @@
-import { Posiciones, Roles } from './enum.models';
-import { Categoria, Cuenta } from './categoria.models';
+import { Categoria } from './categoria.models';
+import { Cuenta } from './cuenta.models';
 
 function getDate() : string {
     let date = new Date()
@@ -28,7 +28,7 @@ export class Usuario{
     activo ?: boolean;
     perfiles:  Perfil[] = []
     categoriacuota ?: Categoria;
-    ultimoMesCobrado?: number
+    ultimoMesCobrado?: number;
     cuenta?: Cuenta;
 
 
