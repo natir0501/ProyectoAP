@@ -75,7 +75,6 @@ export class RegistroMovCajaPage {
       this.utilServ.dispararAlert("Error", "Ocurrió un error al obtener los datos")
       loading.dismiss();
     }
-
   }
 
   onSubmit() {
