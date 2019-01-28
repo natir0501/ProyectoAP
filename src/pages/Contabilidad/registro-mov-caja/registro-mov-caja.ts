@@ -92,7 +92,8 @@ export class RegistroMovCajaPage {
         fecha: Date.now(),
         monto: this.form.value.monto,
         concepto: this.concepto._id,
-        usuario: this.usuario._id
+        usuario: this.usuario._id,
+        estado: "Confirmado"
 
       },
     }
