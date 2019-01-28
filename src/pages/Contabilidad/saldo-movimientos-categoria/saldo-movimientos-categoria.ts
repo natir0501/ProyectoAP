@@ -117,9 +117,6 @@ export class SaldoMovimientosCategoriaPage {
   }
 
   filtrar() {
-    console.log("tipo", this.tipoSeleccionado);
-
-
     //Si no apliqué ningún filtro, ya muestro los movimientos y oculto sección filtros.
     if (this.noHayFiltros()) {
       console.log("no hay filtros");
@@ -157,10 +154,6 @@ export class SaldoMovimientosCategoriaPage {
   }
 
   validoFechas(): boolean {
-    console.log(this.fDesdeTxt, 'aaaa-mm-dd');
-    console.log(this.fHastaTxt, 'aaaa-mm-dd');
-    
-    
     if (this.fDesdeTxt !== 'aaaa-mm-dd' && this.fHastaTxt !== 'aaaa-mm-dd') {
       this.fechaD = Date.parse(this.fDesdeTxt) + 86400000
       this.fechaH = Date.parse(this.fHastaTxt) + 86400000
@@ -175,8 +168,6 @@ export class SaldoMovimientosCategoriaPage {
         this.utilServ.dispararAlert('Error', "Rango de fechas inválido")
         return false
       }
-
-
     } else {
       this.utilServ.dispararAlert('Error', "Para filtrar por fechas se debe ingresar fecha desde y fecha hasta")
       return false
