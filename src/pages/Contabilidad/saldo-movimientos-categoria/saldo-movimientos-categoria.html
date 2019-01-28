@@ -34,8 +34,8 @@
             </ion-label>
           </ion-item>
           <ion-item>
-            <ion-select okText="Ok" cancelText="Cancelar" required (ngModel)="tipo" name="tipo"  placeholder="Seleccione tipo">
-              <ion-option *ngFor="let t of tipo" [id]="t.id" [value]="t.id" text-wrap>{{t.value}}</ion-option>
+            <ion-select okText="Ok" cancelText="Cancelar" required (ngModel)="tipoSeleccionado" name="tipoSeleccionado"  placeholder="Seleccione tipo">
+              <ion-option *ngFor="let t of tipo" [id]="t.id" [value]="t.value" text-wrap>{{t.value}}</ion-option>
             </ion-select>
           </ion-item>
           <ion-item>
@@ -45,7 +45,7 @@
           </ion-item>
           <ion-item>
             <ion-select required okText="Ok" cancelText="Cancelar" required [(ngModel)]="concepto" name="concepto" placeholder="Seleccione concepto">
-              <ion-option *ngFor="let c of listaConceptos" [id]="c._id" [value]="c">
+              <ion-option *ngFor="let c of listaConceptos" [id]="c._id" [value]="c.nombre">
                 {{c.nombre}}
               </ion-option>
             </ion-select>

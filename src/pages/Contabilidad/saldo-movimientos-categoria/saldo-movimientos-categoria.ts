@@ -33,6 +33,9 @@ export class SaldoMovimientosCategoriaPage {
   tipo = Object.keys(Tipos).map(key => ({ 'id': key, 'value': Tipos[key] }));
   fDesdeTxt: string = 'aaaa-mm-dd'
   fHastaTxt: string = 'aaaa-mm-dd'
+  fechaD: number
+  fechaH: number
+  tipoSeleccionado: string = ''
 
 
 
@@ -114,39 +117,55 @@ export class SaldoMovimientosCategoriaPage {
   }
 
   filtrar() {
+    console.log("tipo", this.tipoSeleccionado);
+
 
     //Si no apliqué ningún filtro, ya muestro los movimientos y oculto sección filtros.
     if (this.noHayFiltros()) {
+      console.log("no hay filtros");
       this.btnFiltros = '+'
       this.verFiltros = !this.verFiltros
       this.toggle('verMovs');
       this.movimientos = this.cuenta.movimientos
     } else {
+
       if (this.validoFechas()) {
-        console.log("Todo OK 2");
-        //Acá voy a llamar al servicio. 
+        let loading = this.loadingCtrl.create({
+          content: 'Cargando',
+          spinner: 'circles'
+        });
+        loading.present()
+
+        this.cuentaServ.filtrarMovimientos(this.cuenta._id,
+          this.tipoSeleccionado, this.concepto._id, this.fechaD, this.fechaH).subscribe((resp) => {
+            this.cuenta.movimientos = resp.data.movimientos;
+            console.log(resp.data.movimientos);
+
+            loading.dismiss();
+          }, (err) => {
+            console.log(err);
+            loading.dismiss();
+            this.utilServ.dispararAlert("Upss!", "Ocurrió un error al obtener los movimientos. Intentá nuevamente en unos minutos.")
+          })
 
       }
     }
-    console.log("Tipo", this.tipo);
-    console.log("Conce", this.concepto);
-    console.log("F Desde", this.fDesdeTxt);
-    console.log("F Hasta", this.fHastaTxt);
-
   }
 
   noHayFiltros(): boolean {
-    return this.tipo.length === 3 && this.concepto._id === "" && this.fDesdeTxt === 'aaaa-mm-dd' && this.fHastaTxt === 'aaaa-mm-dd';
+    return this.tipoSeleccionado === '' && this.concepto._id === '' && this.fDesdeTxt === 'aaaa-mm-dd' && this.fHastaTxt === 'aaaa-mm-dd';
   }
 
   validoFechas(): boolean {
-
+    console.log(this.fDesdeTxt, 'aaaa-mm-dd');
+    console.log(this.fHastaTxt, 'aaaa-mm-dd');
+    
+    
     if (this.fDesdeTxt !== 'aaaa-mm-dd' && this.fHastaTxt !== 'aaaa-mm-dd') {
-      let fechaD = Date.parse(this.fDesdeTxt) + 86400000
-      let fechaH = Date.parse(this.fHastaTxt) + 86400000
-      console.log("D", fechaD, "H", fechaH)
-      if (fechaH > fechaD) {
-        if (fechaH >= Date.now()) {
+      this.fechaD = Date.parse(this.fDesdeTxt) + 86400000
+      this.fechaH = Date.parse(this.fHastaTxt) + 86400000
+      if (this.fechaH > this.fechaD) {
+        if (this.fechaH >= Date.now()) {
           this.utilServ.dispararAlert('Error', "Fecha Hasta no puede ser superior a la fecha de hoy.")
           return false
         } else {

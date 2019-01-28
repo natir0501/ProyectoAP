@@ -70,7 +70,7 @@ api.get('/movimientos/:id', autenticacion, async (req, res) => {
         if (req.query.fechaFin) {
             filtros.push({ 'movimientos.fecha': { $lt: req.query.fechaFin } })
         }
-
+        
         let arrayConsultas=[
             { $match: { _id: ObjectID(req.params.id) } },
             { $unwind: { path: '$movimientos' } },
@@ -86,7 +86,7 @@ api.get('/movimientos/:id', autenticacion, async (req, res) => {
 
         for (let mov of movimientosCuenta){           
             let concepto = await ConceptosCaja.findOne({'_id': mov._id.concepto})
-            console.log(concepto);
+
             
             let usu = await Usuario.findOne({'_id': mov._id.usuario})
             
@@ -98,6 +98,7 @@ api.get('/movimientos/:id', autenticacion, async (req, res) => {
             movimientos.push(movimiento)    
             
         }
+        
         res.status(200).send(new ApiResponse({movimientos}))
     } catch (e) {
         res.status(400).send(new ApiResponse({}, `Mensaje: ${e}`))

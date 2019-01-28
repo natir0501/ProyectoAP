@@ -1,13 +1,25 @@
 import { Movimiento } from './../models/cuenta.models';
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 import { UtilsServiceProvider } from "./utils.service";
 import { UsuarioService } from "./usuario.service";
 import { Observable } from "rxjs/Observable";
 import { Injectable } from '@angular/core';
 import { Usuario } from '../models/usuario.model';
+import { query } from '@angular/core/src/animation/dsl';
 
 @Injectable()
 export class CuentaService {
+
+  filtrarMovimientos(idCuenta: string, tipo: string, idConcepto: string, fechaD: number, fechaH: number): Observable <any> {
+    let headers: HttpHeaders = new HttpHeaders().set("Content-Type", "application/json")
+    headers = headers.set('x-auth', this.usuarioServ.token)
+    let params : HttpParams = new HttpParams().set('tipo', tipo);
+    params = params.set('concepto', idConcepto);
+    params = params.set('fechaInicio', fechaD.toString());
+    params = params.set('fechaFin', fechaH.toString());
+    console.log("Params", params);
+    return this.http.get(`${this.apiUrl}api/movimientos/${idCuenta}`, {headers, params} )
+  }
 
     transferenciaSaldo(payload: any, id: string): Observable <any> {
         let headers: HttpHeaders = new HttpHeaders().set("Content-Type", "application/json")
