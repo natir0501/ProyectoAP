@@ -125,13 +125,16 @@ export class SaldoMovimientosCategoriaPage {
       this.toggle('verMovs');
       this.movimientos = this.cuenta.movimientos
     } else {
-
       if (this.validoFechas()) {
+        console.log("tipo",this.tipoSeleccionado);
+        console.log("conc",this.concepto);
+
         let loading = this.loadingCtrl.create({
           content: 'Cargando',
           spinner: 'circles'
         });
         loading.present()
+
 
         this.cuentaServ.filtrarMovimientos(this.cuenta._id,
           this.tipoSeleccionado, this.concepto._id, this.fechaD, this.fechaH).subscribe((resp) => {
@@ -154,25 +157,25 @@ export class SaldoMovimientosCategoriaPage {
   }
 
   validoFechas(): boolean {
-    if (this.fDesdeTxt !== 'aaaa-mm-dd' && this.fHastaTxt !== 'aaaa-mm-dd') {
+
+    let hayFecDesde: boolean = this.fDesdeTxt.trim() !== 'aaaa-mm-dd'
+    let hayFecHasta: boolean = this.fHastaTxt.trim() !== 'aaaa-mm-dd'
+
+    if (!hayFecDesde && !hayFecHasta) return true
+    if (hayFecDesde && hayFecHasta) {
       this.fechaD = Date.parse(this.fDesdeTxt) + 86400000
       this.fechaH = Date.parse(this.fHastaTxt) + 86400000
-      if (this.fechaH > this.fechaD) {
-        if (this.fechaH >= Date.now()) {
-          this.utilServ.dispararAlert('Error', "Fecha Hasta no puede ser superior a la fecha de hoy.")
-          return false
-        } else {
-          return true;
-        }
-      } else {
-        this.utilServ.dispararAlert('Error', "Rango de fechas inválido")
+      if (this.fechaH < this.fechaD) {
+        this.utilServ.dispararAlert('Error', "Fecha Hasta no puede ser anterior a la fecha desde.")
         return false
       }
-    } else {
-      this.utilServ.dispararAlert('Error', "Para filtrar por fechas se debe ingresar fecha desde y fecha hasta")
-      return false
+      if (this.fechaH > Date.now()) {
+        this.utilServ.dispararAlert('Error', "Fecha Hasta no puede ser posterior a la fecha de hoy.")
+        return false
+      }
+      return true
     }
-
+    this.utilServ.dispararAlert('Error', "Si ingresa una fecha, debe ingresar la otra")
+    return false
   }
-
 }
