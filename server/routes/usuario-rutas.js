@@ -56,7 +56,7 @@ api.post('/usuarios', async (req, res) => {
     try {
 
         var usuario = new Usuario(_.pick(req.body, ['email']))
-
+        usuario.email = usuario.email.toString().toLowerCase()
         let perfiles = req.body.perfiles
         usuario = await usuario.save()
         let categoriaCuota = await Categoria.findOne({ _id: req.body.categoriacuota })
@@ -100,7 +100,7 @@ api.post('/usuarios', async (req, res) => {
 api.post('/usuarios/login', async (req, res) => {
 
     try {
-        let usuario = await Usuario.findByCredentials(req.body.email, req.body.password)
+        let usuario = await Usuario.findByCredentials(req.body.email.toLowerCase(), req.body.password)
 
         if (usuario) {
 
