@@ -1,17 +1,26 @@
 var {Usuario} = require('./../models/usuario')
 
 var autenticacion = (req, res, next) => {
-    var token = req.header('x-auth')
-
-    Usuario.findByToken(token).then((usuario) => {
-        if (!usuario) {
-            return Promise.reject()
-        }
-     
+    
+    if(req.url==='/usuarios/login'){
+      
         next()
-    }).catch((e) => {
-        res.status(401).send()
-    })
+    }else{
+        var token = req.header('x-auth')
+
+        Usuario.findByToken(token).then((usuario) => {
+            
+            if (!usuario) {
+                return Promise.reject()
+            }
+         
+            next()
+        }).catch((e) => {
+            res.status(401).send()
+        })
+
+    }
+
 }
 
 module.exports = {
