@@ -9,6 +9,10 @@ const { ObjectID } = require('mongodb')
 const { ApiResponse } = require('../models/api-response')
 var { enviarNotificacion } = require('../Utilidades/utilidades')
 
+var infoUsuario = 'nombre apellido email perfiles ci celular direccion fechaVtoCarneSalud delegadoInstitucional fechaNacimiento'
+infoUsuario +=' fechaUltimoExamen requiereExamen emergencia sociedad contacto posiciones activo perfiles categoriacuota ultimoMesCobrado cuenta'
+
+
 api.get('/cuenta/:_id', async (req, res) => {
     let id = req.params._id;
 
@@ -149,7 +153,7 @@ api.patch('/cuenta/transferencia/:id', async (req, res) => {
         let cuentaOrigen = await Cuenta.findById(req.params.id).populate('movimientos').exec()
         let cuentaDestino = await Cuenta.findById(req.body.idcuenta).populate('movimientos').exec();
         let movimiento = req.body.movimiento;
-        let categoriaDestino = await Categoria.findById(req.body.idcategoria).populate('tesoreros').exec()
+        let categoriaDestino = await Categoria.findById(req.body.idcategoria).populate('tesoreros',infoUsuario).exec()
 
         let nuevoSaldoCtaOrigen = cuentaOrigen.saldo - movimiento.monto;
         let nuevoSaldoCtaDestino = cuentaDestino.saldo + movimiento.monto;

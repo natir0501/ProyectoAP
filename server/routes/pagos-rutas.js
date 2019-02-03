@@ -8,6 +8,9 @@ const _ = require('lodash')
 const { ApiResponse } = require('../models/api-response')
 var { enviarNotificacion } = require('../Utilidades/utilidades')
 
+var infoUsuario = 'nombre apellido email perfiles ci celular direccion fechaVtoCarneSalud delegadoInstitucional fechaNacimiento'
+infoUsuario +=' fechaUltimoExamen requiereExamen emergencia sociedad contacto posiciones activo perfiles categoriacuota ultimoMesCobrado cuenta'
+
 
 api.post('/pagos', async (req, res) => {
     try {
@@ -21,7 +24,7 @@ api.post('/pagos', async (req, res) => {
         let categoria = await Categoria.findById(jugador.categoriacuota)
             .populate('cuenta')
             .populate('movimientos')
-            .populate('tesoreros')
+            .populate('tesoreros',infoUsuario)
             .exec();
 
 
