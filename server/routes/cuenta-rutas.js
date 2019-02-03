@@ -7,7 +7,6 @@ const { Categoria } = require('../models/categoria')
 const _ = require('lodash')
 const { ObjectID } = require('mongodb')
 const { ApiResponse } = require('../models/api-response')
-const { autenticacion } = require('../middlewares/autenticacion')
 var { enviarNotificacion } = require('../Utilidades/utilidades')
 
 api.get('/cuenta/:_id', async (req, res) => {
@@ -54,7 +53,7 @@ api.get('/movimientospendientes/:id', async (req, res) => {
 
 })
 
-api.get('/movimientos/:id', autenticacion, async (req, res) => {
+api.get('/movimientos/:id', async (req, res) => {
 
     try {
 

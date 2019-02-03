@@ -21,7 +21,7 @@ export class HomePage {
   eventos: Evento[] = []
   categoria: Categoria = new Categoria()
   habilitoHome: boolean = false;
-  cuenta : Cuenta = new Cuenta()
+  cuenta: Cuenta = new Cuenta()
 
   constructor(public navCtrl: NavController, private alertCtrk: AlertController,
     private platform: Platform, public fmp: FirebaseMessagingProvider
@@ -41,7 +41,7 @@ export class HomePage {
           this.categoria = resp.data.categoria
           this.obtenerEventos()
           let resp2 = await this.userServ.getCuenta(this.usuario._id).toPromise()
-          if(resp2){
+          if (resp2) {
             this.cuenta = resp2.data.cuenta
             this.habilitoHome = true;
           }
@@ -55,20 +55,20 @@ export class HomePage {
 
   }
 
-  getSubtitulo(evento: Evento){
+  getSubtitulo(evento: Evento) {
     let date = new Date(evento.fecha)
-    let dia = date.getDate() >= 10 ? date.getDate() : '0'+date.getDate()
-    let mes = date.getMonth() >= 10 ? date.getMonth() + 1 : '0'+(date.getMonth()+1)
+    let dia = date.getDate() >= 10 ? date.getDate() : '0' + date.getDate()
+    let mes = date.getMonth() >= 10 ? date.getMonth() + 1 : '0' + (date.getMonth() + 1)
     let anio = date.getFullYear()
-    let hora = date.getHours() >= 10 ? date.getHours() : '0'+ date.getHours()
-    let minutos = date.getMinutes() >= 10 ? date.getMinutes() : '0'+ date.getMinutes()
+    let hora = date.getHours() >= 10 ? date.getHours() : '0' + date.getHours()
+    let minutos = date.getMinutes() >= 10 ? date.getMinutes() : '0' + date.getMinutes()
 
     return `${dia}/${mes}/${anio} - ${hora}:${minutos} hs. - ${evento.tipoEvento.nombre}`
   }
 
-  get fechaCuota(){
-    
-    return `${this.categoria.diaVtoCuota}/${new Date().getMonth()+2}/${new Date().getFullYear()}`
+  get fechaCuota() {
+
+    return `${this.categoria.diaVtoCuota}/${new Date().getMonth() + 2}/${new Date().getFullYear()}`
   }
 
   async obtenerEventos() {
@@ -78,14 +78,14 @@ export class HomePage {
       let resp = await this.eventServ.obtenerEventosHome(this.usuario._id).toPromise()
       if (resp) {
         this.eventos = resp.data.eventos
-      
+
       }
 
     } catch (e) {
       console.log(e)
     }
   }
-  confirmar(asiste: boolean, evento: Evento) {
+  confirmar(asiste: boolean | undefined, evento: Evento) {
     try {
 
       let loader = this.loader.create({
@@ -96,14 +96,20 @@ export class HomePage {
       loader.present()
       this.eventServ.confirmar(this.usuario, asiste, evento._id).subscribe((resp) => {
         loader.dismiss()
-        if (asiste) {
-          this.utilServ.dispararAlert("Procesado", "Ha confirmado que asiste al evento")
+        if (asiste === undefined) {
+          this.utilServ.dispararAlert("Procesado", "Ha puesto en duda que asiste al evento")
         } else {
-          this.utilServ.dispararAlert("Procesado", "Ha confirmado que no asiste al evento")
+
+          if (asiste) {
+            this.utilServ.dispararAlert("Procesado", "Ha confirmado que asiste al evento")
+          } else {
+            this.utilServ.dispararAlert("Procesado", "Ha confirmado que no asiste al evento")
+          }
         }
         this.obtenerEventos()
 
       }, (err) => {
+        loader.dismiss()
         console.log(err)
         this.utilServ.dispararAlert('Error', "No se ha podido completar la solicitud")
       })

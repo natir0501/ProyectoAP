@@ -48,9 +48,9 @@
 
 
                 <ion-card-content>
-                  <p class="listas">Confirmados ({{evento.confirmados.length}})</p>
-                  <p class="listas">Duda (0)</p>
-                  <p class="listas">No van ({{evento.noAsisten.length}})</p>
+                  <p [class]="evento.confirmados.indexOf(usuario._id) >= 0?'listas mia': 'listas'">Confirmados ({{evento.confirmados.length}})</p>
+                  <p [class]="evento.duda.indexOf(usuario._id) >= 0?'listas mia': 'listas'">Duda ({{evento.duda.length}})</p>
+                  <p [class]="evento.noAsisten.indexOf(usuario._id) >= 0?'listas mia': 'listas'">No van ({{evento.noAsisten.length}})</p>
                 </ion-card-content>
 
                 <ion-row class="card-footer">
@@ -67,7 +67,7 @@
                     </button>
                   </ion-col>
                   <ion-col>
-                    <button ion-button clear >
+                    <button ion-button clear (click)="confirmar(undefined,evento)" >
                       DUDA
 
                     </button>

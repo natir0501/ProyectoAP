@@ -52,11 +52,11 @@ api.get('/eventos/home', async (req, res) => {
         let filtro = {}
         let fechafin = new Date().setDate(new Date().getDate() + 15)
         let fecha = { $gt: Date.now(), $lt: fechafin.valueOf() }
-       
+
         filtro = { fecha }
 
 
-        let eventos = await Evento.find(filtro).populate('tipoEvento').sort({fecha: 1})
+        let eventos = await Evento.find(filtro).populate('tipoEvento').sort({ fecha: 1 })
         eventos = eventos.filter((evt) => {
             if (evt.invitados.indexOf(usuarioId) >= 0) {
                 return true
@@ -67,6 +67,10 @@ api.get('/eventos/home', async (req, res) => {
             if (evt.noAsisten.indexOf(usuarioId) >= 0) {
                 return true
             }
+            if (evt.duda.indexOf(usuarioId) >= 0) {
+                return true
+            }
+
             return false
         })
 
@@ -127,6 +131,7 @@ api.get('/eventos/:id', async (req, res) => {
     }).populate('invitados')
         .populate('noAsisten')
         .populate('confirmados')
+        .populate('duda')
         .populate('categoria')
         .populate('tipoEvento')
         .then((evento) => {
@@ -175,22 +180,49 @@ api.put('/eventos/:id/confirmar', async (req, res) => {
             if (evento.invitados.indexOf(usuario._id) > -1) {
 
                 evento.invitados.splice(evento.invitados.indexOf(usuario._id), 1)
-
-                if (asiste) {
-                    evento.confirmados.push(usuario._id)
+                if (asiste === undefined) {
+                    evento.duda.push(usuario._id)
                 } else {
-                    evento.noAsisten.push(usuario._id)
-                }
-            } else {
-                if (asiste) {
-                    if (evento.confirmados.indexOf(usuario._id) < 0) {
+                    if (asiste) {
                         evento.confirmados.push(usuario._id)
+                    } else {
+                        evento.noAsisten.push(usuario._id)
+                    }
+                }
+
+            } else {
+                if (asiste === undefined) {
+                    if(evento.duda.indexOf(usuario._id)<0){
+                        evento.duda.push(usuario._id)
+                    }
+                    if (evento.confirmados.indexOf(usuario._id) < 0) {
                         evento.noAsisten.splice(evento.noAsisten.indexOf(usuario._id), 1)
+                    } else {
+                        evento.confirmados.splice(evento.confirmados.indexOf(usuario._id), 1)
                     }
                 } else {
-                    if (evento.noAsisten.indexOf(usuario._id) < 0) {
-                        evento.noAsisten.push(usuario._id)
-                        evento.confirmados.splice(evento.confirmados.indexOf(usuario._id), 1)
+                    if (asiste) {
+                        if (evento.confirmados.indexOf(usuario._id) < 0) {
+                            evento.confirmados.push(usuario._id)
+                           
+                        }
+                        if(evento.duda.indexOf(usuario._id)>= 0){
+                            evento.duda.splice(evento.duda.indexOf(usuario._id), 1)
+                        }
+                        if(evento.noAsisten.indexOf(usuario._id)>= 0){
+                            evento.noAsisten.splice(evento.noAsisten.indexOf(usuario._id), 1)
+                        }
+                    } else {
+                        if (evento.noAsisten.indexOf(usuario._id) < 0) {
+                            evento.noAsisten.push(usuario._id)
+                           
+                        }
+                        if(evento.duda.indexOf(usuario._id)>= 0){
+                            evento.duda.splice(evento.duda.indexOf(usuario._id), 1)
+                        }
+                        if(evento.confirmados.indexOf(usuario._id)>= 0){
+                            evento.confirmados.splice(evento.confirmados.indexOf(usuario._id), 1)
+                        }
                     }
                 }
             }
@@ -249,9 +281,11 @@ api.put('/eventos/:id', async (req, res) => {
                 .populate('confirmados')
                 .populate('invitados')
                 .populate('noAsisten')
+                .populate('duda')
 
             let invitados = [
                 ...evento.confirmados,
+                ...evento.duda,
                 ...evento.invitados,
                 ...evento.noAsisten
             ]

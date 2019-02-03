@@ -14,7 +14,7 @@ const cuentaRuta= require('./routes/cuenta-rutas');
 const pagosRuta= require('./routes/pagos-rutas');
 const eventoRuta= require('./routes/evento-rutas');
 const fixtureRuta= require('./routes/fixture-rutas');
-
+const { autenticacion } = require('./middlewares/autenticacion')
 
 
 const app = express()
@@ -24,6 +24,7 @@ const port = process.env.PORT
 
 app.use(bodyParser.json())
 
+app.use('/api',autenticacion)
 app.use('/api', pantallasRuta);
 app.use('/api', rolesRuta);
 app.use('/api', UsuariosRuta);

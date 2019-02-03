@@ -41,6 +41,10 @@ var EventoSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref:'Usuario'
     }],
+    duda: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref:'Usuario'
+    }],
     registrosDT:[{
         jugadorId:{
             type: mongoose.Schema.Types.ObjectId,

@@ -3,13 +3,13 @@ var api = express.Router();
 const { Categoria } = require('../models/categoria')
 const { Usuario } = require('../models/usuario')
 const { Cuenta } = require('../models/cuenta')
-const { autenticacion } = require('../middlewares/autenticacion')
+
 const _ = require('lodash')
 const { ApiResponse } = require('../models/api-response')
 var { enviarNotificacion } = require('../Utilidades/utilidades')
 
 
-api.post('/pagos', autenticacion, async (req, res) => {
+api.post('/pagos', async (req, res) => {
     try {
 
         let jugador = await Usuario.findById(req.body.jugadorid)
@@ -82,7 +82,7 @@ api.post('/pagos', autenticacion, async (req, res) => {
 })
 
 
-api.patch('/pagos/confirmacion/:id', autenticacion, async (req, res) => {
+api.patch('/pagos/confirmacion/:id', async (req, res) => {
 
     try {
 
@@ -155,7 +155,7 @@ api.patch('/pagos/confirmacion/:id', autenticacion, async (req, res) => {
 })
 
 
-api.patch('/pagos/rechazo/:id', autenticacion, async (req, res) => {
+api.patch('/pagos/rechazo/:id', async (req, res) => {
 
     try {
 

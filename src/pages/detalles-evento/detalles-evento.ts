@@ -26,9 +26,11 @@ export class DetallesEventoPage {
   btnConvocados: string = '+'
   btnVan: string = '+'
   btnNoVan: string = '+'
+  btnDuda: string = '+'
   verConvocados: boolean = false
   verVan: boolean = false
   verNoVan: boolean = false
+  verDuda: boolean = false
   usuario: Usuario = new Usuario()
 
 
@@ -84,6 +86,14 @@ export class DetallesEventoPage {
       }
       this.verVan = !this.verVan
     }
+    if (lista === 'duda') {
+      if (!this.verVan) {
+        this.btnDuda = '-'
+      } else {
+        this.btnDuda = '+'
+      }
+      this.verDuda = !this.verDuda
+    }
     if (lista === 'noVan') {
       if (!this.verNoVan) {
         this.btnNoVan = '-'
@@ -109,14 +119,22 @@ export class DetallesEventoPage {
 
     return true
   }
+
+  puedoDudar(){
+    if (this.evento.duda.find((u) => u._id === this.usuario._id)) return false
+
+    return true
+  }
+
   convocado() {
     if (this.evento.invitados.find((u) => u._id === this.usuario._id)) return true
+    if (this.evento.duda.find((u) => u._id === this.usuario._id)) return true
     if (this.evento.confirmados.find((u) => u._id === this.usuario._id)) return true
     if (this.evento.noAsisten.find((u) => u._id === this.usuario._id)) return true
     return false
   }
 
-  confirmar(asiste: boolean) {
+  confirmar(asiste: boolean | undefined) {
     let loader = this.loader.create({
       content: 'Cargando...',
       spinner: 'circles'
@@ -125,10 +143,14 @@ export class DetallesEventoPage {
     loader.present()
     this.eventServ.confirmar(this.usuario, asiste, this.evento._id).subscribe((resp) => {
       loader.dismiss()
-      if (asiste) {
-        this.utilServ.dispararAlert("Procesado", "Ha confirmado que asiste al evento")
+      if (asiste === undefined) {
+        this.utilServ.dispararAlert("Procesado", "Ha puesto en duda que asiste al evento")
       } else {
-        this.utilServ.dispararAlert("Procesado", "Ha confirmado que no asiste al evento")
+        if (asiste) {
+          this.utilServ.dispararAlert("Procesado", "Ha confirmado que asiste al evento")
+        } else {
+          this.utilServ.dispararAlert("Procesado", "Ha confirmado que no asiste al evento")
+        }
       }
       this.navCtrl.setRoot(ListaEventosPage)
     }, (err) => {
@@ -150,10 +172,10 @@ export class DetallesEventoPage {
 
     //AGREGO LA FILA AL ARRAY DE FILAS
     contenidoFilas.push(fila)
-    
-      //LLAMO AL METODO PARA GENAR EL PDF, PASO COLUMNAS, FILAS, NOMBRE DE ARCHIVO
-      //Y SI LO QUIERO APAISADO LE PASO UN 'h' sino el cuarto parámetro no va
-    this.utilServ.generarPDF(columnas, contenidoFilas, `Evento ${this.evento.nombre}`,'h')
+
+    //LLAMO AL METODO PARA GENAR EL PDF, PASO COLUMNAS, FILAS, NOMBRE DE ARCHIVO
+    //Y SI LO QUIERO APAISADO LE PASO UN 'h' sino el cuarto parámetro no va
+    this.utilServ.generarPDF(columnas, contenidoFilas, `Evento ${this.evento.nombre}`, 'h')
 
   }
 }
