@@ -162,8 +162,8 @@ altaMasivaUsuarios = async (correos, rolId, catId) => {
     usuariosIds = []
 
     for (let email of correos) {
-
-        usuario = await Usuario.findOne({ email })
+        let correo = email.toString().toLowerCase()
+        usuario = await Usuario.findOne({ email: correo })
 
         if (usuario) {
             let encontreCat = false
@@ -181,7 +181,7 @@ altaMasivaUsuarios = async (correos, rolId, catId) => {
 
         } else {
             let perfiles = [{ 'categoria': catId, 'roles': [rolId] }]
-            usu = await new Usuario({ email, perfiles })
+            usu = await new Usuario({ email: correo, perfiles })
             usu.categoriacuota = catId
             usu = await usu.save()
             usu.generateAuthToken()
