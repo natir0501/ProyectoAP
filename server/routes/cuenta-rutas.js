@@ -36,10 +36,10 @@ api.get('/movimientospendientes/:id', async (req, res) => {
     })
         .then(async (cuenta) => {
             if (cuenta) {
-                for(let mov of cuenta.movimientos){
-                    if(mov.confirmado==false){
+                for (let mov of cuenta.movimientos) {
+                    if (mov.confirmado == false) {
                         let usuario = await Usuario.findById(mov.usuario)
-                        mov.usuario=usuario
+                        mov.usuario = usuario
                         movimientos.push(mov);
                         console.log(movimientos)
                     }
@@ -57,48 +57,53 @@ api.get('/movimientospendientes/:id', async (req, res) => {
 api.get('/movimientos/:id', autenticacion, async (req, res) => {
 
     try {
-        filtros = []
-        if (req.query.tipo) {
-            filtros.push({ 'movimientos.tipo': req.query.tipo })
-        }
-        if (req.query.concepto) {
-            filtros.push({ 'movimientos.concepto': ObjectID(req.query.concepto) })
-        }
-        if (req.query.fechaInicio) {
-            filtros.push({ 'movimientos.fecha': { $gt: req.query.fechaInicio } })
-        }
-        if (req.query.fechaFin) {
-            filtros.push({ 'movimientos.fecha': { $lt: req.query.fechaFin } })
-        }
 
-        let arrayConsultas=[
-            { $match: { _id: ObjectID(req.params.id) } },
-            { $unwind: { path: '$movimientos' } },
-            { $group: {_id: '$movimientos'}},
-        ]
+        let cta = await Cuenta.findById(req.params.id);
+        if (cta) {
+            let movs = [...cta.movimientos]
 
-        if(filtros.length>0){
-            arrayConsultas.push({ $match: { $and: filtros } })
-        }
-
-        let movimientosCuenta = await Cuenta.aggregate(arrayConsultas)
-        let movimientos = []
-
-        for (let mov of movimientosCuenta){           
-            let concepto = await ConceptosCaja.findOne({'_id': mov._id.concepto})
-            console.log(concepto);
-            
-            let usu = await Usuario.findOne({'_id': mov._id.usuario})
-            
-            let movimiento = {
-                ...mov._id
+            if (req.query.tipo) {
+                movs=movs.filter((mov)=>{
+                    return mov.tipo===req.query.tipo
+                })
             }
-            movimiento.concepto = concepto.nombre            
-            movimiento.usuario= usu.nombre + " " + usu.apellido
-            movimientos.push(movimiento)    
+            if (req.query.concepto) {
+                movs=movs.filter((mov)=>{
             
+                    idconcepto= ObjectID(req.query.concepto)
+                    
+                    return mov.concepto.toString()===idconcepto.toString()
+                })
+            }
+            if (req.query.fechaInicio) {
+                movs=movs.filter((mov)=>{
+                    return mov.fecha>=req.query.fechaInicio
+                })
+            }
+            if (req.query.fechaFin) {
+                movs=movs.filter((mov)=>{
+                    return mov.fecha<=req.query.fechaFin
+                })
+            }
+         
+            let movimientos = []
+            
+            for (let i=0; i<movs.length; i++){
+                let movimiento = movs[i]._doc
+                let concepto= await ConceptosCaja.findById(movimiento.concepto)
+             
+                movimiento.concepto=concepto.nombre
+                let usuario= await Usuario.findById(movimiento.usuario)
+                movimiento.usuario = usuario.nombre + ' ' + usuario.apellido
+                movimientos.push(movimiento)
+                
+                
+            }
+    
+            res.status(200).send(new ApiResponse({ movimientos }))
         }
-        res.status(200).send(new ApiResponse({movimientos}))
+
+       
     } catch (e) {
         res.status(400).send(new ApiResponse({}, `Mensaje: ${e}`))
     }
@@ -140,12 +145,12 @@ api.patch('/cuenta/movimientos/ingresomovimiento/:id', async (req, res) => {
 })
 
 api.patch('/cuenta/transferencia/:id', async (req, res) => {
-// en el body viene el movimiento, idCuenta (destino), IdCategoria
+    // en el body viene el movimiento, idCuenta (destino), IdCategoria
     try {
         let cuentaOrigen = await Cuenta.findById(req.params.id).populate('movimientos').exec()
-        let cuentaDestino= await Cuenta.findById(req.body.idcuenta).populate('movimientos').exec();
+        let cuentaDestino = await Cuenta.findById(req.body.idcuenta).populate('movimientos').exec();
         let movimiento = req.body.movimiento;
-        let categoriaDestino= await Categoria.findById(req.body.idcategoria).populate('tesoreros').exec()
+        let categoriaDestino = await Categoria.findById(req.body.idcategoria).populate('tesoreros').exec()
 
         let nuevoSaldoCtaOrigen = cuentaOrigen.saldo - movimiento.monto;
         let nuevoSaldoCtaDestino = cuentaDestino.saldo + movimiento.monto;
@@ -172,12 +177,12 @@ api.patch('/cuenta/transferencia/:id', async (req, res) => {
                 new: true
             })
 
-            for (let t of categoriaDestino.tesoreros) {
-                tituloNot = `Transferencia entre categorías`,
-                    bodyNot = `Hola ${t.nombre}! Se registró una trasnferencia a la categoria ${categoriaDestino.nombre}. Ingresá a la App para visualizar el movimiento.`
-                enviarNotificacion(t, tituloNot, bodyNot)
-            }
-            res.status(200).send(new ApiResponse({cuentaOrigen}));
+        for (let t of categoriaDestino.tesoreros) {
+            tituloNot = `Transferencia entre categorías`,
+                bodyNot = `Hola ${t.nombre}! Se registró una trasnferencia a la categoria ${categoriaDestino.nombre}. Ingresá a la App para visualizar el movimiento.`
+            enviarNotificacion(t, tituloNot, bodyNot)
+        }
+        res.status(200).send(new ApiResponse({ cuentaOrigen }));
     } catch (e) {
         res.status(400).send(new ApiResponse({}, `Mensaje: ${e}`))
     }

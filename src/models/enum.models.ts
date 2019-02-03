@@ -24,7 +24,8 @@ export enum Roles{
 
 export enum Tipos{
     Ingreso = 'Ingreso',
-    Egreso = 'Egreso'
+    Egreso = 'Egreso',
+    Transf = 'Transferencia'
 }
 
 export enum Ruedas{
