@@ -7,8 +7,7 @@ var autenticacion = (req, res, next) => {
         if (!usuario) {
             return Promise.reject()
         }
-        req.usuario = usuario
-        req.token = token
+     
         next()
     }).catch((e) => {
         res.status(401).send()
