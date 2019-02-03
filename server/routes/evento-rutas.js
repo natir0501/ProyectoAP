@@ -7,6 +7,10 @@ const { ObjectID } = require('mongodb')
 var { enviarNotificacion } = require('../Utilidades/utilidades')
 const { Usuario } = require('../models/usuario')
 
+var infoUsuario = 'nombre apellido email perfiles ci celular direccion fechaVtoCarneSalud delegadoInstitucional fechaNacimiento'
+infoUsuario +=' fechaUltimoExamen requiereExamen emergencia sociedad contacto posiciones activo perfiles categoriacuota ultimoMesCobrado cuenta'
+
+
 api.get('/eventos', async (req, res) => {
 
     try {
@@ -128,10 +132,10 @@ api.get('/eventos/:id', async (req, res) => {
 
     Evento.findOne({
         _id: id
-    }).populate('invitados')
-        .populate('noAsisten')
-        .populate('confirmados')
-        .populate('duda')
+    }).populate('invitados',infoUsuario)
+        .populate('noAsisten',infoUsuario)
+        .populate('confirmados',infoUsuario)
+        .populate('duda',infoUsuario)
         .populate('categoria')
         .populate('tipoEvento')
         .then((evento) => {
@@ -278,10 +282,10 @@ api.put('/eventos/:id', async (req, res) => {
         }
         if (notificar === 'true') {
             evento = await Evento.findOne({ _id })
-                .populate('confirmados')
-                .populate('invitados')
-                .populate('noAsisten')
-                .populate('duda')
+                .populate('confirmados',infoUsuario)
+                .populate('invitados',infoUsuario)
+                .populate('noAsisten',infoUsuario)
+                .populate('duda',infoUsuario)
 
             let invitados = [
                 ...evento.confirmados,

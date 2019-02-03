@@ -9,15 +9,19 @@ const { validarId } = require('../Utilidades/utilidades')
 const { ApiResponse } = require('../models/api-response')
 const { autenticacion } = require('../middlewares/autenticacion')
 
+var infoUsuario = 'nombre apellido email perfiles ci celular direccion fechaVtoCarneSalud delegadoInstitucional fechaNacimiento'
+infoUsuario +=' fechaUltimoExamen requiereExamen emergencia sociedad contacto posiciones activo perfiles categoriacuota ultimoMesCobrado cuenta'
+
 api.get('/categorias', autenticacion, (req, res) => {
     Categoria.find()
-        .populate('dts')
-        .populate('delegados')
-        .populate('jugadores')
-        .populate('tesoreros')
-        .populate('caja')
-        .populate('campeonatos')
-        .populate('cuenta')
+        .populate('dts', infoUsuario)
+        .populate('delegados', infoUsuario)
+        .populate('jugadores', infoUsuario)
+        .populate('tesoreros', infoUsuario)
+        .populate('caja', infoUsuario)
+        .populate('campeonatos', infoUsuario)
+        .populate('cuenta', infoUsuario)
+        
         .then((categorias) => {
             res.status(200).send(new ApiResponse({ categorias }))
         }), (e) => {
@@ -135,12 +139,12 @@ api.get('/categorias/:_id', (req, res) => {
     Categoria.findOne({
         _id: id
     })
-        .populate('dts')
-        .populate('delegados')
-        .populate('tesoreros')
-        .populate('jugadores')
-        .populate('cuenta')
-        .populate('campeonatos')
+        .populate('dts',infoUsuario)
+        .populate('delegados',infoUsuario)
+        .populate('tesoreros',infoUsuario)
+        .populate('jugadores',infoUsuario)
+        .populate('cuenta',infoUsuario)
+        .populate('campeonatos',infoUsuario)
         .then((categoria) => {
             if (categoria) {
                 res.status(200).send(new ApiResponse({ categoria }))

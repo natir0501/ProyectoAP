@@ -10,7 +10,7 @@ const { ObjectID } = require('mongodb')
 
 api.get('/usuarios', (req, res) => {
 
-    Usuario.find()
+    Usuario.find({},{tokens: 0, password: 0})
         .then((usuarios) => res.status(200).send(new ApiResponse({ usuarios })))
         .catch((e) => res.status(400).send(new ApiResponse({}, `Mensaje: ${e}`)))
 })
