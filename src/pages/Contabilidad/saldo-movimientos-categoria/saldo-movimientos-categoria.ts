@@ -139,7 +139,7 @@ export class SaldoMovimientosCategoriaPage {
         this.cuentaServ.filtrarMovimientos(this.cuenta._id,
           this.tipoSeleccionado, this.concepto._id, this.fechaD, this.fechaH).subscribe((resp) => {
             this.cuenta.movimientos = resp.data.movimientos;
-            console.log(resp.data.movimientos);
+            
 
             loading.dismiss();
           }, (err) => {

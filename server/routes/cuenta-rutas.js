@@ -58,17 +58,17 @@ api.get('/movimientos/:id', autenticacion, async (req, res) => {
 
     try {
 
-        let cta = await Cuenta.findById(req.params.id).populate('movimientos');
+        let cta = await Cuenta.findById(req.params.id);
         if (cta) {
-            let movimientos = [...cta.movimientos]
+            let movs = [...cta.movimientos]
 
             if (req.query.tipo) {
-                movimientos=movimientos.filter((mov)=>{
+                movs=movs.filter((mov)=>{
                     return mov.tipo===req.query.tipo
                 })
             }
             if (req.query.concepto) {
-                movimientos=movimientos.filter((mov)=>{
+                movs=movs.filter((mov)=>{
             
                     idconcepto= ObjectID(req.query.concepto)
                     
@@ -76,25 +76,27 @@ api.get('/movimientos/:id', autenticacion, async (req, res) => {
                 })
             }
             if (req.query.fechaInicio) {
-                movimientos=movimientos.filter((mov)=>{
+                movs=movs.filter((mov)=>{
                     return mov.fecha>=req.query.fechaInicio
                 })
             }
             if (req.query.fechaFin) {
-                movimientos=movimientos.filter((mov)=>{
+                movs=movs.filter((mov)=>{
                     return mov.fecha<=req.query.fechaFin
                 })
             }
-            console.log(movimientos.length);
+         
+            let movimientos = []
             
-            for (let i=0; i<movimientos.length; i++){
-               
-                let concepto= await ConceptosCaja.findById(movimientos[i].concepto)
-                movimientos[i].concepto=concepto.nombre
-                let usuario= await Usuario.findById(movimientos[i].usuario)
-                console.log(usuario.nombre);
+            for (let i=0; i<movs.length; i++){
+                let movimiento = movs[i]._doc
+                let concepto= await ConceptosCaja.findById(movimiento.concepto)
+             
+                movimiento.concepto=concepto.nombre
+                let usuario= await Usuario.findById(movimiento.usuario)
+                movimiento.usuario = usuario.nombre + ' ' + usuario.apellido
+                movimientos.push(movimiento)
                 
-                console.log(movimientos[i]);
                 
             }
     
