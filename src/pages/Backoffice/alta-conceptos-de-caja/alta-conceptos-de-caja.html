@@ -25,10 +25,10 @@
           </ion-item-divider>
 
           <ion-item [ngClass]="{'ng-touched' : nombre.touched}" id="altaConceptosDeCaja-input13">
-            <ion-label>
+            <ion-label [class]="!habilitado? 'disabled' : ''">
               Nombre:
             </ion-label>
-            <ion-input text-right type="text" placeholder="Ej: Pago Preparador físico" name="nombre" nombre [(ngModel)]="concepto.nombre"
+            <ion-input text-right type="text"  [disabled]="!habilitado" placeholder="Ej: Pago Preparador físico" name="nombre" nombre [(ngModel)]="concepto.nombre"
               #nombre="ngModel" required>
             </ion-input>
           </ion-item>
@@ -36,7 +36,7 @@
             <ion-label>
               Tipo de movimiento:
             </ion-label>
-            <ion-select okText="Ok" cancelText="Cancelar" required [(ngModel)]="concepto.tipo" name="tipo">
+            <ion-select [disabled]="!habilitado" okText="Ok" cancelText="Cancelar" required [(ngModel)]="concepto.tipo" name="tipo">
               <ion-option *ngFor="let pos of tipo" [id]="pos.id" [value]="pos.id">{{pos.value}}</ion-option>
             </ion-select>
 
@@ -45,7 +45,7 @@
       </ion-row>
       <ion-row justify-content-center>
         <ion-col col-xl-2>
-          <button id="altaConceptosDeCaja-button4" type="submit" ion-button block color="positive" [disabled]="form.form.invalid">
+          <button id="altaConceptosDeCaja-button4" type="submit" ion-button block color="positive" [disabled]="form.form.invalid || !habilitado">
             Guardar
           </button>
         </ion-col>

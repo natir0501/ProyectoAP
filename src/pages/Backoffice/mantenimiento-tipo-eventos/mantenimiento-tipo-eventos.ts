@@ -21,6 +21,7 @@ import { TipoEventosPage } from '../tipo-eventos/tipo-eventos';
 export class MantenimientoTipoEventosPage {
 
   tipoEvento: TipoEvento = new TipoEvento;
+  habilitado: boolean = true
 
   @ViewChild("form") formulario: NgForm
 
@@ -34,6 +35,9 @@ export class MantenimientoTipoEventosPage {
 
     if (te) {
       this.tipoEvento = te
+      let noPermitidos = ['Partido Oficial']
+      this.habilitado = noPermitidos.indexOf(this.tipoEvento.nombre) < 0
+      
     }
     
   }
@@ -69,5 +73,6 @@ export class MantenimientoTipoEventosPage {
     }
 
   }
+  
 
 }

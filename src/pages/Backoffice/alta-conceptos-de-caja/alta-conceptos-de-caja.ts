@@ -17,6 +17,7 @@ export class AltaConceptosDeCajaPage {
 
   concepto: ConceptoCaja = new ConceptoCaja;
   tipo = Object.keys(Tipos).map(key => ({ 'id': key, 'value': Tipos[key] }))
+  habilitado : boolean = true
 
   @ViewChild("form") formulario: NgForm
 
@@ -29,6 +30,9 @@ export class AltaConceptosDeCajaPage {
     let conc: Concepto = this.navParams.get('concepto')
     if (conc) {
       this.concepto = conc
+      let noPermitidos = ['Cobro de couta', 'Pago de Cuota', 'Transferencia de Saldos']
+      this.habilitado = noPermitidos.indexOf(this.concepto.nombre) < 0
+      
     }
   }
 
@@ -63,5 +67,5 @@ export class AltaConceptosDeCajaPage {
     }
 
   }
-
+  
 }
