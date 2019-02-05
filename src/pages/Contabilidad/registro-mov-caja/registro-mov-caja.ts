@@ -65,7 +65,7 @@ export class RegistroMovCajaPage {
 
       if (conc) {
         this.conceptos = conc.data.conceptosCaja;
-        this.conceptos = this.conceptos.filter(cc=>{return cc.nombre !== 'Pago de Cuota'})
+        this.conceptos = this.conceptos.filter(cc=>{return ['Cobro de couta','Pago de Cuota'].indexOf(cc.nombre)<0})
         this.concepto = this.conceptos[0]
         console.log(this.conceptos);
 
