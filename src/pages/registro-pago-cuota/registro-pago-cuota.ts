@@ -1,16 +1,15 @@
-import { Movimiento } from './../../models/cuenta.models';
-import { ConceptoService } from './../../providers/concepto.service';
-import { Usuario } from './../../models/usuario.model';
-import { Cuenta, Concepto } from './../../models/categoria.models';
-import { UsuarioService } from './../../providers/usuario.service';
-import { NavController, NavParams, LoadingController } from 'ionic-angular';
 import { Component } from '@angular/core';
+import { LoadingController, NavController, NavParams } from 'ionic-angular';
+import { Categoria } from '../../models/categoria.models';
+import { CategoriaService } from '../../providers/categoria.service';
 import { CuentaService } from '../../providers/cuenta.service';
 import { UtilsServiceProvider } from '../../providers/utils.service';
-import { CategoriaService } from '../../providers/categoria.service';
-import { Categoria } from '../../models/categoria.models';
 import { HomePage } from '../home/home';
-import { empty } from 'rxjs/Observer';
+import { Concepto, Cuenta } from './../../models/categoria.models';
+import { Movimiento } from './../../models/cuenta.models';
+import { Usuario } from './../../models/usuario.model';
+import { ConceptoService } from './../../providers/concepto.service';
+import { UsuarioService } from './../../providers/usuario.service';
 
 
 @Component({
@@ -46,7 +45,7 @@ export class RegistroPagoCuotaPage {
     let dataUsuarios: any = await this.catService.obtenerCategoria(this.categoria._id).toPromise()
     if (dataUsuarios) {
       this.categoria = dataUsuarios.data.categoria
-      this.usuarios=this.categoria.jugadores
+      this.usuarios=this.categoria.jugadores.filter(jug=>jug.activo===true)
 
       this.conceptoServe.obtenerConceptos()
       .subscribe((resp) => {
@@ -66,6 +65,8 @@ export class RegistroPagoCuotaPage {
       loading.dismiss();
       this.navCtrl.setRoot(HomePage)
     }
+
+    this.movimiento.jugador=undefined
   }
 
   onSubmit(){

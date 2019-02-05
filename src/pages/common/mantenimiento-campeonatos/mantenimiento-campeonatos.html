@@ -3,7 +3,7 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title >
+    <ion-title>
       {{puedeEditar()?'Mantenimiento de campeonatos':'Consulta de Fixture'}}
     </ion-title>
   </ion-navbar>
@@ -16,6 +16,9 @@
           <div id="alta-markdown3" class="show-list-numbers-and-dots">
             <p style="color:#000000;">
               Completar los siguientes datos para dar de alta/modificar un campeonato:
+            </p>
+            <p style="color:#000000;">
+              Para ver o consultar datos de la fecha deslice el registro hacia la izquierda
             </p>
           </div>
           <ng-container *ngIf="puedeEditar()">
@@ -59,7 +62,8 @@
           <ion-item-divider color="light" id="altaCamp-list-item-divider3">
             Fechas:
 
-            <button *ngIf="puedeEditar()&& hayCampeonato()" ion-button item-end class="btn-mostrar" type="button" (click)="agregarFecha()">+</button>
+            <button *ngIf="puedeEditar()&& hayCampeonato()" ion-button item-end class="btn-mostrar" type="button"
+              (click)="agregarFecha()">+</button>
           </ion-item-divider>
           <ion-list>
             <ion-item-sliding *ngFor="let fech of fechas">
@@ -82,7 +86,8 @@
       </ion-row>
       <ion-row justify-content-center>
         <ion-col col-xl-2>
-          <button *ngIf="puedeEditar()" id="altaCamp-button4" type="submit" ion-button block color="positive" [disabled]="form.form.invalid">
+          <button *ngIf="puedeEditar()" id="altaCamp-button4" type="submit" ion-button block color="positive"
+            [disabled]="form.form.invalid">
             Guardar
           </button>
         </ion-col>

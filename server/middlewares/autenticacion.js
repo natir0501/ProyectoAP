@@ -7,7 +7,7 @@ var autenticacion = (req, res, next) => {
         next()
     }else{
         var token = req.header('x-auth')
-
+      
         Usuario.findByToken(token).then((usuario) => {
             
             if (!usuario) {

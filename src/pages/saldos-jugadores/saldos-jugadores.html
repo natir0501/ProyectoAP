@@ -21,8 +21,9 @@
               <ion-label>
                 Jugador:
               </ion-label>
-              <ion-select okText="Ok" cancelText="Cancelar" required [(ngModel)]="jugador" name="jugador">
-                <ion-option *ngFor="let u of usuarios" (ionSelect)="seleccionado($event)" [id]="u._id" [value]="u">
+              <ion-select okText="Ok" cancelText="Cancelar" (ionChange)="seleccionado($event)"
+               required [(ngModel)]="jugador" name="jugador" placeholder="Seleccione jugador">
+                <ion-option *ngFor="let u of usuarios" [id]="u._id" [value]="u">
                   {{u.nombre}} {{u.apellido}}
                 </ion-option>
               </ion-select>
@@ -30,13 +31,7 @@
           </ion-list>
         </ion-col>
       </ion-row>
-      <ion-row justify-content-center>
-        <ion-col col-xl-2>
-          <button id="consultarsdo" ion-button block color="positive" (click)="consultar(jugador.cuenta)">
-            Consultar
-          </button>
-        </ion-col>
-      </ion-row>
+     
       <ion-row justify-content-center>
         <ion-col col-xl-6>
           <ion-list>
