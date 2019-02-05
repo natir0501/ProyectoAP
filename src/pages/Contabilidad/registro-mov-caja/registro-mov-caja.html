@@ -18,6 +18,7 @@
             <div id="divnuevosmovs">
               <p style="color:#000000;">
                 Seleccione un concepto de caja y el monto del movimiento para afectar el saldo de la categoría.
+                Los valores deben ser enteros positivos.
               </p>
               <p style="color:#000000;">
                 La operación transferencia es utilizada para transferir saldo desde la categoría actual a otra.
@@ -56,11 +57,11 @@
                 </ion-item>
               </ng-container>
             </ng-container>
-            <ion-item>
+            <ion-item [ngClass]="{ 'ng-touched' : monto.touched }">
               <ion-label>
                 Monto:
               </ion-label>
-              <ion-input #monto="ngModel" ngModel required text-right type="text" placeholder="Ej: 500" name="monto">
+              <ion-input #monto="ngModel" pattern="^[0-9]{1,9}$" ngModel required text-right type="text" placeholder="Ej: 500" name="monto">
               </ion-input>
             </ion-item>
             <ion-item>

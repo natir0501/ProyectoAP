@@ -69,7 +69,7 @@
             <ion-label>
               Saldo Inicial ($):
             </ion-label>
-            <ion-input text-right type="text" placeholder="Ej: 10000" name="saldoInicial" pattern="^[0-9]{1,9}$"
+            <ion-input text-right type="text" placeholder="Ej: 10000" name="saldoInicial" pattern="^-?[0-9]{0,10}$"
               [(ngModel)]="categoria.saldoInicial" #saldoInicial="ngModel" required></ion-input>
           </ion-item>
           <ion-item>

@@ -13,7 +13,7 @@ var autenticacion = (req, res, next) => {
             if (!usuario) {
                 return Promise.reject()
             }
-         
+            req.usuarioRequest = usuario
             next()
         }).catch((e) => {
             res.status(401).send()
