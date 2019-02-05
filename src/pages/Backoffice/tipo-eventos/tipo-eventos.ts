@@ -52,5 +52,5 @@ export class TipoEventosPage {
     //Con Push para que no pierda la navegavilidad
     this.navCtrl.push(MantenimientoTipoEventosPage, { te })
   }
-
+  
 }

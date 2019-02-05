@@ -2,6 +2,7 @@ var express = require('express');
 var api = express.Router();
 const { Categoria } = require('../models/categoria')
 const { Cuenta } = require('../models/cuenta')
+const {ConceptosCaja}=require('../models/conceptosCaja')
 const { Rol } = require('../models/rol')
 const { Usuario } = require('../models/usuario')
 const _ = require('lodash')
@@ -63,6 +64,27 @@ api.post('/categorias', async (req, res) => {
         let cantidadCuotasAnuales = parseInt(req.body.cantidadCuotasAnuales)
         //En el body de la categoría, recibo saldo inicial
         let saldo = req.body.saldoInicial;
+
+        if(parseInt(saldo)!=0){
+            let fecha = Date.now()
+            let concepto
+            if(parseInt(saldo)>0){
+                concepto = await ConceptosCaja.findOne({nombre: 'Saldo Inicial'})
+            }else{
+                concepto = await ConceptosCaja.findOne({nombre: 'Deuda Inicial'}) 
+            }
+            let monto = parseInt(saldo)
+            let tipo = concepto.tipo
+            let comentario = 'Movimiento inicial'
+            let confirmado = true
+           
+            let usuario = req.usuarioRequest
+            let estado = 'Confirmado'
+            let comentairo_tes=''
+
+            movimientos.push({fecha,concepto,monto,tipo,comentario,confirmado,usuario,estado,comentairo_tes})
+
+        }
 
         let cajaCategoria = new Cuenta({ movimientos, saldo });
         await cajaCategoria.save();
