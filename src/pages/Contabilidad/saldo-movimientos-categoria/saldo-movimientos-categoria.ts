@@ -69,7 +69,7 @@ export class SaldoMovimientosCategoriaPage {
       .subscribe((resp) => {
         this.cuenta.movimientos = resp.data.movimientos;
         this.movimientos = resp.data.movimientos;
-        console.log(this.cuenta)
+   
       },
         (err) => {
           console.log("Error obteniendo movimientos", err)
@@ -85,8 +85,7 @@ export class SaldoMovimientosCategoriaPage {
   }
 
   exportarPDF() {
-    console.log("voy a exportar");
-    console.log(this.movimientos)
+ 
     let columnas = ['Fecha', 'Importe', 'Tipo', 'Concepto', 'Usuario']
     let contenidoFilas = []
     for (let m of this.movimientos) {
@@ -119,15 +118,14 @@ export class SaldoMovimientosCategoriaPage {
   filtrar() {
     //Si no apliqué ningún filtro, ya muestro los movimientos y oculto sección filtros.
     if (this.noHayFiltros()) {
-      console.log("no hay filtros");
+     
       this.btnFiltros = '+'
       this.verFiltros = !this.verFiltros
       this.toggle('verMovs');
       this.movimientos = this.cuenta.movimientos
     } else {
       if (this.validoFechas()) {
-        console.log("tipo",this.tipoSeleccionado);
-        console.log("conc",this.concepto);
+       
 
         let loading = this.loadingCtrl.create({
           content: 'Cargando',

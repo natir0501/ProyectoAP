@@ -12,15 +12,15 @@ const { autenticacion } = require('../middlewares/autenticacion')
 var infoUsuario = 'nombre apellido email perfiles ci celular direccion fechaVtoCarneSalud delegadoInstitucional fechaNacimiento'
 infoUsuario +=' fechaUltimoExamen requiereExamen emergencia sociedad contacto posiciones activo perfiles categoriacuota ultimoMesCobrado cuenta'
 
-api.get('/categorias', autenticacion, (req, res) => {
+api.get('/categorias',  (req, res) => {
     Categoria.find()
         .populate('dts', infoUsuario)
         .populate('delegados', infoUsuario)
         .populate('jugadores', infoUsuario)
         .populate('tesoreros', infoUsuario)
-        .populate('caja', infoUsuario)
-        .populate('campeonatos', infoUsuario)
-        .populate('cuenta', infoUsuario)
+        .populate('caja')
+        .populate('campeonatos')
+        .populate('cuenta')
         
         .then((categorias) => {
             res.status(200).send(new ApiResponse({ categorias }))
@@ -138,15 +138,16 @@ api.get('/categorias/:_id', (req, res) => {
 
     Categoria.findOne({
         _id: id
-    })
+    })  
         .populate('dts',infoUsuario)
         .populate('delegados',infoUsuario)
         .populate('tesoreros',infoUsuario)
         .populate('jugadores',infoUsuario)
-        .populate('cuenta',infoUsuario)
-        .populate('campeonatos',infoUsuario)
+        .populate('cuenta')
+        .populate('campeonatos')
         .then((categoria) => {
             if (categoria) {
+            
                 res.status(200).send(new ApiResponse({ categoria }))
             } else {
                 res.status(404).send(new ApiResponse({}, "No hay datos para mostrar"));

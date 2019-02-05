@@ -44,7 +44,7 @@ api.get('/movimientospendientes/:id', async (req, res) => {
                         let usuario = await Usuario.findById(mov.usuario)
                         mov.usuario = usuario
                         movimientos.push(mov);
-                        console.log(movimientos)
+                     
                     }
                 }
                 res.status(200).send(new ApiResponse({ movimientos }))
@@ -121,8 +121,9 @@ api.patch('/cuenta/movimientos/ingresomovimiento/:id', async (req, res) => {
         let movimiento = req.body.movimiento;
 
         let cuenta = await Cuenta.findById(idCuenta).populate('movimientos').exec();
-
-        let nuevoSaldo = cuenta.saldo + movimiento.monto;
+        
+        
+        let nuevoSaldo = cuenta.saldo + parseInt(movimiento.monto);
 
         let movimientosActualizados = cuenta.movimientos;
         movimientosActualizados.push(movimiento);

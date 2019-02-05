@@ -30,7 +30,7 @@ export class UsuarioService {
         let headers: HttpHeaders = new HttpHeaders().set("Content-Type", "application/json")
 
         headers = headers.set('x-auth', this.token)
-        
+      
         return this.http.get<any>(this.apiUrl + 'api/usuarios/' + this.token,{headers})
 
     }

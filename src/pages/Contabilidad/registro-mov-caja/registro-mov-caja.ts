@@ -90,7 +90,7 @@ export class RegistroMovCajaPage {
       movimiento: {
         tipo: this.concepto.tipo,
         fecha: Date.now(),
-        monto: this.form.value.monto,
+        monto: this.concepto.tipo === 'Egreso'? -this.form.value.monto: this.form.value.monto,
         concepto: this.concepto._id,
         usuario: this.usuario._id,
         estado: "Confirmado"

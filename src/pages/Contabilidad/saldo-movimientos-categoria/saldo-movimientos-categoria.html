@@ -22,6 +22,9 @@
         </div><br>
         <ion-item-divider color="light" id="filtros">
           Filtros
+          <button ion-button item-end class="btn-print" type="button" (click)="filtrar()" icon-only>
+            <ion-icon name="search"></ion-icon>
+          </button>
           <button ion-button item-end class="btn-mostrar" type="button" (click)="toggle('filtros')">{{btnFiltros}}</button>
         </ion-item-divider>
         <ng-container *ngIf="verFiltros">
@@ -32,49 +35,39 @@
             <ion-label>
               <strong>Tipo:</strong>
             </ion-label>
-          </ion-item>
-          <ion-item>
-            <ion-select okText="Ok" cancelText="Cancelar" required  [(ngModel)]="tipoSeleccionado" name="tipoSeleccionado"  placeholder="Seleccione tipo">
+            <ion-select okText="Ok" cancelText="Cancelar" required [(ngModel)]="tipoSeleccionado" name="tipoSeleccionado"
+              placeholder="Seleccione tipo">
               <ion-option *ngFor="let t of tipo" [id]="t.id" [value]="t.value">{{t.value}}</ion-option>
             </ion-select>
           </ion-item>
+
           <ion-item>
             <ion-label>
               <strong>Concepto:</strong>
             </ion-label>
-          </ion-item>
-          <ion-item>
-            <ion-select required okText="Ok" cancelText="Cancelar" required [(ngModel)]="concepto" name="concepto" placeholder="Seleccione concepto">
+            <ion-select required okText="Ok" cancelText="Cancelar" class="select-concepto" required [(ngModel)]="concepto"
+              name="concepto" placeholder="Seleccione concepto">
               <ion-option *ngFor="let c of listaConceptos" [id]="c._id" [value]="c">
                 {{c.nombre}}
               </ion-option>
             </ion-select>
           </ion-item>
           <ion-item>
-            <label>
+            <ion-label>
               <strong>Fecha Desde:</strong>
-            </label>
-          </ion-item>
-          <ion-item>
-            <ion-input type="date" #fdesde="ngModel" placeholder="Ej: 01/02/2019" name="fdesde" [(ngModel)]="fDesdeTxt"
+            </ion-label>
+            <ion-input text-right type="date" #fdesde="ngModel" placeholder="Ej: 01/02/2019" name="fdesde" [(ngModel)]="fDesdeTxt"
               required></ion-input>
           </ion-item>
           <ion-item>
-            <label>
+            <ion-label>
               <strong>Fecha Hasta:</strong>
-            </label>
+            </ion-label>
+            <ion-input text-right type="date" #fhasta="ngModel" placeholder="Ej: 28/02/2019" name="fhasta" [(ngModel)]="fHastaTxt"
+              required>
+            </ion-input>
           </ion-item>
-          <ion-item>
-            <ion-input type="date" #fhasta="ngModel" placeholder="Ej: 28/02/2019" name="fhasta" [(ngModel)]="fHastaTxt"
-              required></ion-input>
-          </ion-item>
-          <ion-row justify-content-center>
-            <ion-col col-xl-4>
-              <button id="btn-filtrar" type="button" (click)="filtrar()" ion-button block color="positive">
-                Filtrar
-              </button>
-            </ion-col>
-          </ion-row>
+         
         </ng-container>
         <ion-item-divider color="light" id="sdomovscat2">
           Movimientos:

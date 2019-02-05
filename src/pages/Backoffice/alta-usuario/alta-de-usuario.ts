@@ -5,7 +5,7 @@ import { NgForm } from '@angular/forms';
 import { UtilsServiceProvider } from './../../../providers/utils.service';
 import { UsuarioService } from './../../../providers/usuario.service';
 import { Component, ViewChild } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, LoadingController } from 'ionic-angular';
 
 import { Usuario } from '../../../models/usuario.model';
 import { CategoriaService } from '../../../providers/categoria.service';
@@ -25,7 +25,7 @@ export class AltaDeUsuarioPage {
 
   @ViewChild("form") formulario: NgForm
 
-  constructor(public navCtrl: NavController, public usuarioServ: UsuarioService
+  constructor(public navCtrl: NavController, public usuarioServ: UsuarioService, private loadingCrtl : LoadingController
     , public categoriaServ: CategoriaService, public utilServ: UtilsServiceProvider) {
 
 
@@ -74,6 +74,11 @@ export class AltaDeUsuarioPage {
   }
 
   onSubmit() {
+    let loading = this.loadingCrtl.create({
+      content: 'Cargando',
+      spinner: 'circles'
+    });
+    loading.present()
 
     this.armoPerfiles()
 
@@ -82,6 +87,7 @@ export class AltaDeUsuarioPage {
     this.usuarioServ.altaUsuario(this.usuario)
       .subscribe(
         (resp) => {
+          loading.dismiss()
           this.utilServ.dispararAlert("Gol!", "Usuario creado correctamente.")
           this.usuario.email = ''
 
@@ -93,6 +99,7 @@ export class AltaDeUsuarioPage {
 
         },
         (err) => {
+          loading.dismiss()
           console.log("Error creando usuario", err)
           this.utilServ.dispararAlert("Error", "Ocurrió un error al crear usuario")
         }

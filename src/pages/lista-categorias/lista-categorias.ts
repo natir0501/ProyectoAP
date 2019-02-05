@@ -56,22 +56,15 @@ export class ListaCategoriasPage {
 
   irAlta() {
     
-    this.navCtrl.setRoot(MantenimientoCategoriaPage)
+    this.navCtrl.push(MantenimientoCategoriaPage)
   }
 
   modificar(categoria: Categoria) {
     
-    this.navCtrl.setRoot(MantenimientoCategoriaPage, { categoria })
+    this.navCtrl.push(MantenimientoCategoriaPage, { categoria })
   }
 
-  /*
-  verSdos(categoria: Categoria) {
-    let cuenta=categoria.cuenta
-    this.navCtrl.setRoot(SaldoMovimientosCategoriaPage, {cuenta})
-   
-    
-  }
-  */
+  
 
 
 }
