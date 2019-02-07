@@ -10,6 +10,7 @@ import { Movimiento } from './../../models/cuenta.models';
 import { Usuario } from './../../models/usuario.model';
 import { ConceptoService } from './../../providers/concepto.service';
 import { UsuarioService } from './../../providers/usuario.service';
+import { CachedResourceLoader } from '@angular/platform-browser-dynamic/src/resource_loader/resource_loader_cache';
 
 
 @Component({
@@ -21,15 +22,15 @@ export class RegistroPagoCuotaPage {
   categoria: Categoria = new Categoria()
   cuentaCat: Cuenta = new Cuenta()
   cuentaJugador: Cuenta = new Cuenta()
-  usuario: Usuario=new Usuario()
+  usuario: Usuario = new Usuario()
   usuarios: Usuario[] = [];
-  concepto: Concepto= new Concepto()
-  movimiento: Movimiento=new Movimiento()
+  concepto: Concepto = new Concepto()
+  movimiento: Movimiento = new Movimiento()
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public cuentaServ: CuentaService, public loadingCtrl: LoadingController,
     public utilServ: UtilsServiceProvider, public usuServ: UsuarioService,
-    public catService: CategoriaService, public conceptoServe : ConceptoService) {
+    public catService: CategoriaService, public conceptoServe: ConceptoService) {
   }
 
   async ionViewDidLoad() {
@@ -39,65 +40,72 @@ export class RegistroPagoCuotaPage {
       spinner: 'circles'
     });
     loading.present()
+    try {
+      this.usuario = this.usuServ.usuario
+      console.log(this.usuario)
+      this.categoria._id = this.usuServ.usuario.perfiles[0].categoria
+      let dataUsuarios: any = await this.catService.obtenerCategoria(this.categoria._id).toPromise()
+      if (dataUsuarios) {
+        this.categoria = dataUsuarios.data.categoria
+        this.usuarios = this.categoria.jugadores.filter(jug => jug.activo === true)
 
-    this.usuario=this.usuServ.usuario
-    this.categoria._id = this.usuServ.usuario.perfiles[0].categoria
-    let dataUsuarios: any = await this.catService.obtenerCategoria(this.categoria._id).toPromise()
-    if (dataUsuarios) {
-      this.categoria = dataUsuarios.data.categoria
-      this.usuarios=this.categoria.jugadores.filter(jug=>jug.activo===true)
-
-      this.conceptoServe.obtenerConceptos()
-      .subscribe((resp) => {
-        let conceptos = resp.data.conceptosCaja;
-        for(let c of conceptos){
-          if(c.nombre==="Pago de Cuota"){
-            this.concepto=c
-          }
-        }
-      },(err) => {
-        this.utilServ.dispararAlert("Upss", "Ocurrió un error al obtener los conceptos de caja")
-      },()=>{
+        this.conceptoServe.obtenerConceptos()
+          .subscribe((resp) => {
+            let conceptos = resp.data.conceptosCaja;
+            for (let c of conceptos) {
+              if (c.nombre === "Pago de Cuota") {
+                this.concepto = c
+              }
+            }
+          }, (err) => {
+            this.utilServ.dispararAlert("Upss", "Ocurrió un error al obtener los conceptos de caja")
+          }, () => {
+            loading.dismiss();
+          })
+      } else {
+        this.utilServ.dispararAlert("Upss! :(", "Ocurrió un error al cargar los jugadores de la categoría. Volvé a intentar en unos minutos.")
         loading.dismiss();
-      })
-    }else{
-      this.utilServ.dispararAlert("Upss! :(", "Ocurrió un error al cargar los jugadores de la categoría. Volvé a intentar en unos minutos.")
-      loading.dismiss();
-      this.navCtrl.setRoot(HomePage)
+        this.navCtrl.setRoot(HomePage)
+      }
+
+      this.movimiento.jugador = undefined
+    } catch (e) {
+      console.log(e)
+      loading.dismiss()
+      this.utilServ.dispararAlert('Error', 'Ocurrión un error con el servidor')
     }
-
-    this.movimiento.jugador=undefined
   }
 
-  onSubmit(){
-    this.movimiento.usuario=this.usuServ.usuario
-    this.movimiento.concepto=this.concepto
-    this.movimiento.jugador= !this.registraPagosDeTerceros()?this.usuario:this.movimiento.jugador
+  onSubmit() {
+    this.movimiento.usuario = this.usuServ.usuario
+    this.movimiento.concepto = this.concepto
+    this.movimiento.jugador = !this.registraPagosDeTerceros() ? this.usuario : this.movimiento.jugador
     this.cuentaServ.registrarPagoCuota(this.movimiento)
-    .subscribe((resp) =>{
-      this.utilServ.dispararAlert("Listo!", "Pago registrado correctamente.")
-      this.movimiento.comentario=""
-      this.movimiento.monto=0
-      this.movimiento.jugador=null
+      .subscribe((resp) => {
+        this.utilServ.dispararAlert("Listo!", "Pago registrado correctamente.")
+        this.movimiento.comentario = ""
+        this.movimiento.monto = 0
+        this.movimiento.jugador = null
 
-      
-    },(err)=>{
-      console.log(err);
-      
-    })
+
+      }, (err) => {
+        console.log(err);
+        this.utilServ.dispararAlert("Error", "Error al procesar pago")
+
+      })
   }
 
-  registraPagosDeTerceros(){
-    let usuario : Usuario = this.usuServ.usuario
-    if(usuario){
-      if(usuario.delegadoInstitucional) return true
-      for (let usu of this.categoria.tesoreros){
-        if(usu._id === usuario._id){
+  registraPagosDeTerceros() {
+    let usuario: Usuario = this.usuServ.usuario
+    if (usuario) {
+      if (usuario.delegadoInstitucional) return true
+      for (let usu of this.categoria.tesoreros) {
+        if (usu._id === usuario._id) {
           return true
         }
       }
     }
   }
-  
+
 
 }

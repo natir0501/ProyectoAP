@@ -46,7 +46,7 @@ export class MenuService {
 
 
     constructor(private http: HttpClient, private usuarioServ: UsuarioService, private utils: UtilsServiceProvider,
-        private catServ: CategoriaService) {
+        private catServ: CategoriaService, private utilServ: UtilsServiceProvider) {
         this.apiUrl = this.utils.apiUrl
         this.map.set('ListaCategoriasPage', ListaCategoriasPage)
         this.map.set('PlaceHolderPage', PlaceHolderPage)
@@ -71,7 +71,7 @@ export class MenuService {
     }
 
     async getMenu(roles: string[]) {
-        
+        try{
         let resp = await this.obtenerPantallas(roles).toPromise()
         let pantallas = resp.data
         this.limpiarMenu()
@@ -109,7 +109,10 @@ export class MenuService {
         
         return this.filtrarMenu()
 
-
+    }catch(e){
+        console.log(e)
+        this.utilServ.dispararAlert('Error','Ocurrión un error con el servidor')
+      }
     }
 
     async menuDelegadoInstitucional(usuario: Usuario){

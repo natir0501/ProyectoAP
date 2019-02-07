@@ -51,33 +51,38 @@ export class SaldoMovimientosCategoriaPage {
       spinner: 'circles'
     });
     loading.present();
+    try {
+      this.categoria._id = this.usuServ.usuario.perfiles[0].categoria
+      let dataUsuarios: any = await this.catService.obtenerCategoria(this.categoria._id).toPromise()
+      if (dataUsuarios) {
+        this.categoria = dataUsuarios.data.categoria
+      }
+      this.cuenta = this.categoria.cuenta
 
-    this.categoria._id = this.usuServ.usuario.perfiles[0].categoria
-    let dataUsuarios: any = await this.catService.obtenerCategoria(this.categoria._id).toPromise()
-    if (dataUsuarios) {
-      this.categoria = dataUsuarios.data.categoria
+      let conc = await this.conceptoServ.obtenerConceptos().toPromise()
+
+      if (conc) {
+        this.listaConceptos = conc.data.conceptosCaja;
+      }
+
+      this.cuentaServ.obtenerMovimientos(this.cuenta._id)
+        .subscribe((resp) => {
+          this.cuenta.movimientos = resp.data.movimientos;
+          this.movimientos = resp.data.movimientos;
+
+        },
+          (err) => {
+            console.log("Error obteniendo movimientos", err)
+            this.utilServ.dispararAlert("Error", "Ocurrió un error al obtener los movimientos")
+            loading.dismiss();
+          }, () => {
+            loading.dismiss();
+          })
+    } catch (e) {
+      console.log(e)
+      loading.dismiss()
+      this.utilServ.dispararAlert('Error', 'Ocurrión un error con el servidor')
     }
-    this.cuenta = this.categoria.cuenta
-
-    let conc = await this.conceptoServ.obtenerConceptos().toPromise()
-
-    if (conc) {
-      this.listaConceptos = conc.data.conceptosCaja;
-    }
-
-    this.cuentaServ.obtenerMovimientos(this.cuenta._id)
-      .subscribe((resp) => {
-        this.cuenta.movimientos = resp.data.movimientos;
-        this.movimientos = resp.data.movimientos;
-   
-      },
-        (err) => {
-          console.log("Error obteniendo movimientos", err)
-          this.utilServ.dispararAlert("Error", "Ocurrió un error al obtener los movimientos")
-          loading.dismiss();
-        }, () => {
-          loading.dismiss();
-        })
   }
 
   verDetalle(mov) {
@@ -85,7 +90,7 @@ export class SaldoMovimientosCategoriaPage {
   }
 
   exportarPDF() {
- 
+
     let columnas = ['Fecha', 'Importe', 'Tipo', 'Concepto', 'Usuario']
     let contenidoFilas = []
     for (let m of this.movimientos) {
@@ -118,14 +123,14 @@ export class SaldoMovimientosCategoriaPage {
   filtrar() {
     //Si no apliqué ningún filtro, ya muestro los movimientos y oculto sección filtros.
     if (this.noHayFiltros()) {
-     
+
       this.btnFiltros = '+'
       this.verFiltros = !this.verFiltros
       this.toggle('verMovs');
       this.movimientos = this.cuenta.movimientos
     } else {
       if (this.validoFechas()) {
-       
+
 
         let loading = this.loadingCtrl.create({
           content: 'Cargando',
@@ -137,7 +142,7 @@ export class SaldoMovimientosCategoriaPage {
         this.cuentaServ.filtrarMovimientos(this.cuenta._id,
           this.tipoSeleccionado, this.concepto._id, this.fechaD, this.fechaH).subscribe((resp) => {
             this.cuenta.movimientos = resp.data.movimientos;
-            
+
 
             loading.dismiss();
           }, (err) => {

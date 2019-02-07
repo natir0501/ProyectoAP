@@ -21,35 +21,40 @@ import { CuentaService } from '../../providers/cuenta.service';
 })
 export class DetallePagoPage {
 
-  movimiento : Movimiento=new Movimiento()
+  movimiento: Movimiento = new Movimiento()
   cuenta: Cuenta = new Cuenta();
-  categoria: Categoria= new Categoria();
+  categoria: Categoria = new Categoria();
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public utilServ: UtilsServiceProvider, public usuServ: UsuarioService,
     private loader: LoadingController, public cuentaServ: CuentaService,
-     public catService : CategoriaService) {
+    public catService: CategoriaService) {
   }
 
-  async ionViewDidLoad(){
-  
-    let mov: Movimiento = this.navParams.get('mov')
-    this.categoria._id = this.usuServ.usuario.perfiles[0].categoria
-    let dataUsuarios: any = await this.catService.obtenerCategoria(this.categoria._id).toPromise()
-    if (dataUsuarios) {
-      this.categoria = dataUsuarios.data.categoria
-    }
-    this.cuenta= this.categoria.cuenta
+  async ionViewDidLoad() {
+    try {
 
-    if(mov){
-      this.movimiento=mov
-      
-    }else{
-      this.utilServ.dispararAlert("Upss!", "Ocurrió un error al cargar el movimiento")
+      let mov: Movimiento = this.navParams.get('mov')
+      this.categoria._id = this.usuServ.usuario.perfiles[0].categoria
+      let dataUsuarios: any = await this.catService.obtenerCategoria(this.categoria._id).toPromise()
+      if (dataUsuarios) {
+        this.categoria = dataUsuarios.data.categoria
+      }
+      this.cuenta = this.categoria.cuenta
+
+      if (mov) {
+        this.movimiento = mov
+
+      } else {
+        this.utilServ.dispararAlert("Upss!", "Ocurrió un error al cargar el movimiento")
+      }
+    } catch (e) {
+      console.log(e)
+      this.utilServ.dispararAlert('Error', 'Ocurrión un error con el servidor')
     }
   }
 
-  confirmar(){
+  confirmar() {
     let loader = this.loader.create({
       content: 'Cargando...',
       spinner: 'circles'
@@ -58,20 +63,20 @@ export class DetallePagoPage {
     loader.present()
 
     this.cuentaServ.confirmarPago(this.movimiento, this.categoria._id)
-    .subscribe((resp) => {
-      loader.dismiss()
-      if(resp.data.confirmado){
-        this.utilServ.dispararAlert('Ok', "El pagó se confirmó correctamente.")
-        this.navCtrl.setRoot(PagosPendientesPage)
-      }
-    }, (err) => {
-      console.log(err)
-      loader.dismiss()
-      this.utilServ.dispararAlert('Upss', "Ocurrió un error al confirmar la transacción. Intentá de nuevo en unos minutos")
-    })
+      .subscribe((resp) => {
+        loader.dismiss()
+        if (resp.data.confirmado) {
+          this.utilServ.dispararAlert('Ok', "El pagó se confirmó correctamente.")
+          this.navCtrl.setRoot(PagosPendientesPage)
+        }
+      }, (err) => {
+        console.log(err)
+        loader.dismiss()
+        this.utilServ.dispararAlert('Upss', "Ocurrió un error al confirmar la transacción. Intentá de nuevo en unos minutos")
+      })
   }
-  
-  rechazar(){
+
+  rechazar() {
     let loader = this.loader.create({
       content: 'Cargando...',
       spinner: 'circles'
@@ -80,17 +85,17 @@ export class DetallePagoPage {
     loader.present()
 
     this.cuentaServ.rechazarPago(this.movimiento, this.cuenta._id)
-    .subscribe((resp) => {
-      loader.dismiss()
-      if(resp.data.movimiento){
-        this.utilServ.dispararAlert('Ok', "El pagó se rechazó correctamente.")
-        this.navCtrl.setRoot(PagosPendientesPage)
-      }
-    }, (err) => {
-      console.log(err)
-      loader.dismiss()
-      this.utilServ.dispararAlert('Upss', "Ocurrió un error al rechazar el pago. Intentá de nuevo en unos minutos")
-    })
+      .subscribe((resp) => {
+        loader.dismiss()
+        if (resp.data.movimiento) {
+          this.utilServ.dispararAlert('Ok', "El pagó se rechazó correctamente.")
+          this.navCtrl.setRoot(PagosPendientesPage)
+        }
+      }, (err) => {
+        console.log(err)
+        loader.dismiss()
+        this.utilServ.dispararAlert('Upss', "Ocurrió un error al rechazar el pago. Intentá de nuevo en unos minutos")
+      })
   }
 
 }

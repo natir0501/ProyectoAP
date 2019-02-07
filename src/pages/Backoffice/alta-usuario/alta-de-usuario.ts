@@ -32,8 +32,14 @@ export class AltaDeUsuarioPage {
   }
 
   async ionViewWillEnter() {
-    let resp = await this.categoriaServ.obtenerCategorias().toPromise()
-    await this.cargoPerfiles(resp)
+    try{
+
+      let resp = await this.categoriaServ.obtenerCategorias().toPromise()
+      await this.cargoPerfiles(resp)
+    }catch(e){
+      console.log(e)
+      this.utilServ.dispararAlert('Error','Ocurrión un error con el servidor')
+    }
 
 
 

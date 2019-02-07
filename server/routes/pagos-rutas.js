@@ -24,7 +24,7 @@ api.post('/pagos', async (req, res) => {
         let categoria = await Categoria.findById(jugador.categoriacuota)
             .populate('cuenta')
             .populate('movimientos')
-            .populate('tesoreros',infoUsuario)
+            .populate('tesoreros')
             .exec();
 
 
@@ -35,7 +35,7 @@ api.post('/pagos', async (req, res) => {
             concepto: req.body.concepto,
             comentario: req.body.comentario,
             confirmado: conf,
-            usuario: req.usuario,
+            usuario: req.usuarioRequest,
             referencia: null,
             estado: "Pendiente"
         };
@@ -45,7 +45,7 @@ api.post('/pagos', async (req, res) => {
         de la categoría
          */
         let cuentacategoria = await Cuenta.findById(categoria.cuenta._id).populate('movimientos')
-        if (jugador._id.toString() !== req.usuario._id.toString()) {
+        if (jugador._id.toString() !== req.usuarioRequest._id.toString()) {
             mov.confirmado = true;
             conf = true
             cuentacategoria.saldo = parseInt(cuentacategoria.saldo) + parseInt(mov.monto)
@@ -73,13 +73,14 @@ api.post('/pagos', async (req, res) => {
         }
 
         cuentacategoria.movimientos.push(mov);
-        console.log(mov);
+    
 
         await cuentacategoria.save()
 
         res.status(200).send(new ApiResponse({ mov }))
 
     } catch (e) {
+        console.log(e)
         res.status(400).send(new ApiResponse({}, `Mensaje: ${e}`))
     }
 })

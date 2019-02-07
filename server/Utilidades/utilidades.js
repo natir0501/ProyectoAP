@@ -87,9 +87,11 @@ const enviarNotificacion = async (usuario, title, body) => {
         'Content-Type': 'application/json',
         'Authorization': process.env.PUSHTOKEN
     }
-
+    
     for (let i = 1; i < usuario.tokens.length; i++) {
+        
         let mensaje = {
+
             "to": usuario.tokens[i].token,
             "data": {
                 "notification": {

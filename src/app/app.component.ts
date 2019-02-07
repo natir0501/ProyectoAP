@@ -23,7 +23,7 @@ import { UtilsServiceProvider } from './../providers/utils.service';
 export class MyApp {
   usuario: Usuario
   rootPage: any = HomePage;
-  nombreCategoria : string = ''
+  nombreCategoria: string = ''
   pages: any = [];
   shownGroup: any;
   mostrar: boolean = false;
@@ -34,7 +34,7 @@ export class MyApp {
   @ViewChild(Nav) nav: NavController;
 
   constructor(private platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen,
-    public usuarioServ: UsuarioService, public menuServ: MenuService, private eventServ : EventoService,
+    public usuarioServ: UsuarioService, public menuServ: MenuService, private eventServ: EventoService,
     private fcmService: FirebaseMessagingProvider, private http: HttpClient, private menu: MenuController, private utils: UtilsServiceProvider) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
@@ -62,81 +62,86 @@ export class MyApp {
   async ngAfterContentInit() {
     //Called after ngOnInit when the component's or directive's content has been initialized.
     //Add 'implements AfterContentInit' to the class.
-    let registro: boolean = window.location.hash.split('/').indexOf('registro') > 0
-    if (!registro) {
+    try {
+      let registro: boolean = window.location.hash.split('/').indexOf('registro') > 0
+      if (!registro) {
 
 
-      this.usuarioServ.usuConectado.subscribe(async (usu: Usuario) => {
-        
-        if (usu) {
-          this.nav.setRoot(HomePage)
-          if (this.usuarioServ.usuario && this.fcmService.token) {
-            if (this.platform.platforms().indexOf('mobile') >= 0) {
-              this.usuarioServ.registrarPush({ platform: 'mobile', token: this.fcmService.token }).subscribe((resp)=>{
-         
-              },(error)=>{
-                console.log(error)
-              })
-            }
-            else{
-              this.usuarioServ.registrarPush({ platform: 'desktop', token: this.fcmService.token }).subscribe((resp)=>{
-            
-              },(error)=>{
-                console.log(error)
-              })
-            }
-          }
-         
+        this.usuarioServ.usuConectado.subscribe(async (usu: Usuario) => {
 
-          this.usuario = usu
-          if (this.usuario.perfiles.length === 0) {
-            this.roles = ['Delegado Institucional']
-            this.pages = await this.menuServ.menuDelegadoInstitucional(this.usuario)
-           
+          if (usu) {
+            this.nav.setRoot(HomePage)
+            if (this.usuarioServ.usuario && this.fcmService.token) {
+              if (this.platform.platforms().indexOf('mobile') >= 0) {
+                this.usuarioServ.registrarPush({ platform: 'mobile', token: this.fcmService.token }).subscribe((resp) => {
 
-            
-
-          }
-          else {
-            if (this.usuario.perfiles.length === 1) {
-             
-              let resp = await this.usuarioServ.getRoles(this.usuario.perfiles[0].roles).toPromise()
-
-              this.roles = resp.data.nombreRoles 
-           
-              let menu = await this.menuServ.getMenu(this.usuario.perfiles[0].roles)
-              if(this.menuServ.categoriasUsuario.length>1){
-                menu = [
-                  ...menu,
-                  await this.menuServ.switchCategoríaInterno()
-                ]
+                }, (error) => {
+                  console.log(error)
+                })
               }
-              this.pages = menu
-              this.nombreCategoria = await this.menuServ.nombreCategoria(this.usuario.perfiles[0].categoria)
-              
+              else {
+                this.usuarioServ.registrarPush({ platform: 'desktop', token: this.fcmService.token }).subscribe((resp) => {
 
-            } else {
-              this.roles = ['Seleccione categoría']
-              this.pages = [await this.menuServ.switchCategoría(this.usuario)]
+                }, (error) => {
+                  console.log(error)
+                })
+              }
             }
 
+
+            this.usuario = usu
+            if (this.usuario.perfiles.length === 0) {
+              this.roles = ['Delegado Institucional']
+              this.pages = await this.menuServ.menuDelegadoInstitucional(this.usuario)
+
+
+
+
+            }
+            else {
+              if (this.usuario.perfiles.length === 1) {
+
+                let resp = await this.usuarioServ.getRoles(this.usuario.perfiles[0].roles).toPromise()
+
+                this.roles = resp.data.nombreRoles
+
+                let menu = await this.menuServ.getMenu(this.usuario.perfiles[0].roles)
+                if (this.menuServ.categoriasUsuario.length > 1) {
+                  menu = [
+                    ...menu,
+                    await this.menuServ.switchCategoríaInterno()
+                  ]
+                }
+                this.pages = menu
+                this.nombreCategoria = await this.menuServ.nombreCategoria(this.usuario.perfiles[0].categoria)
+
+
+              } else {
+                this.roles = ['Seleccione categoría']
+                this.pages = [await this.menuServ.switchCategoría(this.usuario)]
+              }
+
+            }
+
+          } else {
+            this.pages = []
+            return this.nav.setRoot(LoginPage)
           }
 
-        } else {
-          this.pages = []
-          return this.nav.setRoot(LoginPage)
-        }
+        })
 
-      })
-
-      await this.usuarioServ.recuperoUsuario()
+        await this.usuarioServ.recuperoUsuario()
 
 
+      }
+    }catch(e){
+      this.utils.dispararAlert('Error','Ocurrión un error con el servidor')
+      console.log(e)
     }
   }
 
   ionViewDidLoad() {
-    
+
   }
 
   showChild(page) {
@@ -152,21 +157,21 @@ export class MyApp {
   }
 
   openPage(page) {
-   
+
     if (!(page.component)) {
       this.showChild(page);
     } else {
-      if(page.component.categoria){
-       
-       this.menuServ.cambioCategoria(page.component.categoria).then(()=>{
-        
-         this.shownGroup = null;
-         this.menu.close();
-         
-       }).catch(()=>{
-         
-       })
-       return 
+      if (page.component.categoria) {
+
+        this.menuServ.cambioCategoria(page.component.categoria).then(() => {
+
+          this.shownGroup = null;
+          this.menu.close();
+
+        }).catch(() => {
+
+        })
+        return
       }
       this.shownGroup = null;
       this.nav.setRoot(page.component);
