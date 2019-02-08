@@ -28,7 +28,7 @@ export class PagosPendientesPage {
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public loadingCtrl: LoadingController, public utilServ: UtilsServiceProvider,
     public cuentaServ: CuentaService, public usuServ: UsuarioService,
-    public catService : CategoriaService) {
+    public catService: CategoriaService) {
   }
 
   async ionViewDidLoad() {
@@ -37,36 +37,39 @@ export class PagosPendientesPage {
       spinner: 'circles'
     });
     loading.present()
-
-    this.categoria._id = this.usuServ.usuario.perfiles[0].categoria
+    try {
+      this.categoria._id = this.usuServ.usuario.perfiles[0].categoria
       let dataUsuarios: any = await this.catService.obtenerCategoria(this.categoria._id).toPromise()
       if (dataUsuarios) {
         this.categoria = dataUsuarios.data.categoria
       }
 
-    this.cuenta=this.categoria.cuenta
-    
-    this.cuentaServ.obtenerMovimientosPendientes(this.cuenta._id)
-    .subscribe((resp) => {
-      this.movimientos = resp.data.movimientos;
-      console.log(this.movimientos);
-      
-      if(this.movimientos.length==0){
-        this.utilServ.dispararAlert("Estás al día", "Parece que no hay movimientos para aprobar :)")
-      }
-    },
-      (err) => {
-        console.log("Error al cargar los movimientos", err)
-        this.utilServ.dispararAlert("Upss!", "No pudimos cargar los movimientos. Volve a intentarlo en unos minutos.")
-      },()=>{
-        loading.dismiss();
-      })
+      this.cuenta = this.categoria.cuenta
+
+      this.cuentaServ.obtenerMovimientosPendientes(this.cuenta._id)
+        .subscribe((resp) => {
+          this.movimientos = resp.data.movimientos;
+          console.log(this.movimientos);
+
+          if (this.movimientos.length == 0) {
+            this.utilServ.dispararAlert("Estás al día", "Parece que no hay movimientos para aprobar :)")
+          }
+        },
+          (err) => {
+            console.log("Error al cargar los movimientos", err)
+            this.utilServ.dispararAlert("Upss!", "No pudimos cargar los movimientos. Volve a intentarlo en unos minutos.")
+          }, () => {
+            loading.dismiss();
+          })
+    } catch (e) {
+      console.log(e)
+      this.utilServ.dispararAlert('Error', 'Ocurrión un error con el servidor')
+    }
   }
 
-  consultar(mov:Movimiento){
+  consultar(mov: Movimiento) {
     console.log("Movimiento", mov);
-    this.navCtrl.push((DetallePagoPage), {mov})
+    this.navCtrl.push((DetallePagoPage), { mov })
   }
 
 }
- 

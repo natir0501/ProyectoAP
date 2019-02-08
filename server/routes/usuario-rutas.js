@@ -297,8 +297,6 @@ api.put('/usuarios/:id', async (req, res) => {
         res.status(400).send(new ApiResponse({}, err))
     }
 
-
-
 })
 
 api.get('/usuarios/confirmacion/:token', async (req, res) => {

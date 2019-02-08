@@ -32,6 +32,7 @@ export class MantenimientoCampeonatosPage {
   }
 
   async ionViewDidLoad() {
+    
     let loading = this.loadingCtrl.create({
       content: 'Cargando',
       spinner: 'circles'

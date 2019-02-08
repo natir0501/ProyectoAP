@@ -36,16 +36,21 @@ export class SaldosJugadoresPage {
       spinner: 'circles'
     });
     loading.present()
-    this.categoria._id = this.usuServ.usuario.perfiles[0].categoria
-    let dataUsuarios: any = await this.catServ.obtenerCategoria(this.categoria._id).toPromise()
-    if (dataUsuarios) {
-      this.categoria = dataUsuarios.data.categoria
-      this.usuarios = this.categoria.jugadores.filter(jug => jug.activo===true)
-      loading.dismiss();
-    } else {
-      this.utilServ.dispararAlert("Upss! :(", "Ocurrió un error al cargar los jugadores de la categoría. Volvé a intentar en unos minutos.")
-      loading.dismiss();
-      this.navCtrl.setRoot(HomePage)
+    try {
+      this.categoria._id = this.usuServ.usuario.perfiles[0].categoria
+      let dataUsuarios: any = await this.catServ.obtenerCategoria(this.categoria._id).toPromise()
+      if (dataUsuarios) {
+        this.categoria = dataUsuarios.data.categoria
+        this.usuarios = this.categoria.jugadores.filter(jug => jug.activo === true)
+        loading.dismiss();
+      } else {
+        this.utilServ.dispararAlert("Upss! :(", "Ocurrió un error al cargar los jugadores de la categoría. Volvé a intentar en unos minutos.")
+        loading.dismiss();
+        this.navCtrl.setRoot(HomePage)
+      }
+    } catch (e) {
+      console.log(e)
+      this.utilServ.dispararAlert('Error', 'Ocurrión un error con el servidor')
     }
   }
 
@@ -69,11 +74,11 @@ export class SaldosJugadoresPage {
       } else {
         this.utilServ.dispararAlert("Upss! :(", "Seleccioná un jugador para consultar.")
       }
-    }catch(e){
+    } catch (e) {
       console.log("Error: ", e);
       this.utilServ.dispararAlert("Upss! :(", "Ocurrió un error al obtener los datos de la cuenta.")
     }
-    
+
   }
 
   verDetalle(mov) {

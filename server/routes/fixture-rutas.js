@@ -4,12 +4,12 @@ const { Campeonato } = require('../models/campeonato')
 const { Evento } = require('../models/evento')
 const { Categoria } = require('../models/categoria')
 const { Usuario } = require('../models/usuario')
-const {TipoEvento}=require('../models/tipoEvento')
+const { TipoEvento } = require('../models/tipoEvento')
 const { Fecha } = require('../models/fecha')
 const _ = require('lodash')
 const { ApiResponse } = require('../models/api-response')
 const { ObjectID } = require('mongodb')
-var { enviarNotificacion } = require('../Utilidades/utilidades')
+var { enviarNotificacion , enviarCorreoNotificacion} = require('../Utilidades/utilidades')
 
 api.get('/campeonatos', (req, res) => {
     Campeonato.find()
@@ -24,7 +24,7 @@ api.get('/campeonatos', (req, res) => {
 
 api.post('/campeonato/evento', async (req, res) => {
     try {
-      
+
         let fecha = req.body.fecha
         let categoriaId = req.body.categoriaId
         let evento = new Evento()
@@ -49,34 +49,40 @@ api.post('/campeonato/evento', async (req, res) => {
             ...categoria.tesoreros,
             ...categoria.dts
         ]
-    
+
         evento.invitados = []
-        for( let invitado of invitados){
-            if (evento.invitados.indexOf(invitado)< 0){
+        for (let invitado of invitados) {
+            if (evento.invitados.indexOf(invitado) < 0) {
                 evento.invitados.push(invitado)
             }
         }
-      
-        
-       
+
+
+
         evento = await evento.save()
-  
+
         if (evento) {
-            
+
             for (let invitado of evento.invitados) {
                 let user = await Usuario.findOne({ _id: invitado })
-                tituloNot = `Nuevo evento: ${evento.nombre}`,
+                tituloNot = `Nuevo evento: ${evento.nombre}`
                 bodyNot = `Hola ${user.nombre}! Has sido invitado a un nuevo evento. Por favor, consultá los detalles y confirmá asistencia. Gracias!`
-                enviarNotificacion(user, tituloNot, bodyNot)
+                if (user.tokens.length > 1) {
+
+                    enviarNotificacion(user, tituloNot, bodyNot)
+                } else {
+                    enviarCorreoNotificacion(user, tituloNot, bodyNot)
+                }
+
             }
             res.send(new ApiResponse({}, ''))
-        }else{
+        } else {
             res.status(400).send(new ApiResponse({}, 'Error al crear el evento'))
         }
 
 
-        
-    }catch(e){
+
+    } catch (e) {
         console.log(e)
         res.status(400).send(new ApiResponse({}, 'Error al crear el evento'))
     }

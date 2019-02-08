@@ -49,16 +49,22 @@ export class ModificacionPeriflesPage {
       spinner: 'circles'
     })
     loader.present()
-    this.usuario = this.navParams.get('usuario')
-    let categoriasData = await this.categoriaServ.obtenerCategorias().toPromise()
-    this.categoriasCuotas = categoriasData.data.categorias
+    try {
+      this.usuario = this.navParams.get('usuario')
+      let categoriasData = await this.categoriaServ.obtenerCategorias().toPromise()
+      this.categoriasCuotas = categoriasData.data.categorias
 
-    let resp2 = await this.categoriaServ.obtenerRoles().toPromise()
- 
-    this.rolesBack = resp2.data.roles
+      let resp2 = await this.categoriaServ.obtenerRoles().toPromise()
 
-    await this.cargoPerfiles(categoriasData)
-    loader.dismiss()
+      this.rolesBack = resp2.data.roles
+
+      await this.cargoPerfiles(categoriasData)
+      loader.dismiss()
+    } catch (e) {
+      console.log(e)
+      loader.dismiss()
+      this.utilServ.dispararAlert('Error', 'Ocurrión un error con el servidor')
+    }
   }
 
   cargoPerfiles(resp: any) {
@@ -73,26 +79,26 @@ export class ModificacionPeriflesPage {
   }
 
   armoPerfiles() {
-    
-    let rolDelInst = this.rolesBack.filter((rol)=> rol.codigo ==='DIN')[0]
+
+    let rolDelInst = this.rolesBack.filter((rol) => rol.codigo === 'DIN')[0]
 
     let perfiles = []
     let keys = Object.keys(this.perfiles)
 
     for (let key of keys) {
       if (this.perfiles[key].length > 0) {
-        if(this.usuario.delegadoInstitucional){
+        if (this.usuario.delegadoInstitucional) {
           this.perfiles[key].push(rolDelInst._id)
         }
         perfiles.push({
           'categoria': key,
           'roles': this.perfiles[key]
         })
-        
+
       }
     }
     this.usuario.perfiles = perfiles
-   
+
 
   }
 
