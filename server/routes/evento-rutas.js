@@ -161,7 +161,7 @@ api.post('/eventos', async (req, res) => {
             let user = await Usuario.findOne({ _id: id })
             tituloNot = `Nuevo evento: ${evento.nombre}`
             bodyNot = `Hola ${user.nombre}! Has sido invitado a un nuevo evento. Por favor, consultá los detalles y confirmá asistencia. Gracias!`
-            if (user.tokens.length > 1) {
+            if (user.hasMobileToken()) {
                 enviarNotificacion(user, tituloNot, bodyNot)
 
             } else {
@@ -303,7 +303,7 @@ api.put('/eventos/:id', async (req, res) => {
                 iniviado = await Usuario.findById(i._id)
                 tituloNot = `Modificación de evento: ${evento.nombre}`
                 bodyNot = `Hola ${invitado.nombre}! Un evento al que fuiste invitado ha sido modificado, consultá los detalles y confirmá asistencia. Gracias!`
-                if(invitado.tokens.length > 1 ){
+                if(invitado.hasMobileToken() ){
                     enviarNotificacion(invitado, tituloNot, bodyNot)
     
                 }else{

@@ -66,7 +66,7 @@ api.post('/pagos', async (req, res) => {
                 tituloNot = `Aviso de Pago`
                 bodyNot = `Hola ${t.nombre}! ${jugador.nombre} ${jugador.apellido} ha realizado una solicitud de pago. Ingresá a la App para confirmarlo`
 
-                if (user.tokens.length > 1) {
+                if (user.hasMobileToken()) {
 
                     enviarNotificacion(t, tituloNot, bodyNot)
                 } else {
@@ -158,7 +158,7 @@ api.patch('/pagos/confirmacion/:id', async (req, res) => {
             bodyNot = `Hola ${jugador.nombre}! Tu solicitud de pago fue confirmada `
 
 
-        if (jugador.tokens.length > 1) {
+        if (jugador.hasMobileToken()) {
 
             enviarNotificacion(jugador, tituloNot, bodyNot)
         } else {
@@ -219,7 +219,7 @@ api.patch('/pagos/rechazo/:id', async (req, res) => {
             tituloNot = `Rechazo de Pago`
             bodyNot = `Hola ${jugador.nombre}! Tu solicitud de pago fue rechazada. Consultá con el tesorero o delegado de tu categoría `
        
-            if( jugador.tokens.length > 1 ){
+            if( jugador.hasMobileToken() > 1 ){
 
                 enviarNotificacion(jugador, tituloNot, bodyNot)
             }else{

@@ -216,6 +216,15 @@ UsuarioSchema.methods.enviarConfirmacionAlta = function () {
     var usuario = this;
     enviarCorreoAlta(usuario)
 }
+UsuarioSchema.methods.hasMobileToken = function () {
+    var usuario = this;
+    for (token of usuario.tokens){
+        if(token.access === 'mobile'){
+            return true
+        }
+    }
+    return false
+}
 
 UsuarioSchema.statics.findByCredentials = function (email, password) {
     Usuario = this

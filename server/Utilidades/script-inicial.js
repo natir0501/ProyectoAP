@@ -176,7 +176,7 @@ const cuotasBatch = async () => {
                     
                     title = 'Aviso de cobro de couta'
                     body = `Hola! Se ha imputado en tu saldo la cuota del mes ${cuota}.`
-                    if (usu.tokens.length>1){
+                    if (usu.hasMobileToken()){
                         enviarNotificacion(usu, title, body)
                     }else{
                         enviarCorreoNotificacion(usu,title,body)
