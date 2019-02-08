@@ -7,6 +7,7 @@ const { Cuenta } = require('../models/cuenta')
 const { Movimiento } = require('../models/movimiento')
 const {TipoEvento}=require('../models/tipoEvento')
 var cron = require('node-cron');
+var { enviarNotificacion,enviarCorreoNotificacion } = require('../Utilidades/utilidades')
 
 const scriptInicial = async () => {
     await cargaRoles()
@@ -15,6 +16,7 @@ const scriptInicial = async () => {
     await cargaConcepto()
     await batch()
     await cargaTipoEvento()
+   // await cuotasBatch()
 }
 
 const cargaRoles = async () => {
@@ -123,45 +125,8 @@ const cargaDelegadosI = async () => {
 
 const batch = async () => {
     try {
-        const concepto = await ConceptosCaja.findOne({ nombre: 'Cobro de couta' })
-        let usuarios
-        
-        cron.schedule('0 1 * * *', async () => {
-
-            console.log( `### ${new Date()} CORRIENDO BATCH DE CUOTAS###`);
-            let categorias = await Categoria.find({ diaGeneracionCuota: new Date().getDate() })
-            for (let cat of categorias) {
-
-                usuarios = await Usuario.find({ categoriacuota: cat._id })
-
-                for (let usu of usuarios) {
-                    let mesActual = new Date().getMonth() + 1
-                    let cuenta = await Cuenta.findOne({ _id: usu.cuenta })
-                    if (usu.ultimoMesCobrado < mesActual && mesActual < 13) {
-                        let cantidadCuotas = mesActual - usu.ultimoMesCobrado
-
-                        for (let i = 0; i < cantidadCuotas; i++) {
-                            cuota = +usu.ultimoMesCobrado + 1 + i
-                            await cuenta.movimientos.push(new Movimiento({
-                                fecha: Date.now(),
-                                monto: cat.valorCuota,
-                                tipo: concepto.tipo,
-                                concepto,
-                                comentario: `Cobro cuota mes ${cuota}`
-
-                            }))
-
-                            cuenta.saldo = cuenta.saldo - cat.valorCuota
-                            await cuenta.save()
-                        }
-                        usu.ultimoMesCobrado = mesActual
-                        await usu.save()
-                    }
-                }
-
-            }
-
-        }, {
+         //second minute hour dom month dow
+        cron.schedule('0 1 * * *', cuotasBatch, {
                 scheduled: true,
                 timezone: "America/Montevideo"
             });
@@ -170,6 +135,62 @@ const batch = async () => {
         console.log(e)
         console.log('Ocurrión un error en el proceso batch, comunique al analista')
     }
+}
+
+const cuotasBatch = async () => {
+            
+    const concepto = await ConceptosCaja.findOne({ nombre: 'Cobro de couta' })
+    let usuarios
+   
+    console.log( `### ${new Date()} CORRIENDO BATCH DE CUOTAS###`);
+    let categorias = await Categoria.find({ diaVtoCuota: new Date().getDate() })
+    console.log(`Cantidad de categorías a cobrar: ${categorias.length}`)
+    for (let cat of categorias) {
+        console.log(`Se cobra cuota de categoría ${cat.nombre}`)
+        usuarios = await Usuario.find({ categoriacuota: cat._id, activo: true })
+        usuarios = usuarios.filter((u)=>{return cat.jugadores.indexOf(u._id) >= 0})
+        console.log(`Se cobran cuotas de ${usuarios.length} jugadores.`)
+        for (let usu of usuarios) {
+            let mesActual = new Date().getMonth() + 1
+            let cuenta = await Cuenta.findOne({ _id: usu.cuenta })
+            if (usu.ultimoMesCobrado < mesActual && mesActual < 13) {
+                let cantidadCuotas = mesActual - usu.ultimoMesCobrado
+                console.log(cuenta.movimientos.length, 'Antes mov')
+                for (let i = 0; i < cantidadCuotas; i++) {
+                    cuota = +usu.ultimoMesCobrado + 1 + i
+                    cuenta.movimientos.push(new Movimiento({
+                        fecha: Date.now(),
+                        monto: cat.valorCuota,
+                        tipo: concepto.tipo,
+                        concepto,
+                        estado: 'Confirmado',
+                        comentario: `Cobro cuota mes ${cuota}`
+
+                    }))
+                    console.log('Antes', cuenta.saldo)
+                    cuenta.saldo = cuenta.saldo - cat.valorCuota
+                    console.log('Despues',cuenta.saldo)
+                    cuenta = await cuenta.save()
+                    console.log(cuenta.movimientos.length, 'Despues mov')
+
+                    
+                    title = 'Aviso de cobro de couta'
+                    body = `Hola! Se ha imputado en tu saldo la cuota del mes ${cuota}.`
+                    if (usu.tokens.length>1){
+                        enviarNotificacion(usu, title, body)
+                    }else{
+                        enviarCorreoNotificacion(usu,title,body)
+                    }
+                }
+               
+                usu.ultimoMesCobrado = mesActual
+                await usu.save()
+            }
+        }
+
+    }
+    console.log( `### ${new Date()} FIN BATCH DE CUOTAS###`);
+
 }
 
 

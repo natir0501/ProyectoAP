@@ -7,10 +7,10 @@ const { Categoria } = require('../models/categoria')
 const _ = require('lodash')
 const { ObjectID } = require('mongodb')
 const { ApiResponse } = require('../models/api-response')
-var { enviarNotificacion } = require('../Utilidades/utilidades')
+var { enviarNotificacion, enviarCorreoNotificacion } = require('../Utilidades/utilidades')
 
 var infoUsuario = 'nombre apellido email perfiles ci celular direccion fechaVtoCarneSalud delegadoInstitucional fechaNacimiento'
-infoUsuario +=' fechaUltimoExamen requiereExamen emergencia sociedad contacto posiciones activo perfiles categoriacuota ultimoMesCobrado cuenta'
+infoUsuario += ' fechaUltimoExamen requiereExamen emergencia sociedad contacto posiciones activo perfiles categoriacuota ultimoMesCobrado cuenta'
 
 
 api.get('/cuenta/:_id', async (req, res) => {
@@ -44,7 +44,7 @@ api.get('/movimientospendientes/:id', async (req, res) => {
                         let usuario = await Usuario.findById(mov.usuario)
                         mov.usuario = usuario
                         movimientos.push(mov);
-                     
+
                     }
                 }
                 res.status(200).send(new ApiResponse({ movimientos }))
@@ -66,48 +66,49 @@ api.get('/movimientos/:id', async (req, res) => {
             let movs = [...cta.movimientos]
 
             if (req.query.tipo) {
-                movs=movs.filter((mov)=>{
-                    return mov.tipo===req.query.tipo
+                movs = movs.filter((mov) => {
+                    return mov.tipo === req.query.tipo
                 })
             }
             if (req.query.concepto) {
-                movs=movs.filter((mov)=>{
-            
-                    idconcepto= ObjectID(req.query.concepto)
-                    
-                    return mov.concepto.toString()===idconcepto.toString()
+                movs = movs.filter((mov) => {
+
+                    idconcepto = ObjectID(req.query.concepto)
+
+                    return mov.concepto.toString() === idconcepto.toString()
                 })
             }
             if (req.query.fechaInicio) {
-                movs=movs.filter((mov)=>{
-                    return mov.fecha>=req.query.fechaInicio
+                movs = movs.filter((mov) => {
+                    return mov.fecha >= req.query.fechaInicio
                 })
             }
             if (req.query.fechaFin) {
-                movs=movs.filter((mov)=>{
-                    return mov.fecha<=req.query.fechaFin
+                movs = movs.filter((mov) => {
+                    return mov.fecha <= req.query.fechaFin
                 })
             }
-         
+
             let movimientos = []
-            
-            for (let i=0; i<movs.length; i++){
+
+            for (let i = 0; i < movs.length; i++) {
                 let movimiento = movs[i]._doc
-                let concepto= await ConceptosCaja.findById(movimiento.concepto)
-             
-                movimiento.concepto=concepto.nombre
-                let usuario= await Usuario.findById(movimiento.usuario)
-                movimiento.usuario = usuario.nombre + ' ' + usuario.apellido
+                let concepto = await ConceptosCaja.findById(movimiento.concepto)
+
+                movimiento.concepto = concepto.nombre
+                let usuario = await Usuario.findById(movimiento.usuario)
+                if(usuario) movimiento.usuario = usuario.nombre + ' ' + usuario.apellido
                 movimientos.push(movimiento)
-                
-                
+
+
             }
-    
+
             res.status(200).send(new ApiResponse({ movimientos }))
         }
 
-       
+
     } catch (e) {
+        console.log(e)
         res.status(400).send(new ApiResponse({}, `Mensaje: ${e}`))
     }
 
@@ -121,8 +122,8 @@ api.patch('/cuenta/movimientos/ingresomovimiento/:id', async (req, res) => {
         let movimiento = req.body.movimiento;
 
         let cuenta = await Cuenta.findById(idCuenta).populate('movimientos').exec();
-        
-        
+
+
         let nuevoSaldo = cuenta.saldo + parseInt(movimiento.monto);
 
         let movimientosActualizados = cuenta.movimientos;
@@ -154,7 +155,7 @@ api.patch('/cuenta/transferencia/:id', async (req, res) => {
         let cuentaOrigen = await Cuenta.findById(req.params.id).populate('movimientos').exec()
         let cuentaDestino = await Cuenta.findById(req.body.idcuenta).populate('movimientos').exec();
         let movimiento = req.body.movimiento;
-        let categoriaDestino = await Categoria.findById(req.body.idcategoria).populate('tesoreros',infoUsuario).exec()
+        let categoriaDestino = await Categoria.findById(req.body.idcategoria).populate('tesoreros').exec()
 
         let nuevoSaldoCtaOrigen = cuentaOrigen.saldo - movimiento.monto;
         let nuevoSaldoCtaDestino = cuentaDestino.saldo + movimiento.monto;
@@ -182,9 +183,14 @@ api.patch('/cuenta/transferencia/:id', async (req, res) => {
             })
 
         for (let t of categoriaDestino.tesoreros) {
-            tituloNot = `Transferencia entre categorías`,
-                bodyNot = `Hola ${t.nombre}! Se registró una trasnferencia a la categoria ${categoriaDestino.nombre}. Ingresá a la App para visualizar el movimiento.`
-            enviarNotificacion(t, tituloNot, bodyNot)
+            tituloNot = `Transferencia entre categorías`
+            bodyNot = `Hola ${t.nombre}! Se registró una trasnferencia a la categoria ${categoriaDestino.nombre}. Ingresá a la App para visualizar el movimiento.`
+            if (t.tokens > 1) {
+                enviarNotificacion(t, tituloNot, bodyNot)
+            }
+            else {
+                enviarCorreoNotificacion(t, tituloNot, bodyNot)
+            }
         }
         res.status(200).send(new ApiResponse({ cuentaOrigen }));
     } catch (e) {

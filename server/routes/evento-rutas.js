@@ -4,11 +4,11 @@ const { Evento } = require('../models/evento')
 const _ = require('lodash')
 const { ApiResponse } = require('../models/api-response')
 const { ObjectID } = require('mongodb')
-var { enviarNotificacion } = require('../Utilidades/utilidades')
+var { enviarNotificacion,enviarCorreoNotificacion } = require('../Utilidades/utilidades')
 const { Usuario } = require('../models/usuario')
 
 var infoUsuario = 'nombre apellido email perfiles ci celular direccion fechaVtoCarneSalud delegadoInstitucional fechaNacimiento'
-infoUsuario +=' fechaUltimoExamen requiereExamen emergencia sociedad contacto posiciones activo perfiles categoriacuota ultimoMesCobrado cuenta'
+infoUsuario += ' fechaUltimoExamen requiereExamen emergencia sociedad contacto posiciones activo perfiles categoriacuota ultimoMesCobrado cuenta'
 
 
 api.get('/eventos', async (req, res) => {
@@ -132,10 +132,10 @@ api.get('/eventos/:id', async (req, res) => {
 
     Evento.findOne({
         _id: id
-    }).populate('invitados',infoUsuario)
-        .populate('noAsisten',infoUsuario)
-        .populate('confirmados',infoUsuario)
-        .populate('duda',infoUsuario)
+    }).populate('invitados', infoUsuario)
+        .populate('noAsisten', infoUsuario)
+        .populate('confirmados', infoUsuario)
+        .populate('duda', infoUsuario)
         .populate('categoria')
         .populate('tipoEvento')
         .then((evento) => {
@@ -159,9 +159,14 @@ api.post('/eventos', async (req, res) => {
 
         for (let id of evento.invitados) {
             let user = await Usuario.findOne({ _id: id })
-            tituloNot = `Nuevo evento: ${evento.nombre}`,
-                bodyNot = `Hola ${user.nombre}! Has sido invitado a un nuevo evento. Por favor, consultá los detalles y confirmá asistencia. Gracias!`
-            enviarNotificacion(user, tituloNot, bodyNot)
+            tituloNot = `Nuevo evento: ${evento.nombre}`
+            bodyNot = `Hola ${user.nombre}! Has sido invitado a un nuevo evento. Por favor, consultá los detalles y confirmá asistencia. Gracias!`
+            if (user.tokens.length > 1) {
+                enviarNotificacion(user, tituloNot, bodyNot)
+
+            } else {
+                enviarCorreoNotificacion(user, tituloNot, bodyNot)
+            }
         }
         res.status(200).send(new ApiResponse({ evento }));
 
@@ -196,7 +201,7 @@ api.put('/eventos/:id/confirmar', async (req, res) => {
 
             } else {
                 if (asiste === undefined) {
-                    if(evento.duda.indexOf(usuario._id)<0){
+                    if (evento.duda.indexOf(usuario._id) < 0) {
                         evento.duda.push(usuario._id)
                     }
                     if (evento.confirmados.indexOf(usuario._id) < 0) {
@@ -208,23 +213,23 @@ api.put('/eventos/:id/confirmar', async (req, res) => {
                     if (asiste) {
                         if (evento.confirmados.indexOf(usuario._id) < 0) {
                             evento.confirmados.push(usuario._id)
-                           
+
                         }
-                        if(evento.duda.indexOf(usuario._id)>= 0){
+                        if (evento.duda.indexOf(usuario._id) >= 0) {
                             evento.duda.splice(evento.duda.indexOf(usuario._id), 1)
                         }
-                        if(evento.noAsisten.indexOf(usuario._id)>= 0){
+                        if (evento.noAsisten.indexOf(usuario._id) >= 0) {
                             evento.noAsisten.splice(evento.noAsisten.indexOf(usuario._id), 1)
                         }
                     } else {
                         if (evento.noAsisten.indexOf(usuario._id) < 0) {
                             evento.noAsisten.push(usuario._id)
-                           
+
                         }
-                        if(evento.duda.indexOf(usuario._id)>= 0){
+                        if (evento.duda.indexOf(usuario._id) >= 0) {
                             evento.duda.splice(evento.duda.indexOf(usuario._id), 1)
                         }
-                        if(evento.confirmados.indexOf(usuario._id)>= 0){
+                        if (evento.confirmados.indexOf(usuario._id) >= 0) {
                             evento.confirmados.splice(evento.confirmados.indexOf(usuario._id), 1)
                         }
                     }
@@ -282,10 +287,10 @@ api.put('/eventos/:id', async (req, res) => {
         }
         if (notificar === 'true') {
             evento = await Evento.findOne({ _id })
-                .populate('confirmados',infoUsuario)
-                .populate('invitados',infoUsuario)
-                .populate('noAsisten',infoUsuario)
-                .populate('duda',infoUsuario)
+                .populate('confirmados', infoUsuario)
+                .populate('invitados', infoUsuario)
+                .populate('noAsisten', infoUsuario)
+                .populate('duda', infoUsuario)
 
             let invitados = [
                 ...evento.confirmados,
@@ -294,10 +299,16 @@ api.put('/eventos/:id', async (req, res) => {
                 ...evento.noAsisten
             ]
 
-            for (let invitado of invitados) {
-                tituloNot = `Modificación de evento: ${evento.nombre}`,
-                    bodyNot = `Hola ${invitado.nombre}! Un evento al que fuiste invitado ha sido modificado, consultá los detalles y confirmá asistencia. Gracias!`
-                enviarNotificacion(invitado, tituloNot, bodyNot)
+            for (let i of invitados) {
+                iniviado = await Usuario.findById(i._id)
+                tituloNot = `Modificación de evento: ${evento.nombre}`
+                bodyNot = `Hola ${invitado.nombre}! Un evento al que fuiste invitado ha sido modificado, consultá los detalles y confirmá asistencia. Gracias!`
+                if(invitado.tokens.length > 1 ){
+                    enviarNotificacion(invitado, tituloNot, bodyNot)
+    
+                }else{
+                    enviarCorreoNotificacion(invitado,tituloNot,bodyNot)
+                }
             }
         }
 
