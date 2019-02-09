@@ -72,7 +72,7 @@ const cargaPantallas = async () => {
         await new Pantalla({ 'nombre': 'Fixture', 'menu': 'Agenda', 'opcionMenu': 'Fixture', 'componente': 'MantenimientoCampeonatosPage', 'roles': [delegadoInst._id, delegado._id, jugador._id, dt._id] }).save()
 
 
-        await new Pantalla({ 'nombre': 'Registro de Pago', 'menu': 'Tesorería', 'opcionMenu': 'Registro de Pago', 'componente': 'RegistroPagoCuotaPage', 'roles': [delegadoInst._id, tesorero._id,] }).save()
+        await new Pantalla({ 'nombre': 'Registro de Pago', 'menu': 'Tesorería', 'opcionMenu': 'Registro de Pago', 'componente': 'RegistroPagoCuotaPage', 'roles': [jugador._id,delegadoInst._id, tesorero._id,] }).save()
         await new Pantalla({ 'nombre': 'Conceptos de Caja', 'menu': 'Tesorería', 'opcionMenu': 'Conceptos de Caja', 'componente': 'ConceptosDeCajaPage', 'roles': [delegadoInst._id, tesorero._id,] }).save()
         await new Pantalla({ 'nombre': 'Pagos Pendientes', 'menu': 'Tesorería', 'opcionMenu': 'Pagos Pendientes', 'componente': 'PagosPendientesPage', 'roles': [delegadoInst._id, tesorero._id,] }).save()
         await new Pantalla({ 'nombre': 'Ingreso Movimiento', 'menu': 'Tesorería', 'opcionMenu': 'Ingreso Movimiento', 'componente': 'RegistroMovCajaPage', 'roles': [delegadoInst._id, tesorero._id,] }).save()
@@ -107,7 +107,7 @@ const cargaPantallas = async () => {
 const cargaDelegadosI = async () => {
     const usuarios = await Usuario.find()
     if (usuarios.length === 0) {
-        let correos = ['gab.arpe@gmail.com', 'nati.r0501@gmail.com', 'tomato23@gmail.com']
+        let correos = ['gab.arpe@gmail.com']
 
         for (let i = 0; i < correos.length; i++) {
             let usuario = new Usuario({ 'email': correos[i], 'delegadoInstitucional': true })

@@ -21,7 +21,7 @@ export class Partido{
     rival?: string
     golesPropios? : number
     golesRival?: number
-    local?: String
+    local: boolean = false
     lugar?: Lugar= new Lugar()
 }
 
