@@ -67,8 +67,7 @@ export class RegistroMovCajaPage {
         this.conceptos = conc.data.conceptosCaja;
         this.conceptos = this.conceptos.filter(cc=>{return ['Cobro de couta','Pago de Cuota'].indexOf(cc.nombre)<0})
         this.concepto = this.conceptos[0]
-        console.log(this.conceptos);
-
+      
       }
       loading.dismiss();
     } catch (e) {
@@ -94,7 +93,8 @@ export class RegistroMovCajaPage {
         monto: this.concepto.tipo === 'Egreso'? -this.form.value.monto: this.form.value.monto,
         concepto: this.concepto._id,
         usuario: this.usuario._id,
-        estado: "Confirmado"
+        estado: "Confirmado",
+        comentario: this.form.form.value.comentario
 
       },
     }

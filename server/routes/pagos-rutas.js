@@ -66,7 +66,7 @@ api.post('/pagos', async (req, res) => {
                 tituloNot = `Aviso de Pago`
                 bodyNot = `Hola ${t.nombre}! ${jugador.nombre} ${jugador.apellido} ha realizado una solicitud de pago. Ingresá a la App para confirmarlo`
 
-                if (user.hasMobileToken()) {
+                if (t.hasMobileToken()) {
 
                     enviarNotificacion(t, tituloNot, bodyNot)
                 } else {
@@ -116,6 +116,9 @@ api.patch('/pagos/confirmacion/:id', async (req, res) => {
         for (movim of movsActualizadosCat) {
             if (movim.referencia !== null) {
                 if (movim.referencia.toString() === req.body.referencia) {
+                    if(movim.confirmado === true){
+                        res.status(404).send(new ApiResponse({},'Movimiento ya fue confirmado'))
+                    }
                     if (movim.monto === req.body.monto) {
                         movim.confirmado = true;
                         movim.referencia = null;
