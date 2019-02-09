@@ -155,6 +155,31 @@ api.post('/categorias', async (req, res) => {
     }
 })
 
+api.get('/categorias/saldos/:_id', async (req, res) => {
+    try{
+        let id = req.params._id;
+        let categoria = await Categoria.findOne({_id: id})
+        if(categoria){
+
+            let jugadores = []
+            
+            for(let j of categoria.jugadores){
+                let jugador = await Usuario.findOne({_id: j},{tokens: 0, password: 0}).populate('cuenta')
+                jugadores.push(jugador)
+            }
+            res.send(new ApiResponse({categoria,jugadores},''))
+        }else{
+            res.status(404).send(new ApiResponse({},'Categoría no encontrada'))
+        }
+    
+    }catch(e){
+        console.log(e)
+        res.status(400).send(new ApiResponse({},''))
+    }
+    
+       
+})
+
 api.get('/categorias/:_id', (req, res) => {
     let id = req.params._id;
 

@@ -78,6 +78,7 @@ const cargaPantallas = async () => {
         await new Pantalla({ 'nombre': 'Ingreso Movimiento', 'menu': 'Tesorería', 'opcionMenu': 'Ingreso Movimiento', 'componente': 'RegistroMovCajaPage', 'roles': [delegadoInst._id, tesorero._id,] }).save()
         await new Pantalla({ 'nombre': 'Cons. Movimientos', 'menu': 'Tesorería', 'opcionMenu': 'Cons. Movimientos', 'componente': 'SaldoMovimientosCategoriaPage', 'roles': [delegadoInst._id, delegado._id, tesorero._id,] }).save()
         await new Pantalla({ 'nombre': 'Cons. Mov y Sdo por Jugador', 'menu': 'Tesorería', 'opcionMenu': 'Cons. Mov y Sdo por Jugador', 'componente': 'SaldosJugadoresPage', 'roles': [delegadoInst._id, delegado._id, jugador._id, tesorero._id,] }).save()
+        await new Pantalla({ 'nombre': 'Cons. Saldo plantel', 'menu': 'Tesorería', 'opcionMenu': 'Cons. Saldo Plantel', 'componente': 'SaldosPlantelPage', 'roles': [delegadoInst._id, delegado._id, jugador._id, tesorero._id,] }).save()
 
 
         await new Pantalla({ 'nombre': 'Registro de datos', 'menu': 'Dirección Técnica', 'opcionMenu': 'Registro de datos', 'componente': 'ListaEventosPage', 'roles': [delegadoInst._id, dt._id,] }).save()

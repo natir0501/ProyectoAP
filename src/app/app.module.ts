@@ -1,3 +1,4 @@
+import { SaldosPlantelPage } from './../pages/saldos-plantel/saldos-plantel';
 import { HttpClientModule } from '@angular/common/http';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
@@ -98,7 +99,8 @@ import { PlantelPage } from './../pages/plantel/plantel';
     PagosPendientesPage,
     DetallePagoPage,
     SaldosJugadoresPage,
-    PlantelPage
+    PlantelPage,
+    SaldosPlantelPage
     
 
   ],
@@ -150,7 +152,8 @@ import { PlantelPage } from './../pages/plantel/plantel';
     PagosPendientesPage,
     DetallePagoPage,
     SaldosJugadoresPage,
-    PlantelPage
+    PlantelPage,
+    SaldosPlantelPage
     
     
   ],
