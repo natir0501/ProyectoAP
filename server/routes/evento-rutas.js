@@ -27,7 +27,7 @@ api.get('/eventos', async (req, res) => {
                 'tipoEvento': ObjectID(req.query.tipoEvento)
             }
         }
-        let eventos = await Evento.find(filtro).populate('tipoEvento')
+        let eventos = await Evento.find(filtro).populate('tipoEvento categoria')
 
         if (req.query.userId) {
             eventos = eventos.filter(e => {
