@@ -134,6 +134,10 @@
               <ion-option *ngFor="let pos of posiciones" [id]="pos.id" [value]="pos.id">{{pos.value}}</ion-option>
             </ion-select>
           </ion-item>
+          <ion-item >
+            <ion-label>Notificaciones por Email</ion-label>
+            <ion-checkbox  item-end name="notificacionesEmail" notificacionesEmail [(ngModel)]="usuario.notificacionesEmail"></ion-checkbox>
+          </ion-item>
           <div class="spacer" style="width:300px;height:14px;" id="registro-spacer10"></div>
 
         </ion-col>

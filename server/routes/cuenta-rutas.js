@@ -10,7 +10,7 @@ const { ApiResponse } = require('../models/api-response')
 var { enviarNotificacion, enviarCorreoNotificacion } = require('../Utilidades/utilidades')
 
 var infoUsuario = 'nombre apellido email perfiles ci celular direccion fechaVtoCarneSalud delegadoInstitucional fechaNacimiento'
-infoUsuario += ' fechaUltimoExamen requiereExamen emergencia sociedad contacto posiciones activo perfiles categoriacuota ultimoMesCobrado cuenta'
+infoUsuario += ' fechaUltimoExamen requiereExamen emergencia notificacionEmail sociedad contacto posiciones activo perfiles categoriacuota ultimoMesCobrado cuenta'
 
 
 api.get('/cuenta/:_id', async (req, res) => {

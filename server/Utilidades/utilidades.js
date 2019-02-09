@@ -100,6 +100,10 @@ const enviarCorreoAlta = async (usuario) => {
 }
 
 const enviarCorreoNotificacion = async (usuario, asunto, cuerpo)=>{
+    if(!usuario.notificacionesEmail){
+        return
+    }
+    
     const oauth2Client = new OAuth2(
         '349297601621-s63gdr5v1ms3kb88ahe5r4glaqire5t0.apps.googleusercontent.com',
         '4k7UuEp__UAjcVfOsVJtZTe0', // Client Secret
