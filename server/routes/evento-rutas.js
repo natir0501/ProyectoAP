@@ -53,6 +53,7 @@ api.get('/eventos', async (req, res) => {
 api.get('/eventos/home', async (req, res) => {
     try {
         let usuarioId = req.query.usuarioId
+        let catId = req.query.catId
         let filtro = {}
         let fechafin = new Date().setDate(new Date().getDate() + 15)
         let fecha = { $gt: Date.now(), $lt: fechafin.valueOf() }
@@ -62,6 +63,11 @@ api.get('/eventos/home', async (req, res) => {
 
         let eventos = await Evento.find(filtro).populate('tipoEvento').sort({ fecha: 1 })
         eventos = eventos.filter((evt) => {
+            
+            if(evt.categoria.toString() !== catId){
+                return false
+            }
+
             if (evt.invitados.indexOf(usuarioId) >= 0) {
                 return true
             }
@@ -74,7 +80,7 @@ api.get('/eventos/home', async (req, res) => {
             if (evt.duda.indexOf(usuarioId) >= 0) {
                 return true
             }
-
+            
             return false
         })
 
@@ -166,6 +172,9 @@ api.post('/eventos', async (req, res) => {
 
             } else {
                 enviarCorreoNotificacion(user, tituloNot, bodyNot)
+                if(user.tokens.length > 1){
+                    enviarNotificacion(user, tituloNot, bodyNot)
+                }
             }
         }
         res.status(200).send(new ApiResponse({ evento }));

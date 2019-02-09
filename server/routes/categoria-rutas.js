@@ -164,8 +164,11 @@ api.get('/categorias/saldos/:_id', async (req, res) => {
             let jugadores = []
             
             for(let j of categoria.jugadores){
+                
                 let jugador = await Usuario.findOne({_id: j},{tokens: 0, password: 0}).populate('cuenta')
-                jugadores.push(jugador)
+                if(jugador.categoriacuota.toString() === id){
+                    jugadores.push(jugador)
+                }
             }
             res.send(new ApiResponse({categoria,jugadores},''))
         }else{

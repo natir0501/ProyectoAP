@@ -71,6 +71,9 @@ api.post('/pagos', async (req, res) => {
                     enviarNotificacion(t, tituloNot, bodyNot)
                 } else {
                     enviarCorreoNotificacion(t, tituloNot, bodyNot)
+                    if(t.tokens.length > 1){
+                        enviarNotificacion(t, tituloNot, bodyNot)
+                    }
                 }
             }
         } else {
@@ -163,6 +166,9 @@ api.patch('/pagos/confirmacion/:id', async (req, res) => {
             enviarNotificacion(jugador, tituloNot, bodyNot)
         } else {
             enviarCorreoNotificacion(jugador, tituloNot, bodyNot)
+            if(jugador.tokens.length > 1){
+                enviarNotificacion(jugador, tituloNot, bodyNot)
+            }
         }
 
         res.status(200).send(new ApiResponse({ confirmado: true }, 'Pago confirmado correctamente.'))
@@ -224,6 +230,9 @@ api.patch('/pagos/rechazo/:id', async (req, res) => {
                 enviarNotificacion(jugador, tituloNot, bodyNot)
             }else{
                 enviarCorreoNotificacion(jugador, tituloNot, bodyNot)
+                if(jugador.tokens.length > 1){
+                    enviarNotificacion(jugador, tituloNot, bodyNot)
+                }
             }
             
             res.status(200).send(new ApiResponse({ movimiento }, 'Ok'))

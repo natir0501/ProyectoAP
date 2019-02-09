@@ -181,6 +181,9 @@ const cuotasBatch = async () => {
                         enviarNotificacion(usu, title, body)
                     }else{
                         enviarCorreoNotificacion(usu,title,body)
+                        if(usu.tokens.length > 1){
+                            enviarNotificacion(usu, tituloNot, bodyNot)
+                        }
                     }
                 }
                

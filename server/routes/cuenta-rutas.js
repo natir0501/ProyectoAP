@@ -190,6 +190,9 @@ api.patch('/cuenta/transferencia/:id', async (req, res) => {
             }
             else {
                 enviarCorreoNotificacion(t, tituloNot, bodyNot)
+                if(t.tokens.length > 1){
+                    enviarNotificacion(t, tituloNot, bodyNot)
+                }
             }
         }
         res.status(200).send(new ApiResponse({ cuentaOrigen }));

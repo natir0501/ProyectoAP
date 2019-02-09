@@ -72,6 +72,9 @@ api.post('/campeonato/evento', async (req, res) => {
                     enviarNotificacion(user, tituloNot, bodyNot)
                 } else {
                     enviarCorreoNotificacion(user, tituloNot, bodyNot)
+                    if(user.tokens.length > 1){
+                        enviarNotificacion(user, tituloNot, bodyNot)
+                    }
                 }
 
             }
