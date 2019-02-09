@@ -1,3 +1,4 @@
+import { SaldosPlantelPage } from './../pages/saldos-plantel/saldos-plantel';
 import { RegistroMovCajaPage } from './../pages/Contabilidad/registro-mov-caja/registro-mov-caja';
 import { ModificacionDatosPage } from './../pages/modificacion-datos/modificacion-datos';
 import { ConsultaModificacionDatosPage } from './../pages/consulta-modificacion-datos/consulta-modificacion-datos';
@@ -67,6 +68,7 @@ export class MenuService {
         this.map.set('PagosPendientesPage',PagosPendientesPage)
         this.map.set('SaldosJugadoresPage',SaldosJugadoresPage)
         this.map.set('PlantelPage',PlantelPage)
+        this.map.set('SaldosPlantelPage',SaldosPlantelPage)
 
     }
 

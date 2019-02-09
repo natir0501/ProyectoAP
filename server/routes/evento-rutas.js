@@ -53,6 +53,7 @@ api.get('/eventos', async (req, res) => {
 api.get('/eventos/home', async (req, res) => {
     try {
         let usuarioId = req.query.usuarioId
+        let catId = req.query.catId
         let filtro = {}
         let fechafin = new Date().setDate(new Date().getDate() + 15)
         let fecha = { $gt: Date.now(), $lt: fechafin.valueOf() }
@@ -62,6 +63,11 @@ api.get('/eventos/home', async (req, res) => {
 
         let eventos = await Evento.find(filtro).populate('tipoEvento').sort({ fecha: 1 })
         eventos = eventos.filter((evt) => {
+            
+            if(evt.categoria.toString() !== catId){
+                return false
+            }
+
             if (evt.invitados.indexOf(usuarioId) >= 0) {
                 return true
             }
@@ -74,7 +80,7 @@ api.get('/eventos/home', async (req, res) => {
             if (evt.duda.indexOf(usuarioId) >= 0) {
                 return true
             }
-
+            
             return false
         })
 
@@ -161,11 +167,14 @@ api.post('/eventos', async (req, res) => {
             let user = await Usuario.findOne({ _id: id })
             tituloNot = `Nuevo evento: ${evento.nombre}`
             bodyNot = `Hola ${user.nombre}! Has sido invitado a un nuevo evento. Por favor, consultá los detalles y confirmá asistencia. Gracias!`
-            if (user.tokens.length > 1) {
+            if (user.hasMobileToken()) {
                 enviarNotificacion(user, tituloNot, bodyNot)
 
             } else {
                 enviarCorreoNotificacion(user, tituloNot, bodyNot)
+                if(user.tokens.length > 1){
+                    enviarNotificacion(user, tituloNot, bodyNot)
+                }
             }
         }
         res.status(200).send(new ApiResponse({ evento }));
@@ -303,7 +312,7 @@ api.put('/eventos/:id', async (req, res) => {
                 iniviado = await Usuario.findById(i._id)
                 tituloNot = `Modificación de evento: ${evento.nombre}`
                 bodyNot = `Hola ${invitado.nombre}! Un evento al que fuiste invitado ha sido modificado, consultá los detalles y confirmá asistencia. Gracias!`
-                if(invitado.tokens.length > 1 ){
+                if(invitado.hasMobileToken() ){
                     enviarNotificacion(invitado, tituloNot, bodyNot)
     
                 }else{

@@ -67,11 +67,14 @@ api.post('/campeonato/evento', async (req, res) => {
                 let user = await Usuario.findOne({ _id: invitado })
                 tituloNot = `Nuevo evento: ${evento.nombre}`
                 bodyNot = `Hola ${user.nombre}! Has sido invitado a un nuevo evento. Por favor, consultá los detalles y confirmá asistencia. Gracias!`
-                if (user.tokens.length > 1) {
+                if (user.hasMobileToken()) {
 
                     enviarNotificacion(user, tituloNot, bodyNot)
                 } else {
                     enviarCorreoNotificacion(user, tituloNot, bodyNot)
+                    if(user.tokens.length > 1){
+                        enviarNotificacion(user, tituloNot, bodyNot)
+                    }
                 }
 
             }

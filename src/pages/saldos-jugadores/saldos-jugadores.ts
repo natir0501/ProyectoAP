@@ -41,7 +41,7 @@ export class SaldosJugadoresPage {
       let dataUsuarios: any = await this.catServ.obtenerCategoria(this.categoria._id).toPromise()
       if (dataUsuarios) {
         this.categoria = dataUsuarios.data.categoria
-        this.usuarios = this.categoria.jugadores.filter(jug => jug.activo === true)
+        this.usuarios = this.categoria.jugadores.filter(jug => jug.activo === true && jug.categoriacuota.toString() === this.categoria._id)
         loading.dismiss();
       } else {
         this.utilServ.dispararAlert("Upss! :(", "Ocurrió un error al cargar los jugadores de la categoría. Volvé a intentar en unos minutos.")

@@ -76,10 +76,11 @@ export class EventoService {
         return this.http.put<any>(`${this.apiUrl}api/eventos/${idEvento}/registrosDT`,{jugadorId: idUsuario, comentario}, { headers})
     }
 
-    obtenerEventosHome(usuarioId: string){
+    obtenerEventosHome(usuarioId: string, catId:string){
         let headers: HttpHeaders = new HttpHeaders().set("Content-Type", "application/json")
         headers = headers.set('x-auth', this.usuarioServ.token)
         let params : HttpParams = new HttpParams().set('usuarioId', usuarioId);
+        params = params.set('catId', catId);
         return this.http.get<any>(`${this.apiUrl}api/eventos/home`, { headers,params})
     }
 }

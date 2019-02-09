@@ -39,7 +39,7 @@ export class HomePage {
         if (resp) {
 
           this.categoria = resp.data.categoria
-          this.obtenerEventos()
+          this.obtenerEventos(this.categoria._id)
           let resp2 = await this.userServ.getCuenta(this.usuario._id).toPromise()
           if (resp2) {
             this.cuenta = resp2.data.cuenta
@@ -75,7 +75,7 @@ export class HomePage {
     try {
 
 
-      let resp = await this.eventServ.obtenerEventosHome(this.usuario._id).toPromise()
+      let resp = await this.eventServ.obtenerEventosHome(this.usuario._id,this.categoria._id ).toPromise()
       if (resp) {
         this.eventos = resp.data.eventos
 
