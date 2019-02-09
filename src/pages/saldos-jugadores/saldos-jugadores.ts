@@ -49,6 +49,7 @@ export class SaldosJugadoresPage {
         this.navCtrl.setRoot(HomePage)
       }
     } catch (e) {
+      loading.dismiss()
       console.log(e)
       this.utilServ.dispararAlert('Error', 'Ocurrión un error con el servidor')
     }

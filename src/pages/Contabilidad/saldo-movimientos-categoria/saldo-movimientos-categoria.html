@@ -10,9 +10,17 @@
   <ion-grid>
     <ion-row justify-content-center>
       <ion-col col-xl-6>
+        <p style="color:#000000;">
+          Pantalla para consulta de saldo y movimientos de la categoría.
+          <br><br>
 
+          Usá los botones '+/-' para ocultar y mostrar tanto filtros como movmientos. <br><br>
+          Con la lupa podés realizar la búsqueda de acuerdo a los filtros.<br><br>
+          También haciendo click en la impresora podés obtener en pdf los movimientos filtrados.
+
+        </p><br>
         <ion-item-divider color="light" id="sdomovscat1">
-          Saldo:
+          Saldo de la categoría:
         </ion-item-divider>
         <div>
           <ion-item color="none" icon-start>
@@ -28,9 +36,7 @@
           <button ion-button item-end class="btn-mostrar" type="button" (click)="toggle('filtros')">{{btnFiltros}}</button>
         </ion-item-divider>
         <ng-container *ngIf="verFiltros">
-          <p>
-            Ingresá los filtros correspondientes a los movimientos que querés ver y seleccioná el botón "Filtrar".
-          </p>
+
           <ion-item>
             <ion-label>
               <strong>Tipo:</strong>
@@ -67,7 +73,7 @@
               required>
             </ion-input>
           </ion-item>
-         
+
         </ng-container>
         <ion-item-divider color="light" id="sdomovscat2">
           Movimientos:

@@ -13,14 +13,14 @@ export class CuentaService {
   filtrarMovimientos(idCuenta: string, tipo: string, idConcepto: string, fechaD: number, fechaH: number): Observable <any> {
     let headers: HttpHeaders = new HttpHeaders().set("Content-Type", "application/json")
     headers = headers.set('x-auth', this.usuarioServ.token)
-    console.log(idConcepto, tipo);
+
     
     let params : HttpParams = new HttpParams();
     params= tipo? params.set('tipo', tipo): params;
     params = idConcepto? params.set('concepto', idConcepto): params;
     params = fechaD? params.set('fechaInicio', fechaD.toString()):params;
     params = fechaH? params.set('fechaFin', fechaH.toString()): params;
-    console.log("Params", params);
+   
     return this.http.get(`${this.apiUrl}api/movimientos/${idCuenta}`, {headers, params} )
   }
 

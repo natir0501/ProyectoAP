@@ -158,7 +158,7 @@ api.patch('/cuenta/transferencia/:id', async (req, res) => {
         let categoriaDestino = await Categoria.findById(req.body.idcategoria).populate('tesoreros').exec()
 
         let nuevoSaldoCtaOrigen = cuentaOrigen.saldo - movimiento.monto;
-        let nuevoSaldoCtaDestino = cuentaDestino.saldo + movimiento.monto;
+        let nuevoSaldoCtaDestino = cuentaDestino.saldo + parseInt(movimiento.monto);
 
         let movsCtaOrigen = cuentaOrigen.movimientos;
         movsCtaOrigen.push(movimiento);
