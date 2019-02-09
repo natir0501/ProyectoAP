@@ -91,6 +91,10 @@ var UsuarioSchema = mongoose.Schema({
     posiciones: [{
         type: String
     }],
+    notificacionesEmail:{
+        type: Boolean,
+        default: false
+    },
     perfiles: [{
         categoria:
         {

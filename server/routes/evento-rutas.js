@@ -4,11 +4,11 @@ const { Evento } = require('../models/evento')
 const _ = require('lodash')
 const { ApiResponse } = require('../models/api-response')
 const { ObjectID } = require('mongodb')
-var { enviarNotificacion,enviarCorreoNotificacion } = require('../Utilidades/utilidades')
+var { enviarNotificacion, enviarCorreoNotificacion } = require('../Utilidades/utilidades')
 const { Usuario } = require('../models/usuario')
 
 var infoUsuario = 'nombre apellido email perfiles ci celular direccion fechaVtoCarneSalud delegadoInstitucional fechaNacimiento'
-infoUsuario += ' fechaUltimoExamen requiereExamen emergencia sociedad contacto posiciones activo perfiles categoriacuota ultimoMesCobrado cuenta'
+infoUsuario += ' fechaUltimoExamen requiereExamen emergencia notificacionEmail sociedad contacto posiciones activo perfiles categoriacuota ultimoMesCobrado cuenta'
 
 
 api.get('/eventos', async (req, res) => {
@@ -63,8 +63,8 @@ api.get('/eventos/home', async (req, res) => {
 
         let eventos = await Evento.find(filtro).populate('tipoEvento').sort({ fecha: 1 })
         eventos = eventos.filter((evt) => {
-            
-            if(evt.categoria.toString() !== catId){
+
+            if (evt.categoria.toString() !== catId) {
                 return false
             }
 
@@ -80,7 +80,7 @@ api.get('/eventos/home', async (req, res) => {
             if (evt.duda.indexOf(usuarioId) >= 0) {
                 return true
             }
-            
+
             return false
         })
 
@@ -172,7 +172,7 @@ api.post('/eventos', async (req, res) => {
 
             } else {
                 enviarCorreoNotificacion(user, tituloNot, bodyNot)
-                if(user.tokens.length > 1){
+                if (user.tokens.length > 1) {
                     enviarNotificacion(user, tituloNot, bodyNot)
                 }
             }
@@ -309,14 +309,21 @@ api.put('/eventos/:id', async (req, res) => {
             ]
 
             for (let i of invitados) {
-                iniviado = await Usuario.findById(i._id)
+
+                invitado = await Usuario.findById(i._id)
                 tituloNot = `Modificación de evento: ${evento.nombre}`
                 bodyNot = `Hola ${invitado.nombre}! Un evento al que fuiste invitado ha sido modificado, consultá los detalles y confirmá asistencia. Gracias!`
-                if(invitado.hasMobileToken() ){
+                if (invitado.hasMobileToken()) {
+
                     enviarNotificacion(invitado, tituloNot, bodyNot)
-    
-                }else{
-                    enviarCorreoNotificacion(invitado,tituloNot,bodyNot)
+
+                } else {
+
+                    enviarCorreoNotificacion(invitado, tituloNot, bodyNot)
+                    if (invitado.tokens.length > 1) {
+
+                        enviarNotificacion(invitado, tituloNot, bodyNot)
+                    }
                 }
             }
         }

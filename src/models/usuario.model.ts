@@ -30,6 +30,7 @@ export class Usuario{
     categoriacuota ?: Categoria;
     ultimoMesCobrado?: number;
     cuenta?: Cuenta;
+    notificacionesEmail?: boolean = true;
 
 
    
