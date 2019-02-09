@@ -34,7 +34,7 @@ export class MantenimientoFechaPage {
   ionViewDidLoad() {
     let fecha: Fecha = this.navParams.get('fecha')
     let camp: Campeonato = this.navParams.get('camp')
-
+    this.fecha.rueda = 'R1'
     if (fecha) {
       this.fecha = fecha
       this.fechaEncuentrotxt = this.utilServ.fechahoraToText(new Date(fecha.fechaEncuentro))
@@ -61,7 +61,7 @@ export class MantenimientoFechaPage {
             }
           },
           (err) => {
-            this.utilServ.dispararAlert("Error", "Ocurrió un error al agregar la fecha. Verifique los datos")
+            this.utilServ.dispararAlert("Error", err.error.error)
             console.log(err);
 
           })
@@ -73,7 +73,7 @@ export class MantenimientoFechaPage {
           this.navCtrl.setRoot(MantenimientoCampeonatosPage, { campeonato })
         },
         (err) => {
-          this.utilServ.dispararAlert("Error", "Ocurrió un error al modificar la fecha. Verifique los datos")
+          this.utilServ.dispararAlert("Error", "err.error.error")
           console.log(err);
         })
     }

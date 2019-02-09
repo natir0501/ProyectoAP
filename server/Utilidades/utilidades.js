@@ -66,8 +66,8 @@ const enviarCorreoAlta = async (usuario) => {
     }
     let url = process.env.URLREGISTRO + `${usuario.tokens[0].token}`
     let html = `<h2>Hola! Bienvenido/a a la app del CEI.</h2>
-                <p>Por favor ingresa al siguiente link para completar registro:</p>
-                <a href="${url}">Link</a><br>
+                <p>Por favor ingresa a este <a href="${url}">Link</a> para completar registro:</p><br>
+                
 
                 <h4>Pasos para instalación en Android o iOS</h4>
                 <p>
@@ -76,7 +76,7 @@ const enviarCorreoAlta = async (usuario) => {
                 Ingresá al link de más arriba a través del navegador Google Chrome, si tu SO es Android o Safari para iOS.<br><br>
                 Si es Android, aceptá el pedido para recibir notificaciones por parte de la app.<br><br>
                 Para instalar la app en el escritorio, podés seleccionar "agregar al home" desde las opciones del sitio
-                o aceptar ésta acción si la app te lo pide en el primer ingreso” <br><br>
+                o aceptar esta acción si la app te lo pide en el primer ingreso” <br><br>
                 Luego, completá el registro inicial y cerrá el navegador.<br><br>
                 Estás listo para ingresar a la app del CEI desde el ícono instalado antes y realizar el log in!<br><br>
 
