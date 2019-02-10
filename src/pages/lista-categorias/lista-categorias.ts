@@ -26,7 +26,7 @@ export class ListaCategoriasPage {
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private usuServ: UsuarioService,
-    , public catService: CategoriaService, public utilServ: UtilsServiceProvider,
+     public catService: CategoriaService, public utilServ: UtilsServiceProvider,
     public loadingCtrl: LoadingController) {
   }
 
