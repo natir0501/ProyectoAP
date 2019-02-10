@@ -6,7 +6,7 @@ const { Cuenta } = require('../models/cuenta')
 
 const _ = require('lodash')
 const { ApiResponse } = require('../models/api-response')
-var { enviarNotificacion,enviarCorreoNotificacion } = require('../Utilidades/utilidades')
+var { enviarNotificacion, enviarCorreoNotificacion } = require('../Utilidades/utilidades')
 
 var infoUsuario = 'nombre apellido email perfiles ci celular direccion fechaVtoCarneSalud delegadoInstitucional fechaNacimiento'
 infoUsuario += ' fechaUltimoExamen requiereExamen emergencia notificacionEmail sociedad contacto posiciones activo perfiles categoriacuota ultimoMesCobrado cuenta'
@@ -71,7 +71,7 @@ api.post('/pagos', async (req, res) => {
                     enviarNotificacion(t, tituloNot, bodyNot)
                 } else {
                     enviarCorreoNotificacion(t, tituloNot, bodyNot)
-                    if(t.tokens.length > 1){
+                    if (t.tokens.length > 1) {
                         enviarNotificacion(t, tituloNot, bodyNot)
                     }
                 }
@@ -131,8 +131,8 @@ api.patch('/pagos/confirmacion/:id', async (req, res) => {
                 }
             }
         }
-        if(!encontre){
-            return res.status(404).send(new ApiResponse({},'No se encontró movimiento'))
+        if (!encontre) {
+            return res.status(404).send(new ApiResponse({}, 'No se encontró movimiento'))
         }
         let movsActualizadosJug = jugador.cuenta.movimientos
         for (mov of movsActualizadosJug) {
@@ -171,7 +171,7 @@ api.patch('/pagos/confirmacion/:id', async (req, res) => {
             enviarNotificacion(jugador, tituloNot, bodyNot)
         } else {
             enviarCorreoNotificacion(jugador, tituloNot, bodyNot)
-            if(jugador.tokens.length > 1){
+            if (jugador.tokens.length > 1) {
                 enviarNotificacion(jugador, tituloNot, bodyNot)
             }
         }
@@ -202,17 +202,22 @@ api.patch('/pagos/rechazo/:id', async (req, res) => {
 
         let movJugadorEncontrado;
         let movCategoriaEncontrado;
-
+        let encontre = false
         //En la cuenta del usuario dejo el mov en estado rechazado (valido por id y por monto)
         for (let movimiento of cuentaJugador.movimientos) {
             if (movimiento._id.toString() === req.body.referencia &&
                 movimiento.monto === req.body.monto) {
+                encontre=true;
                 movJugadorEncontrado = true
                 movimiento.estado = "Rechazado"
                 movimiento.comentario = movimiento.comentario + "| Comentario al rechazar: " + req.body.comentario
                 await cuentaJugador.save()
             }
         }
+        if(!encontre){
+            return res.status(404).send(new ApiResponse({},'No se encontró el movimiento'))
+        }
+
         //En la cuenta de la categoría, borro el movimiento
         for (let i = 0; i < cuentaCat.movimientos.length; i++) {
             if (cuentaCat.movimientos[i].referencia !== null) {
@@ -229,17 +234,17 @@ api.patch('/pagos/rechazo/:id', async (req, res) => {
             let movimiento = movCategoriaEncontrado
             tituloNot = `Rechazo de Pago`
             bodyNot = `Hola ${jugador.nombre}! Tu solicitud de pago fue rechazada. Consultá con el tesorero o delegado de tu categoría `
-       
-            if( jugador.hasMobileToken() > 1 ){
+
+            if (jugador.hasMobileToken() > 1) {
 
                 enviarNotificacion(jugador, tituloNot, bodyNot)
-            }else{
+            } else {
                 enviarCorreoNotificacion(jugador, tituloNot, bodyNot)
-                if(jugador.tokens.length > 1){
+                if (jugador.tokens.length > 1) {
                     enviarNotificacion(jugador, tituloNot, bodyNot)
                 }
             }
-            
+
             res.status(200).send(new ApiResponse({ movimiento }, 'Ok'))
         } else {
             res.status(404).send(new ApiResponse({}, 'Ocurrió un error al rechazar el movimiento.'))
