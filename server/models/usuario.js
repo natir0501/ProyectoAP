@@ -48,7 +48,7 @@ var UsuarioSchema = mongoose.Schema({
     },
     fechaUltimoExamen:{
         type: Number,
-        default: new Date('2018-01-02'),
+        default: new Date('2017-01-02'),
         required: true
     },
     requiereExamen:{
