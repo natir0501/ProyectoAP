@@ -211,12 +211,12 @@ api.patch('/pagos/rechazo/:id', async (req, res) => {
                 movJugadorEncontrado = true
                 movimiento.estado = "Rechazado"
                 movimiento.comentario = movimiento.comentario + "| Comentario al rechazar: " + req.body.comentario
-                await cuentaJugador.save()
             }
         }
         if(!encontre){
             return res.status(404).send(new ApiResponse({},'No se encontró el movimiento'))
         }
+        await cuentaJugador.save()
 
         //En la cuenta de la categoría, borro el movimiento
         for (let i = 0; i < cuentaCat.movimientos.length; i++) {
