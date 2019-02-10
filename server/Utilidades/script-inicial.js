@@ -16,7 +16,7 @@ const scriptInicial = async () => {
     await cargaConcepto()
     await batch()
     await cargaTipoEvento()
-   // await cuotasBatch()
+    //await cuotasBatch()
 }
 
 const cargaRoles = async () => {
@@ -127,7 +127,7 @@ const cargaDelegadosI = async () => {
 const batch = async () => {
     try {
          // minute hour dom month dow
-        cron.schedule('05 22 * * *', cuotasBatch, {
+        cron.schedule('0 1 * * *', cuotasBatch, {
                 scheduled: true,
                 timezone: "America/Montevideo"
             });
@@ -148,7 +148,7 @@ const cuotasBatch = async () => {
     console.log(`Cantidad de categorías a cobrar: ${categorias.length}`)
     for (let cat of categorias) {
         console.log(`Se cobra cuota de categoría ${cat.nombre}`)
-        usuarios = await Usuario.find({ categoriacuota: cat._id, activo: true })
+        usuarios = await Usuario.find({ categoriacuota: cat._id })
         usuarios = usuarios.filter((u)=>{return cat.jugadores.indexOf(u._id) >= 0})
         console.log(`Se cobran cuotas de ${usuarios.length} jugadores.`)
         for (let usu of usuarios) {
@@ -182,7 +182,7 @@ const cuotasBatch = async () => {
                     }else{
                         enviarCorreoNotificacion(usu,title,body)
                         if(usu.tokens.length > 1){
-                            enviarNotificacion(usu, tituloNot, bodyNot)
+                            enviarNotificacion(usu, title, body)
                         }
                     }
                 }
