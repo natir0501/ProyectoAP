@@ -68,8 +68,9 @@ self.addEventListener('push', function (event) {
 });
 
 self.addEventListener('notificationclick', function (event) {
+  
   event.notification.close();
-  clients.openWindow("https://ceiapp-test.herokuapp.com");
+  clients.openWindow(''+event.currentTarget.origin);
 });
 
 messaging.setBackgroundMessageHandler(function (payload) {

@@ -273,6 +273,22 @@ api.put('/eventos/:id/registrosDT', async (req, res) => {
             if (!encontre) {
                 evento.registrosDT.push({ jugadorId: req.body.jugadorId, comentario: req.body.comentario })
             }
+            let jugador = await Usuario.findOne({ _id: jugadorId })
+            if (jugador) {
+                tituloNot = `Recibiste un comentario del DT`
+                bodyNot = `Hola ${jugador.nombre}! Uno de los DTs te ha hecho un comentario sobre el evento ${evento.nombre}`
+                if (jug.hasMobileToken()) {
+                    enviarNotificacion(jugador, tituloNot, bodyNot)
+                }
+                else {
+                    enviarCorreoNotificacion(jugador, tituloNot, bodyNot)
+                    if (jugador.tokens.length > 1) {
+                        enviarNotificacion(jugador, tituloNot, bodyNot)
+                    }
+                }
+            }
+
+
             evento = await evento.save()
             res.send(new ApiResponse({}, 'Registro ingresado correctamente'))
         } else {

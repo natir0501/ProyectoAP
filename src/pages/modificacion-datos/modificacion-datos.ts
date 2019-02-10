@@ -112,6 +112,10 @@ export class ModificacionDatosPage {
         return false
       }
     }
+    if(!this.fmedicaVigente){
+      this.usuario.fechaVtoCarneSalud = new Date('2018-01-02').valueOf()
+      return true
+    }  
     if (this.fmedicaVigente && Date.parse(this.fechaVtoTxt) <= Date.now()) {
       this.util.dispararAlert('F/Médica - C/ Salud', "Fecha de vencimiento inválida")
       return false
