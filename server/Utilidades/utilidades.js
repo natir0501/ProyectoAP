@@ -86,7 +86,7 @@ const enviarCorreoAlta = async (usuario) => {
                 `
                 
     var mailOptions = {
-        from: 'CEI App',
+        from: 'CEI App <appcei.2018@gmail.com>',
         to: usuario.email,
         subject: `${ambiente}Confirmación de registro y alta en CEIapp`,
         html
