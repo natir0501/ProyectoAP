@@ -235,19 +235,23 @@ UsuarioSchema.statics.findByCredentials = function (email, password) {
     return Usuario.findOne({ email }).exec().then((usuario) => {
 
         if (!usuario) {
-            return Promise.reject()
+            return Promise.reject('No encuentro usuario '+usuario.email)
         }
 
         return new Promise((resolve, reject) => {
             bcrypt.compare(password, usuario.password, (err, res) => {
+                
                 if (!res) {
-                    return reject()
+                 
+                    return reject('Contraseña incorrecta: '+password)
                 }
+                console.log('Res: ', res)
                 return resolve(usuario)
             })
         })
 
     }).catch((e) => {
+       
         return Promise.reject(e)
     })
 }

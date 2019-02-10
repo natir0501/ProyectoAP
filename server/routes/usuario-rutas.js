@@ -110,7 +110,7 @@ api.post('/usuarios/login', async (req, res) => {
         }
 
     } catch (e) {
-        console.log(e)
+        console.log('Error ',e)
         res.status(400).send(new ApiResponse({}, `Mensaje: ${e}`))
     }
 })
