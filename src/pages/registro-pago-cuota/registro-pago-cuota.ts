@@ -42,7 +42,7 @@ export class RegistroPagoCuotaPage {
     loading.present()
     try {
       this.usuario = this.usuServ.usuario
-      console.log(this.usuario)
+      
       this.categoria._id = this.usuServ.usuario.perfiles[0].categoria
       let dataUsuarios: any = await this.catService.obtenerCategoria(this.categoria._id).toPromise()
       if (dataUsuarios) {

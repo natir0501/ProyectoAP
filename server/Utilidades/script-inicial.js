@@ -47,7 +47,8 @@ const cargaConcepto = async () => {
         await new ConceptosCaja({ nombre: 'Pago de Cuota', tipo: 'Ingreso' }).save()
         await new ConceptosCaja({ nombre: 'Deuda Inicial', tipo: 'Egreso' }).save()
         await new ConceptosCaja({ nombre: 'Saldo Inicial', tipo: 'Ingreso' }).save()
-        await new ConceptosCaja({ nombre: 'Transferencia de Saldos', tipo: 'Ingreso' }).save()
+        await new ConceptosCaja({ nombre: 'Transferencia de Saldos', tipo: 'Egreso' }).save()
+        await new ConceptosCaja({ nombre: 'Ingreso Transf. Saldos', tipo: 'Ingreso' }).save()
     }
 }
 

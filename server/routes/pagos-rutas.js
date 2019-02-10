@@ -80,8 +80,9 @@ api.post('/pagos', async (req, res) => {
             cuentajugador.saldo = parseInt(cuentajugador.saldo) + parseInt(mov.monto)
             await cuentajugador.save()
         }
-
-        cuentacategoria.movimientos.push(mov);
+        let movimientoCategoria = {...mov}
+        movimientoCategoria.comentario = movimientoCategoria.comentario + ` ${jugador.nombre} ${jugador.apellido}`
+        cuentacategoria.movimientos.push(movimientoCategoria);
 
 
         await cuentacategoria.save()

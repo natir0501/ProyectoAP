@@ -55,6 +55,10 @@ export class DetallePagoPage {
   }
 
   confirmar() {
+    
+    if (this.movimiento.comentario_tes === undefined || this.movimiento.comentario_tes === '') {
+      return this.utilServ.dispararAlert('Error', "Ingrese comentario")
+    }
     let loader = this.loader.create({
       content: 'Cargando...',
       spinner: 'circles'
@@ -77,6 +81,9 @@ export class DetallePagoPage {
   }
 
   rechazar() {
+    if (this.movimiento.comentario_tes === undefined || this.movimiento.comentario_tes === '') {
+      return this.utilServ.dispararAlert('Error', "Ingrese comentario")
+    }
     let loader = this.loader.create({
       content: 'Cargando...',
       spinner: 'circles'

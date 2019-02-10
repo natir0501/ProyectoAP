@@ -155,6 +155,7 @@ api.patch('/cuenta/transferencia/:id', async (req, res) => {
         let cuentaOrigen = await Cuenta.findById(req.params.id).populate('movimientos').exec()
         let cuentaDestino = await Cuenta.findById(req.body.idcuenta).populate('movimientos').exec();
         let movimiento = req.body.movimiento;
+        let conceptoDestino = await ConceptosCaja.findOne({nombre: 'Ingreso Transf. Saldos'})
         let categoriaDestino = await Categoria.findById(req.body.idcategoria).populate('tesoreros').exec()
 
         let nuevoSaldoCtaOrigen = cuentaOrigen.saldo - movimiento.monto;
@@ -164,7 +165,11 @@ api.patch('/cuenta/transferencia/:id', async (req, res) => {
         movsCtaOrigen.push(movimiento);
 
         let movsCtaDestino = cuentaDestino.movimientos;
-        movsCtaDestino.push(movimiento);
+        movimientoDest = {...movimiento}
+        movimientoDest.concepto = conceptoDestino._id
+        movimientoDest.monto = movimientoDest.monto * (-1)
+        movimientoDest.tipo = 'Ingreso'
+        movsCtaDestino.push(movimientoDest);
 
 
         await Cuenta.findOneAndUpdate({

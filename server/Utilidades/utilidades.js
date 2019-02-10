@@ -66,10 +66,10 @@ const enviarCorreoAlta = async (usuario) => {
     }
     let url = process.env.URLREGISTRO + `${usuario.tokens[0].token}`
     let html = `<h2>Hola! Bienvenido/a a la app del CEI.</h2>
-                <p>Por favor ingresa a este <a href="${url}">Link</a> para completar registro:</p><br>
+                <p>Si estás desde una PC, por favor ingresá a este <a href="${url}">Link</a> para completar registro:</p><br>
                 
 
-                <h4>Pasos para instalación en Android o iOS</h4>
+                <h4>De lo contrario, sigue estos pasos para instalación en Android o iOS</h4>
                 <p>
                 
                 
