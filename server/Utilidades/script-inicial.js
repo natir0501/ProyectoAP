@@ -127,7 +127,7 @@ const cargaDelegadosI = async () => {
 const batch = async () => {
     try {
          // minute hour dom month dow
-        cron.schedule('50 21 * * *', cuotasBatch, {
+        cron.schedule('05 22 * * *', cuotasBatch, {
                 scheduled: true,
                 timezone: "America/Montevideo"
             });
