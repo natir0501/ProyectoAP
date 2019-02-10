@@ -28,7 +28,7 @@ export class SaldoMovimientosCategoriaPage {
   verMovs: boolean = false;
   btnFiltros: string = '+';
   verFiltros: boolean = false;
-  concepto: ConceptoCaja = new ConceptoCaja;
+  concepto: ConceptoCaja = new ConceptoCaja();
   listaConceptos: ConceptoCaja[] = [];
   tipo = Object.keys(Tipos).map(key => ({ 'id': key, 'value': Tipos[key] }));
   fDesdeTxt: string = 'aaaa-mm-dd'
@@ -101,6 +101,9 @@ export class SaldoMovimientosCategoriaPage {
   }
   reset(){
     this.tipoSeleccionado = ''    
+    this.concepto= new ConceptoCaja();
+    this.fDesdeTxt = 'aaaa-mm-dd'
+    this.fHastaTxt = 'aaaa-mm-dd'
   }
   toggle(lista: string) {
     if (lista === 'verMovs') {
