@@ -8,7 +8,7 @@ export enum Posiciones{
     MD = 'Mediocampista derecho',
     MI = 'Mediocampista izquierdo',
     DD = 'Delantero derecho',
-    DI = 'Delantero iquierdo',
+    DI = 'Delantero izquierdo',
     DC = 'Delantero Centro',
     DT = 'Director Técnico'
 
