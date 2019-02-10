@@ -30,6 +30,9 @@
         </div><br>
         <ion-item-divider color="light" id="filtros">
           Filtros
+          <button ion-button item-end class="btn-print" type="button" (click)="reset()" icon-only>
+            <ion-icon name="refresh"></ion-icon>
+          </button>
           <button ion-button item-end class="btn-print" type="button" (click)="filtrar()" icon-only>
             <ion-icon name="search"></ion-icon>
           </button>

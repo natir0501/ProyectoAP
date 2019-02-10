@@ -99,7 +99,9 @@ export class SaldoMovimientosCategoriaPage {
     }
     this.utilServ.generarPDF(columnas, contenidoFilas, `Movimientos`, 'h')
   }
-
+  reset(){
+    this.tipoSeleccionado = ''    
+  }
   toggle(lista: string) {
     if (lista === 'verMovs') {
       if (!this.verMovs) {
