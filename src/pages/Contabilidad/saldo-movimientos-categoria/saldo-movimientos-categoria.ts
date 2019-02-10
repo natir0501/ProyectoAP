@@ -91,10 +91,10 @@ export class SaldoMovimientosCategoriaPage {
 
   exportarPDF() {
 
-    let columnas = ['Fecha', 'Importe', 'Tipo', 'Concepto', 'Usuario']
+    let columnas = ['Fecha', 'Importe', 'Tipo', 'Concepto', 'Usuario','Comentario']
     let contenidoFilas = []
     for (let m of this.movimientos) {
-      let fila = [new Date(m.fecha).toLocaleDateString(), m.monto, m.tipo, m.concepto, m.usuario]
+      let fila = [new Date(m.fecha).toLocaleDateString(), m.monto, m.tipo, m.concepto, m.usuario, m.comentario?m.comentario:'']
       contenidoFilas.push(fila)
     }
     this.utilServ.generarPDF(columnas, contenidoFilas, `Movimientos`, 'h')

@@ -49,7 +49,7 @@ export class PagosPendientesPage {
       this.cuentaServ.obtenerMovimientosPendientes(this.cuenta._id)
         .subscribe((resp) => {
           this.movimientos = resp.data.movimientos;
-          console.log(this.movimientos);
+       
 
           if (this.movimientos.length == 0) {
             this.utilServ.dispararAlert("Estás al día", "Parece que no hay movimientos para aprobar :)")
@@ -68,7 +68,7 @@ export class PagosPendientesPage {
   }
 
   consultar(mov: Movimiento) {
-    console.log("Movimiento", mov);
+
     this.navCtrl.push((DetallePagoPage), { mov })
   }
 

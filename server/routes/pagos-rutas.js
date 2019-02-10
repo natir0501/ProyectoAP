@@ -112,13 +112,12 @@ api.patch('/pagos/confirmacion/:id', async (req, res) => {
         let nuevoSaldoCat = categoria.cuenta.saldo + req.body.monto
         let nuevoSaldoJugador = jugador.cuenta.saldo + req.body.monto
         let movsActualizadosCat = categoria.cuenta.movimientos
-
+        let encontre = false
         for (movim of movsActualizadosCat) {
             if (movim.referencia !== null) {
+
                 if (movim.referencia.toString() === req.body.referencia) {
-                    if(movim.confirmado === true){
-                        res.status(404).send(new ApiResponse({},'Movimiento ya fue confirmado'))
-                    }
+                    encontre = true;
                     if (movim.monto === req.body.monto) {
                         movim.confirmado = true;
                         movim.referencia = null;
@@ -131,6 +130,9 @@ api.patch('/pagos/confirmacion/:id', async (req, res) => {
 
                 }
             }
+        }
+        if(!encontre){
+            return res.status(404).send(new ApiResponse({},'No se encontró movimiento'))
         }
         let movsActualizadosJug = jugador.cuenta.movimientos
         for (mov of movsActualizadosJug) {
