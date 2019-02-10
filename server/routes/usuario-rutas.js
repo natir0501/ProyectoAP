@@ -283,7 +283,7 @@ api.put('/usuarios/:id', async (req, res) => {
         let usu = await Usuario.findOne({_id})
         
         req.body.perfiles = usu.perfiles
-       
+    
         let usuario = await Usuario.findOneAndUpdate({ _id }, { $set: req.body })
       
          usuario = await Usuario.findOne({_id})

@@ -10,7 +10,7 @@ const { validarId } = require('../Utilidades/utilidades')
 const { ApiResponse } = require('../models/api-response')
 const { autenticacion } = require('../middlewares/autenticacion')
 
-var infoUsuario = 'nombre apellido email perfiles ci celular direccion fechaVtoCarneSalud delegadoInstitucional fechaNacimiento'
+var infoUsuario = 'notificacionesEmail nombre apellido email perfiles ci celular direccion fechaVtoCarneSalud delegadoInstitucional fechaNacimiento'
 infoUsuario +=' fechaUltimoExamen requiereExamen emergencia sociedad contacto posiciones activo perfiles categoriacuota ultimoMesCobrado cuenta'
 
 api.get('/categorias',  (req, res) => {

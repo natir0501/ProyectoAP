@@ -67,6 +67,11 @@ self.addEventListener('push', function (event) {
   );
 });
 
+self.addEventListener('notificationclick', function (event) {
+  event.notification.close();
+  clients.openWindow("https://ceiapp-test.herokuapp.com");
+});
+
 messaging.setBackgroundMessageHandler(function (payload) {
   console.log('Received background message ', payload);
   // here you can override some options describing what's in the message; 
