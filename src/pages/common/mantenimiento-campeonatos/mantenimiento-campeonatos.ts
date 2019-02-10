@@ -26,22 +26,22 @@ export class MantenimientoCampeonatosPage {
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public campServ: CampeonatoService,
     public utilServ: UtilsServiceProvider,
-    private loadingCtrl : LoadingController,
+    private loadingCtrl: LoadingController,
     public usuServ: UsuarioService,
     public catService: CategoriaService) {
   }
 
   async ionViewDidLoad() {
-    
+
     let loading = this.loadingCtrl.create({
       content: 'Cargando',
       spinner: 'circles'
     });
     loading.present()
-    try{
+    try {
       let camp: Campeonato = this.navParams.get('campeonato')
       this.categoria._id = this.usuServ.usuario.perfiles[0].categoria
-      
+
       let dataUsuarios: any = await this.catService.obtenerCategoria(this.categoria._id).toPromise()
       if (dataUsuarios) {
         this.categoria = dataUsuarios.data.categoria
@@ -49,20 +49,26 @@ export class MantenimientoCampeonatosPage {
       if (camp) {
         this.campeonato = camp
         this.fechas = camp.fechas
-      }else{
-        let datosCamp: any = await this.campServ.consultarCampeonatoActual(this.categoria).toPromise();
-        if(datosCamp){
-          this.campeonato=datosCamp.data.campeonato
-          this.fechas= this.campeonato.fechas
-        }      
+      } else {
+        if (this.categoria.campeonatos.length > 0) {
+          let datosCamp: any = await this.campServ.consultarCampeonatoActual(this.categoria).toPromise();
+        
+          if (datosCamp) {
+            this.campeonato = datosCamp.data.campeonato
+            this.fechas = this.campeonato.fechas
+          }
+
+        }else{
+          this.utilServ.dispararAlert('Upsss!','No se encontraron campeonatos para la categoría acutal')
+        }
       }
       loading.dismiss()
-    }catch(e){
+    } catch (e) {
       console.log(e)
       loading.dismiss()
-      this.utilServ.dispararAlert('Error','Ocurrió un error al cargar la información')
+      this.utilServ.dispararAlert('Error', 'Ocurrió un error al cargar la información')
     }
-   
+
   }
 
   async onSubmit() {
@@ -78,7 +84,7 @@ export class MantenimientoCampeonatosPage {
       if (dataUsuarios) {
         this.categoria = dataUsuarios.data.categoria
       }
-      this.campeonato.categoria=this.categoria
+      this.campeonato.categoria = this.categoria
       this.campServ.agregarCampeonato(this.campeonato)
         .subscribe(
           (resp) => {
@@ -114,17 +120,17 @@ export class MantenimientoCampeonatosPage {
   }
 
   editarFecha(fech: Fecha) {
-    let fecha=fech
-    let camp=this.campeonato
-    this.navCtrl.push((MantenimientoFechaPage), {fecha,camp})
+    let fecha = fech
+    let camp = this.campeonato
+    this.navCtrl.push((MantenimientoFechaPage), { fecha, camp })
     console.log("Editar fecha");
 
   }
 
   consultarFecha(fech: Fecha) {
-    let fecha=fech
-    this.navCtrl.push((DetalleFechaPage), {fecha})
-  
+    let fecha = fech
+    this.navCtrl.push((DetalleFechaPage), { fecha })
+
 
   }
 
@@ -132,23 +138,23 @@ export class MantenimientoCampeonatosPage {
   agregarFecha() {
     let camp = this.campeonato;
     this.navCtrl.push((MantenimientoFechaPage), { camp })
-    
+
   }
 
-  puedeEditar() : boolean{
-    let usuario : Usuario = this.usuServ.usuario
-    if(usuario){
-      if(usuario.delegadoInstitucional) return true
-      for (let usu of this.categoria.delegados){
-        if(usu._id === usuario._id){
+  puedeEditar(): boolean {
+    let usuario: Usuario = this.usuServ.usuario
+    if (usuario) {
+      if (usuario.delegadoInstitucional) return true
+      for (let usu of this.categoria.delegados) {
+        if (usu._id === usuario._id) {
           return true
         }
       }
     }
   }
 
-  hayCampeonato():boolean{
-    let hayCamp=this.campeonato._id!=""
+  hayCampeonato(): boolean {
+    let hayCamp = this.campeonato._id != ""
     return hayCamp;
   }
 

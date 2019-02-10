@@ -11,7 +11,7 @@ import { Categoria } from '../models/categoria.models';
 @Injectable()
 export class CampeonatoService {
 
-    consultarCampeonatoActual(categoria: Categoria): any {
+    consultarCampeonatoActual(categoria: Categoria): Observable<any> {
 
         
         
