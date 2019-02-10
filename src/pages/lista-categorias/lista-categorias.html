@@ -40,7 +40,7 @@
       </ion-row>
       <ion-row justify-content-center>
         <ion-col col-xl-2>
-          <button  (click)="irAlta()" ion-button block color="positive">
+          <button *ngIf="delegadoInst()"  (click)="irAlta()" ion-button block color="positive">
             Nueva Categoría
           </button>
         </ion-col>

@@ -1,3 +1,4 @@
+import { UsuarioService } from './../../providers/usuario.service';
 import { Cuenta } from './../../models/cuenta.models';
 import { SaldoMovimientosCategoriaPage } from './../Contabilidad/saldo-movimientos-categoria/saldo-movimientos-categoria';
 import { MantenimientoCategoriaPage } from '../Backoffice/mantenimiento-categoria/mantenimiento-categoria';
@@ -24,7 +25,7 @@ export class ListaCategoriasPage {
   categorias: Categoria[] = [new Categoria()];
 
 
-  constructor(public navCtrl: NavController, public navParams: NavParams
+  constructor(public navCtrl: NavController, public navParams: NavParams, private usuServ: UsuarioService,
     , public catService: CategoriaService, public utilServ: UtilsServiceProvider,
     public loadingCtrl: LoadingController) {
   }
@@ -52,7 +53,9 @@ export class ListaCategoriasPage {
         })
   }
 
-
+  delegadoInst(){
+    return this.usuServ.usuario.delegadoInstitucional
+  }
 
   irAlta() {
     

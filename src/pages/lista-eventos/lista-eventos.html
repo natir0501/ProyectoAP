@@ -45,7 +45,7 @@
               <ion-label class="cat-label" text-right> {{labelCategoria(evt.categoria.nombre)}} </ion-label>
             </ion-item>
             <ion-item-options side="right">
-              <button *ngIf="registrosDT() && evt.tipoEvento.datosDeportivos" ion-button color="positive" (click)="registrar(evt)">
+              <button *ngIf="registrosDT(evt) && evt.tipoEvento.datosDeportivos" ion-button color="positive" (click)="registrar(evt)">
                 Comentarios
               </button>
               <button ion-button color="positive" (click)="detalles(evt)">
