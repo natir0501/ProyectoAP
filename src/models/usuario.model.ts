@@ -18,7 +18,7 @@ export class Usuario{
     fechaVtoCarneSalud: number = Date.now()
     delegadoInstitucional?: boolean 
     fechaNacimiento: number = Date.now()
-    fechaUltimoExamen: number = Date.now()
+    fechaUltimoExamen: number = new Date('2018-01-02').valueOf()
     requiereExamen: boolean = true
     tokens?: any[]
     emergencia?: string;
