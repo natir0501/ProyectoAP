@@ -206,7 +206,7 @@ api.patch('/pagos/rechazo/:id', async (req, res) => {
         //En la cuenta del usuario dejo el mov en estado rechazado (valido por id y por monto)
         for (let movimiento of cuentaJugador.movimientos) {
             if (movimiento._id.toString() === req.body.referencia &&
-                movimiento.monto === req.body.monto) {
+                movimiento.monto === req.body.monto && movimiento.estado === 'Pendiente') {
                 encontre=true;
                 movJugadorEncontrado = true
                 movimiento.estado = "Rechazado"
