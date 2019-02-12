@@ -22,6 +22,7 @@ export class HomePage {
   categoria: Categoria = new Categoria()
   habilitoHome: boolean = false;
   cuenta: Cuenta = new Cuenta()
+  mostrarSaldo : boolean = false
 
   constructor(public navCtrl: NavController, private alertCtrk: AlertController,
     private platform: Platform, public fmp: FirebaseMessagingProvider
@@ -44,6 +45,7 @@ export class HomePage {
           if (resp2) {
             this.cuenta = resp2.data.cuenta
             this.habilitoHome = true;
+            this.mostrarSaldo = this.usuario.categoriacuota.toString() === this.usuario.perfiles[0].categoria
           }
         }
       }
@@ -67,8 +69,9 @@ export class HomePage {
   }
 
   get fechaCuota() {
-
-    return `${this.categoria.diaVtoCuota}/${new Date().getMonth() + 2}/${new Date().getFullYear()}`
+    let dia = new Date().getDate()
+    let mes = dia > this.categoria.diaVtoCuota ? new Date().getMonth() + 2 : new Date().getMonth() + 1
+    return `${this.categoria.diaVtoCuota}/${mes}/${new Date().getFullYear()}`
   }
 
   async obtenerEventos() {
@@ -117,6 +120,7 @@ export class HomePage {
       console.log(e)
     }
   }
+  
 
   detalles(evento: Evento) {
     this.navCtrl.push(DetallesEventoPage, { evento })

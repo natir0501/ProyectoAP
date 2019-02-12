@@ -41,7 +41,7 @@
     </ion-row>
     <ion-row justify-content-center>
       <ion-col col-xl-2>
-        <button id="pagecamp-button4" (click)="irAltaCamp()" ion-button block color="positive">
+        <button id="pagecamp-button4" *ngIf="puedoAgregar()" (click)="irAltaCamp()" ion-button block color="positive">
           Nuevo campeonato
         </button>
       </ion-col>

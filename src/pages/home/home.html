@@ -20,7 +20,7 @@
         <div class="home-header" id="registro-markdown6">
           <p class="nombre">Hola, {{usuario.nombre}}</p>
           <p>Ingresaste en la categoría: <span>{{categoria.nombre}}</span></p>
-          <p>El saldo de tu cuenta es: <span>{{'$ '+cuenta.saldo}}</span></p>
+          <p *ngIf="mostrarSaldo">El saldo de tu cuenta es: <span>{{'$ '+cuenta.saldo}}</span></p>
           <p>Próximo vencimiento de cuota: <span>{{fechaCuota}}</span></p>
         </div>
        

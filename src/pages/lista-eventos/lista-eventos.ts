@@ -117,7 +117,7 @@ export class ListaEventosPage {
   }
 
   puedeEditar(evento: Evento): boolean {
-    return evento.fecha > Date.now()
+    return evento.fecha > Date.now() && evento.categoria._id === this.usuServ.usuario.perfiles[0].categoria
   }
 
   puedeCrear(): boolean {
