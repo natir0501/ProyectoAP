@@ -42,7 +42,7 @@ export class RegistroPagoCuotaPage {
     loading.present()
     try {
       this.usuario = this.usuServ.usuario
-      
+
       this.categoria._id = this.usuServ.usuario.perfiles[0].categoria
       let dataUsuarios: any = await this.catService.obtenerCategoria(this.categoria._id).toPromise()
       if (dataUsuarios) {
@@ -77,9 +77,17 @@ export class RegistroPagoCuotaPage {
   }
 
   onSubmit() {
+    if (this.movimiento.comentario === '' || this.movimiento.comentario === undefined) {
+      return this.utilServ.dispararAlert("Error", "Ingrese comentario")
+    }
     this.movimiento.usuario = this.usuServ.usuario
     this.movimiento.concepto = this.concepto
     this.movimiento.jugador = !this.registraPagosDeTerceros() ? this.usuario : this.movimiento.jugador
+    if (this.movimiento.jugador.categoriacuota.toString() !== this.usuServ.usuario.perfiles[0].categoria) {
+      return this.utilServ.dispararAlert("Error", "Jugador no debe pagar en esta categoría")
+    }
+
+
     this.cuentaServ.registrarPagoCuota(this.movimiento)
       .subscribe((resp) => {
         this.utilServ.dispararAlert("Listo!", "Pago registrado correctamente.")
@@ -93,6 +101,10 @@ export class RegistroPagoCuotaPage {
         this.utilServ.dispararAlert("Error", "Error al procesar pago")
 
       })
+  }
+
+  getPlaceHolderText(){
+    return this.registraPagosDeTerceros() ? 'Ej: Pagó mediante transferencia a mi cuenta bancaria' : 'Ej: Le transfería al tesorero / Pagué en efectivo en la práctica pasada'
   }
 
   registraPagosDeTerceros() {

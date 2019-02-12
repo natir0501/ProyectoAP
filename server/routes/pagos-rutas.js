@@ -53,7 +53,7 @@ api.post('/pagos', async (req, res) => {
         }
 
         let cuentajugador = await Cuenta.findById(jugador.cuenta._id).populate('movimientos')
-        cuentajugador.movimientos.push(mov);
+        cuentajugador.movimientos.push({...mov, comentario: mov.comentario + ` Pago en ${categoria.nombre}`});
         await cuentajugador.save()
 
         /*Si el movimiento no está confirmado, guardo la referencia al mov del jugador en el movimiento 
@@ -140,7 +140,7 @@ api.patch('/pagos/confirmacion/:id', async (req, res) => {
             if (mov._id.toString() === req.body.referencia) {
                 if (mov.monto === req.body.monto) {
                     mov.confirmado = true
-                    mov.comentario = mov.comentario + " " + " | Comentario al confirmar: " + req.body.comentario
+                    mov.comentario = mov.comentario + " " + " | Comentario al confirmar: " + req.body.comentario + ` Pago en ${categoria.nombre}`
                     mov.estado = "Confirmado"
                 } else {
                     res.status(404).send(new ApiResponse({},

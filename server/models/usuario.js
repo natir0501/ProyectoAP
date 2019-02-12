@@ -235,7 +235,7 @@ UsuarioSchema.statics.findByCredentials = function (email, password) {
     return Usuario.findOne({ email }).exec().then((usuario) => {
 
         if (!usuario) {
-            return Promise.reject('No encuentro usuario '+usuario.email)
+            return Promise.reject('No encuentro usuario '+email)
         }
 
         return new Promise((resolve, reject) => {

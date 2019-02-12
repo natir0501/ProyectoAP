@@ -87,7 +87,7 @@ export class DetallesEventoPage {
       this.verVan = !this.verVan
     }
     if (lista === 'duda') {
-      if (!this.verVan) {
+      if (!this.verDuda) {
         this.btnDuda = '-'
       } else {
         this.btnDuda = '+'

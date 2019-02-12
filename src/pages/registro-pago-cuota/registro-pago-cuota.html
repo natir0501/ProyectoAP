@@ -26,21 +26,22 @@
               </div>
             </ng-container>
             <ng-container *ngIf="!registraPagosDeTerceros()">
-                <ion-item-divider color="light" id="sdomovscat1">
-                  Solicitud de Pago 
-                </ion-item-divider>
-                <div>
-                  <p>
-                    Ingresá el monto que pagaste y confirmá la solicitud para que le tesorero lo apruebe.
-                  </p>
-                  <p>
-                    Los saldos no se verán afectados y el movimiento quedará pendiente hasta que el tesorero confirme que recibió los fondos.
-                  </p>
-                  <p>
-                    Al confirmar enviaremos una notificación avisando de tu solicitud. 
-                  </p>
-                </div>
-              </ng-container>
+              <ion-item-divider color="light" id="sdomovscat1">
+                Solicitud de Pago
+              </ion-item-divider>
+              <div>
+                <p>
+                  Ingresá el monto que pagaste y confirmá la solicitud para que le tesorero lo apruebe.
+                </p>
+                <p>
+                  Los saldos no se verán afectados y el movimiento quedará pendiente hasta que el tesorero confirme que
+                  recibió los fondos.
+                </p>
+                <p>
+                  Al confirmar enviaremos una notificación avisando de tu solicitud.
+                </p>
+              </div>
+            </ng-container>
             <ion-item>
               Concepto: <span item-end>{{concepto.nombre}}</span>
             </ion-item>
@@ -49,8 +50,9 @@
                 <ion-label>
                   Jugador:
                 </ion-label>
-                <ion-select okText="Ok" cancelText="Cancelar" required [(ngModel)]="movimiento.jugador" name="usuario" placeholder="Seleccione jugador">
-                  <ion-option *ngFor="let u of usuarios" [id]="u._id" [value]="u" >
+                <ion-select okText="Ok" cancelText="Cancelar" required [(ngModel)]="movimiento.jugador" name="usuario"
+                  placeholder="Seleccione jugador">
+                  <ion-option *ngFor="let u of usuarios" [id]="u._id" [value]="u">
                     {{u.nombre}} {{u.apellido}}
                   </ion-option>
                 </ion-select>
@@ -65,28 +67,17 @@
               <ion-label>
                 Monto:
               </ion-label>
-              <ion-input text-right type="text" required pattern='^[1-9][0-9]*$' [(ngModel)]="movimiento.monto" placeholder="Ej: 800" name="monto"
-                required>
+              <ion-input text-right type="text" required pattern='^[1-9][0-9]*$' [(ngModel)]="movimiento.monto"
+                placeholder="Ej: 800" name="monto" required>
               </ion-input>
             </ion-item>
-            <ng-container *ngIf="registraPagosDeTerceros()">
-              <ion-item>
-                <ion-label>
-                  Comentario:
-                </ion-label>
-                <ion-textarea text-right [(ngModel)]="movimiento.comentario" #movimiento.comentario="ngModel" ngModel
-                  name="comentario" rows=5 placeholder="Ej: Pagó mediante transferencia a mi cuenta bancaria"></ion-textarea>
-              </ion-item>
-            </ng-container>
-            <ng-container *ngIf="!registraPagosDeTerceros()">
-              <ion-item>
-                <ion-label>
-                  Comentario:
-                </ion-label>
-                <ion-textarea text-right [(ngModel)]="movimiento.comentario" #movimiento.comentario="ngModel" ngModel
-                  name="comentario" rows=5 placeholder="Ej: Le transfería al tesorero / Pagué en efectivo en la práctica pasada"></ion-textarea>
-              </ion-item>
-            </ng-container>
+            <ion-item>
+              <ion-label>
+                Comentario:
+              </ion-label>
+              <ion-textarea text-right [(ngModel)]="movimiento.comentario" #movimiento.comentario="ngModel" ngModel
+                required name="comentario" rows=5 [placeholder]="getPlaceHolderText()"></ion-textarea>
+            </ion-item>
           </ion-list>
         </ion-col>
       </ion-row>

@@ -1,3 +1,4 @@
+import { UsuarioService } from './../../../providers/usuario.service';
 import { MantenimientoCampeonatosPage } from './../mantenimiento-campeonatos/mantenimiento-campeonatos';
 import { Campeonato } from './../../../models/campeonato.model';
 import { Component } from '@angular/core';
@@ -15,7 +16,7 @@ export class ListaCampeonatosPage {
   campeonatos: Campeonato[] = [];
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-    public campServ: CampeonatoService, public utilServ: UtilsServiceProvider,
+    public campServ: CampeonatoService, public utilServ: UtilsServiceProvider, private usuServ : UsuarioService,
     public loadingCtrl: LoadingController) {
   }
 
@@ -46,5 +47,13 @@ export class ListaCampeonatosPage {
     this.navCtrl.push(MantenimientoCampeonatosPage, {campeonato: new Campeonato()})
   }
 
-
+  puedoAgregar(){
+    
+    for (let camp of this.campeonatos){
+      if(camp.anio === new Date().getFullYear() && camp.categoria._id === this.usuServ.usuario.perfiles[0].categoria){
+        return false
+      }
+    }
+    return true
+  }
 }

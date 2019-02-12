@@ -14,7 +14,7 @@
           Pantalla para consulta de saldo y movimientos de la categoría.
           <br><br>
 
-          Usá los botones '+/-' para ocultar y mostrar tanto filtros como movmientos. <br><br>
+          Usá los botones '+/-' para ocultar y mostrar tanto filtros como movimientos. <br><br>
           Con la lupa podés realizar la búsqueda de acuerdo a los filtros.<br><br>
           También haciendo click en la impresora podés obtener en pdf los movimientos filtrados.
 
@@ -94,6 +94,7 @@
                 <label><b>Concepto:</b></label> {{mov.concepto}} <br>
                 <label><b>Monto:</b></label> $ {{mov.monto}}<br>
                 <label><b>Usuario:</b></label> {{mov.usuario}}<br>
+                <label><b>Estado:</b></label> {{mov.estado}}<br>
               </ion-item>
               <ion-item-options side="right">
                 <button ion-button color="positive" (click)="verDetalle(mov)">
