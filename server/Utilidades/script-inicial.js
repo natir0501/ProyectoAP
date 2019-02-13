@@ -9,6 +9,8 @@ const {TipoEvento}=require('../models/tipoEvento')
 var cron = require('node-cron');
 var { enviarNotificacion,enviarCorreoNotificacion } = require('../Utilidades/utilidades')
 
+
+
 const scriptInicial = async () => {
     await cargaRoles()
     await cargaPantallas()
@@ -128,7 +130,7 @@ const cargaDelegadosI = async () => {
 const batch = async () => {
     try {
          // minute hour dom month dow
-        cron.schedule('0 1 * * *', cuotasBatch, {
+        cron.schedule('0 6 * * *', cuotasBatch, {
                 scheduled: true,
                 timezone: "America/Montevideo"
             });
