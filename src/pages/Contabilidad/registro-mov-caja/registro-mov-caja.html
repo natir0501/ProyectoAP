@@ -17,6 +17,10 @@
             </ion-item-divider>
             <div id="divnuevosmovs">
               <p style="color:#000000;">
+                Por defecto se ingresa movimientos a la cuenta de la categoría. Para afectar cuenta de jugadores seleccionar
+                la opción correspondiente y se desplegará la lista de jugadores.
+              </p>
+              <p style="color:#000000;">
                 Seleccione un concepto de caja y el monto del movimiento para afectar el saldo de la categoría.
                 Los valores deben ser enteros positivos.
               </p>
@@ -24,9 +28,23 @@
                 La operación transferencia es utilizada para transferir saldo desde la categoría actual a otra.
               </p>
               <p>
-                Opcionalmente se puede ingresar un comentario. 
+                Opcionalmente se puede ingresar un comentario.
               </p>
             </div>
+            <ion-item>
+              <ion-label>Cuenta de Jugador</ion-label>
+              <ion-toggle [(ngModel)]="toggleJugador" name="toggleJugador"></ion-toggle>
+            </ion-item>
+            <ion-item *ngIf="toggleJugador">
+              <ion-label>
+                Jugador:
+              </ion-label>
+              <ion-select okText="Ok" cancelText="Cancelar" required [(ngModel)]="jugador" name="jugador" placeholder="Seleccione jugador">
+                <ion-option *ngFor="let u of usuarios" [id]="u._id" [value]="u">
+                  {{u.nombre}} {{u.apellido}}
+                </ion-option>
+              </ion-select>
+            </ion-item>
             <ion-item>
               <ion-label>
                 Concepto:
@@ -41,19 +59,19 @@
               <ion-item>
                 Afectación de saldo: <span item-end>{{concepto.tipo}}</span>
               </ion-item>
-            <ng-container *ngIf="concepto.nombre==='Transferencia de Saldos'">
-              <p>
-                Seleccione la categoría a la cuál se transferirán los fondos. 
-              </p>
+              <ng-container *ngIf="concepto.nombre==='Transferencia de Saldos'">
+                <p>
+                  Seleccione la categoría a la cuál se transferirán los fondos.
+                </p>
                 <ion-item>
                   <ion-label>
                     Categoría:
                   </ion-label>
                   <ion-select required okText="Ok" cancelText="Cancelar" required [(ngModel)]="categoriaDestino" name="categoria">
-                      <ion-option *ngFor="let cat of categorias" [id]="cat._id" [value]="cat">
-                        {{cat.nombre}}
-                      </ion-option>
-                    </ion-select>
+                    <ion-option *ngFor="let cat of categorias" [id]="cat._id" [value]="cat">
+                      {{cat.nombre}}
+                    </ion-option>
+                  </ion-select>
                 </ion-item>
               </ng-container>
             </ng-container>
@@ -61,7 +79,8 @@
               <ion-label>
                 Monto:
               </ion-label>
-              <ion-input #monto="ngModel" pattern='^[1-9][0-9]*$' ngModel required text-right type="text" placeholder="Ej: 500" name="monto">
+              <ion-input #monto="ngModel" pattern='^[1-9][0-9]*$' ngModel required text-right type="text" placeholder="Ej: 500"
+                name="monto">
               </ion-input>
             </ion-item>
             <ion-item>

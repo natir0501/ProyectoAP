@@ -107,6 +107,13 @@ export class CuentaService {
         return this.http.get<any>(`${this.utils.apiUrl}api/cuenta/${_id}`, { headers })
     }
 
+    anularMovimiento(idCuenta: string, idMovimiento : string) : Observable<any>{
+        let headers: HttpHeaders = new HttpHeaders().set("Content-Type", "application/json")
+        headers = headers.set('x-auth', this.usuarioServ.token)
+        return this.http.patch<any>(`${this.utils.apiUrl}api/cuenta/${idCuenta}/movimiento/${idMovimiento}`,{}, { headers })
+        
+    }
+
 
 }
 

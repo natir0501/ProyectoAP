@@ -85,16 +85,16 @@ export class SaldoMovimientosCategoriaPage {
     }
   }
 
-  verDetalle(mov) {
-    this.navCtrl.push((DetalleMovimientoPage), { mov })
+  verDetalle(mov, cuenta) {
+    this.navCtrl.push((DetalleMovimientoPage), { mov, cuenta, categoria: true })
   }
 
   exportarPDF() {
 
-    let columnas = ['Fecha', 'Importe', 'Tipo', 'Concepto', 'Usuario','Comentario']
+    let columnas = ['Fecha', 'Importe', 'Tipo', 'Concepto','Estado', 'Usuario','Comentario']
     let contenidoFilas = []
     for (let m of this.movimientos) {
-      let fila = [new Date(m.fecha).toLocaleDateString(), m.monto, m.tipo, m.concepto, m.usuario, m.comentario?m.comentario:'']
+      let fila = [new Date(m.fecha).toLocaleDateString(), m.monto, m.tipo, m.concepto,m.estado, m.usuario, m.comentario?m.comentario.substr(0,20)+'...':'']
       contenidoFilas.push(fila)
     }
     this.utilServ.generarPDF(columnas, contenidoFilas, `Movimientos`, 'h')
@@ -173,10 +173,14 @@ export class SaldoMovimientosCategoriaPage {
     if (hayFecDesde && hayFecHasta) {
       this.fechaD = Date.parse(this.fDesdeTxt) + 86400000
       this.fechaH = Date.parse(this.fHastaTxt) + 86400000
+      let fecha = new Date(this.fechaH)
+      fecha.setHours(0)
+      this.fechaH = fecha.valueOf()
       if (this.fechaH < this.fechaD) {
         this.utilServ.dispararAlert('Error', "Fecha Hasta no puede ser anterior a la fecha desde.")
         return false
       }
+      
       if (this.fechaH > Date.now()) {
         this.utilServ.dispararAlert('Error', "Fecha Hasta no puede ser posterior a la fecha de hoy.")
         return false

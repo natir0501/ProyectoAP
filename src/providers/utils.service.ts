@@ -53,6 +53,9 @@ export class UtilsServiceProvider {
     } else {
       doc = new jsPDF()
     }
+ 
+    
+
     doc.autoTable({
       headStyles: { fillColor: [11, 21, 170] },
       head: [tituloColumnas],

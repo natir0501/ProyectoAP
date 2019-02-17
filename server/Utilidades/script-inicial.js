@@ -45,7 +45,7 @@ const cargaTipoEvento = async () =>{
 const cargaConcepto = async () => {
     const conceptosCaja = await ConceptosCaja.find()
     if (conceptosCaja.length === 0) {
-        await new ConceptosCaja({ nombre: 'Cobro de couta', tipo: 'Egreso' }).save()
+        await new ConceptosCaja({ nombre: 'Cobro de cuota', tipo: 'Egreso' }).save()
         await new ConceptosCaja({ nombre: 'Pago de Cuota', tipo: 'Ingreso' }).save()
         await new ConceptosCaja({ nombre: 'Deuda Inicial', tipo: 'Egreso' }).save()
         await new ConceptosCaja({ nombre: 'Saldo Inicial', tipo: 'Ingreso' }).save()
@@ -143,7 +143,7 @@ const batch = async () => {
 
 const cuotasBatch = async () => {
             
-    const concepto = await ConceptosCaja.findOne({ nombre: 'Cobro de couta' })
+    const concepto = await ConceptosCaja.findOne({ nombre: 'Cobro de cuota' })
     let usuarios
    
     console.log( `### ${new Date()} CORRIENDO BATCH DE CUOTAS###`);
@@ -178,7 +178,7 @@ const cuotasBatch = async () => {
                     console.log(cuenta.movimientos.length, 'Despues mov')
 
                     
-                    title = 'Aviso de cobro de couta'
+                    title = 'Aviso de cobro de cuota'
                     body = `Hola! Se ha imputado en tu saldo la cuota del mes ${cuota}.`
                     if (usu.hasMobileToken()){
                         enviarNotificacion(usu, title, body)
