@@ -20,7 +20,7 @@ const scriptInicial = async () => {
     await batch()
     await cargaTipoEvento()
 
-//    await cuotasBatch()<<<<<
+    //await cuotasBatch()
 }
 
 const cargaRoles = async () => {
@@ -137,8 +137,11 @@ const cargaDelegadosI = async () => {
 
 const batch = async () => {
     try {
+
+        let cronConfig = process.env.HORABATCH? process.env.HORABATCH: '0 2 * * *'
+      
         // minute hour dom month dow
-        cron.schedule('0 16 * * *', cuotasBatch, {
+        cron.schedule(cronConfig, cuotasBatch, {
             scheduled: true,
             timezone: "America/Montevideo"
         });

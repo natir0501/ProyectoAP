@@ -82,7 +82,7 @@ var UsuarioSchema = mongoose.Schema({
     },
     ultimoMesCobrado: {
         type: Number,
-        default: new Date().getMonth()
+        default: parseInt(process.env.MESINICIAL)
     },
     activo: {
         type: Boolean,
