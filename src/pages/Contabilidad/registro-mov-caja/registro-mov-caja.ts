@@ -75,7 +75,6 @@ export class RegistroMovCajaPage {
       }
       this.conceptosJugador = [...this.conceptos].filter((c) => { return c.nombre !== 'Transferencia de Saldos' })
       this.usuarios = this.catUsuario.jugadores.filter(jug => jug.activo === true)
-      console.log(this.usuarios)
       loading.dismiss();
     } catch (e) {
       console.log("Error obteniendo datos", e)
