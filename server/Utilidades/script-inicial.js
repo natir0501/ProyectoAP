@@ -5,9 +5,10 @@ const { Categoria } = require('../models/categoria')
 const { ConceptosCaja } = require('../models/conceptosCaja')
 const { Cuenta } = require('../models/cuenta')
 const { Movimiento } = require('../models/movimiento')
-const {TipoEvento}=require('../models/tipoEvento')
+const { TipoEvento } = require('../models/tipoEvento')
+
 var cron = require('node-cron');
-var { enviarNotificacion,enviarCorreoNotificacion } = require('../Utilidades/utilidades')
+var { enviarReporteBatch,enviarNotificacion, enviarCorreoNotificacion } = require('../Utilidades/utilidades')
 
 
 
@@ -18,7 +19,8 @@ const scriptInicial = async () => {
     await cargaConcepto()
     await batch()
     await cargaTipoEvento()
-    //await cuotasBatch()
+
+//    await cuotasBatch()<<<<<
 }
 
 const cargaRoles = async () => {
@@ -35,10 +37,10 @@ const cargaRoles = async () => {
 
 }
 
-const cargaTipoEvento = async () =>{
+const cargaTipoEvento = async () => {
     const tiposEvento = await TipoEvento.find()
-    if(tiposEvento.length===0){
-        await new TipoEvento({nombre: 'Partido Oficial', datosDeportivos: true}).save()
+    if (tiposEvento.length === 0) {
+        await new TipoEvento({ nombre: 'Partido Oficial', datosDeportivos: true }).save()
     }
 }
 
@@ -51,8 +53,11 @@ const cargaConcepto = async () => {
         await new ConceptosCaja({ nombre: 'Saldo Inicial', tipo: 'Ingreso' }).save()
         await new ConceptosCaja({ nombre: 'Transferencia de Saldos', tipo: 'Egreso' }).save()
         await new ConceptosCaja({ nombre: 'Ingreso Transf. Saldos', tipo: 'Ingreso' }).save()
+        await new ConceptosCaja({ nombre: 'Recargo Cuota', tipo: 'Egreso' }).save()
     }
 }
+
+
 
 const cargaPantallas = async () => {
     const pantallas = await Pantalla.find()
@@ -75,7 +80,7 @@ const cargaPantallas = async () => {
         await new Pantalla({ 'nombre': 'Fixture', 'menu': 'Agenda', 'opcionMenu': 'Fixture', 'componente': 'MantenimientoCampeonatosPage', 'roles': [delegadoInst._id, delegado._id, jugador._id, dt._id] }).save()
 
 
-        await new Pantalla({ 'nombre': 'Registro de Pago', 'menu': 'Tesorería', 'opcionMenu': 'Registro de Pago', 'componente': 'RegistroPagoCuotaPage', 'roles': [jugador._id,delegadoInst._id, tesorero._id,] }).save()
+        await new Pantalla({ 'nombre': 'Registro de Pago', 'menu': 'Tesorería', 'opcionMenu': 'Registro de Pago', 'componente': 'RegistroPagoCuotaPage', 'roles': [jugador._id, delegadoInst._id, tesorero._id,] }).save()
         await new Pantalla({ 'nombre': 'Conceptos de Caja', 'menu': 'Tesorería', 'opcionMenu': 'Conceptos de Caja', 'componente': 'ConceptosDeCajaPage', 'roles': [delegadoInst._id, tesorero._id,] }).save()
         await new Pantalla({ 'nombre': 'Pagos Pendientes', 'menu': 'Tesorería', 'opcionMenu': 'Pagos Pendientes', 'componente': 'PagosPendientesPage', 'roles': [delegadoInst._id, tesorero._id,] }).save()
         await new Pantalla({ 'nombre': 'Ingreso Movimiento', 'menu': 'Tesorería', 'opcionMenu': 'Ingreso Movimiento', 'componente': 'RegistroMovCajaPage', 'roles': [delegadoInst._id, tesorero._id,] }).save()
@@ -87,7 +92,7 @@ const cargaPantallas = async () => {
         await new Pantalla({ 'nombre': 'Registro de datos', 'menu': 'Dirección Técnica', 'opcionMenu': 'Registro de datos', 'componente': 'ListaEventosPage', 'roles': [delegadoInst._id, dt._id,] }).save()
         await new Pantalla({ 'nombre': 'Datos de usuario', 'menu': 'Dirección Técnica', 'opcionMenu': 'Datos de usuario', 'componente': 'ModificacionDatos', 'roles': [delegadoInst._id, dt._id] }).save()
         await new Pantalla({ 'nombre': 'Cambiar Password', 'menu': 'Dirección Técnica', 'opcionMenu': 'Cambiar Passowrd', 'componente': 'ModificarPasswordPage', 'roles': [dt._id] }).save()
-        await new Pantalla({ 'nombre': 'Plantel', 'menu': 'Dirección Técnica', 'opcionMenu': 'Plantel', 'componente': 'PlantelPage', 'roles': [delegadoInst._id,dt._id] }).save()
+        await new Pantalla({ 'nombre': 'Plantel', 'menu': 'Dirección Técnica', 'opcionMenu': 'Plantel', 'componente': 'PlantelPage', 'roles': [delegadoInst._id, dt._id] }).save()
 
 
 
@@ -108,9 +113,12 @@ const cargaPantallas = async () => {
 }
 
 const cargaDelegadosI = async () => {
+
+
     const usuarios = await Usuario.find()
+
     if (usuarios.length === 0) {
-        let correos = ['gab.arpe@gmail.com','nati.r0501@gmail.com','tomato23@gmail.com']
+        let correos = process.env.CORREOSDIN.split(',')
 
         for (let i = 0; i < correos.length; i++) {
             let usuario = new Usuario({ 'email': correos[i], 'delegadoInstitucional': true })
@@ -129,75 +137,110 @@ const cargaDelegadosI = async () => {
 
 const batch = async () => {
     try {
-         // minute hour dom month dow
-        cron.schedule('0 6 * * *', cuotasBatch, {
-                scheduled: true,
-                timezone: "America/Montevideo"
-            });
+        // minute hour dom month dow
+        cron.schedule('0 16 * * *', cuotasBatch, {
+            scheduled: true,
+            timezone: "America/Montevideo"
+        });
 
     } catch (e) {
         console.log(e)
-        console.log('Ocurrión un error en el proceso batch, comunique al analista')
+        console.log('Ocurrió un error en el proceso batch, comunique al analista')
     }
 }
 
 const cuotasBatch = async () => {
-            
-    const concepto = await ConceptosCaja.findOne({ nombre: 'Cobro de cuota' })
-    let usuarios
-   
-    console.log( `### ${new Date()} CORRIENDO BATCH DE CUOTAS###`);
-    let categorias = await Categoria.find({ diaVtoCuota: new Date().getDate() })
-    console.log(`Cantidad de categorías a cobrar: ${categorias.length}`)
-    for (let cat of categorias) {
-        console.log(`Se cobra cuota de categoría ${cat.nombre}`)
-        usuarios = await Usuario.find({ categoriacuota: cat._id })
-        usuarios = usuarios.filter((u)=>{return cat.jugadores.indexOf(u._id) >= 0})
-        console.log(`Se cobran cuotas de ${usuarios.length} jugadores.`)
-        for (let usu of usuarios) {
-            let mesActual = new Date().getMonth() + 1
-            let cuenta = await Cuenta.findOne({ _id: usu.cuenta })
-            if (usu.ultimoMesCobrado < mesActual && mesActual < 13) {
-                let cantidadCuotas = mesActual - usu.ultimoMesCobrado
-                console.log(cuenta.movimientos.length, 'Antes mov')
-                for (let i = 0; i < cantidadCuotas; i++) {
-                    cuota = +usu.ultimoMesCobrado + 1 + i
-                    cuenta.movimientos.push(new Movimiento({
-                        fecha: Date.now(),
-                        monto: cat.valorCuota,
-                        tipo: concepto.tipo,
-                        concepto,
-                        estado: 'Confirmado',
-                        comentario: `Cobro cuota mes ${cuota}`
+    let reporte = []
+    let enviarReporte = false
+    try {
+        const concepto = await ConceptosCaja.findOne({ nombre: 'Cobro de cuota' })
+        let usuarios
 
-                    }))
-                    console.log('Antes', cuenta.saldo)
-                    cuenta.saldo = cuenta.saldo - cat.valorCuota
-                    console.log('Despues',cuenta.saldo)
-                    cuenta = await cuenta.save()
-                    console.log(cuenta.movimientos.length, 'Despues mov')
+        console.log(`### ${new Date()} CORRIENDO BATCH DE CUOTAS###`);
+        reporte.push(`### ${new Date()} CORRIENDO BATCH DE CUOTAS###`)
+        console.log(new Date().getDate())
+        let categorias = await Categoria.find({ diaVtoCuota: new Date().getDate() - 1 })
+        console.log(`Cantidad de categorías a cobrar: ${categorias.length}`)
+        for (let cat of categorias) {
+            reporte.push(' ')
+            reporte.push(`Cobro de categoría: ${cat.nombre}.`)
+            console.log(`Se cobra cuota de categoría ${cat.nombre}`)
+            usuarios = await Usuario.find({ categoriacuota: cat._id })
+            usuarios = usuarios.filter((u) => { return cat.jugadores.indexOf(u._id) >= 0 })
+            console.log(`Se cobran cuotas de ${usuarios.length} jugadores.`)
+            for (let usu of usuarios) {
+                let mesActual = new Date().getMonth() + 1
+                let cuenta = await Cuenta.findOne({ _id: usu.cuenta })
+                if (usu.ultimoMesCobrado < mesActual && mesActual < 13) {
+                    let cantidadCuotas = mesActual - usu.ultimoMesCobrado
 
-                    
-                    title = 'Aviso de cobro de cuota'
-                    body = `Hola! Se ha imputado en tu saldo la cuota del mes ${cuota}.`
-                    if (usu.hasMobileToken()){
-                        enviarNotificacion(usu, title, body)
-                    }else{
-                        enviarCorreoNotificacion(usu,title,body)
-                        if(usu.tokens.length > 1){
+                    for (let i = 0; i < cantidadCuotas; i++) {
+                        cuota = +usu.ultimoMesCobrado + 1 + i
+                        monto = usu.cuotaEspecial === true ? usu.valorCuota : cat.valorCuota
+                        cuenta.movimientos.push({
+                            fecha: Date.now(),
+                            monto: monto * (-1),
+                            tipo: concepto.tipo,
+                            concepto,
+                            estado: 'Confirmado',
+                            confirmado: true,
+                            comentario: `Cobro cuota mes ${cuota}`
+
+                        })
+                        enviarReporte = true
+                        let nombre = usu.nombre ? `${usu.nombre} ${usu.apellido}` : usu.email
+                        reporte.push(`Se cobra a ${nombre} cuota de mes ${cuota} por $${monto}`)
+                        cuenta.saldo = cuenta.saldo - monto
+                        if (cuenta.saldo < 0 && cat.recargo > 0) {
+                            let conceptoRecargo = await ConceptosCaja.findOne({ nombre: 'Recargo Cuota' })
+                            cuenta.movimientos.push({
+                                fecha: Date.now(),
+                                monto: cat.recargo * (-1),
+                                tipo: conceptoRecargo.tipo,
+                                concepto: conceptoRecargo,
+                                estado: 'Confirmado',
+                                confirmado: true,
+                                comentario: `Recargo cuota mes ${cuota}`
+
+                            })
+                            cuenta.saldo = cuenta.saldo - cat.recargo
+                            reporte.push(`Se cobra a ${nombre} recargo por cuota de mes ${cuota}, monto $${cat.recargo}`)
+                        }
+                        cuenta = await cuenta.save()
+
+
+                        title = 'Aviso de cobro de cuota'
+                        body = `Hola! Se ha imputado en tu saldo la cuota del mes ${cuota}.`
+                        if (usu.hasMobileToken()) {
                             enviarNotificacion(usu, title, body)
+                        } else {
+                            enviarCorreoNotificacion(usu, title, body)
+                            if (usu.tokens.length > 1) {
+                                enviarNotificacion(usu, title, body)
+                            }
                         }
                     }
+
+                    usu.ultimoMesCobrado = mesActual
+                    await usu.save()
                 }
-               
-                usu.ultimoMesCobrado = mesActual
-                await usu.save()
             }
+
         }
-
+        reporte.push('')
+        reporte.push(`### ${new Date()} FIN BATCH DE CUOTAS###`)
+        console.log(`### ${new Date()} FIN BATCH DE CUOTAS###`);
+        if (enviarReporte) {
+            enviarReporteBatch(reporte)
+        }
+    } catch (e) {
+        enviarReporte = true
+        reporte.push('Error - FIN BATCH CUOTAS')
+        reporte.push(e)
+        if (enviarReporte) {
+            enviarReporteBatch(reporte)
+        }
     }
-    console.log( `### ${new Date()} FIN BATCH DE CUOTAS###`);
-
 }
 
 

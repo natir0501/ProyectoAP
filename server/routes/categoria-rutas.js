@@ -11,7 +11,7 @@ const { ApiResponse } = require('../models/api-response')
 const { autenticacion } = require('../middlewares/autenticacion')
 
 var infoUsuario = 'notificacionesEmail nombre apellido email perfiles ci celular direccion fechaVtoCarneSalud delegadoInstitucional fechaNacimiento'
-infoUsuario +=' fechaUltimoExamen requiereExamen emergencia sociedad contacto posiciones activo perfiles categoriacuota ultimoMesCobrado cuenta'
+infoUsuario +=' fechaUltimoExamen requiereExamen emergencia sociedad contacto posiciones activo perfiles categoriacuota ultimoMesCobrado cuenta cuotaEspecial valorCuota'
 
 api.get('/categorias',  (req, res) => {
     Categoria.find()

@@ -76,6 +76,11 @@
             <ion-label>Requiere escolaridad:</ion-label>
             <ion-checkbox item-end name="requiereEscolaridad" requiereEscolaridad [(ngModel)]="categoria.requiereEscolaridad"></ion-checkbox>
           </ion-item>
+          <ion-item [ngClass]="{ 'ng-touched' : recargo.touched }" fixed >
+              <ion-label>Recargo ($):</ion-label>
+              <ion-input text-right type="text" placeholder="Ej: 50" name="recargo" pattern="^[0-9]{1,5}$"
+              [(ngModel)]="categoria.recargo" #recargo="ngModel" required></ion-input>
+            </ion-item>
           <div class="spacer" style="width:300px;height:15px;" id="registro-spacer8"></div>
 
           <ng-container *ngIf="categoria._id!==undefined">

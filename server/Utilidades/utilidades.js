@@ -1,3 +1,4 @@
+const { Categoria } = require('../models/categoria')
 const { Usuario } = require('../models/usuario')
 const { Rol } = require('../models/rol')
 const { ObjectID } = require('mongodb')
@@ -5,6 +6,7 @@ const nodemailer = require('nodemailer');
 const { google } = require("googleapis");
 const OAuth2 = google.auth.OAuth2;
 const axios = require('axios')
+const _ = require('lodash')
 
 const validarTipo = async (arrayUsuarios, tipoUsuario) => {
     let usuariosInvalidos = []
@@ -28,6 +30,61 @@ const validarId = async (arrayId) => {
         }
     }
     return true
+}
+
+const enviarReporteBatch = async(reporte)=>{
+   
+    let categorias = await Categoria.find({}).populate('tesoreros')
+    
+    let correos = []
+    for (cat of categorias){
+        correos = [...correos, ...cat.tesoreros.map((tes)=>{return tes.email})]
+    }
+    correos = _.uniq(correos)
+    console.log(correos)
+    const oauth2Client = new OAuth2(
+        '349297601621-s63gdr5v1ms3kb88ahe5r4glaqire5t0.apps.googleusercontent.com',
+        '4k7UuEp__UAjcVfOsVJtZTe0', // Client Secret
+        'https://developers.google.com/oauthplayground' // Redirect URL
+    );
+
+    oauth2Client.setCredentials({
+        refresh_token: '1/1tC904dBJ2cw_-7KUdqe9qroSdRr4Zpz6maMeJEHmQY'
+    });
+    const tokens = await oauth2Client.refreshAccessToken()
+    const accessToken = tokens.credentials.access_token
+
+
+    var transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            type: "OAuth2",
+            user: "appcei.2018@gmail.com",
+            clientId: "349297601621-s63gdr5v1ms3kb88ahe5r4glaqire5t0.apps.googleusercontent.com",
+            clientSecret: "4k7UuEp__UAjcVfOsVJtZTe0",
+            refreshToken: "1/1tC904dBJ2cw_-7KUdqe9qroSdRr4Zpz6maMeJEHmQY",
+            accessToken: accessToken
+        }
+    });
+
+    cuerpo = '<h3>Detalle de proceso de cobro de cuotas</h3><br>'
+    for(let linea of reporte){
+        cuerpo += `${linea}<br>`
+    }
+    console.log(cuerpo)
+                
+    var mailOptions = {
+        from: 'CEI App <appcei.2018@gmail.com>',
+        to: correos,
+        subject: 'Reporte cobro cuotas',
+        html: cuerpo
+    };
+
+    transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+            console.log(error);
+        }
+    });
 }
 
 const enviarCorreoAlta = async (usuario) => {
@@ -178,4 +235,4 @@ const enviarNotificacion = async (usuario, title, body) => {
 }
 
 
-module.exports = { validarTipo, validarId, enviarCorreoAlta, enviarNotificacion, enviarCorreoNotificacion };
+module.exports = { validarTipo, validarId, enviarCorreoAlta, enviarNotificacion,enviarReporteBatch, enviarCorreoNotificacion };

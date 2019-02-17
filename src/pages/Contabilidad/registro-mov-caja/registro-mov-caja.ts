@@ -69,7 +69,7 @@ export class RegistroMovCajaPage {
 
       if (conc) {
         this.conceptos = conc.data.conceptosCaja;
-        this.conceptos = this.conceptos.filter(cc => { return ['Cobro de cuota', 'Pago de Cuota', 'Ingreso Transf. Saldos'].indexOf(cc.nombre) < 0 })
+        this.conceptos = this.conceptos.filter(cc => { return ['Cobro de cuota','Recargo Cuota', 'Pago de Cuota', 'Ingreso Transf. Saldos'].indexOf(cc.nombre) < 0 })
         this.concepto = this.conceptos[0]
 
       }

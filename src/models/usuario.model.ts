@@ -31,6 +31,9 @@ export class Usuario{
     ultimoMesCobrado?: number;
     cuenta?: Cuenta;
     notificacionesEmail?: boolean = true;
+    cuotaEspecial?:boolean = false;
+    valorCuota?:number= 0
+
 
 
    
