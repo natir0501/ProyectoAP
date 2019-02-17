@@ -93,6 +93,7 @@ export class SaldoMovimientosCategoriaPage {
 
     let columnas = ['Fecha', 'Importe', 'Tipo', 'Concepto','Estado', 'Usuario','Comentario']
     let contenidoFilas = []
+    this.movimientos = this.cuenta.movimientos
     for (let m of this.movimientos) {
       let fila = [new Date(m.fecha).toLocaleDateString(), m.monto, m.tipo, m.concepto,m.estado, m.usuario, m.comentario?m.comentario.substr(0,20)+'...':'']
       contenidoFilas.push(fila)
