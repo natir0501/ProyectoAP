@@ -114,6 +114,27 @@ api.get('/movimientos/:id', async (req, res) => {
 
 })
 
+api.patch('/cuenta/:idCuenta/movimiento/:idMovimiento', async (req, res)=>{
+    try{
+        let cuenta = await Cuenta.findOne({_id:req.params.idCuenta})
+        let idMovimiento = req.params.idMovimiento
+        let monto
+        for(let mov of cuenta.movimientos){
+            if(mov._id.toString() === idMovimiento && mov.estado !== 'Anulado'){
+                mov.estado= 'Anulado'
+                cuenta.saldo = cuenta.saldo - parseInt(mov.monto)
+                await cuenta.save()
+                return res.send(new ApiResponse({cuenta}, 'Anulado correctamente'))
+            }
+        }
+        res.status(404).send(new ApiResponse({},'Movimiento no econtrado'))
+
+
+    }catch(e){
+        console.log(e)
+        res.status(400).send(new ApiResponse({},e))
+    }
+})
 
 api.patch('/cuenta/movimientos/ingresomovimiento/:id', async (req, res) => {
 

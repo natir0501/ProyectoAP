@@ -18,13 +18,17 @@ import { UsuarioService } from './../../../providers/usuario.service';
 export class RegistroMovCajaPage {
 
   conceptos: ConceptoCaja[] = [];
+  conceptosJugador: ConceptoCaja[] = []
   categorias: Categoria[] = [];
   categoriaDestino: Categoria;
   catUsuario: Categoria
+  toggleJugador: boolean = false
   concepto: ConceptoCaja = new ConceptoCaja()
   cuenta: Cuenta = new Cuenta()
   movimiento: Movimiento = new Movimiento()
   transferencia: boolean
+  jugador: Usuario = new Usuario()
+  usuarios: Usuario[] = []
   usuario: Usuario = new Usuario()
 
   @ViewChild("form") form: NgForm
@@ -65,10 +69,13 @@ export class RegistroMovCajaPage {
 
       if (conc) {
         this.conceptos = conc.data.conceptosCaja;
-        this.conceptos = this.conceptos.filter(cc=>{return ['Cobro de couta','Pago de Cuota','Ingreso Transf. Saldos'].indexOf(cc.nombre)<0})
+        this.conceptos = this.conceptos.filter(cc => { return ['Cobro de cuota', 'Pago de Cuota', 'Ingreso Transf. Saldos'].indexOf(cc.nombre) < 0 })
         this.concepto = this.conceptos[0]
-      
+
       }
+      this.conceptosJugador = [...this.conceptos].filter((c) => { return c.nombre !== 'Transferencia de Saldos' })
+      this.usuarios = this.catUsuario.jugadores.filter(jug => jug.activo === true)
+      console.log(this.usuarios)
       loading.dismiss();
     } catch (e) {
       console.log("Error obteniendo datos", e)
@@ -78,53 +85,61 @@ export class RegistroMovCajaPage {
   }
 
   onSubmit() {
-
     let loading = this.loadingCtrl.create({
       content: 'Cargando',
       spinner: 'circles'
     });
     loading.present()
+    try {
+      if (this.toggleJugador && this.concepto.nombre === 'Transferencia de Saldos') {
+        this.utilServ.dispararAlert("Error", "Concepto no válido para jugadores")
+        loading.dismiss()
+        return
+      }
 
+      let payload: any = {
+        movimiento: {
+          tipo: this.concepto.tipo,
+          fecha: Date.now(),
+          monto: this.concepto.tipo === 'Egreso' ? -this.form.value.monto : this.form.value.monto,
+          concepto: this.concepto._id,
+          usuario: this.usuario._id,
+          estado: "Confirmado",
+          comentario: this.form.form.value.comentario
 
-    let payload: any = {
-      movimiento: {
-        tipo: this.concepto.tipo,
-        fecha: Date.now(),
-        monto: this.concepto.tipo === 'Egreso'? -this.form.value.monto: this.form.value.monto,
-        concepto: this.concepto._id,
-        usuario: this.usuario._id,
-        estado: "Confirmado",
-        comentario: this.form.form.value.comentario
+        },
+      }
+      let cuenta = this.toggleJugador ? this.jugador.cuenta.toString(): this.catUsuario.cuenta._id 
+      if (this.concepto.nombre === "Transferencia de Saldos") {
+        payload = { ...payload, idcategoria: this.categoriaDestino._id, idcuenta: this.categoriaDestino.cuenta._id }
 
-      },
+        this.cuentaServ.transferenciaSaldo(payload, this.catUsuario.cuenta._id).subscribe((resp) => {
+          this.utilServ.dispararAlert("Ok", "Transferencia realizada correctamente.")
+          this.form.form.patchValue({ monto: 0, comentario: "" })
+          loading.dismiss();
+        }, (err) => {
+          console.log(err);
+          loading.dismiss();
+          this.utilServ.dispararAlert("Error", "Error al registrar el movimiento. Intentá nuevamente en unos minutos.")
+        })
+      } else {
+        this.cuentaServ.ingresarMovimiento(payload, cuenta).subscribe((resp) => {
+          this.utilServ.dispararAlert("Ok", "Se ingresó correctamente el movimiento.")
+          this.form.form.patchValue({ monto: 0, comentario: "" })
+          loading.dismiss();
+        }, (err) => {
+          console.log(err);
+          loading.dismiss();
+          this.utilServ.dispararAlert("Error", "Error al registrar el movimiento. Intentá nuevamente en unos minutos.")
+        })
+
+      }
+
+    } catch (e) {
+      console.log(e);
+      loading.dismiss();
+      this.utilServ.dispararAlert("Error", "Error al registrar el movimiento. Intentá nuevamente en unos minutos.")
     }
-
-    if (this.concepto.nombre === "Transferencia de Saldos") {
-      payload = { ...payload, idcategoria: this.categoriaDestino._id, idcuenta: this.categoriaDestino.cuenta._id }
-
-      this.cuentaServ.transferenciaSaldo(payload, this.catUsuario.cuenta._id).subscribe((resp) => {
-        this.utilServ.dispararAlert("Ok", "Transferencia realizada correctamente.")
-        this.form.form.patchValue({ monto: 0, comentario: "" })
-        loading.dismiss();
-      }, (err) => {
-        console.log(err);
-        loading.dismiss();
-        this.utilServ.dispararAlert("Error", "Error al registrar el movimiento. Intentá nuevamente en unos minutos.")
-      })
-    } else {
-      this.cuentaServ.ingresarMovimiento(payload, this.catUsuario.cuenta._id).subscribe((resp) => {
-        this.utilServ.dispararAlert("Ok", "Se ingresó correctamente el movimiento.")
-        this.form.form.patchValue({ monto: 0, comentario: "" })
-        loading.dismiss();
-      }, (err) => {
-        console.log(err);
-        loading.dismiss();
-        this.utilServ.dispararAlert("Error", "Error al registrar el movimiento. Intentá nuevamente en unos minutos.")
-      })
-
-    }
-
-
   }
 
   cargueConcepto(): boolean {

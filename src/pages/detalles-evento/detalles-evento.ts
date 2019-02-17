@@ -127,6 +127,7 @@ export class DetallesEventoPage {
   }
 
   convocado() {
+    if(this.evento.fecha < Date.now()) return false
     if (this.evento.invitados.find((u) => u._id === this.usuario._id)) return true
     if (this.evento.duda.find((u) => u._id === this.usuario._id)) return true
     if (this.evento.confirmados.find((u) => u._id === this.usuario._id)) return true

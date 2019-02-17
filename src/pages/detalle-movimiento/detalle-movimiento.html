@@ -57,5 +57,13 @@
         </ng-container>
       </ion-col>
     </ion-row>
+    
+    <ion-row justify-content-center style="margin-top: 20px">
+      <ion-col col-xl-2>
+        <button id="pagecamp-button4" *ngIf="puedoAnular()" (click)="anular()" ion-button block color="positive">
+          Anular
+        </button>
+      </ion-col>
+    </ion-row>
   </ion-grid>
 </ion-content>

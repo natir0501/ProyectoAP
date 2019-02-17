@@ -82,8 +82,8 @@ export class SaldosJugadoresPage {
 
   }
 
-  verDetalle(mov) {
-    this.navCtrl.push((DetalleMovimientoPage), { mov })
+  verDetalle(mov,cuentaJugador) {
+    this.navCtrl.push((DetalleMovimientoPage), { mov, cuenta: cuentaJugador })
   }
 
   seleccionado(data) {
