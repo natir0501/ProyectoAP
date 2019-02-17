@@ -176,13 +176,16 @@ export class SaldoMovimientosCategoriaPage {
       let fecha = new Date(this.fechaH)
       fecha.setHours(0)
       this.fechaH = fecha.valueOf()
+      fecha = new Date(this.fechaD)
+      fecha.setHours(0)
+      this.fechaD = fecha.valueOf()
       if (this.fechaH < this.fechaD) {
-        this.utilServ.dispararAlert('Error', "Fecha Hasta no puede ser anterior a la fecha desde.")
+        this.utilServ.dispararAlert('Error', "Fecha hasta no puede ser anterior a la fecha desde.")
         return false
       }
       
       if (this.fechaH > Date.now()) {
-        this.utilServ.dispararAlert('Error', "Fecha Hasta no puede ser posterior a la fecha de hoy.")
+        this.utilServ.dispararAlert('Error', "Fecha hasta no puede ser posterior a la fecha de hoy.")
         return false
       }
       return true

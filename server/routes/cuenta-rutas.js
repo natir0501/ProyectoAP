@@ -178,9 +178,9 @@ api.patch('/cuenta/transferencia/:id', async (req, res) => {
         let movimiento = req.body.movimiento;
         let conceptoDestino = await ConceptosCaja.findOne({nombre: 'Ingreso Transf. Saldos'})
         let categoriaDestino = await Categoria.findById(req.body.idcategoria).populate('tesoreros').exec()
-
-        let nuevoSaldoCtaOrigen = cuentaOrigen.saldo - movimiento.monto;
-        let nuevoSaldoCtaDestino = cuentaDestino.saldo + parseInt(movimiento.monto);
+    console.log(movimiento.monto)
+        let nuevoSaldoCtaOrigen = cuentaOrigen.saldo + parseInt(movimiento.monto);
+        let nuevoSaldoCtaDestino = cuentaDestino.saldo - parseInt(movimiento.monto);
 
         let movsCtaOrigen = cuentaOrigen.movimientos;
         movsCtaOrigen.push(movimiento);
@@ -210,7 +210,7 @@ api.patch('/cuenta/transferencia/:id', async (req, res) => {
 
         for (let t of categoriaDestino.tesoreros) {
             tituloNot = `Transferencia entre categorías`
-            bodyNot = `Hola ${t.nombre}! Se registró una trasnferencia a la categoria ${categoriaDestino.nombre}. Ingresá a la App para visualizar el movimiento.`
+            bodyNot = `Hola ${t.nombre}! Se registró una transferencia a la categoria ${categoriaDestino.nombre}. Ingresá a la App para visualizar el movimiento.`
             if (t.hasMobileToken()) {
                 enviarNotificacion(t, tituloNot, bodyNot)
             }
