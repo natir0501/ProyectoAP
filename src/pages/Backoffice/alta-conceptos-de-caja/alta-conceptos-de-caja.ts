@@ -30,7 +30,7 @@ export class AltaConceptosDeCajaPage {
     let conc: Concepto = this.navParams.get('concepto')
     if (conc) {
       this.concepto = conc
-      let noPermitidos = ['Cobro de cuota', 'Pago de Cuota', 'Transferencia de Saldos','Ingreso Transf. Saldos','Deuda Inicial','Saldo Inicial']
+      let noPermitidos = ['Cobro de cuota', 'Pago de Cuota', 'Transferencia de Saldos','Recargo Cuota','Ingreso Transf. Saldos','Deuda Inicial','Saldo Inicial']
       this.habilitado = noPermitidos.indexOf(this.concepto.nombre) < 0
       
     }

@@ -34,6 +34,10 @@ var CategoriaSchema = mongoose.Schema({
         required: true,
         trim: true
     },
+    recargo:{
+        type: Number,
+        default: 0
+    },
     dts:[{
         type: mongoose.Schema.Types.ObjectId, ref: 'Usuario'
     }],

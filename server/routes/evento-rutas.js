@@ -8,7 +8,7 @@ var { enviarNotificacion, enviarCorreoNotificacion } = require('../Utilidades/ut
 const { Usuario } = require('../models/usuario')
 
 var infoUsuario = 'nombre apellido email perfiles ci celular direccion fechaVtoCarneSalud delegadoInstitucional fechaNacimiento'
-infoUsuario += ' fechaUltimoExamen requiereExamen emergencia notificacionEmail sociedad contacto posiciones activo perfiles categoriacuota ultimoMesCobrado cuenta'
+infoUsuario += ' fechaUltimoExamen requiereExamen emergencia notificacionEmail sociedad contacto posiciones activo perfiles categoriacuota ultimoMesCobrado cuenta cuotaEspecial valorCuota'
 
 
 api.get('/eventos', async (req, res) => {

@@ -29,6 +29,7 @@ export class ModificacionDatosPage {
   fechaNacTxt: string = '1990-01-01'
   fexamenTxt: string = '2018-01-01'
   delegado: boolean = false
+ 
   requiereCategoria: boolean = false
 
   posiciones = Object.keys(Posiciones).map(key => ({ 'id': key, 'value': Posiciones[key] }))

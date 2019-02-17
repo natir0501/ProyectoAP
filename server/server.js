@@ -50,7 +50,11 @@ try {
     scriptInicial()
     var http = require("http");
     setInterval(function () {
-        http.get("http://ceiapp-test.herokuapp.com")
+        try {
+            http.get("http://ceiapp-test.herokuapp.com")
+        } catch (e) {
+            console.log(e)
+        }
     }, 600000);
 } catch (e) {
     console.log(e)

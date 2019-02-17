@@ -119,7 +119,15 @@ var UsuarioSchema = mongoose.Schema({
         token: {
             type: String,
         }
-    }]
+    }],
+    cuotaEspecial:{
+        type: Boolean,
+        default: false
+    },
+    valorCuota:{
+        type: Number,
+        default: 0
+    }
 })
 
 UsuarioSchema.plugin(uniqueValidator);

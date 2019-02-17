@@ -16,6 +16,7 @@ export class Categoria{
     tesoreros?: Usuario[] = []
     jugadores?: Usuario[] = []
     campeonatos?: Campeonato[]=[]
+    recargo?: number = 0
 }
 
 export class Cuenta {
