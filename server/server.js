@@ -49,13 +49,20 @@ app.listen(port, () => {
 try {
     scriptInicial()
     var http = require("http");
-    setInterval(function () {
-        try {
-            http.get("http://ceiapp-test.herokuapp.com")
-        } catch (e) {
-            console.log(e)
-        }
-    }, 600000);
+    let awake = 'S'
+    awake = process.env.AWAKE
+    if (awake==='S') {
+        console.log('awake mode on')
+        setInterval(function () {
+            try {
+                http.get("http://ceiapp-test.herokuapp.com")
+            } catch (e) {
+                console.log(e)
+            }
+        }, 600000);
+    }else{
+        console.log('awake mode off')
+    }
 } catch (e) {
     console.log(e)
 }
