@@ -16,9 +16,9 @@
 
         <ion-list>
             <div *ngFor="let p of pages">
-                <button ion-item no-lines (click)="openPage(p)" style="border:0px" [ngClass]="{active: isSubmenuShown(p)}"
+                <button ion-item no-lines (click)="openPage(p)" href="www.google.com" style="border:0px" [ngClass]="{active: isSubmenuShown(p)}"
                     icon-left>
-                    <ion-icon name="{{p.icon}}"></ion-icon>
+                    <ion-icon [ngClass]="{'menu-info': menuAyuda(p.title)}" name="{{p.icon}}"></ion-icon>
                     {{p.title}}
                   <!--   <span *ngIf="p.right_icon" item-right>
                         <ion-badge class="menu-icon">
