@@ -1,8 +1,11 @@
+import { PlaceHolderPage } from './../pages/place-holder/place-holder';
+
+import { Menu, MenuItem } from './../models/menu.models';
 import { HttpClient } from '@angular/common/http';
 import { Component, ViewChild } from '@angular/core';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
-import { MenuController, Nav, NavController, Platform } from 'ionic-angular';
+import { MenuController, Nav, NavController, Platform, App, IonicApp } from 'ionic-angular';
 import { LoginPage } from '../pages/common/login/login';
 import { HomePage } from '../pages/home/home';
 import { FirebaseMessagingProvider } from '../providers/firebase-messaging';
@@ -27,18 +30,21 @@ export class MyApp {
   pages: any = [];
   shownGroup: any;
   mostrar: boolean = false;
+  pageHistory: string[] = [];//to track page history
 
   avatar: string = CEILOGO;
 
   roles: string[] = []
   @ViewChild(Nav) nav: NavController;
 
-  constructor(private platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen,
+  constructor(private platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, private _app: App, private _ionicApp: IonicApp,
     public usuarioServ: UsuarioService, public menuServ: MenuService, private eventServ: EventoService,
-    private fcmService: FirebaseMessagingProvider, private http: HttpClient, private menu: MenuController, private utils: UtilsServiceProvider) {
+    private fcmService: FirebaseMessagingProvider, private http: HttpClient, private _menu: MenuController, private utils: UtilsServiceProvider) {
+
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
+      this.setupBackButtonBehavior();
 
       statusBar.styleDefault();
       splashScreen.hide();
@@ -50,7 +56,48 @@ export class MyApp {
       }
     });
 
+
   }
+
+  private setupBackButtonBehavior() {
+
+    // If on web version (browser)
+    if (window.location.protocol !== "file:") {
+
+      // Register browser back button action(s)
+      window.onpopstate = (evt) => {
+
+        // Close menu if open
+        if (this._menu.isOpen()) {
+          this._menu.close();
+          return;
+        }
+
+        // Close any active modals or overlays
+        let activePortal = this._ionicApp._loadingPortal.getActive() ||
+          this._ionicApp._modalPortal.getActive() ||
+          this._ionicApp._toastPortal.getActive() ||
+          this._ionicApp._overlayPortal.getActive();
+
+        if (activePortal) {
+          activePortal.dismiss();
+          return;
+        }
+
+        // Navigate back
+        if (this._app.getRootNav().canGoBack()) this._app.getRootNav().pop();
+
+      };
+
+      // Fake browser history on each view enter
+      this._app.viewDidEnter.subscribe((app) => {
+        history.pushState(null, null, "");
+      });
+
+    }
+
+  }
+
 
   ngOnInit(): void {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
@@ -93,6 +140,7 @@ export class MyApp {
             if (this.usuario.perfiles.length === 0) {
               this.roles = ['Delegado Institucional']
               this.pages = await this.menuServ.menuDelegadoInstitucional(this.usuario)
+              this.agregarAyuda()
 
 
 
@@ -113,18 +161,21 @@ export class MyApp {
                   ]
                 }
                 this.pages = menu
+                this.agregarAyuda()
                 this.nombreCategoria = await this.menuServ.nombreCategoria(this.usuario.perfiles[0].categoria)
 
 
               } else {
                 this.roles = ['Seleccione categoría']
                 this.pages = [await this.menuServ.switchCategoría(this.usuario)]
+                this.agregarAyuda()
               }
 
             }
 
           } else {
             this.pages = []
+            this.agregarAyuda()
             return this.nav.setRoot(LoginPage)
           }
 
@@ -134,8 +185,8 @@ export class MyApp {
 
 
       }
-    }catch(e){
-      this.utils.dispararAlert('Error','Ocurrión un error con el servidor')
+    } catch (e) {
+      this.utils.dispararAlert('Error', 'Ocurrión un error con el servidor')
       console.log(e)
     }
   }
@@ -157,7 +208,10 @@ export class MyApp {
   }
 
   openPage(page) {
+    if(page.sub_title){
+      return window.open('https://sites.google.com/view/cei-app/', '_system')
 
+    }
     if (!(page.component)) {
       this.showChild(page);
     } else {
@@ -166,7 +220,7 @@ export class MyApp {
         this.menuServ.cambioCategoria(page.component.categoria).then(() => {
 
           this.shownGroup = null;
-          this.menu.close();
+          this._menu.close();
 
         }).catch(() => {
 
@@ -175,13 +229,13 @@ export class MyApp {
       }
       this.shownGroup = null;
       this.nav.setRoot(page.component);
-      this.menu.close();
+      this._menu.close();
     }
   }
 
   home() {
     this.nav.setRoot(HomePage)
-    this.menu.close();
+    this._menu.close();
   }
 
   logout() {
@@ -193,8 +247,19 @@ export class MyApp {
     this.menuServ.categoriasUsuario = []
     this.menuServ.perfilesUsuario = []
     this.nav.setRoot(LoginPage)
-    this.menu.close()
+    this._menu.close()
     this.nombreCategoria = ''
+  }
+
+  agregarAyuda(){
+    
+    let menuAyuda = new Menu('Info','document','add')
+    menuAyuda.sub.push(new MenuItem('Manual',HomePage))
+    this.pages = [...this.pages, menuAyuda]
+  }
+
+  menuAyuda(nombre){
+    return nombre === 'Info'
   }
 }
 
