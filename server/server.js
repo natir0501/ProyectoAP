@@ -55,7 +55,7 @@ try {
         console.log('awake mode on')
         setInterval(function () {
             try {
-                http.get("http://ceiapp-test.herokuapp.com")
+                http.get(process.env.URLAPP)
             } catch (e) {
                 console.log(e)
             }
