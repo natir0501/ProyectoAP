@@ -208,7 +208,7 @@ export class MyApp {
   }
 
   openPage(page) {
-    if(page.sub_title){
+    if(page.sub_title==='Manual'){
       return window.open('https://sites.google.com/view/cei-app/', '_system')
 
     }
