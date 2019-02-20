@@ -11,7 +11,7 @@ import { Categoria } from '../models/categoria.models';
 @Injectable()
 export class CampeonatoService {
 
-    consultarCampeonatoActual(categoria: Categoria): any {
+    consultarCampeonatoActual(categoria: Categoria): Observable<any> {
 
         
         
@@ -64,7 +64,7 @@ export class CampeonatoService {
     actualizarCampeonato(campeonato: Campeonato): Observable<any> {
         let headers: HttpHeaders = new HttpHeaders().set("Content-Type", "application/json")
         headers = headers.set('x-auth', this.usuarioServ.token)
-        return this.http.put(`${this.apiUrl}api/campeonato/${campeonato._id}`, { headers })
+        return this.http.put(`${this.apiUrl}api/campeonato/${campeonato._id}`,campeonato, { headers })
     }
     crearEvento(fecha: Fecha, categoriaId: string): Observable<any>{
         let headers: HttpHeaders = new HttpHeaders().set("Content-Type", "application/json")

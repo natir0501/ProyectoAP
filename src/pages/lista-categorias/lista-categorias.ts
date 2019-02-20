@@ -1,4 +1,7 @@
-import { MantenimientoCategoriaPage } from './../mantenimiento-categoria/mantenimiento-categoria';
+import { UsuarioService } from './../../providers/usuario.service';
+import { Cuenta } from './../../models/cuenta.models';
+import { SaldoMovimientosCategoriaPage } from './../Contabilidad/saldo-movimientos-categoria/saldo-movimientos-categoria';
+import { MantenimientoCategoriaPage } from '../Backoffice/mantenimiento-categoria/mantenimiento-categoria';
 import { CategoriaService } from './../../providers/categoria.service';
 import { Component } from '@angular/core';
 import { NavController, NavParams, LoadingController } from 'ionic-angular';
@@ -22,8 +25,8 @@ export class ListaCategoriasPage {
   categorias: Categoria[] = [new Categoria()];
 
 
-  constructor(public navCtrl: NavController, public navParams: NavParams
-    , public catService: CategoriaService, public utilServ: UtilsServiceProvider,
+  constructor(public navCtrl: NavController, public navParams: NavParams, private usuServ: UsuarioService,
+     public catService: CategoriaService, public utilServ: UtilsServiceProvider,
     public loadingCtrl: LoadingController) {
   }
 
@@ -50,17 +53,21 @@ export class ListaCategoriasPage {
         })
   }
 
-
+  delegadoInst(){
+    return this.usuServ.usuario.delegadoInstitucional
+  }
 
   irAlta() {
     
-    this.navCtrl.setRoot(MantenimientoCategoriaPage)
+    this.navCtrl.push(MantenimientoCategoriaPage)
   }
 
   modificar(categoria: Categoria) {
     
-    this.navCtrl.setRoot(MantenimientoCategoriaPage, { categoria })
+    this.navCtrl.push(MantenimientoCategoriaPage, { categoria })
   }
+
+  
 
 
 }

@@ -23,7 +23,7 @@ import { Usuario } from '../../models/usuario.model';
 export class DetalleFechaPage {
 
   campeonato: Campeonato = new Campeonato();
-  categoria : Categoria = new Categoria()
+  categoria: Categoria = new Categoria()
   fecha: Fecha = new Fecha();
   fechaEncuentrotxt = `2019-01-04T02:01`;
   rueda = Object.keys(Ruedas).map(key => ({ 'id': key, 'value': Ruedas[key] }));
@@ -32,19 +32,25 @@ export class DetalleFechaPage {
     public campServ: CampeonatoService,
     public utilServ: UtilsServiceProvider,
     private categoriaServ: CategoriaService,
-    public loader : LoadingController,
+    public loader: LoadingController,
     public usuServ: UsuarioService) {
   }
 
   async ionViewDidLoad() {
-    let f: Fecha = this.navParams.get('fecha')
-    if (f) {
-      this.fecha = f
-    }
-    let categoriaId = this.usuServ.usuario.perfiles[0].categoria
-    let dataUsuarios: any = await this.categoriaServ.obtenerCategoria(categoriaId).toPromise()
-    if (dataUsuarios) {
-      this.categoria = dataUsuarios.data.categoria
+
+    try {
+      let f: Fecha = this.navParams.get('fecha')
+      if (f) {
+        this.fecha = f
+      }
+      let categoriaId = this.usuServ.usuario.perfiles[0].categoria
+      let dataUsuarios: any = await this.categoriaServ.obtenerCategoria(categoriaId).toPromise()
+      if (dataUsuarios) {
+        this.categoria = dataUsuarios.data.categoria
+      }
+    } catch (e) {
+      console.log(e)
+      this.utilServ.dispararAlert('Error', 'Ocurrión un error con el servidor')
     }
   }
 
@@ -52,7 +58,7 @@ export class DetalleFechaPage {
     return new Date(this.fecha.fechaEncuentro).toLocaleString()
   }
 
-  nuevoEvento(){
+  nuevoEvento() {
     let loader = this.loader.create({
       content: 'Cargando...',
       spinner: 'circles'
@@ -60,15 +66,15 @@ export class DetalleFechaPage {
     })
     loader.present()
     let categoriaId = this.usuServ.usuario.perfiles[0].categoria
-    this.campServ.crearEvento(this.fecha, categoriaId).subscribe((resp)=>{
-      this.utilServ.dispararAlert('Éxito','Evento ha sido creado, revisá la agenda')
+    this.campServ.crearEvento(this.fecha, categoriaId).subscribe((resp) => {
+      this.utilServ.dispararAlert('Éxito', 'Evento ha sido creado, revisá la agenda')
       loader.dismiss()
-    },(err)=>{
-      this.utilServ.dispararAlert('Error','No se ha podido crear el evento')
+    }, (err) => {
+      this.utilServ.dispararAlert('Error', 'No se ha podido crear el evento')
       loader.dismiss()
     })
   }
-  puedoCrearEvento(){
+  puedoCrearEvento() {
     return this.fecha.fechaEncuentro > Date.now() && this.esDelegado()
   }
   esDelegado() {

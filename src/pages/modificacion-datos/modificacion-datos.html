@@ -29,7 +29,7 @@
           </div>
           <div class="spacer" style="width:300px;height:15px;" id="registro-spacer8"></div>
           <ion-item-divider color="light" id="registro-list-item-divider8">
-            Datos Generales:
+            Datos Generales (usuario: {{usuario.email}}):
           </ion-item-divider>
           <ion-item [ngClass]="{ 'ng-touched' : nombre.touched }" fixed id="registro-input15">
             <ion-label>
@@ -77,7 +77,7 @@
             <ion-input text-right type="date" placeholder="" #fnacimiento="ngModel" name="fnacmiento" [(ngModel)]="fechaNacTxt"
               required></ion-input>
           </ion-item>
-          <ng-container *ngIf="delegado && requiereCategoria" >
+          <ng-container *ngIf="delegado && requiereCategoria">
 
             <ion-item>
               <ion-label>Requiere examen:</ion-label>
@@ -134,6 +134,21 @@
               <ion-option *ngFor="let pos of posiciones" [id]="pos.id" [value]="pos.id">{{pos.value}}</ion-option>
             </ion-select>
           </ion-item>
+          <ion-item>
+            <ion-label>Notificaciones por Email</ion-label>
+            <ion-checkbox item-end name="notificacionesEmail" notificacionesEmail [(ngModel)]="usuario.notificacionesEmail"></ion-checkbox>
+          </ion-item>
+          <ng-container *ngIf="delegado">
+            <ion-item>
+              <ion-label>Cuota especial</ion-label>
+              <ion-toggle [(ngModel)]="usuario.cuotaEspecial" name="cuotaEspecial"></ion-toggle>
+            </ion-item>
+            <ion-item *ngIf="usuario.cuotaEspecial" [ngClass]="{ 'ng-touched' : valorCuota.touched }" fixed >
+                <ion-label>Valor Cuota ($):</ion-label>
+                <ion-input text-right type="text" placeholder="Ej: 500" name="valorCuota" pattern="^[0-9]{1,5}$"
+                [(ngModel)]="usuario.valorCuota" #valorCuota="ngModel" required></ion-input>
+              </ion-item>
+          </ng-container>
           <div class="spacer" style="width:300px;height:14px;" id="registro-spacer10"></div>
 
         </ion-col>

@@ -4,8 +4,12 @@ const { Evento } = require('../models/evento')
 const _ = require('lodash')
 const { ApiResponse } = require('../models/api-response')
 const { ObjectID } = require('mongodb')
-var { enviarNotificacion } = require('../Utilidades/utilidades')
+var { enviarNotificacion, enviarCorreoNotificacion } = require('../Utilidades/utilidades')
 const { Usuario } = require('../models/usuario')
+
+var infoUsuario = 'nombre apellido email perfiles ci celular direccion fechaVtoCarneSalud delegadoInstitucional fechaNacimiento'
+infoUsuario += ' fechaUltimoExamen requiereExamen emergencia notificacionEmail sociedad contacto posiciones activo perfiles categoriacuota ultimoMesCobrado cuenta cuotaEspecial valorCuota'
+
 
 api.get('/eventos', async (req, res) => {
 
@@ -23,7 +27,7 @@ api.get('/eventos', async (req, res) => {
                 'tipoEvento': ObjectID(req.query.tipoEvento)
             }
         }
-        let eventos = await Evento.find(filtro).populate('tipoEvento')
+        let eventos = await Evento.find(filtro).populate('tipoEvento categoria')
 
         if (req.query.userId) {
             eventos = eventos.filter(e => {
@@ -49,15 +53,21 @@ api.get('/eventos', async (req, res) => {
 api.get('/eventos/home', async (req, res) => {
     try {
         let usuarioId = req.query.usuarioId
+        let catId = req.query.catId
         let filtro = {}
         let fechafin = new Date().setDate(new Date().getDate() + 15)
         let fecha = { $gt: Date.now(), $lt: fechafin.valueOf() }
-       
+
         filtro = { fecha }
 
 
-        let eventos = await Evento.find(filtro).populate('tipoEvento').sort({fecha: 1})
+        let eventos = await Evento.find(filtro).populate('tipoEvento').sort({ fecha: 1 })
         eventos = eventos.filter((evt) => {
+
+            if (evt.categoria.toString() !== catId) {
+                return false
+            }
+
             if (evt.invitados.indexOf(usuarioId) >= 0) {
                 return true
             }
@@ -67,6 +77,10 @@ api.get('/eventos/home', async (req, res) => {
             if (evt.noAsisten.indexOf(usuarioId) >= 0) {
                 return true
             }
+            if (evt.duda.indexOf(usuarioId) >= 0) {
+                return true
+            }
+
             return false
         })
 
@@ -124,9 +138,10 @@ api.get('/eventos/:id', async (req, res) => {
 
     Evento.findOne({
         _id: id
-    }).populate('invitados')
-        .populate('noAsisten')
-        .populate('confirmados')
+    }).populate('invitados', infoUsuario)
+        .populate('noAsisten', infoUsuario)
+        .populate('confirmados', infoUsuario)
+        .populate('duda', infoUsuario)
         .populate('categoria')
         .populate('tipoEvento')
         .then((evento) => {
@@ -150,9 +165,17 @@ api.post('/eventos', async (req, res) => {
 
         for (let id of evento.invitados) {
             let user = await Usuario.findOne({ _id: id })
-            tituloNot = `Nuevo evento: ${evento.nombre}`,
-                bodyNot = `Hola ${user.nombre}! Has sido invitado a un nuevo evento. Por favor, consultá los detalles y confirmá asistencia. Gracias!`
-            enviarNotificacion(user, tituloNot, bodyNot)
+            tituloNot = `Nuevo evento: ${evento.nombre}`
+            bodyNot = `Hola ${user.nombre}! Has sido invitado a un nuevo evento. Por favor, consultá los detalles y confirmá asistencia. Gracias!`
+            if (user.hasMobileToken()) {
+                enviarNotificacion(user, tituloNot, bodyNot)
+
+            } else {
+                enviarCorreoNotificacion(user, tituloNot, bodyNot)
+                if (user.tokens.length > 1) {
+                    enviarNotificacion(user, tituloNot, bodyNot)
+                }
+            }
         }
         res.status(200).send(new ApiResponse({ evento }));
 
@@ -175,22 +198,49 @@ api.put('/eventos/:id/confirmar', async (req, res) => {
             if (evento.invitados.indexOf(usuario._id) > -1) {
 
                 evento.invitados.splice(evento.invitados.indexOf(usuario._id), 1)
-
-                if (asiste) {
-                    evento.confirmados.push(usuario._id)
+                if (asiste === undefined) {
+                    evento.duda.push(usuario._id)
                 } else {
-                    evento.noAsisten.push(usuario._id)
-                }
-            } else {
-                if (asiste) {
-                    if (evento.confirmados.indexOf(usuario._id) < 0) {
+                    if (asiste) {
                         evento.confirmados.push(usuario._id)
+                    } else {
+                        evento.noAsisten.push(usuario._id)
+                    }
+                }
+
+            } else {
+                if (asiste === undefined) {
+                    if (evento.duda.indexOf(usuario._id) < 0) {
+                        evento.duda.push(usuario._id)
+                    }
+                    if (evento.confirmados.indexOf(usuario._id) < 0) {
                         evento.noAsisten.splice(evento.noAsisten.indexOf(usuario._id), 1)
+                    } else {
+                        evento.confirmados.splice(evento.confirmados.indexOf(usuario._id), 1)
                     }
                 } else {
-                    if (evento.noAsisten.indexOf(usuario._id) < 0) {
-                        evento.noAsisten.push(usuario._id)
-                        evento.confirmados.splice(evento.confirmados.indexOf(usuario._id), 1)
+                    if (asiste) {
+                        if (evento.confirmados.indexOf(usuario._id) < 0) {
+                            evento.confirmados.push(usuario._id)
+
+                        }
+                        if (evento.duda.indexOf(usuario._id) >= 0) {
+                            evento.duda.splice(evento.duda.indexOf(usuario._id), 1)
+                        }
+                        if (evento.noAsisten.indexOf(usuario._id) >= 0) {
+                            evento.noAsisten.splice(evento.noAsisten.indexOf(usuario._id), 1)
+                        }
+                    } else {
+                        if (evento.noAsisten.indexOf(usuario._id) < 0) {
+                            evento.noAsisten.push(usuario._id)
+
+                        }
+                        if (evento.duda.indexOf(usuario._id) >= 0) {
+                            evento.duda.splice(evento.duda.indexOf(usuario._id), 1)
+                        }
+                        if (evento.confirmados.indexOf(usuario._id) >= 0) {
+                            evento.confirmados.splice(evento.confirmados.indexOf(usuario._id), 1)
+                        }
                     }
                 }
             }
@@ -223,6 +273,22 @@ api.put('/eventos/:id/registrosDT', async (req, res) => {
             if (!encontre) {
                 evento.registrosDT.push({ jugadorId: req.body.jugadorId, comentario: req.body.comentario })
             }
+            let jugador = await Usuario.findOne({ _id: req.body.jugadorId })
+            if (jugador) {
+                tituloNot = `Recibiste un comentario del DT`
+                bodyNot = `Hola ${jugador.nombre}! Uno de los DTs te ha hecho un comentario sobre el evento ${evento.nombre}`
+                if (jugador.hasMobileToken()) {
+                    enviarNotificacion(jugador, tituloNot, bodyNot)
+                }
+                else {
+                    enviarCorreoNotificacion(jugador, tituloNot, bodyNot)
+                    if (jugador.tokens.length > 1) {
+                        enviarNotificacion(jugador, tituloNot, bodyNot)
+                    }
+                }
+            }
+
+
             evento = await evento.save()
             res.send(new ApiResponse({}, 'Registro ingresado correctamente'))
         } else {
@@ -246,20 +312,35 @@ api.put('/eventos/:id', async (req, res) => {
         }
         if (notificar === 'true') {
             evento = await Evento.findOne({ _id })
-                .populate('confirmados')
-                .populate('invitados')
-                .populate('noAsisten')
+                .populate('confirmados', infoUsuario)
+                .populate('invitados', infoUsuario)
+                .populate('noAsisten', infoUsuario)
+                .populate('duda', infoUsuario)
 
             let invitados = [
                 ...evento.confirmados,
+                ...evento.duda,
                 ...evento.invitados,
                 ...evento.noAsisten
             ]
 
-            for (let invitado of invitados) {
-                tituloNot = `Modificación de evento: ${evento.nombre}`,
-                    bodyNot = `Hola ${invitado.nombre}! Un evento al que fuiste invitado ha sido modificado, consultá los detalles y confirmá asistencia. Gracias!`
-                enviarNotificacion(invitado, tituloNot, bodyNot)
+            for (let i of invitados) {
+
+                invitado = await Usuario.findById(i._id)
+                tituloNot = `Modificación de evento: ${evento.nombre}`
+                bodyNot = `Hola ${invitado.nombre}! Un evento al que fuiste invitado ha sido modificado, consultá los detalles y confirmá asistencia. Gracias!`
+                if (invitado.hasMobileToken()) {
+
+                    enviarNotificacion(invitado, tituloNot, bodyNot)
+
+                } else {
+
+                    enviarCorreoNotificacion(invitado, tituloNot, bodyNot)
+                    if (invitado.tokens.length > 1) {
+
+                        enviarNotificacion(invitado, tituloNot, bodyNot)
+                    }
+                }
             }
         }
 

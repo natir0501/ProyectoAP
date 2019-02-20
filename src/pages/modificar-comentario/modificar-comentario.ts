@@ -41,6 +41,7 @@ export class ModificarComentarioPage {
       console.log(this.comentario)
       loader.dismiss()
     },(err)=>{
+      loader.dismiss()
       this.utilServ.dispararAlert('Error','Error al obtener información')
       console.log(err)
     })
@@ -50,6 +51,7 @@ export class ModificarComentarioPage {
       this.utilServ.dispararAlert('OK','Comentario guardado correctamente')
       this.navCtrl.pop()
     },(err)=>{
+    
       this.utilServ.dispararAlert('Error','Error al guadar comentairo')
       console.log(err)
     })

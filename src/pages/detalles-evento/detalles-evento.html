@@ -69,10 +69,7 @@
 
         <ion-item-divider color="light">
           Pendientes{{' ('+ evento.invitados.length + ')'}}
-          <button ion-button item-end class="btn-print" type="button" (click)="generoPDF()" icon-only
-          *ngIf="usuario.email==='nati.r0501@gmail.com' || usuario.email === 'gab.arpe@gmail.com'">
-            <ion-icon name="print"></ion-icon>
-          </button>
+         
           <button ion-button item-end class="btn-mostrar" type="button" (click)="toggle('convocados')">{{btnConvocados}}</button>
 
         </ion-item-divider>
@@ -96,6 +93,18 @@
           </ion-item>
         </ng-container>
         <ion-item-divider color="light">
+          Duda{{' ('+ evento.duda.length + ')'}}
+          <button ion-button item-end class="btn-mostrar" type="button" (click)="toggle('duda')">{{btnDuda}}</button>
+
+        </ion-item-divider>
+        <ng-container *ngIf="verDuda">
+          <ion-item *ngFor="let usu of evento.duda" fixed icon-end>
+
+            {{descUsu(usu)}}
+
+          </ion-item>
+        </ng-container>
+        <ion-item-divider color="light">
           No van{{' ('+ evento.noAsisten.length + ')'}}
           <button ion-button item-end class="btn-mostrar" type="button" (click)="toggle('noVan')">{{btnNoVan}}</button>
 
@@ -110,12 +119,18 @@
       </ion-col>
     </ion-row>
     <div class="spacer" style="width:300px;height:15px;" id="registro-spacer8"></div>
-    <ion-row justify-content-center *ngIf="convocado()">
+    <ion-row justify-content-center *ngIf="convocado() ">
       <ion-col col-xl-2>
         <button type="button"  ion-button="" block color="positive"  [disabled]="!puedoNoIr()" (click)="confirmar(false)">
           No Voy
         </button>
       </ion-col>
+      <ion-col col-xl-2>
+        <button type="submit" ion-button="" block color="positive"  [disabled]="!puedoDudar()" (click)="confirmar(undefined)">
+          Duda
+        </button>
+      </ion-col>
+
       <ion-col col-xl-2>
         <button type="submit" ion-button="" block color="positive"  [disabled]="!puedoIr()" (click)="confirmar(true)">
           Voy
@@ -123,8 +138,7 @@
       </ion-col>
 
     </ion-row>
-    <ion-row justify-content-center *ngIf="convocado()">
-    </ion-row>
+   
   </ion-grid>
 
 </ion-content>

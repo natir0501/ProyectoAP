@@ -29,6 +29,7 @@ export class ModificacionDatosPage {
   fechaNacTxt: string = '1990-01-01'
   fexamenTxt: string = '2018-01-01'
   delegado: boolean = false
+ 
   requiereCategoria: boolean = false
 
   posiciones = Object.keys(Posiciones).map(key => ({ 'id': key, 'value': Posiciones[key] }))
@@ -112,6 +113,10 @@ export class ModificacionDatosPage {
         return false
       }
     }
+    if(!this.fmedicaVigente){
+      this.usuario.fechaVtoCarneSalud = new Date('2018-01-02').valueOf()
+      return true
+    }  
     if (this.fmedicaVigente && Date.parse(this.fechaVtoTxt) <= Date.now()) {
       this.util.dispararAlert('F/Médica - C/ Salud', "Fecha de vencimiento inválida")
       return false

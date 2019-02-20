@@ -7,9 +7,7 @@
 <ion-header>
 
   <ion-navbar text-center color="primary">
-    <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
-    </button>
+   
     <ion-title>
       Mantenimiento Categorias
     </ion-title>
@@ -71,13 +69,18 @@
             <ion-label>
               Saldo Inicial ($):
             </ion-label>
-            <ion-input text-right type="text" placeholder="Ej: 10000" name="saldoInicial" pattern="^[0-9]{1,9}$"
+            <ion-input text-right type="text" placeholder="Ej: 10000" name="saldoInicial" pattern="^-?[0-9]{0,10}$"
               [(ngModel)]="categoria.saldoInicial" #saldoInicial="ngModel" required></ion-input>
           </ion-item>
           <ion-item>
             <ion-label>Requiere escolaridad:</ion-label>
             <ion-checkbox item-end name="requiereEscolaridad" requiereEscolaridad [(ngModel)]="categoria.requiereEscolaridad"></ion-checkbox>
           </ion-item>
+          <ion-item [ngClass]="{ 'ng-touched' : recargo.touched }" fixed >
+              <ion-label>Recargo ($):</ion-label>
+              <ion-input text-right type="text" placeholder="Ej: 50" name="recargo" pattern="^[0-9]{1,5}$"
+              [(ngModel)]="categoria.recargo" #recargo="ngModel" required></ion-input>
+            </ion-item>
           <div class="spacer" style="width:300px;height:15px;" id="registro-spacer8"></div>
 
           <ng-container *ngIf="categoria._id!==undefined">
@@ -127,7 +130,8 @@
               <p class="title">
                 Ingrese separados por ";" los correos de los usuarios para cada rol. Se enviará un correo inicialdo en
                 proceso de
-                registro de los usuarios.
+                registro de los usuarios. <br><br>
+                No ingrese correos de delegado institucional.
               </p>
             </div>
             <div class="spacer" style="width:300px;height:15px;" id="registro-spacer8"></div>

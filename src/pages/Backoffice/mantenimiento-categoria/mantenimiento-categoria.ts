@@ -1,8 +1,9 @@
-import { Usuario } from './../../models/usuario.model';
-import { ListaCategoriasPage } from './../lista-categorias/lista-categorias';
-import { CategoriaService } from './../../providers/categoria.service';
-import { UtilsServiceProvider } from './../../providers/utils.service';
-import { Categoria } from './../../models/categoria.models';
+import { UsuarioService } from './../../../providers/usuario.service';
+import { Usuario } from './../../../models/usuario.model';
+import { ListaCategoriasPage } from './../../lista-categorias/lista-categorias';
+import { CategoriaService } from './../../../providers/categoria.service';
+import { UtilsServiceProvider } from './../../../providers/utils.service';
+import { Categoria } from './../../../models/categoria.models';
 import { Component, ViewChild } from '@angular/core';
 import {  NavController, NavParams, LoadingController } from 'ionic-angular';
 import { NgForm, Validators } from '@angular/forms';
@@ -42,6 +43,7 @@ export class MantenimientoCategoriaPage {
   verJugadores = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public utils: UtilsServiceProvider,
+    private usuServ : UsuarioService,
     public load: LoadingController, private categoriaServ: CategoriaService) {
   }
 
@@ -58,7 +60,7 @@ export class MantenimientoCategoriaPage {
     if (correosStr.length > 0) {
       correos = correosStr.split(';')
       for (let correo of correos) {
-        if (!this.reg.test(correo)) {
+        if (!this.reg.test(correo) || correo === this.usuServ.usuario.email) {
           return { valido: false, correos: [] };
         }
       }
@@ -174,6 +176,7 @@ export class MantenimientoCategoriaPage {
   obtenerCorreos() {
     let correosStr: string = this.form.form.get('correosJugadores').value
     let correosValidados = this.validarCorreos(correosStr)
+    
     if (!correosValidados.valido) {
       this.form.form.get('correosJugadores').setErrors({ 'incorrect': true })
       this.utils.dispararAlert('Error', 'Por favor revise correos de Jugadores')

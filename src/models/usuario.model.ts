@@ -1,5 +1,5 @@
-import { Posiciones, Roles } from './enum.models';
-import { Categoria, Cuenta } from './categoria.models';
+import { Categoria } from './categoria.models';
+import { Cuenta } from './cuenta.models';
 
 function getDate() : string {
     let date = new Date()
@@ -18,7 +18,7 @@ export class Usuario{
     fechaVtoCarneSalud: number = Date.now()
     delegadoInstitucional?: boolean 
     fechaNacimiento: number = Date.now()
-    fechaUltimoExamen: number = Date.now()
+    fechaUltimoExamen: number = new Date('2017-01-02').valueOf()
     requiereExamen: boolean = true
     tokens?: any[]
     emergencia?: string;
@@ -28,8 +28,12 @@ export class Usuario{
     activo ?: boolean;
     perfiles:  Perfil[] = []
     categoriacuota ?: Categoria;
-    ultimoMesCobrado?: number
+    ultimoMesCobrado?: number;
     cuenta?: Cuenta;
+    notificacionesEmail?: boolean = true;
+    cuotaEspecial?:boolean = false;
+    valorCuota?:number= 0
+
 
 
    

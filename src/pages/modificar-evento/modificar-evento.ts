@@ -77,12 +77,15 @@ export class ModificarEventoPage {
       if (!this.navParams.get('evento')) {
         this.diahoratxt = this.utilService.fechahoraToText(this.navParams.get('fecha'))
         this.evento.tipoEvento = this.tiposEvento[0]
+     
       } else {
         this.evento = this.navParams.get('evento')
         this.diahoratxt = this.utilService.fechahoraToText(new Date(this.evento.fecha))
         for (let tipo of this.tiposEvento) {
-          if (tipo._id === this.evento.tipoEvento) {
+         
+          if (tipo._id === this.evento.tipoEvento._id) {
             this.evento.tipoEvento = tipo
+          
           }
 
         }

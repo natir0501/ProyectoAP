@@ -67,6 +67,12 @@ self.addEventListener('push', function (event) {
   );
 });
 
+self.addEventListener('notificationclick', function (event) {
+  
+  event.notification.close();
+  clients.openWindow(''+event.currentTarget.origin);
+});
+
 messaging.setBackgroundMessageHandler(function (payload) {
   console.log('Received background message ', payload);
   // here you can override some options describing what's in the message; 

@@ -16,11 +16,13 @@ export class Categoria{
     tesoreros?: Usuario[] = []
     jugadores?: Usuario[] = []
     campeonatos?: Campeonato[]=[]
+    recargo?: number = 0
 }
 
 export class Cuenta {
     movimientos?: Movimiento[] = []
     saldo?: number
+    _id?: string
 }
 
 export class Movimiento{

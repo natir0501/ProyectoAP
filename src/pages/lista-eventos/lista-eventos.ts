@@ -30,31 +30,31 @@ export class ListaEventosPage {
   currentEvents = []
   fechaSeleccionada: Date = new Date()
   categoria: Categoria = new Categoria()
-  roles  = []
-  
+  roles = []
+
   constructor(public navCtrl: NavController, public navParams: NavParams, private eventoServ: EventoService
-    , private usuServ: UsuarioService, private categoriaServ : CategoriaService, private utilServ : UtilsServiceProvider) {
+    , private usuServ: UsuarioService, private categoriaServ: CategoriaService, private utilServ: UtilsServiceProvider) {
     this.categoria._id = this.usuServ.usuario.perfiles[0].categoria
-    
-    
+
+
   }
 
   async ionViewDidLoad() {
-    try{
+    try {
       await this.cargarEventos(new Date().getFullYear(), new Date().getMonth())
       let resp2 = await this.categoriaServ.obtenerRoles().toPromise()
       let dataUsuarios: any = await this.categoriaServ.obtenerCategoria(this.categoria._id).toPromise()
       if (dataUsuarios) {
         this.categoria = dataUsuarios.data.categoria
       }
-      
+
       this.roles = resp2.data.roles
       this.eventosDelDia = this.eventos.filter((evt) => new Date(evt.fecha).getDate() === new Date().getDate())
-    }catch(e){
+    } catch (e) {
       console.log(e)
       this.utilServ.dispararAlert('Error', 'Error al consultar eventos')
     }
-    
+
   }
 
   altaEvento() {
@@ -87,6 +87,13 @@ export class ListaEventosPage {
     }
   }
 
+  labelCategoria(nombreCategoria: string) {
+    let split = []
+
+    split = nombreCategoria.split(' ').map(palabra => palabra.substr(0, 1))
+    return split.join('')
+  }
+
   async cargarEventos(year: number, mes: number) {
     let fechaInicio = new Date(year, mes, 0)
     let fechaFin = new Date(year, mes + 1, 1)
@@ -110,25 +117,25 @@ export class ListaEventosPage {
   }
 
   puedeEditar(evento: Evento): boolean {
-    return evento.fecha > Date.now()
+    return evento.fecha > Date.now() && evento.categoria._id === this.usuServ.usuario.perfiles[0].categoria
   }
 
   puedeCrear(): boolean {
     return new Date(this.fechaSeleccionada.getFullYear(), this.fechaSeleccionada.getMonth(), this.fechaSeleccionada.getDate() + 1).valueOf() > Date.now()
   }
-  registrosDT() {
-    let rolDt = this.roles.filter((rol)=> rol.codigo === 'DTS')[0]
-    
+  registrosDT(evento : Evento) {
+    let rolDt = this.roles.filter((rol) => rol.codigo === 'DTS')[0]
+
     let usuario: Usuario = this.usuServ.usuario
-    for(let rol of usuario.perfiles[0].roles){
-      if(rol === rolDt._id && this.fechaSeleccionada.valueOf()<Date.now()){
+    for (let rol of usuario.perfiles[0].roles) {
+      if (rol === rolDt._id && evento.fecha < Date.now()) {
         return true
       }
     }
     return false
   }
-  registrar(evento : Evento){
-    this.navCtrl.push(ListaRegistroEventoPage,{evento})
+  registrar(evento: Evento) {
+    this.navCtrl.push(ListaRegistroEventoPage, { evento })
   }
 
 }

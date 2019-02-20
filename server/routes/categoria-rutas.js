@@ -2,6 +2,7 @@ var express = require('express');
 var api = express.Router();
 const { Categoria } = require('../models/categoria')
 const { Cuenta } = require('../models/cuenta')
+const {ConceptosCaja}=require('../models/conceptosCaja')
 const { Rol } = require('../models/rol')
 const { Usuario } = require('../models/usuario')
 const _ = require('lodash')
@@ -9,14 +10,19 @@ const { validarId } = require('../Utilidades/utilidades')
 const { ApiResponse } = require('../models/api-response')
 const { autenticacion } = require('../middlewares/autenticacion')
 
-api.get('/categorias', autenticacion, (req, res) => {
+var infoUsuario = 'notificacionesEmail nombre apellido email perfiles ci celular direccion fechaVtoCarneSalud delegadoInstitucional fechaNacimiento'
+infoUsuario +=' fechaUltimoExamen requiereExamen emergencia sociedad contacto posiciones activo perfiles categoriacuota ultimoMesCobrado cuenta cuotaEspecial valorCuota'
+
+api.get('/categorias',  (req, res) => {
     Categoria.find()
-        .populate('dts')
-        .populate('delegados')
-        .populate('jugadores')
-        .populate('tesoreros')
+        .populate('dts', infoUsuario)
+        .populate('delegados', infoUsuario)
+        .populate('jugadores', infoUsuario)
+        .populate('tesoreros', infoUsuario)
         .populate('caja')
         .populate('campeonatos')
+        .populate('cuenta')
+        
         .then((categorias) => {
             res.status(200).send(new ApiResponse({ categorias }))
         }), (e) => {
@@ -58,6 +64,27 @@ api.post('/categorias', async (req, res) => {
         let cantidadCuotasAnuales = parseInt(req.body.cantidadCuotasAnuales)
         //En el body de la categoría, recibo saldo inicial
         let saldo = req.body.saldoInicial;
+
+        if(parseInt(saldo)!=0){
+            let fecha = Date.now()
+            let concepto
+            if(parseInt(saldo)>0){
+                concepto = await ConceptosCaja.findOne({nombre: 'Saldo Inicial'})
+            }else{
+                concepto = await ConceptosCaja.findOne({nombre: 'Deuda Inicial'}) 
+            }
+            let monto = parseInt(saldo)
+            let tipo = concepto.tipo
+            let comentario = 'Movimiento inicial'
+            let confirmado = true
+           
+            let usuario = req.usuarioRequest
+            let estado = 'Confirmado'
+            let comentairo_tes=''
+
+            movimientos.push({fecha,concepto,monto,tipo,comentario,confirmado,usuario,estado,comentairo_tes})
+
+        }
 
         let cajaCategoria = new Cuenta({ movimientos, saldo });
         await cajaCategoria.save();
@@ -128,20 +155,49 @@ api.post('/categorias', async (req, res) => {
     }
 })
 
+api.get('/categorias/saldos/:_id', async (req, res) => {
+    try{
+        let id = req.params._id;
+        let categoria = await Categoria.findOne({_id: id})
+        if(categoria){
+
+            let jugadores = []
+            
+            for(let j of categoria.jugadores){
+                
+                let jugador = await Usuario.findOne({_id: j},{tokens: 0, password: 0}).populate('cuenta')
+                if(jugador.categoriacuota.toString() === id){
+                    jugadores.push(jugador)
+                }
+            }
+            res.send(new ApiResponse({categoria,jugadores},''))
+        }else{
+            res.status(404).send(new ApiResponse({},'Categoría no encontrada'))
+        }
+    
+    }catch(e){
+        console.log(e)
+        res.status(400).send(new ApiResponse({},''))
+    }
+    
+       
+})
+
 api.get('/categorias/:_id', (req, res) => {
     let id = req.params._id;
 
     Categoria.findOne({
         _id: id
-    })
-        .populate('dts')
-        .populate('delegados')
-        .populate('tesoreros')
-        .populate('jugadores')
+    })  
+        .populate('dts',infoUsuario)
+        .populate('delegados',infoUsuario)
+        .populate('tesoreros',infoUsuario)
+        .populate('jugadores',infoUsuario)
         .populate('cuenta')
         .populate('campeonatos')
         .then((categoria) => {
             if (categoria) {
+            
                 res.status(200).send(new ApiResponse({ categoria }))
             } else {
                 res.status(404).send(new ApiResponse({}, "No hay datos para mostrar"));
@@ -157,8 +213,8 @@ altaMasivaUsuarios = async (correos, rolId, catId) => {
     usuariosIds = []
 
     for (let email of correos) {
-
-        usuario = await Usuario.findOne({ email })
+        let correo = email.toString().toLowerCase()
+        usuario = await Usuario.findOne({ email: correo })
 
         if (usuario) {
             let encontreCat = false
@@ -176,7 +232,7 @@ altaMasivaUsuarios = async (correos, rolId, catId) => {
 
         } else {
             let perfiles = [{ 'categoria': catId, 'roles': [rolId] }]
-            usu = await new Usuario({ email, perfiles })
+            usu = await new Usuario({ email: correo, perfiles })
             usu.categoriacuota = catId
             usu = await usu.save()
             usu.generateAuthToken()

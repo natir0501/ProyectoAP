@@ -1,3 +1,5 @@
+import { SaldosPlantelPage } from './../pages/saldos-plantel/saldos-plantel';
+import { RegistroMovCajaPage } from './../pages/Contabilidad/registro-mov-caja/registro-mov-caja';
 import { ModificacionDatosPage } from './../pages/modificacion-datos/modificacion-datos';
 import { ConsultaModificacionDatosPage } from './../pages/consulta-modificacion-datos/consulta-modificacion-datos';
 import { MantenimientoCampeonatosPage } from './../pages/common/mantenimiento-campeonatos/mantenimiento-campeonatos';
@@ -12,15 +14,18 @@ import { UsuarioService } from './usuario.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Menu, MenuItem } from './../models/menu.models';
 import { ListaCategoriasPage } from '../pages/lista-categorias/lista-categorias';
-import { AltaDeUsuarioPage } from '../pages/common/alta-usuario/alta-de-usuario';
-import { MantenimientoCategoriaPage } from '../pages/mantenimiento-categoria/mantenimiento-categoria';
 import { Injectable } from '@angular/core';
 import { PlaceHolderPage } from '../pages/place-holder/place-holder';
 import { ConceptosDeCajaPage } from '../pages/Backoffice/conceptos-de-caja/conceptos-de-caja';
 import { TipoEventosPage } from '../pages/Backoffice/tipo-eventos/tipo-eventos';
 import { Observable } from 'rxjs/Observable';
 import { Usuario, Perfil } from '../models/usuario.model';
+import { AltaDeUsuarioPage } from '../pages/Backoffice/alta-usuario/alta-de-usuario';
+import { SaldoMovimientosCategoriaPage } from '../pages/Contabilidad/saldo-movimientos-categoria/saldo-movimientos-categoria';
+import { RegistroPagoCuotaPage } from '../pages/registro-pago-cuota/registro-pago-cuota';
 import { DatosDeportivosListaPage } from '../pages/datos-deportivos-lista/datos-deportivos-lista';
+import { PagosPendientesPage } from '../pages/pagos-pendientes/pagos-pendientes';
+import { SaldosJugadoresPage } from '../pages/saldos-jugadores/saldos-jugadores';
 import { PlantelPage } from '../pages/plantel/plantel';
 
 @Injectable()
@@ -42,7 +47,7 @@ export class MenuService {
 
 
     constructor(private http: HttpClient, private usuarioServ: UsuarioService, private utils: UtilsServiceProvider,
-        private catServ: CategoriaService) {
+        private catServ: CategoriaService, private utilServ: UtilsServiceProvider) {
         this.apiUrl = this.utils.apiUrl
         this.map.set('ListaCategoriasPage', ListaCategoriasPage)
         this.map.set('PlaceHolderPage', PlaceHolderPage)
@@ -56,13 +61,19 @@ export class MenuService {
         this.map.set('MantenimientoCampeonatosPage',MantenimientoCampeonatosPage)
         this.map.set('ConsultaModificacionDatosPage',ConsultaModificacionDatosPage)
         this.map.set('ModificacionDatos',ModificacionDatosPage)
+        this.map.set('RegistroMovCajaPage',RegistroMovCajaPage)
+        this.map.set('SaldoMovimientosCategoriaPage',SaldoMovimientosCategoriaPage) 
+        this.map.set('RegistroPagoCuotaPage',RegistroPagoCuotaPage)  
         this.map.set('DatosDeportivosListaPage',DatosDeportivosListaPage)
+        this.map.set('PagosPendientesPage',PagosPendientesPage)
+        this.map.set('SaldosJugadoresPage',SaldosJugadoresPage)
         this.map.set('PlantelPage',PlantelPage)
+        this.map.set('SaldosPlantelPage',SaldosPlantelPage)
 
     }
 
     async getMenu(roles: string[]) {
-        
+        try{
         let resp = await this.obtenerPantallas(roles).toPromise()
         let pantallas = resp.data
         this.limpiarMenu()
@@ -100,7 +111,10 @@ export class MenuService {
         
         return this.filtrarMenu()
 
-
+    }catch(e){
+        console.log(e)
+        this.utilServ.dispararAlert('Error','Ocurrión un error con el servidor')
+      }
     }
 
     async menuDelegadoInstitucional(usuario: Usuario){

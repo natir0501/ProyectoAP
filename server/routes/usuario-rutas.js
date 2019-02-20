@@ -10,7 +10,7 @@ const { ObjectID } = require('mongodb')
 
 api.get('/usuarios', (req, res) => {
 
-    Usuario.find()
+    Usuario.find({},{tokens: 0, password: 0})
         .then((usuarios) => res.status(200).send(new ApiResponse({ usuarios })))
         .catch((e) => res.status(400).send(new ApiResponse({}, `Mensaje: ${e}`)))
 })
@@ -56,7 +56,7 @@ api.post('/usuarios', async (req, res) => {
     try {
 
         var usuario = new Usuario(_.pick(req.body, ['email']))
-
+        usuario.email = usuario.email.toString().toLowerCase()
         let perfiles = req.body.perfiles
         usuario = await usuario.save()
         let categoriaCuota = await Categoria.findOne({ _id: req.body.categoriacuota })
@@ -100,7 +100,7 @@ api.post('/usuarios', async (req, res) => {
 api.post('/usuarios/login', async (req, res) => {
 
     try {
-        let usuario = await Usuario.findByCredentials(req.body.email, req.body.password)
+        let usuario = await Usuario.findByCredentials(req.body.email.toLowerCase(), req.body.password)
 
         if (usuario) {
 
@@ -110,6 +110,7 @@ api.post('/usuarios/login', async (req, res) => {
         }
 
     } catch (e) {
+        console.log('Error ',e)
         res.status(400).send(new ApiResponse({}, `Mensaje: ${e}`))
     }
 })
@@ -282,7 +283,7 @@ api.put('/usuarios/:id', async (req, res) => {
         let usu = await Usuario.findOne({_id})
         
         req.body.perfiles = usu.perfiles
-       
+    
         let usuario = await Usuario.findOneAndUpdate({ _id }, { $set: req.body })
       
          usuario = await Usuario.findOne({_id})
@@ -296,8 +297,6 @@ api.put('/usuarios/:id', async (req, res) => {
         console.log(err)
         res.status(400).send(new ApiResponse({}, err))
     }
-
-
 
 })
 

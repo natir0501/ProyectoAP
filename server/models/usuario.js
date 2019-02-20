@@ -48,7 +48,7 @@ var UsuarioSchema = mongoose.Schema({
     },
     fechaUltimoExamen:{
         type: Number,
-        default: Date.now(),
+        default: new Date('2017-01-02'),
         required: true
     },
     requiereExamen:{
@@ -82,7 +82,7 @@ var UsuarioSchema = mongoose.Schema({
     },
     ultimoMesCobrado: {
         type: Number,
-        default: new Date().getMonth()
+        default: parseInt(process.env.MESINICIAL)
     },
     activo: {
         type: Boolean,
@@ -91,6 +91,10 @@ var UsuarioSchema = mongoose.Schema({
     posiciones: [{
         type: String
     }],
+    notificacionesEmail:{
+        type: Boolean,
+        default: false
+    },
     perfiles: [{
         categoria:
         {
@@ -115,7 +119,15 @@ var UsuarioSchema = mongoose.Schema({
         token: {
             type: String,
         }
-    }]
+    }],
+    cuotaEspecial:{
+        type: Boolean,
+        default: false
+    },
+    valorCuota:{
+        type: Number,
+        default: 0
+    }
 })
 
 UsuarioSchema.plugin(uniqueValidator);
@@ -216,25 +228,38 @@ UsuarioSchema.methods.enviarConfirmacionAlta = function () {
     var usuario = this;
     enviarCorreoAlta(usuario)
 }
+UsuarioSchema.methods.hasMobileToken = function () {
+    var usuario = this;
+    for (token of usuario.tokens){
+        if(token.access === 'mobile'){
+            return true
+        }
+    }
+    return false
+}
 
 UsuarioSchema.statics.findByCredentials = function (email, password) {
     Usuario = this
     return Usuario.findOne({ email }).exec().then((usuario) => {
 
         if (!usuario) {
-            return Promise.reject()
+            return Promise.reject('No encuentro usuario '+email)
         }
 
         return new Promise((resolve, reject) => {
             bcrypt.compare(password, usuario.password, (err, res) => {
+                
                 if (!res) {
-                    return reject()
+                 
+                    return reject('Contraseña incorrecta: '+password)
                 }
+                console.log('Res: ', res)
                 return resolve(usuario)
             })
         })
 
     }).catch((e) => {
+       
         return Promise.reject(e)
     })
 }

@@ -1,3 +1,4 @@
+import { UtilsServiceProvider } from './../../providers/utils.service';
 import { DetalleComentarioPage } from './../detalle-comentario/detalle-comentario';
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
@@ -30,24 +31,27 @@ export class DatosDeportivosListaPage {
   currentEvents = []
   fechaSeleccionada: Date = new Date()
   categoria: Categoria = new Categoria()
- 
-  usuario : Usuario
-  
-  constructor(public navCtrl: NavController, public navParams: NavParams, private eventoServ: EventoService
-    , private usuServ: UsuarioService, private categoriaServ : CategoriaService) {
+
+  usuario: Usuario
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, private eventoServ: EventoService, private utilServ: UtilsServiceProvider
+    , private usuServ: UsuarioService, private categoriaServ: CategoriaService) {
     this.categoria._id = this.usuServ.usuario.perfiles[0].categoria
-      this.usuario = this.usuServ.usuario
+    this.usuario = this.usuServ.usuario
   }
 
   async ionViewDidLoad() {
-    await this.cargarEventos(new Date().getFullYear(), new Date().getMonth())
-   
- 
-  
-    this.eventosDelDia = this.eventos.filter((evt) => new Date(evt.fecha).getDate() === new Date().getDate())
+
+    try {
+      await this.cargarEventos(new Date().getFullYear(), new Date().getMonth())
+      this.eventosDelDia = this.eventos.filter((evt) => new Date(evt.fecha).getDate() === new Date().getDate())
+    } catch (e) {
+      console.log(e)
+      this.utilServ.dispararAlert('Error', 'Ocurrión un error con el servidor')
+    }
   }
 
- 
+
   detalles(evento: Evento) {
     this.navCtrl.push(DetalleComentarioPage, { evento })
   }
@@ -62,7 +66,7 @@ export class DatosDeportivosListaPage {
     this.eventosDelDia = []
   }
 
-  
+
   async cargarEventos(year: number, mes: number) {
     let fechaInicio = new Date(year, mes, 0)
     let fechaFin = new Date(year, mes + 1, 1)
@@ -81,11 +85,12 @@ export class DatosDeportivosListaPage {
 
     } catch (e) {
       console.log(e)
+      this.utilServ.dispararAlert('Error', 'Ocurrión un error con el servidor')
     }
 
   }
 
-  
+
 
 
 
