@@ -41,7 +41,7 @@ api.put('/categorias/:id', autenticacion, async (req, res) => {
             res.status(404).send(new ApiResponse({}, 'Categoría no encontrada'))
         }
     } catch (error) {
-        res.status(400).send({}, error)
+        res.status(400).send(new ApiResponse({}, error))
     }
 })
 

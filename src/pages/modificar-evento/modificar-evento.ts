@@ -79,7 +79,7 @@ export class ModificarEventoPage {
         this.evento.tipoEvento = this.tiposEvento[0]
      
       } else {
-        this.evento = this.navParams.get('evento')
+        this.evento = {...this.navParams.get('evento')}
         this.diahoratxt = this.utilService.fechahoraToText(new Date(this.evento.fecha))
         for (let tipo of this.tiposEvento) {
          
@@ -89,8 +89,8 @@ export class ModificarEventoPage {
           }
 
         }
+      
         
-
         let invitadosIds: any[] = [
           ...this.evento.invitados,
           ...this.evento.confirmados,
@@ -102,7 +102,7 @@ export class ModificarEventoPage {
             this.evento.invitados.push(usu)
           }
         }
- 
+
         this.usuarios = _.differenceBy(this.usuarios, this.evento.invitados, '_id')
 
       }
