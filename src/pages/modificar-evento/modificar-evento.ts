@@ -67,6 +67,7 @@ export class ModificarEventoPage {
         ...dataUsuarios.data.categoria.dts,
         ...dataUsuarios.data.categoria.jugadores,
         ], '_id')
+        this.usuarios = this.usuarios.filter((u)=> u.activo)
         this.categoria = dataUsuarios.data.categoria
         this.evento.categoria = this.categoria
       }

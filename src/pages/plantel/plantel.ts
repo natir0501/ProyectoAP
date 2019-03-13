@@ -41,7 +41,7 @@ export class PlantelPage {
     this.catService.obtenerCategoria(this.categoria._id)
       .subscribe((resp) => {
 
-        this.usuarios = resp.data.categoria.jugadores
+        this.usuarios = resp.data.categoria.jugadores.filter(u => u.activo)
         this.categoria = resp.data.categoria
 
 
