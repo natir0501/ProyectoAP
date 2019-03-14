@@ -45,7 +45,7 @@ ion-menu {
     position: relative;
     //padding: 7% 35% 0 33%;
     padding: 20px 10px 10px 10px;
-    background: url(../assets/imgs/pitch.png);
+   background: black;
     background-size: cover;
 
     ion-list{
@@ -70,8 +70,7 @@ ion-menu {
         //background: red;
     }
     .avatar{
-      width:7em;
-      height:6.5em;
+      height:7.5em;
       //border: thin solid darken(map-get($colors, menuColor), 40%);
       border-radius: 50%;
     }
@@ -126,12 +125,12 @@ ion-menu {
   .item.item-block.item-md{
     background-color: white;
     ion-label{
-        color: #050e61 !important;
+        color: #000 !important;
         font-weight: 400;
         
     }
     ion-badge{
-        background-color: #050e61 !important;
+        background-color: #000 !important;
         color: white !important;
         ion-icon{
             padding-right: 0;
@@ -141,12 +140,12 @@ ion-menu {
         &.active{
             background-color: #f8f8f8;
             ion-label{
-                color: #050e61 !important;
+                color: #000 !important;
                 
             }
             ion-badge{
                 background-color: white !important;
-                color: #050e61 !important;
+                color: #000 !important;
                 ion-icon{
                     padding-right: 0;
                 }
@@ -162,7 +161,7 @@ ion-menu {
             }
             ion-badge{
                 background-color: #fde645 !important;
-                color: #050e61 !important;
+                color: #000 !important;
                 ion-icon{
                     padding-right: 0;
                 }
@@ -237,4 +236,9 @@ ion-menu {
       
       color: white;
     }
+}
+
+::-webkit-scrollbar,
+*::-webkit-scrollbar {
+  display: none;
 }

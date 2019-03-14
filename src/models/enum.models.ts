@@ -1,15 +1,11 @@
 export enum Posiciones{
     GK = 'Golero',
-    LTD = 'Lateral Derecho',
-    DF = 'Defensa Central',
-    LTI = 'Lateral izquierdo',
-    MCD = 'Mediocampista defensivo',
-    MCO = 'Mediocampista ofensivo',
-    MD = 'Mediocampista derecho',
-    MI = 'Mediocampista izquierdo',
-    DD = 'Delantero derecho',
-    DI = 'Delantero izquierdo',
-    DC = 'Delantero Centro',
+    PI = 'Puntero izquierdo' ,
+    AI = 'Armador izquierdo',
+    AM = 'Armador medio',
+    AD = 'Armador derecho',
+    PD = 'Puntero derecho',
+    PV = 'Pivot',
     DT = 'Director Técnico'
 
 }
