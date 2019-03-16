@@ -74,7 +74,7 @@ const enviarReporteBatch = async(reporte)=>{
     console.log(cuerpo)
                 
     var mailOptions = {
-        from: 'CEI App <appcei.2018@gmail.com>',
+        from: 'tuEquipo App <appcei.2018@gmail.com>',
         to: correos,
         subject: 'Reporte cobro cuotas',
         html: cuerpo
@@ -122,7 +122,7 @@ const enviarCorreoAlta = async (usuario) => {
         ambiente = `[${process.env.AMBIENTE}] - `
     }
     let url = process.env.URLREGISTRO + `${usuario.tokens[0].token}`
-    let html = `<h2>Hola! Bienvenido/a a la app del CEI.</h2>
+    let html = `<h2>Hola! Bienvenido/a a tuEquipo app.</h2>
                 <p>Si estás desde una PC, por favor ingresá a este <a href="${url}">Link</a> para completar registro:</p><br>
                 
 
@@ -135,7 +135,7 @@ const enviarCorreoAlta = async (usuario) => {
                 Para instalar la app en el escritorio, podés seleccionar "agregar al home" desde las opciones del sitio
                 o aceptar esta acción si la app te lo pide en el primer ingreso” <br><br>
                 Luego, completá el registro inicial y cerrá el navegador.<br><br>
-                Estás listo para ingresar a la app del CEI desde el ícono instalado antes y realizar el log in!<br><br>
+                Estás listo para ingresar a la app desde el ícono instalado antes y realizar el log in!<br><br>
 
                 <b>También podés visitar nuestra app mobile desde cualquier pc sin perder ninguna prestación.</b>
 
@@ -143,7 +143,7 @@ const enviarCorreoAlta = async (usuario) => {
                 `
                 
     var mailOptions = {
-        from: 'CEI App <appcei.2018@gmail.com>',
+        from: 'tuEquipo App <appcei.2018@gmail.com>',
         to: usuario.email,
         subject: `${ambiente}Confirmación de registro y alta en CEIapp`,
         html
@@ -188,7 +188,7 @@ const enviarCorreoNotificacion = async (usuario, asunto, cuerpo)=>{
 
                 
     var mailOptions = {
-        from: 'CEI App <appcei.2018@gmail.com>',
+        from: 'tuEquipo App <appcei.2018@gmail.com>',
         to: usuario.email,
         subject: asunto,
         html: cuerpo

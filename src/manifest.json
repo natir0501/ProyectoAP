@@ -1,14 +1,14 @@
 {
-  "name": "CEI",
-  "short_name": "CEI",
+  "name": "tuEquipo App",
+  "short_name": "tuEquipo",
   "start_url": "index.html",
   "display": "standalone",
   "icons": [{
-    "src": "assets/imgs/cei_logo.png",
+    "src": "assets/imgs/tu_equipo_logo_rounded.png",
     "sizes": "512x512",
     "type": "image/png"
   }],
-  "background_color": "#ffffff",
-  "theme_color": "#4e8ef7",
+  "background_color": "#000",
+  "theme_color": "#000",
   "gcm_sender_id": "103953800507"
 }

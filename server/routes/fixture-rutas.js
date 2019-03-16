@@ -29,9 +29,9 @@ api.post('/campeonato/evento', async (req, res) => {
         let categoriaId = req.body.categoriaId
         let evento = new Evento()
         if (fecha.partido.local === true) {
-            evento.nombre = `Fecha ${fecha.numeroFecha} CEI vs ${fecha.partido.rival}`
+            evento.nombre = `Fecha ${fecha.numeroFecha} tuEquipo vs ${fecha.partido.rival}`
         } else {
-            evento.nombre = `Fecha ${fecha.numeroFecha} ${fecha.partido.rival} vs CEI`
+            evento.nombre = `Fecha ${fecha.numeroFecha} ${fecha.partido.rival} vs tuEquipo`
         }
 
         evento.fecha = fecha.fechaEncuentro

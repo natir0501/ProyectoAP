@@ -45,8 +45,8 @@ ion-menu {
     position: relative;
     //padding: 7% 35% 0 33%;
     padding: 20px 10px 10px 10px;
-    background: url(../assets/imgs/pitch.png);
-    background-size: cover;
+    background-color: #000;
+    
 
     ion-list{
         padding-top:10px !important;
@@ -71,9 +71,9 @@ ion-menu {
     }
     .avatar{
       width:7em;
-      height:6.5em;
+      //height:6.5em;
       //border: thin solid darken(map-get($colors, menuColor), 40%);
-      border-radius: 50%;
+      //border-radius: 50%;
     }
     .textStyle{
       color: map-get($colors, myFontColor);
@@ -126,12 +126,12 @@ ion-menu {
   .item.item-block.item-md{
     background-color: white;
     ion-label{
-        color: #050e61 !important;
+        color: #000 !important;
         font-weight: 400;
         
     }
     ion-badge{
-        background-color: #050e61 !important;
+        background-color: #006e81 !important;
         color: white !important;
         ion-icon{
             padding-right: 0;
@@ -141,12 +141,12 @@ ion-menu {
         &.active{
             background-color: #f8f8f8;
             ion-label{
-                color: #050e61 !important;
+                color: #006e81 !important;
                 
             }
             ion-badge{
                 background-color: white !important;
-                color: #050e61 !important;
+                color: #006e81 !important;
                 ion-icon{
                     padding-right: 0;
                 }
@@ -228,7 +228,7 @@ ion-menu {
 }
 .yourtoastclass {
     .toast-wrapper {
-      background: #050e61;
+      background: #006e81;
      
       border-radius: 5px;
       text-align: center;
