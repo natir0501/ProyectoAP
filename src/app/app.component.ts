@@ -47,6 +47,7 @@ export class MyApp {
       this.setupBackButtonBehavior();
 
       statusBar.styleDefault();
+      statusBar.backgroundColorByHexString('#006e81');
       splashScreen.hide();
 
       if (window.location.host === 'localhost:8100') {
