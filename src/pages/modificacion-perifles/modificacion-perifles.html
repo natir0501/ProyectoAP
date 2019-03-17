@@ -37,7 +37,10 @@
             <ion-item-divider color="light" id="altaDeUsuario-list-item-divider11">
               Usuario: {{mostrarUsuario(usuario)}}
             </ion-item-divider>
-            
+            <ion-item>
+              <ion-label>{{usuario.activo? 'Desactivar usuario':'Activar usuario'}}</ion-label>
+              <ion-toggle #activo="ngModel" name="activo" [(ngModel)]="usuario.activo"></ion-toggle>
+            </ion-item>
             <ion-item id="altaDeUsuario-select9">
               <ion-label>
                 Cat. cobro cuota
