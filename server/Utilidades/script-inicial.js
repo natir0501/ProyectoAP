@@ -174,7 +174,7 @@ const cuotasBatch = async () => {
             for (let usu of usuarios) {
                 let mesActual = new Date().getMonth() + 1
                 let cuenta = await Cuenta.findOne({ _id: usu.cuenta })
-                if (usu.ultimoMesCobrado < mesActual && mesActual < 13) {
+                if (usu.ultimoMesCobrado < mesActual && mesActual < 13 && usu.activo) {
                     let cantidadCuotas = mesActual - usu.ultimoMesCobrado
 
                     for (let i = 0; i < cantidadCuotas; i++) {

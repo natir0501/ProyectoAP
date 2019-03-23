@@ -102,7 +102,7 @@ api.post('/usuarios/login', async (req, res) => {
     try {
         let usuario = await Usuario.findByCredentials(req.body.email.toLowerCase(), req.body.password)
 
-        if (usuario) {
+        if (usuario && usuario.activo) {
 
             res.status(200).send({ usuario });
         } else {
@@ -123,7 +123,7 @@ api.put('/usuarios/perfiles', async (req, res) => {
         let usuario = await Usuario.findOne({ _id: req.body._id })
 
         usuario.perfiles = req.body.perfiles
-
+        usuario.activo = req.body.activo
 
 
 

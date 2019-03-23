@@ -48,7 +48,7 @@ export class ConsultaModificacionDatosPage {
           ...resp.data.categoria.dts,
           ...resp.data.categoria.jugadores,
         ], '_id')
-        this.usuarios = this.usuarios.filter((u)=> u._id !== this.usuServ.usuario._id)
+        this.usuarios = this.usuarios.filter((u)=> u._id !== this.usuServ.usuario._id && u.activo)
         this.categoria = resp.data.categoria
 
 

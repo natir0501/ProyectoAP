@@ -54,7 +54,7 @@ export class ListaCategoriasPage {
   }
 
   delegadoInst(){
-    return this.usuServ.usuario.delegadoInstitucional
+    return this.usuServ.usuario && this.usuServ.usuario.delegadoInstitucional
   }
 
   irAlta() {
