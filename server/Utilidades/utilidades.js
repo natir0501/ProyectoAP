@@ -80,7 +80,7 @@ const enviarReporteBatch = async(reporte)=>{
         html: cuerpo
     };
 
-    transporter.sendMail(mailOptions, function (error, info) {
+    await transporter.sendMail(mailOptions, function (error, info) {
         if (error) {
             console.log(error);
         }
@@ -194,7 +194,7 @@ const enviarCorreoNotificacion = async (usuario, asunto, cuerpo)=>{
         html: cuerpo
     };
 
-    transporter.sendMail(mailOptions, function (error, info) {
+    await transporter.sendMail(mailOptions, function (error, info) {
         if (error) {
             console.log(error);
         }
