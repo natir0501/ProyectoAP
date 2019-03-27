@@ -104,7 +104,7 @@ export class RegistroPagoCuotaPage {
   }
 
   getPlaceHolderText(){
-    return this.registraPagosDeTerceros() ? 'Ej: Pagó mediante transferencia a mi cuenta bancaria' : 'Ej: Le transfería al tesorero / Pagué en efectivo en la práctica pasada'
+    return this.registraPagosDeTerceros() ? 'Ej: Me pagó en mano en la última práctica' : 'Ej: Transferí a la cuenta en Itaú nro operación 123456'
   }
 
   registraPagosDeTerceros() {
