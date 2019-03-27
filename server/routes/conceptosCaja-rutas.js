@@ -6,7 +6,7 @@ const {ApiResponse} = require('../models/api-response')
 
 api.get('/conceptoscaja',(req, res)=>{
     
-    ConceptosCaja.find({nombre:{$nin:['Saldo Inicial','Deuda Inicial']}})
+    ConceptosCaja.find({nombre:{$nin:['Saldo Inicial','Deuda Inicial']}}).sort({nombre: -1})
     .then((conceptosCaja)=>{
         res.status(200).send(new ApiResponse({conceptosCaja},''))
     }),(e)=>{

@@ -50,6 +50,7 @@ ion-menu {
 
     ion-list{
         padding-top:10px !important;
+      
     }
     .avatar-content {
         position: relative;
@@ -236,6 +237,12 @@ ion-menu {
     .toast-message {
       
       color: white;
+    }
+}
+ion-menu{
+
+    ion-icon{
+        font-size: 1.2em !important;
     }
 }
 ::-webkit-scrollbar,

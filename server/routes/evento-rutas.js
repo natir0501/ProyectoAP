@@ -193,61 +193,35 @@ api.put('/eventos/:id/confirmar', async (req, res) => {
         let usuario = req.body.usuario
         let asiste = req.body.asiste
         let evento = await Evento.findOne({ _id })
+
+
         if (evento) {
-
-            if (evento.invitados.indexOf(usuario._id) > -1) {
-
+            if (evento.invitados.indexOf(usuario._id) >= 0) {
                 evento.invitados.splice(evento.invitados.indexOf(usuario._id), 1)
-                if (asiste === undefined) {
-                    evento.duda.push(usuario._id)
-                } else {
-                    if (asiste) {
-                        evento.confirmados.push(usuario._id)
-                    } else {
-                        evento.noAsisten.push(usuario._id)
-                    }
-                }
-
+            }
+            if (evento.noAsisten.indexOf(usuario._id) >= 0) {
+                evento.noAsisten.splice(evento.noAsisten.indexOf(usuario._id), 1)
+            }
+            if (evento.confirmados.indexOf(usuario._id) >= 0) {
+                evento.confirmados.splice(evento.confirmados.indexOf(usuario._id), 1)
+            }
+            if (evento.duda.indexOf(usuario._id) >= 0) {
+                evento.duda.splice(evento.duda.indexOf(usuario._id), 1)
+            }
+            if (asiste === undefined) {
+                evento.duda.push(usuario._id)
             } else {
-                if (asiste === undefined) {
-                    if (evento.duda.indexOf(usuario._id) < 0) {
-                        evento.duda.push(usuario._id)
-                    }
-                    if (evento.confirmados.indexOf(usuario._id) < 0) {
-                        evento.noAsisten.splice(evento.noAsisten.indexOf(usuario._id), 1)
-                    } else {
-                        evento.confirmados.splice(evento.confirmados.indexOf(usuario._id), 1)
-                    }
+                if (asiste === true) {
+                    evento.confirmados.push(usuario._id)
                 } else {
-                    if (asiste) {
-                        if (evento.confirmados.indexOf(usuario._id) < 0) {
-                            evento.confirmados.push(usuario._id)
-
-                        }
-                        if (evento.duda.indexOf(usuario._id) >= 0) {
-                            evento.duda.splice(evento.duda.indexOf(usuario._id), 1)
-                        }
-                        if (evento.noAsisten.indexOf(usuario._id) >= 0) {
-                            evento.noAsisten.splice(evento.noAsisten.indexOf(usuario._id), 1)
-                        }
-                    } else {
-                        if (evento.noAsisten.indexOf(usuario._id) < 0) {
-                            evento.noAsisten.push(usuario._id)
-
-                        }
-                        if (evento.duda.indexOf(usuario._id) >= 0) {
-                            evento.duda.splice(evento.duda.indexOf(usuario._id), 1)
-                        }
-                        if (evento.confirmados.indexOf(usuario._id) >= 0) {
-                            evento.confirmados.splice(evento.confirmados.indexOf(usuario._id), 1)
-                        }
-                    }
+                    evento.noAsisten.push(usuario._id)
                 }
             }
             evento = await evento.save()
             res.status(200).send(new ApiResponse({ evento }, ''))
+
         }
-        res.status(404).send()
+        res.status(200).send()
     } catch (e) {
         console.log(e)
         res.status(400).send()
@@ -304,11 +278,30 @@ api.put('/eventos/:id', async (req, res) => {
     try {
         let _id = req.params.id;
         let notificar = req.query.notificar
-        let evento = await Evento.findOneAndUpdate({ _id }, { $set: req.body })
-
+        let evento = await Evento.findOne({_id})
+        let invitados = req.body.invitados.filter((u)=>{
+            let usuarios = [...evento.confirmados, ...evento.noAsisten, ...evento.duda ].map(u=>u.toString())
+           
+            if(usuarios.indexOf(u._id.toString())>=0){
+                return false
+            }else{
+                return true
+            }
+                             
+        })
+      
+        evento = await Evento.findOneAndUpdate({ _id }, {
+            ...req.body,
+            invitados,
+            confirmados: evento.confirmados,
+            noAsisten : evento.noAsisten,
+            duda: evento.duda
+        })
+        
 
         if (!evento) {
             res.status(401).send(new ApiResponse({}, 'No fue posible actualizar el evento'))
+            return
         }
         if (notificar === 'true') {
             evento = await Evento.findOne({ _id })
