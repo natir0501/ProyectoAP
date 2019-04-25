@@ -56,6 +56,7 @@ const enviarReporteBatch = async(reporte)=>{
 
 
     var transporter = nodemailer.createTransport({
+        pool: true,
         service: 'gmail',
         auth: {
             type: "OAuth2",
@@ -71,7 +72,7 @@ const enviarReporteBatch = async(reporte)=>{
     for(let linea of reporte){
         cuerpo += `${linea}<br>`
     }
-    console.log(cuerpo)
+    console.log(cuerpo)    
                 
     var mailOptions = {
         from: 'CEI App <appcei.2018@gmail.com>',
@@ -103,6 +104,7 @@ const enviarCorreoAlta = async (usuario) => {
 
 
     var transporter = nodemailer.createTransport({
+        pool : true,
         service: 'gmail',
         auth: {
             type: "OAuth2",
@@ -175,6 +177,7 @@ const enviarCorreoNotificacion = async (usuario, asunto, cuerpo)=>{
 
 
     var transporter = nodemailer.createTransport({
+        pool : true,
         service: 'gmail',
         auth: {
             type: "OAuth2",
