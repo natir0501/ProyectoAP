@@ -69,6 +69,7 @@ export class ModificarEventoPage {
         ], '_id')
         this.usuarios = this.usuarios.filter((u)=> u.activo)
         this.categoria = dataUsuarios.data.categoria
+        this.evento.categoria = new Categoria();
         this.evento.categoria._id= this.categoria._id;
         this.evento.categoria.nombre = this.categoria.nombre;
         
