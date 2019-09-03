@@ -69,7 +69,10 @@ export class ModificarEventoPage {
         ], '_id')
         this.usuarios = this.usuarios.filter((u)=> u.activo)
         this.categoria = dataUsuarios.data.categoria
-        this.evento.categoria = this.categoria
+        this.evento.categoria._id= this.categoria._id;
+        this.evento.categoria.nombre = this.categoria.nombre;
+        
+        
       }
       let dataTipo: any = await this.eventoService.obtenerTipoEventos().toPromise()
       this.tiposEvento = dataTipo.data.tipoEventos
