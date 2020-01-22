@@ -155,7 +155,7 @@ const batch = async () => {
 const cuotasBatch = async () => {
     let reporte = []
     let enviarReporte = false
-    try {
+  /*  try {
         const concepto = await ConceptosCaja.findOne({ nombre: 'Cobro de cuota' })
         let usuarios
 
@@ -243,7 +243,7 @@ const cuotasBatch = async () => {
         if (enviarReporte) {
             enviarReporteBatch(reporte)
         }
-    }
+    }*/
 }
 
 
