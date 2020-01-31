@@ -32,8 +32,8 @@ export class CuentaService {
     const body: any = {};
     
     if(conceptos.length > 0) body.conceptos = conceptos;
-    if(fechaD) body.fechaInicio = fechaD.toString();
-    if(fechaH) body.fechaFin = fechaH.toString();
+    if(fechaD) body.fechaInicio = fechaD
+    if(fechaH) body.fechaFin = fechaH
 
     return this.http.post(`${this.apiUrl}api/movimientos/${idCuenta}`, body, {headers} )
   }
