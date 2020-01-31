@@ -39,6 +39,8 @@ export class SaldoMovimientosCategoriaPage {
   fechaD: number
   fechaH: number
   tipoSeleccionado: string = ''
+  ingresos = ''
+  egresos = ''
 
 
 
@@ -210,24 +212,19 @@ export class SaldoMovimientosCategoriaPage {
       if(a.concepto > b.concepto) return 1;
     })
 
-    this.getEgresos();
-    this.getIngresos();
+    let suma = this.movimientos.filter(m => m.tipo === 'Ingreso' && m.concepto !== 'Saldo Inicial')
+    .reduce((prev,m) => prev + Math.abs(m.monto),0);
+    this.ingresos =  `Total Ingresos: \$${suma}`;
+
+    
+    suma = this.movimientos.filter(m => m.tipo === 'Egreso').reduce((prev,m) => prev + Math.abs(m.monto),0);
+    this.egresos = `Total Engresos: \$${suma}`;
   }
 
   noHayFiltros(): boolean {
     return this.tipoSeleccionado === '' && this.conceptos.length === 0 && this.fDesdeTxt === 'aaaa-mm-dd' && this.fHastaTxt === 'aaaa-mm-dd';
   }
 
-  getIngresos(){
-    const suma = this.movimientos.filter(m => m.tipo === 'Ingreso' && m.concepto !== 'Saldo Inicial')
-    .reduce((prev,m) => prev + Math.abs(m.monto),0);
-    return `Total Ingresos: \$${suma}`;
-  }
-
-  getEgresos(){
-    const suma = this.movimientos.filter(m => m.tipo === 'Egreso').reduce((prev,m) => prev + Math.abs(m.monto),0);
-    return `Total Engresos: \$${suma}`;
-  }
 
   validoFechas(): boolean {
 
