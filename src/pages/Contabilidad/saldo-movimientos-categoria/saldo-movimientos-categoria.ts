@@ -209,19 +209,22 @@ export class SaldoMovimientosCategoriaPage {
       if(a.monto < b.monto) return 1;
       if(a.concepto > b.concepto) return 1;
     })
+
+    this.getEgresos();
+    this.getIngresos();
   }
 
   noHayFiltros(): boolean {
     return this.tipoSeleccionado === '' && this.conceptos.length === 0 && this.fDesdeTxt === 'aaaa-mm-dd' && this.fHastaTxt === 'aaaa-mm-dd';
   }
 
-  get Ingresos(){
+  getIngresos(){
     const suma = this.movimientos.filter(m => m.tipo === 'Ingreso' && m.concepto !== 'Saldo Inicial')
     .reduce((prev,m) => prev + Math.abs(m.monto),0);
     return `Total Ingresos: \$${suma}`;
   }
 
-  get Egresos(){
+  getEgresos(){
     const suma = this.movimientos.filter(m => m.tipo === 'Egreso').reduce((prev,m) => prev + Math.abs(m.monto),0);
     return `Total Engresos: \$${suma}`;
   }
