@@ -196,7 +196,7 @@ export class SaldoMovimientosCategoriaPage {
   armarSaldos(){
     this.saldosConceptos = [];
     this.conceptos.forEach( concepto => {
-      const movs = this.movimientos.filter(m => m.concepto === concepto.nombre);
+      const movs = this.cuenta.movimientos.filter(m => m.concepto === concepto.nombre);
       this.saldosConceptos.push(
         {
           concepto: concepto.nombre,
@@ -212,12 +212,12 @@ export class SaldoMovimientosCategoriaPage {
       if(a.concepto > b.concepto) return 1;
     })
 
-    let suma = this.movimientos.filter(m => m.tipo === 'Ingreso' && m.concepto !== 'Saldo Inicial')
+    let suma = this.cuenta.movimientos.filter(m => m.tipo === 'Ingreso' && m.concepto !== 'Saldo Inicial')
     .reduce((prev,m) => prev + Math.abs(m.monto),0);
     this.ingresos =  `Total Ingresos: \$${suma}`;
 
     
-    suma = this.movimientos.filter(m => m.tipo === 'Egreso').reduce((prev,m) => prev + Math.abs(m.monto),0);
+    suma = this.cuenta.movimientos.filter(m => m.tipo === 'Egreso').reduce((prev,m) => prev + Math.abs(m.monto),0);
     this.egresos = `Total Engresos: \$${suma}`;
   }
 

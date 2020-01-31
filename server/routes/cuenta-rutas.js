@@ -232,7 +232,6 @@ api.post('/movimientos/:id', async (req, res) => {
 
     try {
 
-        console.log('nuevo endpoint')
         let cta = await Cuenta.findById(req.params.id);
         if (cta) {
             let movs = [...cta.movimientos]
@@ -243,14 +242,15 @@ api.post('/movimientos/:id', async (req, res) => {
                     return req.body.conceptos.includes(mov.concepto.toString())
                 })
             }
+            
             if (req.body.fechaInicio) {
                 movs = movs.filter((mov) => {
-                    return mov.fecha >= req.query.fechaInicio
+                    return mov.fecha >= req.body.fechaInicio
                 })
             }
             if (req.body.fechaFin) {
                 movs = movs.filter((mov) => {
-                    return mov.fecha <= req.query.fechaFin
+                    return mov.fecha <= req.body.fechaFin
                 })
             }
 
