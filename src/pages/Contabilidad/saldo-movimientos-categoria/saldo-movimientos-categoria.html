@@ -39,22 +39,11 @@
           <button ion-button item-end class="btn-mostrar" type="button" (click)="toggle('filtros')">{{btnFiltros}}</button>
         </ion-item-divider>
         <ng-container *ngIf="verFiltros">
-
-          <ion-item>
-            <ion-label>
-              <strong>Tipo:</strong>
-            </ion-label>
-            <ion-select okText="Ok" cancelText="Cancelar" required [(ngModel)]="tipoSeleccionado" name="tipoSeleccionado"
-              placeholder="Seleccione tipo">
-              <ion-option *ngFor="let t of tipo" [id]="t.id" [value]="t.value">{{t.value}}</ion-option>
-            </ion-select>
-          </ion-item>
-
           <ion-item>
             <ion-label>
               <strong>Concepto:</strong>
             </ion-label>
-            <ion-select required okText="Ok" cancelText="Cancelar" class="select-concepto" required [(ngModel)]="concepto"
+            <ion-select multiple="true" required okText="Ok" cancelText="Cancelar" class="select-concepto" required [(ngModel)]="conceptos"
               name="concepto" placeholder="Seleccione concepto">
               <ion-option *ngFor="let c of listaConceptos" [id]="c._id" [value]="c">
                 {{c.nombre}}
@@ -102,6 +91,29 @@
                 </button>
               </ion-item-options>
             </ion-item-sliding>
+          </ion-list>
+        </ng-container>
+        <ion-item-divider color="light" id="sdomovscat2">
+          Agrupados Por Concepto:
+          <button ion-button item-end class="btn-mostrar" type="button" (click)="toggle('verConceptos')">{{btnConceptos}}</button>
+        </ion-item-divider>
+        <ng-container *ngIf="verConceptos">
+          <ion-list>
+            <ion-item *ngFor="let sc of saldosConceptos" color="none" icon-start>
+            
+              {{sc.concepto + ' $'+ sc.monto + ' (' + sc.entradas + ')'}} 
+  
+            </ion-item>
+            <ion-item color="none"  icon-start>
+            
+              {{Ingresos}} 
+  
+            </ion-item>
+            <ion-item color="none"  icon-start>
+            
+              {{Egresos}} 
+  
+            </ion-item>
           </ion-list>
         </ng-container>
       </ion-col>

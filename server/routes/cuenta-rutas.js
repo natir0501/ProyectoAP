@@ -228,4 +228,56 @@ api.patch('/cuenta/transferencia/:id', async (req, res) => {
 })
 
 
+api.post('/movimientos/:id', async (req, res) => {
+
+    try {
+
+        console.log('nuevo endpoint')
+        let cta = await Cuenta.findById(req.params.id);
+        if (cta) {
+            let movs = [...cta.movimientos]
+
+            
+            if (req.body.conceptos) {
+                movs = movs.filter((mov) => {
+                    return req.body.conceptos.includes(mov.concepto.toString())
+                })
+            }
+            if (req.body.fechaInicio) {
+                movs = movs.filter((mov) => {
+                    return mov.fecha >= req.query.fechaInicio
+                })
+            }
+            if (req.body.fechaFin) {
+                movs = movs.filter((mov) => {
+                    return mov.fecha <= req.query.fechaFin
+                })
+            }
+
+            let movimientos = []
+
+            for (let i = 0; i < movs.length; i++) {
+                let movimiento = movs[i]._doc
+                let concepto = await ConceptosCaja.findById(movimiento.concepto)
+
+                movimiento.concepto = concepto.nombre
+                let usuario = await Usuario.findById(movimiento.usuario)
+                if(usuario) movimiento.usuario = usuario.nombre + ' ' + usuario.apellido
+                movimientos.push(movimiento)
+
+
+            }
+
+            res.status(200).send(new ApiResponse({ movimientos }))
+        }
+
+
+    } catch (e) {
+        console.log(e)
+        res.status(400).send(new ApiResponse({}, `Mensaje: ${e}`))
+    }
+
+})
+
+
 module.exports = api;

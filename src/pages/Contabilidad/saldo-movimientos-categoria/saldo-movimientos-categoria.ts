@@ -25,10 +25,13 @@ export class SaldoMovimientosCategoriaPage {
   categoria: Categoria = new Categoria()
   usuarios: Usuario[] = [];
   btnMovs: string = '+';
+  btnConceptos: string = '+';
   verMovs: boolean = false;
+  verConceptos: boolean = false;
+  saldosConceptos : {concepto: string, monto: number, entradas: number}[] = [];
   btnFiltros: string = '+';
   verFiltros: boolean = false;
-  concepto: ConceptoCaja = new ConceptoCaja();
+  conceptos: ConceptoCaja[] = [];
   listaConceptos: ConceptoCaja[] = [];
   tipo = Object.keys(Tipos).map(key => ({ 'id': key, 'value': Tipos[key] }));
   fDesdeTxt: string = 'aaaa-mm-dd'
@@ -107,7 +110,7 @@ export class SaldoMovimientosCategoriaPage {
     });
     loading.present();
     this.tipoSeleccionado = ''
-    this.concepto = new ConceptoCaja();
+    this.conceptos = [];
     this.fDesdeTxt = 'aaaa-mm-dd'
     this.fHastaTxt = 'aaaa-mm-dd'
 
@@ -133,6 +136,14 @@ export class SaldoMovimientosCategoriaPage {
         this.btnMovs = '+'
       }
       this.verMovs = !this.verMovs
+    }
+    if (lista === 'verConceptos') {
+      if (!this.verConceptos) {
+        this.btnConceptos = '-'
+      } else {
+        this.btnConceptos = '+'
+      }
+      this.verConceptos = !this.verConceptos
     }
     if (lista === 'filtros') {
       if (!this.verFiltros) {
@@ -164,10 +175,10 @@ export class SaldoMovimientosCategoriaPage {
         loading.present()
 
 
-        this.cuentaServ.filtrarMovimientos(this.cuenta._id,
-          this.tipoSeleccionado, this.concepto._id, this.fechaD, this.fechaH).subscribe((resp) => {
+        this.cuentaServ.filtrarMovimientos2(this.cuenta._id,
+          this.conceptos.map(c => c._id), this.fechaD, this.fechaH).subscribe((resp) => {
             this.cuenta.movimientos = resp.data.movimientos;
-
+            this.armarSaldos();
 
             loading.dismiss();
           }, (err) => {
@@ -180,8 +191,39 @@ export class SaldoMovimientosCategoriaPage {
     }
   }
 
+  armarSaldos(){
+    this.saldosConceptos = [];
+    this.conceptos.forEach( concepto => {
+      const movs = this.movimientos.filter(m => m.concepto === concepto.nombre);
+      this.saldosConceptos.push(
+        {
+          concepto: concepto.nombre,
+          monto: movs.reduce((prevVal, m) => prevVal + Math.abs(m.monto), 0),
+          entradas: movs.length
+        }
+      );
+    })
+
+    this.saldosConceptos.sort((a,b) => {
+      if(a.monto > b.monto) return -1;
+      if(a.monto < b.monto) return 1;
+      if(a.concepto > b.concepto) return 1;
+    })
+  }
+
   noHayFiltros(): boolean {
-    return this.tipoSeleccionado === '' && this.concepto._id === '' && this.fDesdeTxt === 'aaaa-mm-dd' && this.fHastaTxt === 'aaaa-mm-dd';
+    return this.tipoSeleccionado === '' && this.conceptos.length === 0 && this.fDesdeTxt === 'aaaa-mm-dd' && this.fHastaTxt === 'aaaa-mm-dd';
+  }
+
+  get Ingresos(){
+    const suma = this.movimientos.filter(m => m.tipo === 'Ingreso' && m.concepto !== 'Saldo Inicial')
+    .reduce((prev,m) => prev + Math.abs(m.monto),0);
+    return `Total Ingresos: \$${suma}`;
+  }
+
+  get Egresos(){
+    const suma = this.movimientos.filter(m => m.tipo === 'Egreso').reduce((prev,m) => prev + Math.abs(m.monto),0);
+    return `Total Engresos: \$${suma}`;
   }
 
   validoFechas(): boolean {

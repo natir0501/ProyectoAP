@@ -24,6 +24,20 @@ export class CuentaService {
     return this.http.get(`${this.apiUrl}api/movimientos/${idCuenta}`, {headers, params} )
   }
 
+  filtrarMovimientos2(idCuenta: string,conceptos: string[], fechaD: number, fechaH: number): Observable <any> {
+    let headers: HttpHeaders = new HttpHeaders().set("Content-Type", "application/json")
+    headers = headers.set('x-auth', this.usuarioServ.token)
+
+
+    const body: any = {};
+    
+    if(conceptos.length > 0) body.conceptos = conceptos;
+    if(fechaD) body.fechaInicio = fechaD.toString();
+    if(fechaH) body.fechaFin = fechaH.toString();
+
+    return this.http.post(`${this.apiUrl}api/movimientos/${idCuenta}`, body, {headers} )
+  }
+
     transferenciaSaldo(payload: any, id: string): Observable <any> {
         let headers: HttpHeaders = new HttpHeaders().set("Content-Type", "application/json")
         headers = headers.set('x-auth', this.usuarioServ.token)
