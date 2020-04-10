@@ -159,6 +159,7 @@ export class MantenimientoCategoriaPage {
         spinner: 'circles'
       })
       loader.present()
+      this.categoria.cuenta = undefined;
       this.categoriaServ.actualizarCategoria(this.categoria).subscribe((resp) => {
           loader.dismiss()
           this.utils.dispararAlert('Éxito!', 'Categoría actualizada correctamente')
