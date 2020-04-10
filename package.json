@@ -4,12 +4,15 @@
   "author": "Ionic Framework",
   "homepage": "http://ionicframework.com/",
   "private": true,
-  "engines":{"node": "10.16.0","npm": "6.9.0"},
+  "engines": {
+    "node": "10.16.0",
+    "npm": "6.9.0"
+  },
   "scripts": {
     "postinstall": "npm run build-prod",
     "start": "node server/server.js",
     "test": "npm run build && npm start",
-    "test-api": "nodemon server/serverjs.",
+    "test-api": "nodemon server/server.js",
     "clean": "ionic-app-scripts clean",
     "build": "ionic-app-scripts build",
     "build-prod": "ionic-app-scripts build --prod",

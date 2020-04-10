@@ -134,11 +134,10 @@ api.put('/usuarios/perfiles', async (req, res) => {
 
         usuario = await usuario.save()
 
+        let categorias = await Categoria.find({});
 
-        for (let perfil of usuario.perfiles) {
-
-            categoria = await Categoria.findOne({ '_id': perfil.categoria })
-
+        for (let categoria of categorias ){
+            
             if (categoria.delegados.indexOf(usuario._id) > -1) {
                 categoria.delegados.splice(categoria.delegados.indexOf(usuario._id), 1)
             }
@@ -151,6 +150,18 @@ api.put('/usuarios/perfiles', async (req, res) => {
             if (categoria.jugadores.indexOf(usuario._id) > -1) {
                 categoria.jugadores.splice(categoria.jugadores.indexOf(usuario._id), 1)
             }
+
+            await categoria.save();
+        }
+
+        
+
+
+        for (let perfil of usuario.perfiles) {
+
+            categoria = await Categoria.findOne({ '_id': perfil.categoria })
+
+            
 
 
 

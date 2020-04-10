@@ -70,6 +70,9 @@ export class HomePage {
 
   get fechaCuota() {
     let dia = new Date().getDate()
+    if(new Date().getMonth() >10 && dia > this.categoria.diaVtoCuota) {
+      return `${this.categoria.diaVtoCuota}/${13 - this.categoria.cantidadCuotasAnuales}/${new Date().getFullYear() + 1}`
+    }
     let mes = dia > this.categoria.diaVtoCuota ? new Date().getMonth() + 2 : new Date().getMonth() + 1
     return `${this.categoria.diaVtoCuota}/${mes}/${new Date().getFullYear()}`
   }
