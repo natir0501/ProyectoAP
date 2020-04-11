@@ -155,7 +155,7 @@ const batch = async () => {
 const cuotasBatch = async () => {
     let reporte = []
     let enviarReporte = false
-  /*  try {
+    try {
         const concepto = await ConceptosCaja.findOne({ nombre: 'Cobro de cuota' })
         let usuarios
 
@@ -163,6 +163,7 @@ const cuotasBatch = async () => {
         reporte.push(`### ${new Date()} CORRIENDO BATCH DE CUOTAS###`)
         console.log(new Date().getDate())
         let categorias = await Categoria.find({ diaVtoCuota: new Date().getDate() - 1 })
+        //let categorias = await Categoria.find({})
         console.log(`Cantidad de categorías a cobrar: ${categorias.length}`)
         for (let cat of categorias) {
             reporte.push(' ')
@@ -176,6 +177,7 @@ const cuotasBatch = async () => {
                 let cuenta = await Cuenta.findOne({ _id: usu.cuenta })
                 if (usu.ultimoMesCobrado < mesActual && mesActual < 13 && usu.activo) {
                     let cantidadCuotas = mesActual - usu.ultimoMesCobrado
+                    //let cantidadCuotas = 1
 
                     for (let i = 0; i < cantidadCuotas; i++) {
                         cuota = +usu.ultimoMesCobrado + 1 + i
@@ -243,7 +245,7 @@ const cuotasBatch = async () => {
         if (enviarReporte) {
             enviarReporteBatch(reporte)
         }
-    }*/
+    }
 }
 
 
