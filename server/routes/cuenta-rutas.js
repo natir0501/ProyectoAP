@@ -60,11 +60,10 @@ api.get('/movimientospendientes/:id', async (req, res) => {
 api.get('/movimientos/:id', async (req, res) => {
 
     try {
-
         let cta = await Cuenta.findById(req.params.id);
         if (cta) {
             let movs = [...cta.movimientos]
-
+            movs.sort( (a,b) => a.fecha > b.fecha ? -1 : 1);
             if (req.query.tipo) {
                 movs = movs.filter((mov) => {
                     return mov.tipo === req.query.tipo
@@ -102,7 +101,6 @@ api.get('/movimientos/:id', async (req, res) => {
 
 
             }
-
             res.status(200).send(new ApiResponse({ movimientos }))
         }
 
@@ -236,13 +234,15 @@ api.post('/movimientos/:id', async (req, res) => {
         if (cta) {
             let movs = [...cta.movimientos]
 
-            
+
+
+
             if (req.body.conceptos) {
                 movs = movs.filter((mov) => {
                     return req.body.conceptos.includes(mov.concepto.toString())
                 })
             }
-            
+
             if (req.body.fechaInicio) {
                 movs = movs.filter((mov) => {
                     return mov.fecha >= req.body.fechaInicio
