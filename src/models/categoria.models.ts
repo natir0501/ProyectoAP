@@ -8,7 +8,7 @@ export class Categoria{
     diaGeneracionCuota?: number
     diaVtoCuota?: number
     cantidadCuotasAnuales?: number
-    saldoInicial: number
+    saldoInicial?: number
     cuenta?: Cuenta
     requiereEscolaridad?: boolean = false
     dts?: Usuario[] = []

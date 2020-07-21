@@ -4,8 +4,7 @@ var uniqueValidator = require('mongoose-unique-validator')
 var CampeonatoSchema = mongoose.Schema({
     nombre: {
         type: String,
-        required: true,
-        unique: true
+        required: true
     },
     anio: {
         type: Number,

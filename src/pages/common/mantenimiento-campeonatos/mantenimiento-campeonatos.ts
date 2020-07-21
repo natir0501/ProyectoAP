@@ -52,7 +52,7 @@ export class MantenimientoCampeonatosPage {
       } else {
         if (this.categoria.campeonatos.length > 0) {
           let datosCamp: any = await this.campServ.consultarCampeonatoActual(this.categoria).toPromise();
-        
+
           if (datosCamp) {
             this.campeonato = datosCamp.data.campeonato
             this.fechas = this.campeonato.fechas
@@ -84,7 +84,7 @@ export class MantenimientoCampeonatosPage {
       if (dataUsuarios) {
         this.categoria = dataUsuarios.data.categoria
       }
-      this.campeonato.categoria = this.categoria
+      this.campeonato.categoria = {_id: this.categoria._id}
       this.campServ.agregarCampeonato(this.campeonato)
         .subscribe(
           (resp) => {
